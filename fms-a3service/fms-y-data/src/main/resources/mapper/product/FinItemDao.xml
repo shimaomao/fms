@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.com.leadu.fms.data.product.dao.FinItemDao">
+    <!-- 根据产品方案代码，获取产品方案的融资项目 -->
+    <select id="selectFinItemVoListByProduct" parameterType="java.lang.String" resultType="cn.com.leadu.fms.pojo.product.vo.finitem.FinItemVo">
+        select finItem.fin_item_id,finItem.fin_item,finItem.fin_item_name,finItem.license_attr,finItem.fin_mode
+        ,finItem.edit_mode,finItem.pay_mode,prodFinItem.fin_item_type as finItemType,finItem.order_no
+        from prod_fin_item prodFinItem
+        inner join fin_item finItem on finItem.fin_item = prodFinItem.fin_item and finItem.del_flag = ${delete_exist}
+        where prodFinItem.del_flag =  ${delete_exist}
+        <if test="product != null">
+            and prodFinItem.product = #{product}
+        </if>
+        order by finItem.fin_item asc,finItem.order_no asc
+    </select>
+</mapper>

@@ -1,0 +1,30 @@
+server:
+  port: ${server-port:8761}
+
+eureka:
+  instance:
+    statusPageUrlPath: /info
+    healthCheckUrlPath: /health
+    prefer-ip-address: true
+    ip-address: ${server-ip} #docker启动环境变量 所在宿主机真实ip
+    instance-id: ${server-ip}:${server.port} #docker启动环境变量 所在宿主机真实ip和真实端口
+  server:
+    enable-self-preservation: false # false时关闭无用服务或者不能正常使用的服务
+
+  client:
+    register-with-eureka: false #不向自己本身注册
+    fetch-registry: false #不向自己本身注册
+    serviceUrl:
+      defaultZone: ${eureka-list} #其他服务发现中的ip和端口组，非本身,如下行
+      #defaultZone: http://10.10.1.160:8762/eureka/,http://10.10.1.160:8763/eureka/,http://10.10.1.160:8764/eureka/
+
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 20000 #缺省为1000
+  threadpool:
+    default:
+      coreSize: 3000 #缺省为10

@@ -1,0 +1,40 @@
+
+<div class="bg-light lter b-b wrapper-md">
+    <h1 class="m-n font-thin h4">省市县<button type="button" class="close" data-dismiss="modal" aria-hidden="true" ng-click="close()">&times;</button></h1>
+</div>
+<div ng-init="init()">
+    <div class="panel panel-default">
+        <div class="panel-body wrapper-sm">
+            <div class="row">
+                <div class="col-lg-12">
+                    <form class="form-inline" role="form">
+                        <div class="form-group">
+                            <label class="sr-only" >省市县代码 </label>
+                            <input class="form-control m-b-xs" ng-model="areaCode" placeholder="省市县代码">
+                        </div>
+                        <div class="form-group">
+                            <label class="sr-only" >省市县名称 </label>
+                            <input class="form-control m-b-xs" ng-model="areaName" placeholder="省市县名称">
+                        </div>
+
+                        <div class="form-group m-b-sm">
+                            <div class="btn-group">
+                                <button class="btn btn-default m-b-xs btn-info" ng-click="searchBasArea()" ><i class="fa fa-search"></i>查询</button>
+                                <button class="btn btn-default m-b-xs" ng-click="resetBasArea()" ><i class="fa  icon-refresh"></i>重置</button>
+                                <button class="btn btn-default m-b-xs" ng-click="exportExcel()">导出excel</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <table border="1" class="table table-striped m-b-none" id="bas_area_select_table">
+        </table>
+    </div>
+</div>
+<div class="modal-footer ng-scope text-center">
+    <div class="text-center">
+        <button class="btn btn-default" ng-click="close()">关闭</button>
+        <button class="btn btn-success" ng-click="confirm('select')">确认</button>
+    </div>
+</div>

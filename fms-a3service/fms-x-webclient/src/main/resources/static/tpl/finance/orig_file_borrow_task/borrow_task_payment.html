@@ -1,0 +1,95 @@
+<div class="bg-light lter b-b wrapper-md">
+    <h1 class="m-n font-thin h4">财务付款</h1>
+</div>
+<div ng-controller="borrow_task_payment_controller">
+    <div>
+        <toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-body wrapper-sm">
+            <div class="row">
+                <div class="col-lg-12">
+                    <form name="form" class="form-validation" novalidate>
+                        <div class="form-group text-right">
+                            <button class="btn btn-default m-b-xs" ng-click="backHome()">返回</button>
+                            <button class="btn btn-success m-b-xs" ng-click="save()">提交</button>
+                            <button class="btn btn-success m-b-xs" ng-click="sendBack()">退回</button>
+                        </div>
+
+                        <!--<table border="1" class="table table-striped m-b-none" id="equ_mor_detail_table">-->
+                        <!--</table>-->
+
+                        <div class="form-group row" >
+                            <label class="col-sm-2 control-label text-right"><b class="form-text-black">押金金额</b>:</label>
+                            <div class="col-sm-2">
+                                <label class="col-sm-8 control-label text-left">{{borrowTaskBackVo.depositAmount}}</label>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 control-label text-right"><b class="form-text-black">收款银行</b>:</label>
+                            <div class="col-sm-2">
+                                <label class="col-sm-8 control-label text-left">{{borrowTaskBackVo.recAccBank}}</label>
+                            </div>
+                            <label class="col-sm-2 control-label text-right"><b class="form-text-black">收款银行分行</b>:</label>
+                            <div class="col-sm-2">
+                                <label class="col-sm-8 control-label text-left">{{borrowTaskBackVo.recAccBranch}}</label>
+                            </div>
+                            <label class="col-sm-2 control-label text-right"><b class="form-text-black">收款账号</b>:</label>
+                            <div class="col-sm-2">
+                                <label class="col-sm-8 control-label text-left">{{borrowTaskBackVo.recAccountNo}}</label>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 control-label text-right"><b class="form-text-black">收款户名</b>:</label>
+                            <div class="col-sm-2">
+                                <label class="col-sm-8 control-label text-left">{{borrowTaskBackVo.recAccountName}}</label>
+                            </div>
+                            <label class="col-sm-2 control-label text-right"><b class="form-text-black">收款联行号</b>:</label>
+                            <div class="col-sm-2">
+                                <label class="col-sm-8 control-label text-left">{{borrowTaskBackVo.recEleBankNo}}</label>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-sm-2 control-label text-right"><b class="form-text-black">付款银行</b>:</label>
+                            <div class="col-sm-2">
+                                <label class="col-sm-8 control-label text-left">{{borrowTaskBackVo.payAccBank}}</label>
+                            </div>
+                            <label class="col-sm-2 control-label text-right"><b class="form-text-black">付款银行分行</b>:</label>
+                            <div class="col-sm-2">
+                                <label class="col-sm-8 control-label text-left">{{borrowTaskBackVo.payAccBranch}}</label>
+                            </div>
+                            <label class="col-sm-2 control-label text-right"><b class="form-text-black">付款户名</b>:</label>
+                            <div class="col-sm-2">
+                                <label class="col-sm-8 control-label text-left">{{borrowTaskBackVo.payAccountName}}</label>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 control-label text-right"><b class="form-text-black">付款账号</b>:</label>
+                            <div class="col-sm-2">
+                                <label class="col-sm-8 control-label text-left">{{borrowTaskBackVo.payAccountNo}}</label>
+                            </div>
+                            <label class="col-sm-2 control-label text-right"><b class="form-text-black">联行号</b>:</label>
+                            <div class="col-sm-2">
+                                <label class="col-sm-8 control-label text-left">{{borrowTaskBackVo.payEleBankNo}}</label>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-sm-2 control-label text-right"><b class="form-text-black">备注</b><b class="form-error">*</b>:</label>
+                            <div class="col-sm-6">
+                                <textarea limit-word type="text" name="remark" placeholder="请输入备注" class="form-control m-b-xs" ng-model="borrowTaskVo.remark" required></textarea>
+                                <p>
+                                    <span class="form-info" ng-show=" (form.remark.$dirty && form.remark.$error.required) || (form.remark.$error.required && formValidate)">备注不能为空</span>
+                                </p>
+                            </div>
+                        </div>
+
+                        <!--流程日志-->
+                        <div ng-include="'tpl/common/process_log/process_log_list.html'"></div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

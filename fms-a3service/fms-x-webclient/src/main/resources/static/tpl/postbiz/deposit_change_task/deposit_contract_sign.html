@@ -1,0 +1,40 @@
+<div  ng-controller="deposit_contract_sign_controller">
+    <div>
+        <toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-body wrapper-sm">
+            <div class="row">
+                <div class="form-group pull-right">
+                    <div class="btn-group ">
+                        <button class="btn btn-success m-t-xs m-r-xs" ng-click="submitInfo()" ng-disabled="submit">提交</button>
+                        <button class="btn btn-default m-t-xs" ng-click="goBack()">返回</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <form name="form" class="form-validation" novalidate>
+            <div class="panel-body wrapper-sm">
+                <ul id="applyTab" class="nav nav-tabs">
+                    <li class="active"><a href="javascript:void(0);" data-toggle="tab" data-id="approve" onclick="switchPageTab(this, 'applyTab')">补充协议上传</a></li>
+                    <li><a href="javascript:void(0);" data-toggle="tab" data-id="applyInfo" onclick="switchPageTab(this, 'applyTab')">申请信息</a></li>
+                    <li ><a href="javascript:void(0);" data-toggle="tab" data-id="contractFile" onclick="switchPageTab(this, 'applyTab')">合同信息</a></li>
+                </ul>
+                <div id="applyTabContent" class="tab-content">
+                    <!-- 审核意见备注 -->
+                    <div class="tab-pane fade in active" id="approve">
+                        <div ng-include="'tpl/postbiz/deposit_change_task/deposit_supple_upload.html'" class="row m-xs"></div>
+                    </div>
+                    <!-- 申请信息 -->
+                    <div class="tab-pane fade" id="applyInfo">
+                        <div ng-include="'tpl/postbiz/deposit_change_task/deposit_change_detail.html'" class="row m-xs"></div>
+                    </div>
+                    <!-- 合同附件 -->
+                    <div class="tab-pane fade" id="contractFile">
+                        <div ng-include="'tpl/postbiz/deposit_change_task/deposit_contract_file.html'" class="row m-xs"></div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

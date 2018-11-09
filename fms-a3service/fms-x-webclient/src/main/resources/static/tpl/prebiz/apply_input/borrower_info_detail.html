@@ -1,0 +1,35 @@
+
+<div  ng-controller="borrower_info_detail_controller">
+    <ul type="none" style="padding-left: 20px;margin: 20px 0;">
+        <div class="dataTables_wrapper form-inline dt-bootstrap no-footer">
+            <table border="1" class="table table-striped m-b-none dataTable no-footer" width="100%">
+                <thead>
+                    <tr>
+                        <th class="sorting_disabled center" rowspan="1" colspan="1" style="width: 0px;">申请编号</th>
+                        <th class="sorting_disabled center" rowspan="1" colspan="1" style="width: 0px;">共同承租人姓名</th>
+                        <th class="sorting_disabled center" rowspan="1" colspan="1" style="width: 0px;">手机号码</th>
+                        <th class="sorting_disabled center" rowspan="1" colspan="1" style="width: 0px;">证件类型</th>
+                        <th class="sorting_disabled center" rowspan="1" colspan="1" style="width: 0px;">证件号码</th>
+                        <th class="sorting_disabled center" rowspan="1" colspan="1" style="width: 0px;">操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-show="borrowerList.length == 0">
+                        <td colspan="6" class="dataTables_empty">暂无相关信息</td>
+                    </tr>
+                    <tr click-tr ng-show="borrowerList.length != 0" ng-repeat="a in borrowerList track by $index">
+                        <td>{{a.applyNo}}</td>
+                        <td>{{a.name}}</td>
+                        <td>{{a.mobileNo}}</td>
+                        <td>{{a.certifType | getName:'certifType'}}</td>
+                        <td>{{a.certifNo}}</td>
+                        <td>
+                            <a class="a1" ng-click="detail(a)">详情</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </ul>
+</div>

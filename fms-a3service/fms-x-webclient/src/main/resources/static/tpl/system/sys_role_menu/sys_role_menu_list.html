@@ -1,0 +1,54 @@
+<div  ng-controller="sys_role_menu_list_controller">
+    <div>
+        <toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-body wrapper-sm">
+            <div class="row">
+                <div class="col-lg-12">
+                    <form class="form-inline" role="form">
+                        <!--<div class="form-group">-->
+                            <!--<label class="sr-only" >用户组代码 </label>-->
+                            <!--<input class="form-control m-b-xs" ng-model="groupCode" placeholder="用户组代码">-->
+                        <!--</div>-->
+                        <!--<div class="form-group">-->
+                            <!--<label class="sr-only" >用户组全称 </label>-->
+                            <!--<input class="form-control m-b-xs" ng-model="groupName" placeholder="用户组全称">-->
+                        <!--</div>-->
+
+                        <div class="form-group m-b-sm">
+                            <div class="btn-group">
+                                <!--<button class="btn btn-default m-b-xs btn-info" ng-click="searchSysGroup()" ><i class="fa fa-search"></i>查询</button>-->
+                                <!--<button class="btn btn-default m-b-xs" ng-click="resetSysGroup()" ><i class="fa  icon-refresh"></i>重置</button>-->
+                            </div>
+                        </div>
+
+                        <div class="form-group pull-right">
+                            <div class="btn-group">
+                                <!--<button class="btn btn-default m-b-xs" ng-click="saveSysGroup()"><i class="fa fa-plus"></i>添加</button>-->
+                                <!--<button class="btn btn-default m-b-xs" ng-click="modifySysGroup()"><i class="fa icon-pencil"></i>修改</button>-->
+                                <!--<button class="btn btn-default m-b-xs" ng-click="deleteSysGroup()"><i class="fa fa-trash-o"></i>删除</button>-->
+                                <button class="btn btn-success m-b-xs" ng-click="setMenu()"><i class="fa fa-plus"></i>设置角色菜单</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-12 form-inline panel panel-default" style="padding: 0">
+            <div class="col-lg-4" style="padding-left: 0; padding-right: 0" >
+                <div id="sys_role_menu_tree" style="max-height: 400px;overflow-y:auto;white-space:nowrap;font-size: 6px"></div>
+            </div>
+            <!--<div class="col-lg-6" style="padding-left: 0; padding-right: 0" ></div>-->
+            <div class="col-lg-8" style="padding-left: 0; padding-right: 0" >
+                <div id="menuTree" style="max-height: 400px;overflow-y:auto;white-space:nowrap;font-size: 6px"></div>
+            </div>
+            <!--<div class="col-lg-9 ">-->
+                <!--<label>角色菜单</label>-->
+                <!--<ul id="menuTree" class="ztree"></ul>-->
+            <!--</div>-->
+        </div>
+    </div>
+</div>
+

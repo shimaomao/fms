@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.com.leadu.fms.data.prebiz.dao.ApplyFinDetailDao">
+    <!-- 根据订单编号 获取融资费用明细信息 -->
+    <select id="selectApplyFinDetailVosByApplyNo" parameterType="java.lang.String" resultType="cn.com.leadu.fms.pojo.prebiz.vo.applyfindetail.ApplyFinDetailVo">
+        select applyFinDetail.apply_fin_detail_id,applyFinDetail.apply_no,applyFinDetail.vehicle_no,applyFinDetail.fin_item
+        ,applyFinDetail.fin_item_year,applyFinDetail.fin_amount,finItem.fin_item_name as finItemName,finItem.fin_mode as finMode
+        ,finItem.edit_mode as editMode,finItem.pay_mode as payMode,finItem.order_no as orderNo
+        from apply_fin_detail applyFinDetail
+        left join fin_item finItem on finItem.fin_item = applyFinDetail.fin_item and finItem.del_flag = ${delete_exist}
+        where applyFinDetail.del_flag = ${delete_exist}
+        <if test="applyNo != null">
+            and applyFinDetail.apply_no = #{applyNo}
+        </if>
+        order by applyFinDetail.vehicle_no asc,finItem.order_no asc,applyFinDetail.fin_item_year asc
+    </select>
+</mapper>

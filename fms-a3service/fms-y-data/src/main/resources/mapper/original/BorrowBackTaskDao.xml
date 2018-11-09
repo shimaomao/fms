@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.com.leadu.fms.data.original.dao.BorrowBackTaskDao">
+
+    <select id="selectBorrowBackTaskByBorrowBackTaskNo" resultType="cn.com.leadu.fms.pojo.original.vo.borrowbacktask.BorrowBackTaskVo">
+        SELECT DISTINCT
+            bbt.*, of.biz_code
+        FROM borrow_back_task bbt
+        LEFT JOIN orig_file_detail ofd ON bbt.borrow_back_task_no = ofd.borrow_back_task_no
+        AND ofd.del_flag = ${delete_exist}
+        LEFT JOIN orig_file of ON ofd.biz_code = of.biz_code AND ofd.biz_code_type = of.biz_code_type
+        AND of.del_flag = ${delete_exist}
+        WHERE
+            bbt.del_flag = ${delete_exist}
+        <if test="borrowBackTaskNo != null">
+            AND bbt.borrow_back_task_no = #{borrowBackTaskNo}
+        </if>
+    </select>
+</mapper>

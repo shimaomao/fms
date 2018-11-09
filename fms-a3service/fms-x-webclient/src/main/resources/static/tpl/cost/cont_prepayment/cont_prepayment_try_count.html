@@ -1,0 +1,125 @@
+
+<div class="modal-header">
+    <h4 class="modal-title">提前还款试算 <button type="button" class="close" data-dismiss="modal" aria-hidden="true" ng-click="close()">&times;</button></h4>
+</div>
+<div style="">
+    <div class="panel panel-default">
+        <form name="form" class="form-validation" novalidate>
+            <div class="panel-body wrapper-sm">
+                <div class="row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">出租人</b><b class="form-error"></b>:</label>
+                    <div class="col-sm-4">
+                        <input type="text" title="{{contPrepayment.rentPerson}}" class="form-control m-b-xs" ng-model="contPrepayment.rentPerson"  disabled >
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">承租人</b><b class="form-error"></b>:</label>
+                    <div class="col-sm-4">
+                        <input type="text" title="{{contPrepayment.name}}" class="form-control m-b-xs" ng-model="contPrepayment.name"  disabled >
+                    </div>
+
+                </div>
+                <div class="row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">合同编号</b><b class="form-error"></b>:</label>
+                    <div class="col-sm-2">
+                        <input type="text" title="{{contPrepayment.contNo}}" class="form-control m-b-xs" ng-model="contPrepayment.contNo"  disabled >
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">已还金额(元)</b><b class="form-error"></b>:</label>
+                    <div class="col-sm-2">
+                        <input type="number" title="{{contPrepayment.alreadyRepayAmount}}" class="form-control m-b-xs" ng-model="contPrepayment.alreadyRepayAmount"  disabled >
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">剩余未还租金(元)</b><b class="form-error"></b>:</label>
+                    <div class="col-sm-2">
+                        <input type="number" title="{{contPrepayment.residueAmount}}" class="form-control m-b-xs" ng-model="contPrepayment.residueAmount"  disabled >
+                    </div>
+                </div>
+                <div class="row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">品牌</b><b class="form-error"></b>:</label>
+                    <div class="col-sm-2">
+                        <input type="text" title="{{contPrepayment.vehBrandCodeName}}" class="form-control m-b-xs" ng-model="contPrepayment.vehBrandCodeName"  disabled >
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">车型</b><b class="form-error"></b>:</label>
+                    <div class="col-sm-2">
+                        <input type="text" title="{{contPrepayment.vehicleCodeName}}" class="form-control m-b-xs" ng-model="contPrepayment.vehicleCodeName"  disabled >
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">合同生效日</b><b class="form-error"></b>:</label>
+                    <div class="col-sm-2">
+                        <input type="text" title="{{contPrepayment.contractValidDate}}" class="form-control m-b-xs" ng-model="contPrepayment.contractValidDate"  disabled >
+                    </div>
+                </div>
+
+                <div class="row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">车架号</b><b class="form-error"></b>:</label>
+                    <div class="col-sm-2">
+                        <input type="text" title="{{contPrepayment.vinNo}}" class="form-control m-b-xs" ng-model="contPrepayment.vinNo"  disabled >
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">车牌号</b><b class="form-error"></b>:</label>
+                    <div class="col-sm-2">
+                        <input type="text" title="{{contPrepayment.vehicleLicenseNo}}" class="form-control m-b-xs" ng-model="contPrepayment.vehicleLicenseNo"  disabled >
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black" >融资额(元)</b><b class="form-error"></b>:</label>
+                    <div class="col-sm-2">
+                        <input type="number" title="{{contPrepayment.finTotal}}" class="form-control m-b-xs" ng-model="contPrepayment.finTotal"  disabled >
+                    </div>
+                </div>
+
+                <div class="row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">期限</b><b class="form-error"></b>:</label>
+                    <div class="col-sm-2">
+                        <input type="text" title="{{contPrepayment.finPeriodType}}" class="form-control m-b-xs" ng-model="contPrepayment.finPeriodType"  disabled >
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">月租金(元)</b><b class="form-error"></b>:</label>
+                    <div class="col-sm-2">
+                        <input type="text" title="{{contPrepayment.rent}}" class="form-control m-b-xs" ng-model="contPrepayment.rent" disabled >
+                    </div>
+                    <!--<div class="col-sm-3">
+                        <div class="row">
+                            <div class="col-sm-7">
+                                &lt;!&ndash;<div class="col-sm-2">&ndash;&gt;
+                                <input type="text" title="{{contPrepayment.rent}}" class="form-control m-b-xs" ng-model="contPrepayment.rent" disabled >
+                                &lt;!&ndash;</div>&ndash;&gt;
+                            </div>
+                            &lt;!&ndash;<label class="col-sm-1 control-label text-right"></label>&ndash;&gt;
+                            <div class="col-sm-5">
+                                &lt;!&ndash;<div class="col-sm-2">&ndash;&gt;
+                                <button type="button" class="btn btn-sm btn-success" ng-click="overdueSales()">查看还款计划表</button>
+                                &lt;!&ndash;</div>&ndash;&gt;
+                            </div>
+                        </div>
+                    </div>-->
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black" >已还期数</b><b class="form-error"></b>:</label>
+                    <div class="col-sm-2">
+                        <input type="text" title="{{contPrepayment.alreadyRepayNper}}" class="form-control m-b-xs" ng-model="contPrepayment.alreadyRepayNper"  disabled >
+                    </div>
+                </div>
+
+
+
+                <div class="row">
+                    <div class="col-sm-12">
+                        <table border="1" class="table table-striped m-b-none" id="prepayment_table" style="overflow-y: hidden"></table>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">试算总金额</b><b class="form-error">(元)</b>:</label>
+                    <div class="col-sm-2">
+                        <input type="text" name="prepayTrialAmount" placeholder="试算总金额" class="form-control m-b-xs" ng-model="contPrepayment.prepayTrialAmount"  disabled >
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">提前还款日期</b><b class="form-error" ng-show="approveSave || applySave" >*</b>:</label>
+                    <div class="col-sm-2">
+                        <input type="text" name="prepaymentDate" placeholder="提前还款日期" class="form-control m-b-xs" ng-model="contPrepayment.prepaymentDate"  disabled >
+                    </div>
+
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">有效期</b><b class="form-error" ng-show="approveSave || applySave" >*</b>:</label>
+                    <div class="col-sm-2">
+                        <input type="text" name="validityDate" placeholder="有效期" class="form-control m-b-xs" ng-model="contPrepayment.validityDate"  disabled
+                               date-picker ng-required="approveSave || applySave">
+                        <p>
+                            <span class="form-info" ng-show=" (form.validityDate.$dirty && !contPrepayment.validityDate) || (!contPrepayment.validityDate  && formValidate)">提前还款有效期不能为空</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+</div>

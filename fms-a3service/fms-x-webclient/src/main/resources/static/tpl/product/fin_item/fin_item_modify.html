@@ -1,0 +1,92 @@
+<div class="panel panel-default"  ng-controller="fin_item_modify_controller">
+<div class="modal-header">
+    <h4 class="modal-title">融资项目 </h4>
+</div>
+
+    <div>
+        <toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+    </div>
+<div class="modal-body">
+    <form name="form" class="form-validation" novalidate>
+
+            <div class="form-group row">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">融资项目代码</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-3">
+                    <input type="text" name="finItem" placeholder="请输入融资项目代码" class="form-control m-b-xs" ng-model="finItem.finItem" readonly required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.finItem.$dirty && form.finItem.$error.required) || (form.finItem.$error.required && formValidate)">融资项目代码不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+
+            <div class="form-group row">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">融资项目名称</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-3">
+                    <input type="text" name="finItemName" placeholder="请输入融资项目名称" class="form-control m-b-xs" ng-model="finItem.finItemName"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.finItemName.$dirty && form.finItemName.$error.required) || (form.finItemName.$error.required && formValidate)">融资项目名称不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+        <div class="form-group row">
+            <label class="col-sm-3 control-label text-right"><b class="form-text-black">财务税率</b><b class="form-error">*</b>:</label>
+            <div class="col-sm-3">
+                <input type="text" name="finTax" placeholder="请输入财务税率" class="form-control m-b-xs" ng-model="finItem.finTax"  required >
+                <p>
+                    <span class="form-info" ng-show=" (form.finTax.$dirty && form.finTax.$error.required) || (form.finTax.$error.required && formValidate)">财务税率不能为空</span>
+                </p>
+            </div>
+        </div>
+
+         <!--   <div class="form-group row">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">牌照属性</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-1"  ng-repeat="licenseAttrObj in licenseAttrList" >
+                    <label><input type="checkbox" name="licenseAttr" ng-checked="finItem.licenseAttr.indexOf(licenseAttrObj.codeValue)!=-1?'checked':''"  ng-true-value="{{licenseAttrObj.codeValue}}">{{licenseAttrObj.codeValueName}}</label>
+                </div>
+            </div>-->
+
+
+            <div class="form-group row">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">融资方式</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-4">
+                <div class="radio"  ng-repeat="finModeObj in finModeList"  style="margin-top: 2px;">
+                    <label><input type="radio" ng-value="finModeObj.codeValue" ng-model="finItem.finMode">{{finModeObj.codeValueName}}</label>
+                </div>
+                    </div>
+            </div>
+
+
+            <div class="form-group row">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">是否可修改</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-1">
+                    <select  ng-model="finItem.editMode" class="form-control m-b-xs" required>
+                        <option value="{{editModeObj.codeValue}}" ng-repeat="editModeObj in editModeList">{{editModeObj.codeValueName}}</option>
+                    </select>
+                    <p>
+                        <span class="form-info" ng-show=" (form.editMode.$dirty && form.editMode.$error.required) || (form.editMode.$error.required && formValidate)">是否可修改不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+
+            <div class="form-group row">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">是否和车款一起支付</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-1">
+                    <select  ng-model="finItem.payMode" class="form-control m-b-xs" required>
+                        <option value="{{payModeObj.codeValue}}" ng-repeat="payModeObj in payModeList">{{payModeObj.codeValueName}}</option>
+                    </select>
+                    <p>
+                        <span class="form-info" ng-show=" (form.payMode.$dirty && form.payMode.$error.required) || (form.payMode.$error.required && formValidate)">是否和车款一起支付不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+        <div class="col-sm-15 m-b text-center">
+            <button class="btn btn-default" ng-click="goBack()">取消</button>
+            <button type="submit" class="btn btn-success" ng-disabled="submit" ng-click="modify()">保存</button>
+        </div>
+    </form>
+</div>
+</div>

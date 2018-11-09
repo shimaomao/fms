@@ -1,0 +1,50 @@
+<div class="modal-header">
+    <h4 class="modal-title">添加system <button type="button" class="close" data-dismiss="modal" aria-hidden="true" ng-click="close()">&times;</button></h4>
+</div>
+<div class="modal-body">
+    <form name="form" class="form-validation" novalidate>
+
+        <div class="panel-body">
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">fileName</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="fileName" placeholder="请输入fileName" class="form-control m-b-xs" ng-model="sysFile.fileName"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.fileName.$dirty && form.fileName.$error.required) || (form.fileName.$error.required && formValidate)">fileName不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">filePath</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="filePath" placeholder="请输入filePath" class="form-control m-b-xs" ng-model="sysFile.filePath"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.filePath.$dirty && form.filePath.$error.required) || (form.filePath.$error.required && formValidate)">filePath不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">fileDownNum</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="fileDownNum" placeholder="请输入fileDownNum" class="form-control m-b-xs" ng-model="sysFile.fileDownNum"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.fileDownNum.$dirty && form.fileDownNum.$error.required) || (form.fileDownNum.$error.required && formValidate)">fileDownNum不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+
+        </div>
+
+    </form>
+</div>
+<div class="modal-footer ng-scope">
+    <button class="btn btn-default" ng-click="close()">取消</button>
+    <button type="submit" class="btn btn-success" ng-disabled="submit" ng-click="save()">新增</button>
+</div>

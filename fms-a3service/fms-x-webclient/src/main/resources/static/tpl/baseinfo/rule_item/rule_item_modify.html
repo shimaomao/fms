@@ -1,0 +1,77 @@
+<div ng-controller="rule_item_modify_controller">
+
+    <div>
+        <toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="row fms-page-header">
+            <h5>修改规则引擎项目</h5>
+        </div>
+
+        <form name="form" class="form-validation" novalidate>
+
+            <div class="panel-body">
+
+                <div class="form-group">
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">规则项目key</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-9">
+                        <input type="text" minlength="1" maxlength="50" name="ruleItemKey" placeholder="请输入规则项目key" class="form-control m-b-xs" ng-model="ruleItem.ruleItemKey"  required >
+                        <p>
+                            <span class="form-info" ng-show=" (form.ruleItemKey.$dirty && form.ruleItemKey.$error.required) || (form.ruleItemKey.$error.required && formValidate)">规则项目key不能为空</span>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">规则项目名称</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-9">
+                        <input type="text" minlength="1" maxlength="200" name="ruleItemName" placeholder="请输入规则项目名称" class="form-control m-b-xs" ng-model="ruleItem.ruleItemName"  required >
+                        <p>
+                            <span class="form-info" ng-show=" (form.ruleItemName.$dirty && form.ruleItemName.$error.required) || (form.ruleItemName.$error.required && formValidate)">规则项目名称不能为空</span>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">规则类型</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-9">
+                        <select name="ruleType" ng-model="ruleItem.ruleType" class="form-control m-b-xs" required >
+                            <option value="">--请选择规则类型--</option>
+                            <option value="{{ruleType.codeValue}}" ng-repeat="ruleType in ruleTypes">
+                                {{ruleType.codeValueName}}
+                            </option>
+                        </select>
+                        <p>
+                            <span class="form-info" ng-show=" (form.ruleType.$dirty && form.ruleType.$error.required) || (form.ruleType.$error.required && formValidate)">规则类型不能为空</span>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">项目属性</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-9">
+                        <select name="itemType" ng-model="ruleItem.itemType" class="form-control m-b-xs" required >
+                            <option value="">--请选择项目属性--</option>
+                            <option value="{{ruleItemType.codeValue}}" ng-repeat="ruleItemType in ruleItemTypes">
+                                {{ruleItemType.codeValueName}}
+                            </option>
+                        </select>
+                        <p>
+                            <span class="form-info" ng-show=" (form.itemType.$dirty && form.itemType.$error.required) || (form.itemType.$error.required && formValidate)">项目属性不能为空</span>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="text-center">
+                    <div class="col-sm-12 m-b">
+                        <button class="btn btn-default btn-sm" ng-click="goBack()">返回</button>
+                        <button type="submit" class="btn btn-success btn-sm" ng-disabled="submit" ng-click="modify()">保存</button>
+                    </div>
+                </div>
+
+            </div>
+
+        </form>
+    </div>
+</div>

@@ -1,0 +1,57 @@
+
+<div  ng-controller="annual_inspection_list_controller">
+    <div>
+        <toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-body wrapper-sm">
+            <div class="row">
+                <div class="col-lg-12">
+                    <form class="form-inline" role="form">
+
+                        <div class="form-group m-b-sm">
+                            <select name="annualInspectStatus" ng-model="params.annualInspectStatus" class="form-control m-b-xs">
+                                <option value="">---年检任务状态---</option>
+                                <option ng-repeat="annualInspectStatusObj in annualInspectStatusList" value="{{annualInspectStatusObj.codeValue}}" ng-selected="params.annualInspectStatus == annualInspectStatusObj.codeValue">{{annualInspectStatusObj.codeValueName}}</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="sr-only" >合同号 </label>
+                            <input class="form-control m-b-xs" ng-model="params.contNo" placeholder="合同号">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="sr-only" >车架号 </label>
+                            <input class="form-control m-b-xs" ng-model="params.annualInspecVinNo" placeholder="车架号">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="sr-only" >承租人 </label>
+                            <input class="form-control m-b-xs" ng-model="params.annualInspecUser" placeholder="承租人">
+                        </div>
+
+                        <div class="form-group m-b-sm">
+                            <div class="btn-group">
+                                <button class="btn btn-default btn-sm fms-button-margin-bottom m-b-xs btn-info" ng-click="searchAnnualInspection()" ><i class="fa fa-search"></i>查询</button>
+                                <button class="btn btn-default btn-sm fms-button-margin-bottom m-b-xs" ng-click="resetAnnualInspection()" ><i class="fa  icon-refresh"></i>重置</button>
+                            </div>
+                        </div>
+
+
+                        <div class="form-group pull-right">
+                            <div class="btn-group">
+                                <button class="btn btn-default m-b-xs" ng-click="exportExcel()"><i class="fa"></i>导出excel</button>
+                                <button class="btn btn-default m-b-xs" ng-click="selectCarBreak()">违章查询</button>
+                                <button class="btn btn-default m-b-xs" ng-click="updateAnnualInspection()"><i class="fa"></i>年检更新</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <table border="1" class="table table-striped m-b-none" id="annual_inspection_table">
+        </table>
+    </div>
+</div>
+

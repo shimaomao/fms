@@ -1,0 +1,50 @@
+<div class="modal-header">
+    <h4 class="modal-title">添加prebiz <button type="button" class="close" data-dismiss="modal" aria-hidden="true" ng-click="close()">&times;</button></h4>
+</div>
+<div class="modal-body">
+    <form name="form" class="form-validation" novalidate>
+
+        <div class="panel-body">
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">股东名称</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="shareholderName" placeholder="请输入股东名称" class="form-control m-b-xs" ng-model="stockAssets.shareholderName"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.shareholderName.$dirty && form.shareholderName.$error.required) || (form.shareholderName.$error.required && formValidate)">股东名称不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">股份比例</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="shareRatio" placeholder="请输入股份比例" class="form-control m-b-xs" ng-model="stockAssets.shareRatio"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.shareRatio.$dirty && form.shareRatio.$error.required) || (form.shareRatio.$error.required && formValidate)">股份比例不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">出资额</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="contribution" placeholder="请输入出资额" class="form-control m-b-xs" ng-model="stockAssets.contribution"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.contribution.$dirty && form.contribution.$error.required) || (form.contribution.$error.required && formValidate)">出资额不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+
+        </div>
+
+    </form>
+</div>
+<div class="modal-footer ng-scope">
+    <button class="btn btn-default" ng-click="close()">取消</button>
+    <button type="submit" class="btn btn-success" ng-disabled="submit" ng-click="save()">新增</button>
+</div>

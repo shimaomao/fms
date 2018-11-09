@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.com.leadu.fms.data.product.dao.ProdIntrstFactorDao">
+    <!-- 根据产品Code取得产品的全部利率方案的因子 -->
+    <select id="selectProdIntrstFactorListByProduct" parameterType="java.lang.String" resultType="cn.com.leadu.fms.pojo.product.vo.prodintrstfactor.ProdIntrstFactorVo">
+        select proInFa.prod_intrst_factor_id,proInFa.product,proInFa.intrst_no,proInFa.factor_code,proInFa.factor_value_from,proInFa.factor_value_to,intrstFactor.factor_type as factorType, intrstFactor.factor_name as factorName
+        from prod_intrst_factor proInFa
+        left join intrst_factor intrstFactor on intrstFactor.factor_code = proInFa.factor_code and intrstFactor.enable_flag = '0' and intrstFactor.del_flag =  ${delete_exist}
+        where proInFa.del_flag =  ${delete_exist}
+        <if test="product != null">
+            and proInFa.product = #{product}
+        </if>
+        order by proInFa.product asc,proInFa.intrst_no asc,intrstFactor.order_no asc
+    </select>
+</mapper>

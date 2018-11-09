@@ -1,0 +1,86 @@
+<div class="modal-header">
+    <h4 class="modal-title">编辑postbiz <button type="button" class="close" data-dismiss="modal" aria-hidden="true" ng-click="close()">&times;</button></h4>
+</div>
+<div class="modal-body">
+    <form name="form" class="form-validation" novalidate>
+
+        <div class="panel-body">
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">逾期客户ID</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="overdueCstmId" placeholder="请输入逾期客户ID" class="form-control m-b-xs" ng-model="overdueAssignment.overdueCstmId"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.overdueCstmId.$dirty && form.overdueCstmId.$error.required) || (form.overdueCstmId.$error.required && formValidate)">逾期客户ID不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">分配日期</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="assignDate" placeholder="请输入分配日期" class="form-control m-b-xs" ng-model="overdueAssignment.assignDate"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.assignDate.$dirty && form.assignDate.$error.required) || (form.assignDate.$error.required && formValidate)">分配日期不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">催收类型</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="assignmentType" placeholder="请输入催收类型" class="form-control m-b-xs" ng-model="overdueAssignment.assignmentType"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.assignmentType.$dirty && form.assignmentType.$error.required) || (form.assignmentType.$error.required && formValidate)">催收类型不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">分配人员账号</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="assignUser" placeholder="请输入分配人员账号" class="form-control m-b-xs" ng-model="overdueAssignment.assignUser"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.assignUser.$dirty && form.assignUser.$error.required) || (form.assignUser.$error.required && formValidate)">分配人员账号不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">是否新进数</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="fistOverdueFlag" placeholder="请输入是否新进数" class="form-control m-b-xs" ng-model="overdueAssignment.fistOverdueFlag"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.fistOverdueFlag.$dirty && form.fistOverdueFlag.$error.required) || (form.fistOverdueFlag.$error.required && formValidate)">是否新进数不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">任务处理状态</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="assignmentSts" placeholder="请输入任务处理状态" class="form-control m-b-xs" ng-model="overdueAssignment.assignmentSts"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.assignmentSts.$dirty && form.assignmentSts.$error.required) || (form.assignmentSts.$error.required && formValidate)">任务处理状态不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+
+        </div>
+    </form>
+</div>
+<div class="modal-footer ng-scope">
+    <button class="btn btn-default" ng-click="close()">取消</button>
+    <button type="submit" class="btn btn-success" ng-disabled="submit" ng-click="modify()">保存</button>
+</div>

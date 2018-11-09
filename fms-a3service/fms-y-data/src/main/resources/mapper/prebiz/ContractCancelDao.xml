@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.leadu.fms.data.prebiz.dao.ContractCancelDao">
+    <!--分页查询融资合同取消-->
+    <select id="selectContractCancelByPage" parameterType="cn.com.leadu.fms.pojo.prebiz.vo.contractcancel.ContractCancelVo" resultType="cn.com.leadu.fms.pojo.prebiz.vo.contractcancel.ContractCancelVo">
+        SELECT
+        contract.apply_no,
+        contract.cont_no,
+        contract.biz_status,
+        contract.apply_user,
+        contract.contract_valid_date,
+        contract.apply_group,
+        contract.apply_type,
+        contract.present_user,
+        contract.vin_no,
+        contract.vehicle_license_no,
+        contract.gps_no,
+        contractFinance.vehicle_form,
+        contractFinance.product,
+        contractFinance.init_amount,
+        contractFinance.fin_total,
+        contractFinance.license_attr,
+        contractFinance.fin_period_type,
+        contractFinance.charge_pay_mode,
+        contractFinance.charge_rate,
+        contractFinance.charge,
+        contractFinance.init_perc,
+        contractFinance.invest_total,
+        contractFinance.deposit,
+        contractFinance.rent,
+        cstmPerson.certif_no personCertifNo,
+        cstmPerson.name personName,
+        cstmCompany.certif_no companyCertifNo,
+        cstmCompany.name companyName,
+        basPartner.partner_name,
+        product.product_name,
+        sysGroup.group_name,
+        vehMakerCode.vehicle_name AS vehMakerCodeName,
+        vehBrandCode.vehicle_name AS vehBrandCodeName,
+        vehicleCode.vehicle_name AS vehicleCodeName,
+        vehSeriesCode.vehicle_name AS vehSeriesCodeName
+        FROM
+        contract contract
+        LEFT JOIN
+        contract_vehicle contractVehicle ON contract.cont_no=contractVehicle.cont_no AND contractVehicle.del_flag =  ${delete_exist}
+        LEFT JOIN
+        contract_finance contractFinance ON contract.cont_no = contractFinance.cont_no AND contractFinance.del_flag =  ${delete_exist}
+        LEFT JOIN
+        sys_group sysGroup ON contract.apply_group = sysGroup.group_code AND sysGroup.del_flag =  ${delete_exist}
+        LEFT JOIN
+        cstm_person cstmPerson ON contract.apply_no = cstmPerson.apply_no AND cstmPerson.del_flag =  ${delete_exist}
+        LEFT JOIN
+        cstm_company cstmCompany ON contract.apply_no = cstmCompany.apply_no AND cstmCompany.del_flag =  ${delete_exist}
+        LEFT JOIN
+        bas_partner basPartner ON contract.apply_group = basPartner.partner_code AND basPartner.del_flag =  ${delete_exist}
+        LEFT JOIN
+        product product ON contractFinance.product = product.product AND product.del_flag =  ${delete_exist}
+        LEFT JOIN
+        bas_vehicle vehMakerCode ON contractVehicle.veh_maker_code=vehMakerCode.vehicle_code AND vehMakerCode.del_flag = ${delete_exist}
+        LEFT JOIN
+        bas_vehicle vehBrandCode ON contractVehicle.veh_brand_code=vehBrandCode.vehicle_code AND vehBrandCode.del_flag = ${delete_exist}
+        LEFT JOIN
+        bas_vehicle vehicleCode ON contractVehicle.vehicle_code=vehicleCode.vehicle_code AND vehicleCode.del_flag = ${delete_exist}
+        LEFT JOIN
+        bas_vehicle vehSeriesCode ON contractVehicle.veh_series_code=vehSeriesCode.vehicle_code AND vehSeriesCode.del_flag = ${delete_exist}
+        where contract.del_flag =  ${delete_exist}
+        <if test="contractCancelVo.contNo != null " >
+            AND contract.cont_no = #{contractCancelVo.contNo}
+        </if>
+        <if test="contractCancelVo.name != null">
+            AND ( cstmPerson.name LIKE #{contractCancelVo.name}
+            OR cstmCompany.name LIKE #{contractCancelVo.name} )
+        </if>
+        <if test="contractCancelVo.bizStatus != null " >
+            AND contract.biz_status = #{contractCancelVo.bizStatus}
+        </if>
+        <if test="contractCancelVo.loginUser != null">
+            AND FIND_IN_SET(#{contractCancelVo.loginUser},contract.present_user)
+        </if>
+        ORDER BY contract.update_time DESC
+    </select>
+
+
+    <!--根据contNo获取融资合同取消-->
+    <select id="selectContractCancelVoByContNo" parameterType="java.lang.String" resultType="cn.com.leadu.fms.pojo.prebiz.vo.contractcancel.ContractCancelVo">
+        SELECT
+        contract.cont_no,
+        contract.apply_no,
+        contract.biz_status,
+        contractFinance.vehicle_form,
+        cstmPerson.name personName,
+        cstmCompany.name companyName,
+        vehMakerCode.vehicle_name AS vehMakerCodeName,
+        vehBrandCode.vehicle_name AS vehBrandCodeName,
+        vehicleCode.vehicle_name AS vehicleCodeName,
+        vehSeriesCode.vehicle_name AS vehSeriesCodeName
+        FROM
+        contract contract
+        LEFT JOIN
+        contract_vehicle contractVehicle ON contract.cont_no=contractVehicle.cont_no AND contractVehicle.del_flag =  ${delete_exist}
+        LEFT JOIN
+        contract_finance contractFinance ON contract.cont_no = contractFinance.cont_no AND contractFinance.del_flag =  ${delete_exist}
+        LEFT JOIN
+        cstm_person cstmPerson ON contract.apply_no = cstmPerson.apply_no AND cstmPerson.del_flag =  ${delete_exist}
+        LEFT JOIN
+        cstm_company cstmCompany ON contract.apply_no = cstmCompany.apply_no AND cstmCompany.del_flag =  ${delete_exist}
+        LEFT JOIN
+        bas_vehicle vehMakerCode ON contractVehicle.veh_maker_code=vehMakerCode.vehicle_code AND vehMakerCode.del_flag = ${delete_exist}
+        LEFT JOIN
+        bas_vehicle vehBrandCode ON contractVehicle.veh_brand_code=vehBrandCode.vehicle_code AND vehBrandCode.del_flag = ${delete_exist}
+        LEFT JOIN
+        bas_vehicle vehicleCode ON contractVehicle.vehicle_code=vehicleCode.vehicle_code AND vehicleCode.del_flag = ${delete_exist}
+        LEFT JOIN
+        bas_vehicle vehSeriesCode ON contractVehicle.veh_series_code=vehSeriesCode.vehicle_code AND vehSeriesCode.del_flag = ${delete_exist}
+        where contract.del_flag =  ${delete_exist}
+        <if test="#{contNo} != null " >
+            AND contract.cont_no = #{contNo}
+        </if>
+    </select>
+</mapper>

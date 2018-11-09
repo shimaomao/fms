@@ -1,0 +1,33 @@
+<div  ng-controller="cont_prepayment_vehicle_export_controller">
+    <div>
+        <toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-body wrapper-sm" style="position: fixed;width: 100%;background-color: white;z-index: 10;margin-top: -1px;padding-bottom: 0;">
+            <div class="row">
+                <div class="form-group pull-right" style="margin-top: 4px;">
+                    <div class="btn-group ">
+                        <button type="button" class="btn btn-success m-t-xs m-r-xs" ng-click="submitInfo()" ng-disabled="submit">提交</button>
+                        <button type="button" class="btn btn-default m-t-xs" ng-click="goBack()">返回</button>
+                    </div>
+                </div>
+                <ul id="contPrepayShipmentTab" class="nav nav-tabs">
+                    <li class="active"><a href="javascript:void(0);" data-toggle="tab" data-id="shipment" onclick="switchPageTab(this, 'contPrepayShipmentTab')">车辆出库信息</a></li>
+                    <li><a href="javascript:void(0);" data-toggle="tab" data-id="contPrepayment" onclick="switchPageTab(this, 'contPrepayShipmentTab')">提前还款信息</a></li>
+                </ul>
+            </div>
+        </div>
+        <form name="form" class="form-validation" novalidate style="margin-top: 70px;">
+            <div id="applyTabContent" class="tab-content">
+                <!-- 车辆出库信息 -->
+                <div class="tab-pane fade in active" id="shipment">
+                    <div ng-include="'tpl/postbiz/vehicle_disposal/vehicle_export.html'" class="row m-xs"></div>
+                </div>
+                <!-- 提前还款信息信息 -->
+                <div class="tab-pane fade" id="contPrepayment">
+                    <div ng-include="'tpl/cost/cont_prepayment/cont_prepayment_modify.html'" class="row m-xs"></div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

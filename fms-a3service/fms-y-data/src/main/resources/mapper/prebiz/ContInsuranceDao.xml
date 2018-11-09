@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.com.leadu.fms.data.prebiz.dao.ContInsuranceDao">
+<select id="selectContInsuranceByStatus" resultType="cn.com.leadu.fms.pojo.prebiz.vo.continsurance.ContInsuranceVo">
+  SELECT cont_insurance.* ,
+  ifnull(cont_fin_detail.fin_amount, 0) finAmount,
+  contract_finance.fin_period_type finPeriodType,
+  contract.lease_term_end_date,
+  apply.company_type1 as   companyType1
+  from cont_insurance
+  LEFT JOIN contract_finance ON contract_finance.cont_no = cont_insurance.cont_no AND contract_finance.del_flag = ${delete_exist}
+  LEFT JOIN cont_fin_detail ON cont_insurance.cont_no = cont_fin_detail.cont_no AND cont_fin_detail.del_flag = ${delete_exist}
+      and (cont_insurance.insurance_years+ 1) = cont_fin_detail.fin_item_year
+     <if test="contInsurance.finItem != null">
+          AND cont_fin_detail.fin_item = #{contInsurance.finItem}
+      </if>
+  LEFT JOIN contract contract ON cont_insurance.cont_no = contract.cont_no AND contract.del_flag = ${delete_exist}
+  LEFT JOIN apply apply ON contract.apply_no = apply.apply_no AND apply.del_flag = ${delete_exist}
+  WHERE
+  cont_insurance.insurance_status = #{contInsurance.insuranceStatus} AND cont_insurance.valid_end_day = #{contInsurance.inValidTime}
+  AND cont_insurance.del_flag = ${delete_exist}
+  AND contract.payment_sts = #{contInsurance.paymentSts}
+</select>
+</mapper>

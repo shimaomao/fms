@@ -1,0 +1,188 @@
+<div  ng-controller="sys_group_detail_controller">
+    <div>
+        <toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+    </div>
+    <div class="panel panel-default">
+        <div class="row" style="margin: 0; padding: 15px; border: 1px solid #dddddd">
+            <h4 class="m-n font-thin h4">用户组详情</h4>
+        </div>
+        <form name="form" class="form-validation" novalidate>
+            <div class="panel-body wrapper-sm">
+                <div class="form-group row">
+                    <div class="col-sm-6">
+                        <label class="col-sm-4 control-label text-right"><b class="form-text-black">用户组代码</b>:</label>
+                        <div class="col-sm-8">
+                            <label class="col-sm-12 control-label text-left">{{sysGroup.groupCode}}</label>
+                        </div>
+                    </div>
+                    <div class="col-sm-6" >
+                        <label class="col-sm-4 control-label text-right"><b class="form-text-black">用户组全称</b>:</label>
+                        <div class="col-sm-8" >
+                            <label class="col-sm-12 control-label text-left">{{sysGroup.groupName}}</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-sm-6" >
+                        <label class="col-sm-4 control-label text-right"><b class="form-text-black">用户组简称</b>:</label>
+                        <div class="col-sm-8" >
+                            <label class="col-sm-12 control-label text-left">{{sysGroup.groupNameShort}}</label>
+                        </div>
+                    </div>
+                    <div class="col-sm-6" >
+                        <label class="col-sm-4 control-label text-right"><b class="form-text-black">用户组英文简称</b>:</label>
+                        <div class="col-sm-8" >
+                            <label class="col-sm-12 control-label text-left">{{sysGroup.groupNameEng}}</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-sm-6">
+                        <label class="col-sm-4 control-label text-right"><b class="form-text-black">层级代码</b>:</label>
+                        <div class="col-sm-8" >
+                            <label class="col-sm-12 control-label text-left">{{sysGroup.groupLev}}</label>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <label class="col-sm-4 control-label text-right"><b class="form-text-black">层级名称</b>:</label>
+                        <div class="col-sm-8" >
+                            <label class="col-sm-12 control-label text-left">{{sysGroup.groupLevName}}</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-sm-6">
+                        <label class="col-sm-4 control-label text-right"><b class="form-text-black">统一社会信用代码</b>:</label>
+                        <div class="col-sm-8" >
+                            <label class="col-sm-12 control-label text-left">{{sysGroup.socialCertifNo}}</label>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <label class="col-sm-4 control-label text-right"><b class="form-text-black">负责人</b>:</label>
+                        <div class="col-sm-8" >
+                            <label class="col-sm-12 control-label text-left">{{sysGroup.head}}</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group row" >
+                    <div class="col-sm-6">
+                        <label class="col-sm-4 control-label text-right"><b class="form-text-black">注册地址</b>:</label>
+                        <div class="col-sm-8" >
+                            <label class="col-sm-12 control-label text-left">{{sysGroup.registeredAddr}}</label>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <label class="col-sm-4 control-label text-right"><b class="form-text-black">启用标志</b>:</label>
+                        <div class="col-sm-8" >
+                            <label class="col-sm-12 control-label text-left">{{sysGroup.enableFlagName}}</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row" >
+                    <div class="col-sm-6">
+                        <label class="col-sm-4 control-label text-right"><b class="form-text-black">区域</b>:</label>
+                        <div class="col-sm-8" >
+                            <label class="col-sm-12 control-label text-left">{{sysGroup.groupDistrict}}</label>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6">
+                            <label class="col-sm-4 control-label text-right"><b class="form-text-black">财务辅助核算代码</b><b
+                                    class="form-error"></b>:</label>
+                            <div class="col-sm-8">
+                                <label class="col-sm-12 control-label text-left">{{sysGroup.finassGroupCode}}</label>
+                            </div>
+                    </div>
+                </div>
+                <!-- 行政组织 -->
+                <div class="row" style="margin: 0; border: 1px solid #dddddd" >
+                    <label class="col-sm-12 control-label text-left"><b class="form-text-black">上级用户组信息</b></label>
+                    <br/>
+                    <div class="form-group row" style="margin:0;">
+                        <div class="col-sm-6 m-b-xs">
+                            <label class="col-sm-4 control-label text-right"><b class="form-text-black">用户组代码</b>:</label>
+                            <div class="col-sm-8" >
+                                <label class="col-sm-12 control-label text-left">{{sysGroup.adminParentGroup}}</label>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 m-b-xs">
+                            <label class="col-sm-4 control-label text-right"><b class="form-text-black">用户组名称</b>:</label>
+                            <div class="col-sm-8">
+                                <label class="col-sm-12 control-label text-left">{{sysGroup.adminParentGroupName}}</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- 财务组织 -->
+                <!--
+                <div class="row" style="margin: 0; border: 1px solid #dddddd" >
+                    <label class="col-sm-12 control-label text-left"><b class="form-text-black">上级用户组信息【财务组织】</b></label>
+                    <br/>
+                    <div class="form-group row" style="margin:0;">
+                        <div class="col-sm-6 m-b-xs">
+                            <label class="col-sm-4 control-label text-right"><b class="form-text-black">用户组代码</b>:</label>
+                            <div class="col-sm-8">
+                                <label class="col-sm-12 control-label text-left">{{sysGroup.financeParentGroup}}</label>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 m-b-xs">
+                            <label class="col-sm-4 control-label text-right"><b class="form-text-black">用户组名称</b>:</label>
+                            <div class="col-sm-8">
+                                <label class="col-sm-12 control-label text-left">{{sysGroup.financeParentGroupName}}</label>
+                            </div>
+                        </div>
+                    </div>
+                </div> -->
+                <!-- 销售组织 -->
+                <!--
+                <div class="m-t-xs row" style="margin: 0; border: 1px solid #dddddd" >
+                    <label class="col-sm-12 control-label text-left"><b class="form-text-black">上级用户组信息【销售组织】</b></label>
+                    <br/>
+                    <div class="form-group row" style="margin:0;">
+                        <div class="col-sm-6 m-b-xs">
+                            <label class="col-sm-4 control-label text-right"><b class="form-text-black">用户组代码</b>:</label>
+                            <div class="col-sm-8">
+                                <label class="col-sm-12 control-label text-left">{{sysGroup.sellParentGroup}}</label>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 m-b-xs">
+                            <label class="col-sm-4 control-label text-right"><b class="form-text-black">用户组名称</b>:</label>
+                            <div class="col-sm-8" >
+                                <label class="col-sm-12 control-label text-left">{{sysGroup.sellParentGroupName}}</label>
+                            </div>
+                        </div>
+                    </div>
+                </div> -->
+                <!-- 运营组织 -->
+                <!--
+                <div class="m-t-xs row" style="margin: 0; border: 1px solid #dddddd" >
+                    <label class="col-sm-12 control-label text-left"><b class="form-text-black">上级用户组信息【运营组织】</b></label>
+                    <br/>
+                    <div class="form-group row" style="margin: 0;">
+                        <div class="col-sm-6 m-b-xs">
+                            <label class="col-sm-4 control-label text-right"><b class="form-text-black">用户组代码</b>:</label>
+                            <div class="col-sm-8" >
+                                <label class="col-sm-12 control-label text-left">{{sysGroup.operateParentGroup}}</label>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 m-b-xs">
+                            <label class="col-sm-4 control-label text-right"><b class="form-text-black">用户组名称</b>:</label>
+                            <div class="col-sm-8">
+                                <label class="col-sm-12 control-label text-left">{{sysGroup.operateParentGroupName}}</label>
+                            </div>
+                        </div>
+                    </div>
+                </div> -->
+            </div>
+            <div class="row" style="margin: 10px 0 0 15px;">
+                <div class="col-sm-15 m-b text-center" >
+                    <button class="btn btn-default" ng-click="goback()">返回</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

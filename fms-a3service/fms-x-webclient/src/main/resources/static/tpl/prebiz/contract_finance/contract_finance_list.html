@@ -1,0 +1,50 @@
+<div class="bg-light lter b-b wrapper-md">
+    <h1 class="m-n font-thin h4">prebiz管理</h1>
+</div>
+<div  ng-controller="contract_finance_list_controller">
+    <div>
+        <toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-body wrapper-sm">
+            <div class="row">
+                <div class="col-lg-12">
+                    <form class="form-inline" role="form">
+                        <div class="form-group">
+                            <label class="sr-only" >contNo </label>
+                            <input class="form-control m-b-xs" ng-model="contNo" placeholder="contNo">
+                        </div>
+                        <div class="form-group">
+                            <label class="sr-only" >applyNo </label>
+                            <input class="form-control m-b-xs" ng-model="applyNo" placeholder="applyNo">
+                        </div>
+
+                        <div class="form-group m-b-sm">
+                            <div class="btn-group">
+                                <button class="btn btn-default m-b-xs btn-info" ng-click="searchContractFinance()" ><i class="fa fa-search"></i>查询</button>
+                                <button class="btn btn-default m-b-xs" ng-click="resetContractFinance()" ><i class="fa  icon-refresh"></i>重置</button>
+                            </div>
+                        </div>
+
+                        <div class="form-group pull-right">
+                            <div class="btn-group">
+                                <button class="btn btn-default m-b-xs" ng-click="contCreate()"><i class="fa"></i>生成合同</button>
+                                <button class="btn btn-default m-b-xs" ng-click="contRequestPay()"><i class="fa"></i>请款</button>
+                                <button class="btn btn-default m-b-xs" ng-click="contRequestReceipt()"><i class="fa"></i>收款</button>
+                                <button class="btn btn-default m-b-xs" ng-click="contRequestMake()"><i class="fa"></i>制单</button>
+                                <button class="btn btn-default m-b-xs" ng-click="contPayment()"><i class="fa"></i>财务付款</button>
+                                <button class="btn btn-default m-b-xs" ng-click="contInspect()"><i class="fa"></i>合同文件核查</button>
+                                <button class="btn btn-default m-b-xs" ng-click="contPrint()"><i class="fa"></i>合同打印</button>
+                                <button class="btn btn-default m-b-xs" ng-click="contQualification()"><i class="fa"></i>合同资管</button>
+                                <button class="btn btn-default m-b-xs" ng-click="testExport()"><i class="fa"></i>有模板excel导出</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <table border="1" class="table table-striped m-b-none" id="contract_finance_table">
+        </table>
+    </div>
+</div>
+

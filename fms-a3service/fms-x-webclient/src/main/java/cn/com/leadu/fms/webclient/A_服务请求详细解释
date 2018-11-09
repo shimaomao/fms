@@ -1,0 +1,21 @@
+1\页面请求示例
+sys_user/saveSysUser
+
+
+a
+执行到SysUserController>>(sys_user)
+找到saveSysUser方法（saveSysUser）
+b
+return sysUserRpc.saveSysUser(sysUserVo);
+执行了sysUserRpc远程调用方法
+
+ @RequestMapping(value = "api/system/sys_user/saveSysUser" , method = RequestMethod.POST)
+ ResponseEntity<RestResponse<String>> saveSysUser(@RequestBody SysUserVo sysUserVo);
+
+远程调用方法根据value = "api/system/sys_user/saveSysUser"
+到网关（api/system>>对应system微服务）>>根据微服务找到微服务的sys_user/saveSysUser方法
+此处开始真正执行业务逻辑。
+
+
+
+

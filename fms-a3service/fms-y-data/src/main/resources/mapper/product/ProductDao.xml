@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.com.leadu.fms.data.product.dao.ProductDao">
+    <!-- 分页取得产品方案信息 -->
+    <select id="selectProductVosByPage" parameterType="java.lang.String" resultType="cn.com.leadu.fms.pojo.product.vo.product.ProductVo">
+        select
+            prod.*,
+            prodCatg.product_catg as productCatg,
+            prodCatg.product_catg_name as productCatgName
+        from product prod
+        left join product_catg prodCatg on prod.product_catg = prodCatg.product_catg
+        and prodCatg.del_flag = ${delete_exist}
+        where
+            prod.del_flag = ${delete_exist}
+        <if test="productVo.productName != null">
+            and prod.product_name like #{productVo.productName}'
+        </if>
+        <if test="productVo.product != null">
+            and prod.product like #{productVo.product}
+        </if>
+        <if test="productVo.productCatg != null">
+            and prod.product_catg like #{productVo.productCatg}
+        </if>
+        order by prod.update_time desc
+    </select>
+    <!-- 根据产品方案Id取得 -->
+    <select id="selectProductVoByProductId" parameterType="java.lang.String" resultType="cn.com.leadu.fms.pojo.product.vo.product.ProductVo">
+        select prod.* ,prodCatg.product_catg as productCatg,prodCatg.product_catg_name as productCatgName
+        from product prod
+        left join product_catg prodCatg on prod.product_catg = prodCatg.product_catg and prodCatg.del_flag = ${delete_exist}
+        where prod.del_flag = ${delete_exist}
+        <if test="productId != null">
+            and prod.product_id = #{productId}
+        </if>
+        order by prod.update_time desc
+    </select>
+    <!-- 根据机构代码等查询条件，取得产品方案信息 -->
+    <select id="selectProductVoListByGroupCodes" parameterType="java.lang.String" resultType="cn.com.leadu.fms.pojo.product.vo.product.ProductVo">
+        select prod.product_id,prod.product,prod.product_name,prodCatg.product_catg as productCatg,prodCatg.product_catg_name as productCatgName
+        from product prod
+        left join product_catg prodCatg on prod.product_catg = prodCatg.product_catg and prodCatg.del_flag = ${delete_exist}
+        left join prod_group prodGroup on prodGroup.product = prod.product and prodGroup.del_flag = ${delete_exist}
+        where prod.del_flag = ${delete_exist}
+        <if test="productVo.productCatg != null">
+            and prod.product_catg = #{productVo.productCatg}
+        </if>
+        <if test="productVo.vehicleForm != null">
+            and FIND_IN_SET(#{productVo.vehicleForm},prod.vehicle_form) > 0
+        </if>
+        <if test="productVo.applyType != null">
+            and FIND_IN_SET(#{productVo.applyType},prod.apply_type) > 0
+        </if>
+        <if test="groupCodes != null and groupCodes.size > 0">
+            and (prodGroup.group_code in
+            <foreach collection="groupCodes" item="item" index="index" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+            <!-- 产品用户组权限未设置 -->
+            or prodGroup.group_code is null or prodGroup.group_code = "")
+        </if>
+        <if test="groupCodes == null or (groupCodes != null and groupCodes.size == 0)">
+            <!-- 产品用户组权限未设置 -->
+            and (prodGroup.group_code is null or prodGroup.group_code = "")
+        </if>
+        and (prod.start_date &lt;= DATE_FORMAT(NOW(), '%Y-%m-%d') and prod.end_date &gt;= DATE_FORMAT(NOW(), '%Y-%m-%d'))
+        order by prod.update_time desc
+    </select>
+    <!-- 根据产品代码 获取产品的有权限的车型代码 -->
+    <select id="selectVehicleCodeListByProduct" parameterType="java.lang.String" resultType="java.lang.String">
+        select prodVehicle.vehicle_code
+        from prod_vehicle prodVehicle
+        inner join bas_vehicle basVehicle on basVehicle.vehicle_code = prodVehicle.vehicle_code and basVehicle.del_flag = ${delete_exist}
+        where prodVehicle.del_flag = ${delete_exist}
+        <if test="product != null">
+            and prodVehicle.product =  #{product}
+        </if>
+    </select>
+</mapper>

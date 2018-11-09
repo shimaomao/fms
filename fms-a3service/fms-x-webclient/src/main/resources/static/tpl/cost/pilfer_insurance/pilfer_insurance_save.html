@@ -1,0 +1,158 @@
+<div class="modal-header">
+    <h4 class="modal-title">添加cost <button type="button" class="close" data-dismiss="modal" aria-hidden="true" ng-click="close()">&times;</button></h4>
+</div>
+<div class="modal-body">
+    <form name="form" class="form-validation" novalidate>
+
+        <div class="panel-body">
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">合同编号</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="contNo" placeholder="请输入合同编号" class="form-control m-b-xs" ng-model="pilferInsurance.contNo"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.contNo.$dirty && form.contNo.$error.required) || (form.contNo.$error.required && formValidate)">合同编号不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">gps厂商</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="gpsSeller" placeholder="请输入gps厂商" class="form-control m-b-xs" ng-model="pilferInsurance.gpsSeller"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.gpsSeller.$dirty && form.gpsSeller.$error.required) || (form.gpsSeller.$error.required && formValidate)">gps厂商不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">第一受益人</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="firstBeneficiary" placeholder="请输入第一受益人" class="form-control m-b-xs" ng-model="pilferInsurance.firstBeneficiary"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.firstBeneficiary.$dirty && form.firstBeneficiary.$error.required) || (form.firstBeneficiary.$error.required && formValidate)">第一受益人不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">有线设备号</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="wiredDeviceNo" placeholder="请输入有线设备号" class="form-control m-b-xs" ng-model="pilferInsurance.wiredDeviceNo"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.wiredDeviceNo.$dirty && form.wiredDeviceNo.$error.required) || (form.wiredDeviceNo.$error.required && formValidate)">有线设备号不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">无线设备号</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="wirelessDeviceNo" placeholder="请输入无线设备号" class="form-control m-b-xs" ng-model="pilferInsurance.wirelessDeviceNo"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.wirelessDeviceNo.$dirty && form.wirelessDeviceNo.$error.required) || (form.wirelessDeviceNo.$error.required && formValidate)">无线设备号不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">新车购置价</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="purchasePrice" placeholder="请输入新车购置价" class="form-control m-b-xs" ng-model="pilferInsurance.purchasePrice"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.purchasePrice.$dirty && form.purchasePrice.$error.required) || (form.purchasePrice.$error.required && formValidate)">新车购置价不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">最高赔偿限额</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="maximumCompensation" placeholder="请输入最高赔偿限额" class="form-control m-b-xs" ng-model="pilferInsurance.maximumCompensation"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.maximumCompensation.$dirty && form.maximumCompensation.$error.required) || (form.maximumCompensation.$error.required && formValidate)">最高赔偿限额不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">盗抢险费用</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="pilferInsuranceCost" placeholder="请输入盗抢险费用" class="form-control m-b-xs" ng-model="pilferInsurance.pilferInsuranceCost"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.pilferInsuranceCost.$dirty && form.pilferInsuranceCost.$error.required) || (form.pilferInsuranceCost.$error.required && formValidate)">盗抢险费用不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">年限</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="timeLimit" placeholder="请输入年限" class="form-control m-b-xs" ng-model="pilferInsurance.timeLimit"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.timeLimit.$dirty && form.timeLimit.$error.required) || (form.timeLimit.$error.required && formValidate)">年限不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">盗抢险月结任务号</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="monthlyPilferInsuranceNo" placeholder="请输入盗抢险月结任务号" class="form-control m-b-xs" ng-model="pilferInsurance.monthlyPilferInsuranceNo"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.monthlyPilferInsuranceNo.$dirty && form.monthlyPilferInsuranceNo.$error.required) || (form.monthlyPilferInsuranceNo.$error.required && formValidate)">盗抢险月结任务号不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">账单盗抢险费用</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="billPilferInsuranceCost" placeholder="请输入账单盗抢险费用" class="form-control m-b-xs" ng-model="pilferInsurance.billPilferInsuranceCost"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.billPilferInsuranceCost.$dirty && form.billPilferInsuranceCost.$error.required) || (form.billPilferInsuranceCost.$error.required && formValidate)">账单盗抢险费用不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">备注</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input limit-word type="text" name="memo" placeholder="请输入备注" class="form-control m-b-xs" ng-model="pilferInsurance.memo"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.memo.$dirty && form.memo.$error.required) || (form.memo.$error.required && formValidate)">备注不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+
+        </div>
+
+    </form>
+</div>
+<div class="modal-footer ng-scope">
+    <button class="btn btn-default" ng-click="close()">取消</button>
+    <button type="submit" class="btn btn-success" ng-disabled="submit" ng-click="save()">新增</button>
+</div>

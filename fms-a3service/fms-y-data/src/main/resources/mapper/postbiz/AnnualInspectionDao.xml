@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.com.leadu.fms.data.postbiz.dao.AnnualInspectionDao">
+    <select id="selectContractsByPaymentSts"  resultType="cn.com.leadu.fms.pojo.prebiz.entity.Contract">
+        select
+        contract.payment_sts ,
+        contract.del_flag ,
+        contract.vehicle_driving_license_register_date ,
+        contract.cont_no
+        from contract
+        where  (contract.payment_sts ='0')
+        and  contract.del_flag = ${delete_exist}
+        and contract.vehicle_driving_license_register_date is not null
+        and #{annualinspectionYear} > ${delete_exist}
+        and  ((TIMESTAMPDIFF(DAY,contract.vehicle_driving_license_register_date,(date_add(now(), interval #{annualinspectionDays} day))))%(#{annualinspectionYear} *365) = ${delete_exist})
+    </select>
+
+    <select id="selectAnnualInspectionVosByPage" parameterType="java.lang.String" resultType="cn.com.leadu.fms.pojo.postbiz.vo.annualinspection.AnnualInspectionVo">
+        SELECT
+        annual.annual_inspection_id ,
+        annual.annual_inspect_no ,
+        annual.cont_no ,
+        annual.annual_inspect_status ,
+        annual.annual_inspect_deadline ,
+        annual.annual_inspect_date ,
+        annual.del_flag ,
+
+        IFNULL(cstm_person.`name`,cstm_company.`name`) AS annualInspecUser ,
+        contract.vin_no AS annualInspecVinNo ,
+        contract.vehicle_driving_license_register_date AS  annualInspecDrivingLicenseRegisterDate
+        FROM annual_inspection AS annual
+        LEFT JOIN contract ON annual.cont_no = contract.cont_no
+        and  contract.del_flag = ${delete_exist}
+        LEFT JOIN cstm_company ON  contract.apply_no = cstm_company.apply_no
+        and  cstm_company.del_flag = ${delete_exist}
+        LEFT JOIN cstm_person ON 	contract.apply_no = cstm_person.apply_no
+        and  cstm_person.del_flag = ${delete_exist}
+        WHERE annual.del_flag = ${delete_exist}
+        <if test="annualInspectionVo.annualInspectStatus !=null">
+            AND annual.`annual_inspect_status` = #{annualInspectionVo.annualInspectStatus}
+        </if>
+        <if test="annualInspectionVo.contNo != null">
+            AND annual.cont_no LIKE #{annualInspectionVo.contNo}
+        </if>
+        <if test="annualInspectionVo.annualInspecVinNo != null">
+            AND contract.vin_no LIKE #{annualInspectionVo.annualInspecVinNo}
+        </if>
+        <if test="annualInspectionVo.annualInspecUser != null">
+            AND (cstm_person.`name` LIKE #{annualInspectionVo.annualInspecUser} or cstm_company.`name` LIKE #{annualInspectionVo.annualInspecUser})
+        </if>
+
+        ORDER BY  annual.update_time desc
+    </select>
+
+    <select id="selectAnnualInspectionVoByAnnualInspectionId" parameterType="java.lang.String" resultType="cn.com.leadu.fms.pojo.postbiz.vo.annualinspection.AnnualInspectionVo">
+        SELECT
+        annual.annual_inspection_id ,
+        annual.annual_inspect_no ,
+        annual.cont_no ,
+        annual.annual_inspect_status ,
+        annual.annual_inspect_deadline ,
+        annual.annual_inspect_date ,
+        annual.del_flag ,
+        IFNULL(cstm_person.`name`,cstm_company.`name`) AS annualInspecUser ,
+        contract.vin_no AS annualInspecVinNo ,
+        contract.vehicle_driving_license_register_date AS  annualInspecDrivingLicenseRegisterDate
+        FROM annual_inspection AS annual
+        LEFT JOIN contract ON annual.cont_no = contract.cont_no
+        and  contract.del_flag = ${delete_exist}
+        LEFT JOIN cstm_company ON  contract.apply_no = cstm_company.apply_no
+        and  cstm_company.del_flag = ${delete_exist}
+        LEFT JOIN cstm_person ON 	contract.apply_no = cstm_person.apply_no
+        and  cstm_person.del_flag = ${delete_exist}
+        WHERE annual.del_flag = ${delete_exist}
+        AND annual.annual_inspection_id = #{annualInspectionId}
+    </select>
+
+</mapper>

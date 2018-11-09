@@ -1,0 +1,15 @@
+<div class="modal-header">
+    <h3 class="modal-title">{{header}}</h3>
+</div>
+<div class="modal-body">
+    <span ng-show="infoList.length<=0"><br>&nbsp;&nbsp;&nbsp;&nbsp;{{info}}<br>&nbsp; <br></span>
+    <div ng-show="infoList.length>0" style="text-align:center;">
+        <span ng-repeat="a in infoList">{{a}}<br></span>
+        &nbsp;<br>
+    </div>
+
+</div>
+<div class="modal-footer ng-scope">
+    <button class="btn btn-default" ng-click="cancel('cancel')">取消</button>
+    <button type="submit" class="btn btn-primary" ng-click="close('success')">确认</button>
+</div>

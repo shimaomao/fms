@@ -1,0 +1,42 @@
+<div class="bg-light lter b-b wrapper-md">
+    <h1 class="m-n font-thin h4">system管理</h1>
+</div>
+<div  ng-controller="sys_log_list_controller">
+    <div>
+        <toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-body wrapper-sm">
+            <div class="row">
+                <div class="col-lg-12">
+                    <form class="form-inline" role="form">
+                        <div class="form-group">
+                            <label class="sr-only" >操作识别ID </label>
+                            <input class="form-control m-b-xs" ng-model="actWidgetId" placeholder="操作识别ID">
+                        </div>
+                        <div class="form-group">
+                            <label class="sr-only" >操作人员 </label>
+                            <input class="form-control m-b-xs" ng-model="user" placeholder="操作人员">
+                        </div>
+
+                        <div class="form-group m-b-sm">
+                            <div class="btn-group">
+                                <button class="btn btn-default m-b-xs btn-info" ng-click="searchSysLog()" ><i class="fa fa-search"></i>查询</button>
+                                <button class="btn btn-default m-b-xs" ng-click="resetSysLog()" ><i class="fa  icon-refresh"></i>重置</button>
+                            </div>
+                        </div>
+
+                        <div class="form-group pull-right">
+                            <div class="btn-group">
+                                <button class="btn btn-default m-b-xs" ng-click="exportExcel()">导出excel</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <table border="1" class="table table-striped m-b-none" id="sys_log_table">
+        </table>
+    </div>
+</div>
+

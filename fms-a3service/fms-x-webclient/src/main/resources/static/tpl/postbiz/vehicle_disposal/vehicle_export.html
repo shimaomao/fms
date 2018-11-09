@@ -1,0 +1,51 @@
+<div ng-controller="vehicle_export_controller" style="padding: 10px;">
+    <div class="panel panel-default" >
+        <!-- 车辆处置详情 -->
+        <div ng-include="'tpl/postbiz/vehicle_disposal/vehicle_disposal_detail.html'"></div>
+        <div class="panel-body" style="padding-top: 0;">
+            <!-- 处置信息 -->
+            <div class="row line-lg m-l-xs" style="font-weight: bold;font-size: 14px;">出库信息</div>
+            <div class="row" style="margin: 5px; padding-right: 50px;">
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">出库时间 </b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <input type="text" name="shipmentDate" placeholder="请输入出库时间" class="form-control m-b-xs" ng-model="vehicleDisposalVo.shipmentDate" required date-picker>
+                        <p>
+                            <span class="form-info" ng-show="(form.shipmentDate.$dirty && form.shipmentDate.$error.required) || (form.shipmentDate.$error.required && formValidate)">出库时间不能为空</span>
+                        </p>
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">经办人</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <input type="text" name="agent" placeholder="请输入经办人" class="form-control m-b-xs" ng-model="vehicleDisposalVo.agent" required>
+                        <p>
+                            <span class="form-info" ng-show=" (form.agent.$dirty && form.agent.$error.required) || (form.agent.$error.required && formValidate)">经办人不能为空</span>
+                        </p>
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">经办人联系方式</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <input type="text" name="agentMobileNo" placeholder="请输入经办人联系方式" class="form-control m-b-xs" ng-model="vehicleDisposalVo.agentMobileNo" ng-pattern="/^1[345789]\d{9}$/" required>
+                        <p>
+                            <span class="form-info" ng-show=" (form.agentMobileNo.$dirty && form.agentMobileNo.$error.required) || (form.agentMobileNo.$error.required && formValidate)">经办人联系方式不能为空</span>
+                            <span class="form-info" ng-show=" (form.agentMobileNo.$error.pattern && !form.agentMobileNo.$error.required) || (form.agentMobileNo.$error.pattern && formValidate && !form.agentMobileNo.$error.required)">请输入正确的手机号</span>
+                        </p>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">备注</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-9">
+                        <textarea limit-word placeholder="请输入备注" class="form-control m-b-xs" ng-model="vehicleDisposalVo.remark" ng-maxlength=1000 name="remark" required></textarea>
+                        <p>
+                            <span class="form-info" ng-show=" (form.remark.$dirty && form.remark.$error.required) || (form.remark.$error.required && formValidate)">备注不能为空</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--附件信息-->
+        <div class="panel-body" style="padding-top: 0;">
+            <div class="row m-l-xs" style="font-weight: bold;font-size: 14px;">附件信息</div>
+            <tree-file-directive detail-flag="$root.yesNoFlag.no" file-type="$root.basFileTypes.vehicleExportFile" files="vehicleDisposalVo.bizFilesList" not-upload="vehicleDisposalVo.notUpload" not-upload-info="$parent.msgInfo"  not-file-type="$parent.notFileType" not-file-type-name="vehicleDisposalVo.notFileTypeName">
+            </tree-file-directive>
+        </div>
+    </div>
+</div>

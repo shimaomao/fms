@@ -1,0 +1,111 @@
+
+<div ng-controller="cont_receipt_detail_invoice_controller">
+    <div>
+        <toaster-container
+                toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+    </div>
+    <div class="panel panel-default">
+        <div class="row" style="margin: 0; padding: 10px; border: 1px solid #dddddd">
+            <h4 class="m-n font-thin h4">开具发票</h4>
+            <div class="form-group pull-right">
+                <div class="btn-group">
+                    <button class="btn btn-default" ng-click="goback()">返回</button>
+                    <button type="submit" class="btn btn-success" ng-disabled="submit" ng-click="update()">保存</button>
+                </div>
+            </div>
+        </div>
+        <form name="form" class="form-validation" novalidate>
+
+            <div class="panel-body">
+                <div class="panel-body wrapper-sm" style="margin: 0; padding: 15px; border: 1px solid #dddddd">
+                    <div class="form-group row">
+                        <label class="col-sm-2 control-label text-right"><b class="form-text-black">合同编号</b><b class="form-error"></b>:</label>
+                        <div class="col-sm-3">
+                            <input type="text" title="{{contRepaySkedVo.contNo}}" name="contNo" placeholder="请输入合同编号" class="form-control m-b-xs" ng-model="contRepaySkedVo.contNo" disabled  >
+                        </div>
+
+                        <label class="col-sm-2 control-label text-right"><b class="form-text-black">期数</b><b class="form-error"></b>:</label>
+                        <div class="col-sm-3">
+                            <input type="text" title="{{contRepaySkedVo.period}}" name="period" placeholder="请输入期数" class="form-control m-b-xs" ng-model="contRepaySkedVo.period" disabled  >
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+
+                        <label class="col-sm-2 control-label text-right"><b class="form-text-black">收款日期</b><b class="form-error"></b>:</label>
+                        <div class="col-sm-3">
+                            <input type="text" title="{{contRepaySkedVo.repayDate}}" name="repayDate" placeholder="请输入收款日期" class="form-control m-b-xs" ng-model="contRepaySkedVo.repayDate" disabled  >
+                        </div>
+
+                        <label class="col-sm-2 control-label text-right"><b class="form-text-black">每期客户实际租金</b><b class="form-error"></b>:</label>
+                        <div class="col-sm-3" ng-if="contRepaySkedVo.rentActual!=null&&contRepaySkedVo.rentActual!=undefined&&contRepaySkedVo.rentActual!=''">
+                            <input type="text" title="{{contRepaySkedVo.rentActual}}" name="rentActual" placeholder="请输入每期客户实际租金" class="form-control m-b-xs" ng-model="contRepaySkedVo.rentActual" disabled  >
+                        </div>
+
+                        <div class="col-sm-3" ng-if="!(contRepaySkedVo.rentActual!=null&&contRepaySkedVo.rentActual!=undefined&&contRepaySkedVo.rentActual!='')">
+                            <input type="text"  placeholder="-" class="form-control m-b-xs" disabled  >
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-sm-2 control-label text-right"><b class="form-text-black">逾期罚息额</b><b class="form-error"></b>:</label>
+                        <div class="col-sm-3" ng-if="contRepaySkedVo.overdueAmount!=null&&contRepaySkedVo.overdueAmount!=undefined&&contRepaySkedVo.overdueAmount!=''">
+                            <input type="text" title="{{contRepaySkedVo.overdueAmount}}" name="overdueAmount" placeholder="请输入逾期罚息额" class="form-control m-b-xs" ng-model="contRepaySkedVo.overdueAmount" disabled  >
+                        </div>
+
+                        <div class="col-sm-3" ng-if="!(contRepaySkedVo.overdueAmount!=null&&contRepaySkedVo.overdueAmount!=undefined&&contRepaySkedVo.overdueAmount!='')">
+                            <input type="text"  placeholder="-" class="form-control m-b-xs" disabled  >
+                        </div>
+
+                        <label class="col-sm-2 control-label text-right"><b class="form-text-black">剩余金额</b><b class="form-error"></b>:</label>
+                        <div class="col-sm-3">
+                            <input type="text" title="{{contRepaySkedVo.restAmount}}" name="restAmount" placeholder="请输入剩余金额" class="form-control m-b-xs" ng-model="contRepaySkedVo.restAmount" disabled  >
+                        </div>
+                    </div>
+
+
+                    <div class="form-group row">
+                        <label class="col-sm-2 control-label text-right"><b class="form-text-black">勾稽金额</b><b class="form-error"></b>:</label>
+                        <div class="col-sm-3">
+                            <input type="text" title="{{contRepaySkedVo.receiptExamAmount}}" name="receiptExamAmount" placeholder="请输入勾稽金额" class="form-control m-b-xs" ng-model="contRepaySkedVo.receiptExamAmount" disabled  >
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel-body wrapper-sm" style="margin: 0; padding: 15px; border: 1px solid #dddddd">
+                    <div class="form-group row">
+                        <label class="col-sm-2 control-label text-right"><b class="form-text-black">开票日期</b><b class="form-error">*</b>:</label>
+                        <div class="col-sm-3">
+                            <input id="invoiceDate " type="text" name="invoiceDate " placeholder="请输入开票日期"
+                                   class="form-control m-b-xs" ng-model="contRepaySkedVo.invoiceDate "
+                                   date-picker
+                                   required> <!--onClick="WdatePicker()"-->
+                            <p>
+                                    <span class="form-info"
+                                          ng-show=" (form.invoiceDate .$dirty && form.invoiceDate .$error.required) || (form.invoiceDate .$error.required && formValidate)">开票日期不能为空</span>
+                            </p>
+                        </div>
+
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-sm-2 control-label text-right"><b class="form-text-black">备注</b><b class="form-error">*</b>:</label>
+                        <div class="col-sm-3">
+                            <textarea id="memo" type="text" name="memo" placeholder="请输入备注"
+                                      class="form-control m-b-xs" ng-model="contRepaySkedVo.memo"
+                                      required>
+                            </textarea>
+                            <p>
+                                    <span class="form-info"
+                                          ng-show=" (form.memo.$dirty && form.memo.$error.required) || (form.memo.$error.required && formValidate)">备注不能为空</span>
+                            </p>
+                        </div>
+                    </div>
+
+                </div>
+
+
+            </div>
+        </form>
+    </div>
+</div>

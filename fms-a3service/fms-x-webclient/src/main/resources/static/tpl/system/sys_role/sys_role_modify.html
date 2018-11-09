@@ -1,0 +1,75 @@
+<div  ng-controller="sys_role_modify_controller">
+    <div>
+        <toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="row" style="margin: 0; padding: 15px; border: 1px solid #dddddd">
+            <h4 class="m-n font-thin h4">角色修改</h4>
+        </div>
+        <form name="form" class="form-validation" novalidate>
+            <div class="panel-body ">
+            <!--角色代码-->
+            <div class="form-group row">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">角色代码</b><b class="form-error">*</b>:</label>
+                <!--项目可编辑-->
+                <div class="col-sm-3">
+                    <input class="form-control m-b-xs" name="role" placeholder="请输入角色代码" ng-model="sysRole.role" disabled>
+                    <p>
+                        <span class="form-info" ng-show=" (form.roleName.$dirty && form.roleName.$error.required) || (form.roleName.$error.required && formValidate)">角色名称不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <!--角色名称-->
+            <div class="form-group row" >
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black" >角色名称</b><b class="form-error">*</b>:</label>
+                <!--项目可编辑-->
+                <div class="col-sm-3">
+                    <input class="form-control m-b-xs" name="roleName" placeholder="请输入角色名称" ng-model="sysRole.roleName">
+                    <p>
+                        <span class="form-info" ng-show=" (form.roleName.$dirty && form.roleName.$error.required) || (form.roleName.$error.required && formValidate)">角色名称不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+
+            <!--启用标识-->
+            <div class="form-group row">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">启用标识</b><b class="form-error" ><b class="form-error">*</b></b>:</label>
+                <!--项目可编辑-->
+                <div class="col-sm-3 ">
+                    <select name="enableFlag" ng-model="sysRole.enableFlag" class="form-control m-b-xs" required>
+                        <option value="">---请选择---</option>
+                        <option ng-repeat="enableFlagObj in enableFlagList" value="{{enableFlagObj.codeValue}}">{{enableFlagObj.codeValueName}}</option>
+                    </select>
+                    <p>
+                        <span class="form-info" ng-show=" (form.enableFlag.$dirty && form.enableFlag.$error.required) || (form.enableFlag.$error.required && formValidate)">启用标识不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+
+            <!--排序-->
+            <div class="form-group row">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">排序</b><b class="form-error">*</b>:</label>
+                <!--项目可编辑-->
+                <div class="col-sm-3" >
+                    <input type="text" name="orderNo" placeholder="请输入排序" class="form-control m-b-xs" ng-model="sysRole.orderNo" >
+                    <p>
+                        <span class="form-info" ng-show=" (form.orderNo.$dirty && form.orderNo.$error.required) || (form.orderNo.$error.required && formValidate)">排序不能为空</span>
+                    </p>
+                </div>
+            </div>
+                </div>
+
+               <div class="text-center">
+                <div class="col-sm-15 m-b">
+                    <button class="btn btn-default" ng-click="goBack()">返回</button>
+                    <button type="submit" class="btn btn-success"  ng-disabled="submit" ng-click="modify()">保存</button>
+                </div>
+               </div>
+
+        </form>
+    </div>
+</div>

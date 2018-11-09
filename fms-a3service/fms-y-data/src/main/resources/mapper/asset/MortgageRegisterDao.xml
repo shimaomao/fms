@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.com.leadu.fms.data.asset.dao.MortgageRegisterDao">
+    <!--分页查询解抵押过户一览-->
+    <select id="selectMortgageRegistersByPage" parameterType="cn.com.leadu.fms.pojo.asset.vo.mortgageregister.MortgageRegisterVo" resultType="cn.com.leadu.fms.pojo.asset.vo.mortgageregister.MortgageRegisterVo">
+        (SELECT
+        mortgageRegister.cont_no,
+        mortgageRegister.mortgage_register_id,
+        mortgageRegister.mortgate_sts,
+        person.name,
+        sysGroup.group_name,
+        contract.vehicle_license_no,
+        contract.vin_no,
+        contract.engine_no,
+        mortgageRegister.ins_policy_no,
+        mortgageRegister.ins_comp_name
+        FROM
+        mortgage_register mortgageRegister
+        LEFT JOIN
+        contract contract ON mortgageRegister.cont_no = contract.cont_no AND contract.del_flag =  ${delete_exist}
+        LEFT JOIN
+        cstm_person person ON contract.apply_no=person.apply_no AND person.del_flag = ${delete_exist}
+        LEFT JOIN
+        sys_group sysGroup ON contract.apply_group = sysGroup.group_code AND sysGroup.del_flag =  ${delete_exist}
+        WHERE
+        mortgageRegister.del_flag = ${delete_exist}
+        <if test="mortgageRegisterVo.contNo != null" >
+            AND contract.cont_no LIKE #{mortgageRegisterVo.contNo}
+        </if>
+        <if test="mortgageRegisterVo.name != null" >
+            AND person.name LIKE #{mortgageRegisterVo.name}
+        </if>
+        AND contract.apply_type='1'
+        ORDER BY mortgageRegister.update_time DESC)
+
+        UNION
+
+        (SELECT
+        mortgageRegister.cont_no,
+        mortgageRegister.mortgage_register_id,
+        mortgageRegister.mortgate_sts,
+        person.name,
+        sysGroup.group_name,
+        contract.vehicle_license_no,
+        contract.vin_no,
+        contract.engine_no,
+        mortgageRegister.ins_policy_no,
+        mortgageRegister.ins_comp_name
+        FROM
+        mortgage_register mortgageRegister
+        LEFT JOIN
+        contract contract ON mortgageRegister.cont_no = contract.cont_no AND contract.del_flag =  ${delete_exist}
+        LEFT JOIN
+        cstm_company person ON contract.apply_no=person.apply_no AND person.del_flag = ${delete_exist}
+        LEFT JOIN
+        sys_group sysGroup ON contract.apply_group = sysGroup.group_code AND sysGroup.del_flag =  ${delete_exist}
+        WHERE
+        mortgageRegister.del_flag = ${delete_exist}
+        <if test="mortgageRegisterVo.contNo != null" >
+            AND contract.cont_no LIKE #{mortgageRegisterVo.contNo}
+        </if>
+        <if test="mortgageRegisterVo.name != null" >
+            AND person.name LIKE #{mortgageRegisterVo.name}
+        </if>
+        AND contract.apply_type='2'
+        ORDER BY mortgageRegister.update_time DESC)
+    </select>
+</mapper>

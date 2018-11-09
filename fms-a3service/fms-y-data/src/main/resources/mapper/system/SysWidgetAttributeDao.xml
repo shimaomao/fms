@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.com.leadu.fms.data.system.dao.SysWidgetAttributeDao">
+    <select id="selectSysWidgetAttributeVoByPages" parameterType="java.lang.String" resultType="cn.com.leadu.fms.pojo.system.vo.syswidgetattribute.SysWidgetAttributeVo">
+        select sysWidgetAtr.widget_con_id,sysWidgetAtr.frm_widget_id,sysWidgetAtr.ele_widget_id
+        ,sysWidgetAtr.show_mod,sysWidgetAtr.write_mod,sysWidgetAtr.check_mod,sysWidget.widget_name as eleWidget_name
+        from sys_widget_attribute sysWidgetAtr
+        left join sys_widget sysWidget on sysWidget.widget_id = sysWidgetAtr.ele_widget_id
+        where sysWidgetAtr.del_flag = ${delete_exist} and sysWidget.del_flag = ${delete_exist}
+        <if test="sysWidgetAttributeVo.frmWidgetId != null">
+            and sysWidgetAtr.frm_widget_id = #{sysWidgetAttributeVo.frmWidgetId}
+        </if>
+        <if test="sysWidgetAttributeVo.eleWidgetId != null">
+            and sysWidgetAtr.ele_widget_id like #{sysWidgetAttributeVo.eleWidgetId}
+        </if>
+        <if test="sysWidgetAttributeVo.eleWidgetName != null">
+            and sysWidget.widget_name like #{sysWidgetAttributeVo.eleWidgetName}
+        </if>
+        order by sysWidgetAtr.update_time desc
+    </select>
+</mapper>

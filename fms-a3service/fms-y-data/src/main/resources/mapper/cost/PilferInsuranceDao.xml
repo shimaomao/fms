@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.com.leadu.fms.data.cost.dao.PilferInsuranceDao">
+    <!--分页查询盗抢险信息-->
+    <select id="selectPilferInsurancesByPage" parameterType="cn.com.leadu.fms.pojo.cost.vo.pilferinsurance.PilferInsuranceVo" resultType="cn.com.leadu.fms.pojo.cost.vo.pilferinsurance.PilferInsuranceVo">
+        select
+        <!-- 合同id -->
+        contract.contract_id,
+
+        <!-- 合同编号 -->
+        contract.cont_no,
+
+        <!-- 订单编号 -->
+        contract.apply_no,
+
+        <!-- 承租人 -->
+        IF(apply.apply_type = #{pilferInsuranceVo.applyTypePerson},cstmPerson.name,cstmCompany.name) lessee ,
+
+        <!-- 客户类型 -->
+        apply.apply_type,
+
+        <!-- 业务类型 -->
+        contractFinance.license_attr,
+
+        <!-- 车架号 -->
+        contract.vin_no,
+
+        <!-- 业务经理(录单人) -->
+        apply.apply_user,
+
+        <!-- 放款日期 -->
+        contract.contract_valid_date,
+
+        <!-- 品牌 -->
+        contractVehicle.veh_brand_code,
+
+        <!-- 车型 -->
+        contractVehicle.vehicle_code,
+
+        <!-- 实际销售方 -->
+        basSales.sales_name,
+
+        <!-- 融资期限 -->
+        contractFinance.fin_period_type,
+
+        <!-- 盗抢险投保渠道 -->
+        contractVehicle.theft_insurance_type,
+
+        <!-- gps厂商 -->
+        pilferInsurance.gps_seller,
+
+        <!-- 第一受益人 -->
+        pilferInsurance.first_beneficiary,
+
+        <!-- 有限设备号 -->
+        pilferInsurance.wired_device_no,
+
+        <!-- 无限设备号 -->
+        pilferInsurance.wireless_device_no,
+
+        <!-- 新车购置价 -->
+        pilferInsurance.purchase_price,
+
+        <!-- 最高赔偿限额 -->
+        pilferInsurance.maximum_compensation,
+
+        <!-- 盗抢险费用 -->
+        pilferInsurance.pilfer_insurance_cost,
+
+        <!-- 年限 -->
+        pilferInsurance.time_limit,
+        
+        <!-- 出租人 -->
+        sysGroup.group_name AS rentPerson
+        
+        from contract contract
+        left join contract_finance contractFinance on contractFinance.del_flag = ${delete_exist}
+        and contractFinance.cont_no = contract.cont_no and contractFinance.apply_no = contract.apply_no
+        left join sys_group sysGroup ON contractFinance.belong_group=sysGroup.group_code AND sysGroup.del_flag = ${delete_exist}
+        left join apply apply on apply.del_flag = ${delete_exist}
+        and apply.apply_no = contract.apply_no
+        left join cstm_person cstmPerson on cstmPerson.del_flag = ${delete_exist}
+        and cstmPerson.apply_no = contract.apply_no
+        left join cstm_company cstmCompany on cstmCompany.del_flag = ${delete_exist}
+        and cstmCompany.apply_no = contract.apply_no
+        left join pilfer_insurance pilferInsurance on pilferInsurance.cont_no = contract.cont_no
+        and pilferInsurance.del_flag = ${delete_exist}
+        left join gps_dispatch gpsDispatch on contract.cont_no = gpsDispatch.cont_no
+        and gpsDispatch.del_flag = ${delete_exist}
+        left join contract_vehicle contractVehicle on contractVehicle.del_flag = ${delete_exist}
+        and contractVehicle.cont_no = contract.cont_no
+        and contractVehicle.apply_no = contract.apply_no
+        left join bas_sales basSales on basSales.sales_code = contractVehicle.sale_group_code
+        and basSales.del_flag = ${delete_exist}
+        where contract.del_flag = ${delete_exist}
+        <!-- 合同生效日期不为空 -->
+        and contract.contract_valid_date is not null
+        <if test="pilferInsuranceVo.applyNo != null">
+            and contract.apply_no like #{pilferInsuranceVo.applyNo}
+        </if>
+        <if test="pilferInsuranceVo.contNo != null">
+            and contract.cont_no like #{pilferInsuranceVo.contNo}
+        </if>
+        <if test="pilferInsuranceVo.theftInsuranceFlag != null">
+            and contractVehicle.theft_insurance_flag = #{pilferInsuranceVo.theftInsuranceFlag}
+        </if>
+        <if test="pilferInsuranceVo.installStatus != null">
+            and gpsDispatch.install_status = #{pilferInsuranceVo.installStatus}
+        </if>
+        <if test="pilferInsuranceVo.groupDistrict != null" >
+            AND sysGroup.group_district LIKE #{pilferInsuranceVo.groupDistrict}
+        </if>
+        <if test="pilferInsuranceVo.vinNo != null" >
+            AND contract.vin_no LIKE #{pilferInsuranceVo.vinNo}
+        </if>
+        <if test="pilferInsuranceVo.lessee != null">
+            AND (cstmPerson.name LIKE #{pilferInsuranceVo.lessee} OR cstmCompany.name LIKE #{pilferInsuranceVo.lessee})
+        </if>
+        <if test="pilferInsuranceVo.gpsSeller != null">
+            and pilferInsurance.gps_seller = #{pilferInsuranceVo.gpsSeller}
+        </if>
+        <if test="pilferInsuranceVo.theftInsuranceType != null">
+            and contractVehicle.theft_insurance_type = #{pilferInsuranceVo.theftInsuranceType}
+        </if>
+        order by contract.update_time  desc
+    </select>
+
+    <!--根据合同号查询一条客户基本信息-->
+    <select id="selectOneCstmDetailByContNo" parameterType="java.lang.String" resultType="cn.com.leadu.fms.pojo.cost.vo.pilferinsurance.CstmDetailVo">
+        SELECT
+
+        <!-- 合同编号 -->
+        contract.cont_no,
+
+        <!-- 承租人 -->
+        IF(apply.apply_type = 1,cstmPerson.name,cstmCompany.name) lessee ,
+
+        <!-- 车架号 -->
+        contract.vin_no,
+
+        <!-- 发动机号 -->
+        contract.engine_no,
+
+        <!-- 有限设备号 -->
+        gpsDispatch.wired_device_no,
+
+        <!-- 无限设备号 -->
+        gpsDispatch.wireless_device_no
+        FROM
+        contract contract
+        left join apply apply on apply.del_flag = ${delete_exist}
+        and apply.apply_no = contract.apply_no
+        left join cstm_person cstmPerson on cstmPerson.del_flag = ${delete_exist}
+        and cstmPerson.apply_no = contract.apply_no
+        left join cstm_company cstmCompany on cstmCompany.del_flag = ${delete_exist}
+        and cstmCompany.apply_no = contract.apply_no
+        left join gps_dispatch gpsDispatch on contract.cont_no = gpsDispatch.cont_no
+        and gpsDispatch.del_flag = ${delete_exist}
+        where contract.del_flag = ${delete_exist}
+        <!-- 合同生效日期不为空 -->
+        and contract.contract_valid_date is not null
+        <if test="#{contNo} != null">
+            and contract.cont_no = #{contNo}
+        </if>
+    </select>
+    <!--
+        查询盗抢险月结信息
+    -->
+    <select id="selectPilferInsuranceMonthlysVosByPage"
+            parameterType="cn.com.leadu.fms.pojo.cost.vo.pilferinsurance.PilferInsuranceVo"
+            resultType="cn.com.leadu.fms.pojo.cost.vo.pilferinsurance.PilferInsuranceVo">
+        SELECT insurance.pilfer_insurance_id,insurance.cont_no,insurance.pilfer_insurance_cost,insurance.time_limit,insurance.monthly_pilfer_insurance_no,insurance.bill_month,
+        IF(isnull(insurance.monthly_pilfer_insurance_no),insurance.pilfer_insurance_cost,insurance.bill_pilfer_insurance_cost) billPilferInsuranceCost ,
+        IF(apply.apply_type = #{pilferInsuranceVo.personFlag},cstmPerson.name,cstmCompany.name) lessee ,
+        contract.apply_type,contract.vin_no,
+        finance.fin_period_type,
+        monthly.monthly_pilfer_insurance_sts,
+        monthly.present_user,
+        sysGroup.group_name AS rentPerson,
+        dispatch.expect_install_date AS expectInstallDate
+        FROM pilfer_insurance insurance
+        LEFT JOIN
+        contract contract ON insurance.cont_no = contract.cont_no AND contract.del_flag = ${delete_exist}
+        LEFT JOIN
+        contract_finance finance ON insurance.cont_no = finance.cont_no AND finance.del_flag = ${delete_exist}
+        LEFT JOIN
+        apply apply on apply.apply_no = contract.apply_no AND apply.del_flag = ${delete_exist}
+        left join
+        cstm_person cstmPerson on cstmPerson.apply_no = contract.apply_no AND cstmPerson.del_flag = ${delete_exist}
+        left join
+        cstm_company cstmCompany on cstmCompany.apply_no = contract.apply_no AND cstmCompany.del_flag = ${delete_exist}
+        left join
+        monthly_pilfer_insurance monthly on insurance.monthly_pilfer_insurance_no = monthly.monthly_pilfer_insurance_no AND monthly.del_flag = ${delete_exist}
+        LEFT JOIN
+        sys_group sysGroup ON finance.belong_group=sysGroup.group_code AND sysGroup.del_flag = ${delete_exist}
+        LEFT JOIN
+        gps_dispatch dispatch ON dispatch.cont_no=insurance.cont_no AND dispatch.del_flag = ${delete_exist}
+
+        WHERE insurance.del_flag = ${delete_exist}
+        <if test="pilferInsuranceVo.pilferInsuranceIds != null">
+            AND insurance.pilfer_insurance_id IN
+            <foreach collection="pilferInsuranceVo.pilferInsuranceIds" item="id" index="index"
+                     open="(" close=")" separator=",">
+                #{id}
+            </foreach>
+
+        </if>
+        <if test="pilferInsuranceVo.monthlyPilferInsuranceNo != null">
+            AND insurance.monthly_pilfer_insurance_no = #{pilferInsuranceVo.monthlyPilferInsuranceNo}
+        </if>
+        order by insurance.create_time  desc
+    </select>
+
+
+    <!--
+        查询盗抢险月结一览信息
+    -->
+    <select id="selectPilferInsuranceMonthlysVosListByPage"
+            parameterType="cn.com.leadu.fms.pojo.cost.vo.pilferinsurance.PilferInsuranceVo"
+            resultType="cn.com.leadu.fms.pojo.cost.vo.pilferinsurance.PilferInsuranceVo">
+        SELECT insurance.pilfer_insurance_id,insurance.cont_no,insurance.pilfer_insurance_cost,insurance.time_limit,insurance.monthly_pilfer_insurance_no,
+        IF(isnull(insurance.monthly_pilfer_insurance_no),insurance.pilfer_insurance_cost,insurance.bill_pilfer_insurance_cost) billPilferInsuranceCost ,
+        IF(apply.apply_type = #{pilferInsuranceVo.personFlag},cstmPerson.name,cstmCompany.name) lessee ,insurance.gps_seller,
+        contract.apply_type,contract.vin_no,
+        finance.fin_period_type,
+        monthly.monthly_pilfer_insurance_sts,
+        monthly.present_user,
+        contractVehicle.theft_insurance_type,
+        sysGroup.group_name AS rentPerson,
+        dispatch.expect_install_date AS expectInstallDate
+        FROM pilfer_insurance insurance
+        LEFT JOIN
+        contract contract ON insurance.cont_no = contract.cont_no AND contract.del_flag = ${delete_exist}
+        LEFT JOIN
+        contract_finance finance ON insurance.cont_no = finance.cont_no AND finance.del_flag = ${delete_exist}
+        LEFT JOIN
+        apply apply on apply.apply_no = contract.apply_no AND apply.del_flag = ${delete_exist}
+        left join
+        cstm_person cstmPerson on cstmPerson.apply_no = contract.apply_no AND cstmPerson.del_flag = ${delete_exist}
+        left join
+        cstm_company cstmCompany on cstmCompany.apply_no = contract.apply_no AND cstmCompany.del_flag = ${delete_exist}
+        left join
+        monthly_pilfer_insurance monthly on insurance.monthly_pilfer_insurance_no = monthly.monthly_pilfer_insurance_no AND monthly.del_flag = ${delete_exist}
+        LEFT JOIN
+        sys_group sysGroup ON finance.belong_group=sysGroup.group_code AND sysGroup.del_flag = ${delete_exist}
+        left join contract_vehicle contractVehicle on contractVehicle.del_flag = ${delete_exist}
+        and contractVehicle.cont_no = contract.cont_no
+        and contractVehicle.apply_no = contract.apply_no
+        left join
+        gps_dispatch dispatch on dispatch.cont_no = insurance.cont_no AND dispatch.del_flag = ${delete_exist}
+
+        WHERE insurance.del_flag = ${delete_exist}
+        <if test="pilferInsuranceVo.monthlyPilferInsuranceSts != null">
+            AND monthly.monthly_pilfer_insurance_sts =  #{pilferInsuranceVo.monthlyPilferInsuranceSts}
+        </if>
+        <if test="pilferInsuranceVo.monthlyPilferInsuranceNo != null">
+            AND insurance.monthly_pilfer_insurance_no like #{pilferInsuranceVo.monthlyPilferInsuranceNo}
+        </if>
+        <if test="pilferInsuranceVo.groupDistrict != null" >
+            AND sysGroup.group_district LIKE #{pilferInsuranceVo.groupDistrict}
+        </if>
+        <if test="pilferInsuranceVo.vinNo != null" >
+            AND contract.vin_no LIKE #{pilferInsuranceVo.vinNo}
+        </if>
+        <if test="pilferInsuranceVo.lessee != null">
+            AND (cstmPerson.name LIKE #{pilferInsuranceVo.lessee} OR cstmCompany.name LIKE #{pilferInsuranceVo.lessee})
+        </if>
+        <if test="pilferInsuranceVo.gpsSeller != null">
+            and insurance.gps_seller = #{pilferInsuranceVo.gpsSeller}
+        </if>
+        <if test="pilferInsuranceVo.theftInsuranceType != null">
+            and contractVehicle.theft_insurance_type = #{pilferInsuranceVo.theftInsuranceType}
+        </if>
+
+        <if test="pilferInsuranceVo.expectInstallStartDateStr != null">
+            and TIMESTAMPDIFF(DAY,#{pilferInsuranceVo.expectInstallStartDateStr},dispatch.expect_install_date) &gt;= ${delete_exist}
+        </if>
+        <if test="pilferInsuranceVo.expectInstallEndDateStr != null">
+            and TIMESTAMPDIFF(DAY,#{pilferInsuranceVo.expectInstallEndDateStr},dispatch.expect_install_date) &lt;= ${delete_exist}
+        </if>
+        order by insurance.create_time  desc
+    </select>
+
+</mapper>

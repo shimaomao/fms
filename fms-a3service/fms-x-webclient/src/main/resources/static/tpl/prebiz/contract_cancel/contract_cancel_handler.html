@@ -1,0 +1,206 @@
+<div ng-controller="contract_cancel_handler_controller">
+    <div>
+        <toaster-container
+                toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+    </div>
+    <div class="panel panel-default">
+        <div class="row" style="margin: 0; padding: 15px; border: 1px solid #dddddd">
+            <h4 class="m-n font-thin h4">{{frameTitle}}</h4>
+        </div>
+        <form name="form" class="form-validation" novalidate>
+            <div class="panel-body wrapper-sm">
+
+
+
+                <div class="form-group row">
+                    <div class="col-sm-6">
+                        <div class="row">
+                            <label class="col-sm-4 control-label text-right"><b class="form-text-black">合同编号</b><b
+                                    class="form-error">*</b>:</label>
+                            <div class="col-sm-4">
+                                <input type="text" name="contNo" placeholder="请输入合同编号" class="form-control m-b-xs" ng-model="contractCancel.contNo"  required disabled >
+                                <p>
+                                    <span class="form-info" ng-show=" (form.contNo.$dirty && form.contNo.$error.required) || (form.contNo.$error.required && formValidate)">合同编号不能为空</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="row">
+                            <label class="col-sm-4 control-label text-right"><b class="form-text-black">订单编号</b><b
+                                    class="form-error" >*</b>:</label>
+                            <div class="col-sm-4" >
+                                <input type="text" name="applyNo" placeholder="请输入订单编号" class="form-control m-b-xs"
+                                       ng-model="contractCancel.applyNo" required disabled>
+                                <p>
+                                    <span class="form-info"
+                                          ng-show=" (form.applyNo.$dirty && form.applyNo.$error.required) || (form.applyNo.$error.required && formValidate)">订单编号不能为空</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+
+                <div class="form-group row">
+                    <div class="col-sm-6">
+                        <div class="row">
+                            <label class="col-sm-4 control-label text-right"><b class="form-text-black">申请姓名</b><b
+                                    class="form-error">*</b>:</label>
+                            <div class="col-sm-4" >
+                                <input type="text" name="name" placeholder="请输入申请姓名" class="form-control m-b-xs"
+                                       ng-model="contractCancel.name" required disabled>
+                                <p>
+                            <span class="form-info"
+                                  ng-show=" (form.name.$dirty && form.name.$error.required) || (form.name.$error.required && formValidate)">申请姓名不能为空</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="row">
+                            <label class="col-sm-4 control-label text-right"><b class="form-text-black">车辆类型</b><b
+                                    class="form-error">*</b>:</label>
+                            <div class="col-sm-4">
+                                <input type="text" name="vehicleForm" placeholder="请输入车辆类型" class="form-control m-b-xs" ng-model="contractCancel.vehicleFormName"  required disabled >
+                                <p>
+                                    <span class="form-info" ng-show=" (form.vehicleForm.$dirty && form.vehicleForm.$error.required) || (form.vehicleForm.$error.required && formValidate)">车辆类型不能为空</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+                <div class="form-group row">
+                    <div class="col-sm-6">
+                        <div class="row">
+                            <label class="col-sm-4 control-label text-right"><b class="form-text-black">制造商</b><b
+                                    class="form-error">*</b>:</label>
+                            <div class="col-sm-4">
+                                <input type="text" name="vehMakerCodeName" placeholder="请输入制造商" class="form-control m-b-xs" ng-model="contractCancel.vehMakerCodeName"  required disabled>
+                                <p>
+                                    <span class="form-info" ng-show=" (form.vehMakerCodeName.$dirty && form.vehMakerCodeName.$error.required) || (form.vehMakerCodeName.$error.required && formValidate)">制造商不能为空</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="row">
+                            <label class="col-sm-4 control-label text-right"><b class="form-text-black">品牌</b><b
+                                    class="form-error">*</b>:</label>
+                            <div class="col-sm-4">
+                                <input type="text" name="vehBrandCodeName" placeholder="请输入品牌" class="form-control m-b-xs" ng-model="contractCancel.vehBrandCodeName"  required disabled>
+                                <p>
+                                    <span class="form-info" ng-show=" (form.vehBrandCodeName.$dirty && form.vehBrandCodeName.$error.required) || (form.vehBrandCodeName.$error.required && formValidate)">品牌不能为空</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <div class="form-group row">
+                    <div class="col-sm-6">
+                        <div class="row">
+                            <label class="col-sm-4 control-label text-right"><b class="form-text-black">车系</b><b
+                                    class="form-error">*</b>:</label>
+                            <div class="col-sm-4">
+                                <input type="text" name="vehSeriesCodeName" placeholder="请输入车系" class="form-control m-b-xs" ng-model="contractCancel.vehSeriesCodeName"  required disabled>
+                                <p>
+                                    <span class="form-info" ng-show=" (form.vehSeriesCodeName.$dirty && form.vehSeriesCodeName.$error.required) || (form.vehSeriesCodeName.$error.required && formValidate)">车系不能为空</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="row">
+                            <label class="col-sm-4 control-label text-right"><b class="form-text-black">车型</b><b
+                                    class="form-error">*</b>:</label>
+                            <div class="col-sm-4">
+                                <input type="text" name="vehicleCodeName" placeholder="请输入车型" class="form-control m-b-xs" ng-model="contractCancel.vehicleCodeName"  required disabled>
+                                <p>
+                                    <span class="form-info" ng-show=" (form.vehicleCodeName.$dirty && form.vehicleCodeName.$error.required) || (form.vehicleCodeName.$error.required && formValidate)">车型不能为空</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <div class="form-group row">
+                    <div class="col-sm-6">
+                        <div class="row">
+                            <label class="col-sm-4 control-label text-right"><b class="form-text-black">当前状态</b><b
+                                    class="form-error">*</b>:</label>
+                            <div class="col-sm-4">
+                                <input type="text" name="bizStatus" placeholder="请输入当前状态" class="form-control m-b-xs"
+                                       ng-model="contractCancel.bizStatusName" required disabled>
+                                <p>
+                             <span class="form-info"
+                                   ng-show=" (form.bizStatus.$dirty && form.bizStatus.$error.required) || (form.bizStatus.$error.required && formValidate)">当前状态不能为空</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+
+            <div class="panel-body wrapper-sm" style="margin: 0; padding: 15px; border: 1px solid #dddddd">
+                <div class="form-group row">
+                    <div class="col-sm-6">
+                        <div class="row">
+                            <label class="col-sm-4 control-label text-right"><b class="form-text-black">取消原因</b><b
+                                    class="form-error" >*</b>:</label>
+                            <div class="col-sm-4" >
+                                <select ng-model="contractCancelReason" name="contractCancelReason" class="form-control m-b-xs"  required>
+                                    <option value="">--请选择取消原因--</option>
+                                    <option value="{{contractCancelReasonObj.codeValue}}" ng-repeat="contractCancelReasonObj in contractCancelReasonList">{{contractCancelReasonObj.codeValueName}}</option>
+                                </select>
+                                <p>
+                                    <span class="form-info"
+                                          ng-show=" (form.contractCancelReason.$dirty && form.contractCancelReason.$error.required) || (form.contractCancelReason.$error.required && formValidate)">取消原因不能为空</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-sm-6">
+                        <div class="row">
+                            <label class="col-sm-4 control-label text-right"><b class="form-text-black">取消备注</b><b
+                                    class="form-error">*</b>:</label>
+                            <div class="col-sm-4">
+                                <textarea limit-word name="cancelRemark" type="text" placeholder="取消备注" name="memo" class="form-control m-b-xs" ng-model="contractCancel.cancelRemark" required></textarea>
+                                <p>
+                                         <span class="form-info"
+                                               ng-show=" (form.cancelRemark.$dirty && form.cancelRemark.$error.required) || (form.cancelRemark.$error.required && formValidate)">取消备注不能为空</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="modal-footer ng-scope text-center">
+                <button class="btn btn-default" ng-click="goback()">返回</button>
+                <button type="submit" class="btn btn-success" ng-show="showUpdate" ng-disabled="submit"
+                        ng-click="modify()">确定取消
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

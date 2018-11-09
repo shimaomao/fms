@@ -1,0 +1,41 @@
+<div  ng-controller="deposit_change_approve_controller">
+    <div>
+        <toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-body wrapper-sm">
+            <div class="row">
+                <div class="form-group pull-right">
+                    <div class="btn-group ">
+                        <button class="btn btn-success m-t-xs m-r-xs" ng-click="submitInfo()" ng-disabled="submit">提交</button>
+                        <button class="btn btn-success m-t-xs m-r-xs" ng-click="refuse()" ng-disabled="submit">拒绝</button>
+                        <button class="btn btn-default m-t-xs" ng-click="goBack()">返回</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <form name="form" class="form-validation" novalidate>
+            <div class="panel-body wrapper-sm">
+                <ul id="applyTab" class="nav nav-tabs">
+                    <li class="active"><a href="javascript:void(0);" data-toggle="tab" data-id="approve" onclick="switchPageTab(this, 'applyTab')">复核审批</a></li>
+                    <li><a href="javascript:void(0);" data-toggle="tab" data-id="applyInfo" onclick="switchPageTab(this, 'applyTab')">申请信息</a></li>
+                    <li ng-if="zxFlag"><a href="javascript:void(0);" data-toggle="tab" data-id="credit" onclick="switchPageTab(this, 'applyTab')">鹏元征信</a></li>
+                </ul>
+                <div id="applyTabContent" class="tab-content">
+                    <!-- 审核意见备注 -->
+                    <div class="tab-pane fade in active" id="approve">
+                        <div ng-include="'tpl/postbiz/deposit_change_task/deposit_approval.html'" class="row m-xs"></div>
+                    </div>
+                    <!-- 申请信息 -->
+                    <div class="tab-pane fade" id="applyInfo">
+                        <div ng-include="'tpl/postbiz/deposit_change_task/deposit_change_detail.html'" class="row m-xs"></div>
+                    </div>
+                    <!-- 鹏元征信 -->
+                    <div class="tab-pane fade" id="credit" ng-if="zxFlag">
+                        <div ng-include="'tpl/prebiz/apply_risk/risk_credit_person_save.html'"></div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

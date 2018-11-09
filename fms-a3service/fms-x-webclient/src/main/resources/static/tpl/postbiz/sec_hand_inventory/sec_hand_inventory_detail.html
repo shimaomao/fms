@@ -1,0 +1,105 @@
+<div  ng-controller="sec_hand_inventory_detail_controller">
+    <div>
+        <toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+    </div>
+    <div class="panel panel-default">
+
+        <div class="row" style="margin: 0; padding: 15px; border: 1px solid #dddddd">
+            <h4 class="m-n font-thin h4">车辆详情</h4>
+        </div>
+        <form name="form" class="form-validation" novalidate>
+            <div class="panel-body ">
+
+                <div class="form-group row">
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">车架号</b>:</label>
+                    <div class="col-sm-8">
+                        <label class="col-sm-12 control-label text-left">{{secHandInventory.vinNo}}</label>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">发动机号</b>:</label>
+                    <div class="col-sm-8">
+                        <label class="col-sm-12 control-label text-left">{{secHandInventory.engineNo}}</label>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">行驶公里数</b>:</label>
+                    <div class="col-sm-8">
+                        <label class="col-sm-12 control-label text-left">{{secHandInventory.miles}}</label>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">登记日期</b>:</label>
+                    <div class="col-sm-8">
+                        <label class="col-sm-12 control-label text-left">{{secHandInventory.registDate}}</label>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">车龄</b>:</label>
+                    <div class="col-sm-8">
+                        <label class="col-sm-12 control-label text-left">{{secHandInventory.vehAgeMonths}}</label>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">出厂日期</b>:</label>
+                    <div class="col-sm-8">
+                        <label class="col-sm-12 control-label text-left">{{secHandInventory.produceDate}}</label>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">车辆评估价</b>:</label>
+                    <div class="col-sm-8">
+                        <label class="col-sm-12 control-label text-left">{{secHandInventory.evaluationPrice}}</label>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">颜色</b>:</label>
+                    <div class="col-sm-8">
+                        <label class="col-sm-12 control-label text-left">{{secHandInventory.color}}</label>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">车型</b>:</label>
+                    <div class="col-sm-8">
+                        <label class="col-sm-12 control-label text-left">{{secHandInventory.vehicleName}}</label>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">状态</b>:</label>
+                    <div class="col-sm-8">
+                        <label class="col-sm-12 control-label text-left">{{secHandInventory.statusVal}}</label>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">来源</b>:</label>
+                    <div class="col-sm-8">
+                        <label class="col-sm-12 control-label text-left">{{secHandInventory.carSourceVal}}</label>
+                    </div>
+                </div>
+
+                <div class="form-group row" ng-show="secHandInventory.carSource == '1' ">
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">收车任务号</b>:</label>
+                    <div class="col-sm-8">
+                        <label class="col-sm-12 control-label text-left">{{secHandInventory.recoveryTaskNo}}</label>
+                    </div>
+                </div>
+
+                <div class="text-center">
+                    <div class="col-sm-15 m-b">
+                        <button class="btn btn-default" ng-click="goBack()">返回</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

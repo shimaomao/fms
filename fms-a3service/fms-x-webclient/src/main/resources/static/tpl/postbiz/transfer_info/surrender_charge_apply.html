@@ -1,0 +1,228 @@
+<style>
+    .transferApply .sub-main{overflow: hidden;}
+    .transferApply .sub-body{padding: 10px 40px 0 0;border: 1px solid #eaeeea;border-top: none;}
+    .transferApply .sub-title{padding: 5px;font-size: 14px;cursor: pointer;background-color: #f5f5f5;border-bottom: 1px solid #eaeeea;}
+    .transferApply .sub-title span:first-child{font-weight: bold;color: black;}
+    .transferApply .sub-title span:last-child{display: inline-block;width: 20px;height: 20px;}
+</style>
+<div class="bg-light lter b-b wrapper-md">
+    <h1 class="m-n font-thin h4">过户退保申请</h1>
+</div>
+<div  ng-controller="surrender_charge_apply_controller" class="transferApply" style="padding: 10px;">
+    <div>
+        <toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+    </div>
+    <div class="panel panel-default" >
+        <div class="panel-body">
+            <div class="row m-b-xs">
+                <div class="form-group pull-right">
+                    <div class="btn-group ">
+                        <button class="btn btn-success m-b-xs btn-sm fms-button-margin-bottom" ng-click="submitInfo()" ng-disabled="submit"><i class=""></i>提交</button>
+                        <button class="btn btn-default m-b-xs btn-sm fms-button-margin-bottom" ng-click="backUp()"><i class=""></i>返回</button>
+                    </div>
+                </div>
+            </div>
+            <form name="form" class="form-validation" novalidate>
+                <!-- 客户信息 -->
+                <div class="sub-main">
+                    <div class="sub-title clearfix" click-hide>
+                        <span class="pull-left">客户信息</span>
+                        <span class="pull-right"><i class="glyphicon glyphicon-chevron-down"></i></span>
+                    </div>
+                    <div class="sub-body">
+                        <div class="row">
+                            <div class="form-group row">
+                                <label class="col-sm-2 control-label text-right"><b class="form-text-black">承租人</b>:</label>
+                                <div class="col-sm-4">
+                                    <input type="text" name="cstmName" placeholder="请输入承租人" class="form-control m-b-xs" ng-model="transferInfoRetreatsVo.cstmName" disabled/>
+                                </div>
+                                <label class="col-sm-1 control-label text-right"><b class="form-text-black">出租人</b>:</label>
+                                <div class="col-sm-4">
+                                    <input type="text" name="belongGroup" placeholder="请输入出租人" class="form-control m-b-xs" ng-model="transferInfoRetreatsVo.belongGroup" disabled/>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 control-label text-right"><b class="form-text-black">合同编号</b>:</label>
+                                <div class="col-sm-2">
+                                    <input type="text" name="contNo" placeholder="请输入合同编号" class="form-control m-b-xs" ng-model="transferInfoRetreatsVo.contNo" disabled/>
+                                </div>
+                                <label class="col-sm-1 control-label text-right"><b class="form-text-black">车架号</b>:</label>
+                                <div class="col-sm-2">
+                                    <input type="text" name="vinNo" placeholder="请输入车架号" class="form-control m-b-xs" ng-model="transferInfoRetreatsVo.vinNo" disabled/>
+                                </div>
+                                <label class="col-sm-2 control-label text-right"><b class="form-text-black">结清状态</b>:</label>
+                                <div class="col-sm-2">
+                                    <input type="text" name="paymentSts" placeholder="请输入结清状态" class="form-control m-b-xs" ng-model="transferInfoRetreatsVo.paymentStsVal" disabled/>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 control-label text-right"><b class="form-text-black">合同生效日期</b>:</label>
+                                <div class="col-sm-2">
+                                    <input type="text" name="finTotal" placeholder="请输入合同生效日期" class="form-control m-b-xs" ng-model="transferInfoRetreatsVo.contractValidDate" disabled/>
+                                </div>
+                                <label class="col-sm-1 control-label text-right"><b class="form-text-black">车牌号</b>:</label>
+                                <div class="col-sm-2">
+                                    <input type="text" name="vehicleLicenseNo" placeholder="请输入车牌号" class="form-control m-b-xs" ng-model="transferInfoRetreatsVo.vehicleLicenseNo" disabled/>
+                                </div>
+                                <label class="col-sm-2 control-label text-right"><b class="form-text-black">发动机号</b>:</label>
+                                <div class="col-sm-2">
+                                    <input type="text" name="engineNo" placeholder="请输入发动机号" class="form-control m-b-xs" ng-model="transferInfoRetreatsVo.engineNo" disabled/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- 保险信息 -->
+                <div class="sub-main">
+                    <div class="sub-title clearfix" click-hide>
+                        <span class="pull-left">保险信息</span>
+                        <span class="pull-right"><i class="glyphicon glyphicon-chevron-down"></i></span>
+                    </div>
+                    <div class="sub-body">
+                        <div class="row">
+                            <div class="form-group row">
+                                <label class="col-sm-2 control-label text-right"><b class="form-text-black">保险公司名称</b>:</label>
+                                <div class="col-sm-2">
+                                    <input type="text" name="contNo" placeholder="请输入保险公司名称" class="form-control m-b-xs" ng-model="transferInfoRetreatsVo.insCompName" disabled/>
+                                </div>
+                                <label class="col-sm-1 control-label text-right"><b class="form-text-black">投保生效日</b>:</label>
+                                <div class="col-sm-2">
+                                    <input type="text" name="vinNo" placeholder="请输入投保生效日" class="form-control m-b-xs" ng-model="transferInfoRetreatsVo.validStartDay" disabled/>
+                                </div>
+                                <label class="col-sm-2 control-label text-right"><b class="form-text-black">投保失效日</b>:</label>
+                                <div class="col-sm-2">
+                                    <input type="text" name="paymentSts" placeholder="请输入投保失效日" class="form-control m-b-xs" ng-model="transferInfoRetreatsVo.validEndDay" disabled/>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 control-label text-right"><b class="form-text-black">商业险保单号</b>:</label>
+                                <div class="col-sm-2">
+                                    <input type="text" name="contNo" placeholder="请输入商业险保单号" class="form-control m-b-xs" ng-model="transferInfoRetreatsVo.insPolicyNo" disabled/>
+                                </div>
+                                <label class="col-sm-1 control-label text-right"><b class="form-text-black">保单实际金额</b>:</label>
+                                <div class="col-sm-2">
+                                    <input type="text" name="vinNo" placeholder="请输入保单实际金额" class="form-control m-b-xs" ng-model="transferInfoRetreatsVo.insFee" disabled/>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 control-label text-right"><b class="form-text-black">险种</b><b class="form-error"></b>:</label>
+                                <div class="col-sm-10">
+                                    <div class="checkbox" ng-repeat="a in insuranceSelectInfoList">
+                                        <label>
+                                            <input type="checkbox" name="insuranceSelectInfo" ng-click="checkboxValue('insuranceSelectInfo',a.codeValue);" ng-model="a.checked" value="{{a.codeValue}}" ng-checked="(transferInfoRetreatsVo.insuranceSelectInfo | toArr).indexOf(a.codeValue) != -1" disabled>{{a.codeValueName}}
+                                        </label>
+                                    </div>
+                                    <!--<p>
+                                        <span class="form-info" ng-show="(form.insuranceSelectInfo.$dirty && !transferInfoRetreatsVo.insuranceSelectInfo) || (!transferInfoRetreatsVo.insuranceSelectInfo && formValidate)">险种不能为空</span>
+                                    </p>-->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- 保单信息 -->
+                <div class="sub-main">
+                    <div class="sub-title clearfix" click-hide>
+                        <span class="pull-left">保单信息</span>
+                        <span class="pull-right"><i class="glyphicon glyphicon-chevron-down"></i></span>
+                    </div>
+                    <div class="sub-body">
+                        <div class="row">
+                            <div class="form-group row">
+                                <label class="col-sm-2 control-label text-right"><b class="form-text-black">过户手续费</b><b class="form-error"></b>:</label>
+                                <div class="col-sm-2">
+                                    <input type="number" name="transferCost" class="form-control m-b-xs" ng-model="transferInfoRetreatsVo.transferCost" disabled />
+                                    <p>
+                                        <span class="form-info" ng-show=" (form.transferCost.$dirty && form.transferCost.$error.required) || (form.transferCost.$error.required && formValidate)">过户手续费不能为空</span>
+                                    </p>
+                                </div>
+                                <label class="col-sm-2 control-label text-right"><b class="form-text-black">过户保证金</b><b class="form-error"></b>:</label>
+                                <div class="col-sm-2">
+                                    <input type="number" name="transferDeposit" class="form-control m-b-xs" ng-model="transferInfoRetreatsVo.transferDeposit" disabled />
+                                    <p>
+                                        <span class="form-info" ng-show=" (form.transferDeposit.$dirty && form.transferDeposit.$error.required) || (form.transferDeposit.$error.required && formValidate)">过户保证金不能为空</span>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 control-label text-right"><b class="form-text-black">保证金</b><b class="form-error"></b>:</label>
+                                <div class="col-sm-2">
+                                    <input type="number" name="deposit" class="form-control m-b-xs" ng-model="transferInfoRetreatsVo.deposit" disabled />
+                                    <p>
+                                        <span class="form-info" ng-show=" (form.deposit.$dirty && form.deposit.$error.required) || (form.deposit.$error.required && formValidate)">保证金不能为空</span>
+                                    </p>
+                                </div>
+                                <label class="col-sm-2 control-label text-right"><b class="form-text-black">费用总额</b><b class="form-error"></b>:</label>
+                                <div class="col-sm-2">
+                                    <input type="number" name="totalCost" class="form-control m-b-xs" ng-model="transferInfoRetreatsVo.totalCost" disabled />
+                                    <p>
+                                        <span class="form-info" ng-show=" (form.totalCost.$dirty && form.totalCost.$error.required) || (form.totalCost.$error.required && formValidate)">费用总额不能为空</span>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 control-label text-right"><b class="form-text-black">退保金额</b><b class="form-error">*</b>:</label>
+                                <div class="col-sm-2">
+                                    <input type="number" name="retreatsAmount" class="form-control m-b-xs" ng-model="transferInfoRetreatsVo.retreatsAmount" required/>
+                                    <p>
+                                        <span class="form-info" ng-show=" (form.retreatsAmount.$dirty && form.retreatsAmount.$error.required) || (form.retreatsAmount.$error.required && formValidate)">退保金额不能为空</span>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 control-label text-right"><b class="form-text-black">退保收款户名</b><b class="form-error">*</b>:</label>
+                                <div class="col-sm-2">
+                                    <input type="text" title="{{transferInfoRetreatsVo.retreatsRecAccountName}}" name="retreatsRecAccountName" placeholder="请输入退保收款户名" class="form-control m-b-xs" ng-model="transferInfoRetreatsVo.retreatsRecAccountName" required>
+                                    <p>
+                                        <span class="form-info" ng-show=" (form.retreatsRecAccountName.$dirty && form.retreatsRecAccountName.$error.required) || (form.retreatsRecAccountName.$error.required && formValidate)">退保收款户名不能为空</span>
+                                    </p>
+                                </div>
+
+                                <label class="col-sm-2 control-label text-right"><b class="form-text-black">退保收款账号</b><b class="form-error">*</b>:</label>
+                                <div class="col-sm-2">
+                                    <input type="text" title="{{transferInfoRetreatsVo.retreatsRecAccountNo}}" name="retreatsRecAccountNo" placeholder="请输入退保收款账号" class="form-control m-b-xs" ng-model="transferInfoRetreatsVo.retreatsRecAccountNo" ng-pattern="/^[0-9]*$/" required>
+                                    <p>
+                                        <span class="form-info" ng-show=" (form.retreatsRecAccountNo.$dirty && form.retreatsRecAccountNo.$error.required) || (form.retreatsRecAccountNo.$error.required && formValidate)">退保收款账号不能为空</span>
+                                        <span class="form-info" ng-show=" (form.retreatsRecAccountNo.$error.pattern && !form.retreatsRecAccountNo.$error.required) || (form.retreatsRecAccountNo.$error.pattern && formValidate && !form.retreatsRecAccountNo.$error.required)">请输入数字账号</span>
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-sm-2 control-label text-right"><b class="form-text-black">退保收款开户行</b><b class="form-error">*</b>:</label>
+                                <div class="col-sm-2">
+                                    <input type="text" title="{{transferInfoRetreatsVo.retreatsRecAccBank}}" name="retreatsRecAccBank" placeholder="请输入退保收款开户行" class="form-control m-b-xs" ng-model="transferInfoRetreatsVo.retreatsRecAccBank" required>
+                                    <p>
+                                        <span class="form-info" ng-show=" (form.retreatsRecAccBank.$dirty && form.retreatsRecAccBank.$error.required) || (form.retreatsRecAccBank.$error.required && formValidate)">退保收款开户行不能为空</span>
+                                    </p>
+                                </div>
+                                <label class="col-sm-2 control-label text-right"><b class="form-text-black">退保收款开户行分行</b><b class="form-error">*</b>:</label>
+                                <div class="col-sm-2"> 
+                                    <input type="text" title="{{transferInfoRetreatsVo.retreatsRecAccBranch}}" name="retreatsRecAccBranch" placeholder="请输入退保收款开户行分行" class="form-control m-b-xs" ng-model="transferInfoRetreatsVo.retreatsRecAccBranch" required>
+                                    <p>
+                                        <span class="form-info" ng-show=" (form.retreatsRecAccBranch.$dirty && form.retreatsRecAccBranch.$error.required) || (form.retreatsRecAccBranch.$error.required && formValidate)">退保收款开户行分行不能为空</span>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 control-label text-right"><b class="form-text-black">备注 </b><b class="form-error">*</b>:</label>
+                                <div class="col-sm-9">
+                                    <textarea limit-word name="remark" ng-model="transferInfoRetreatsVo.remark" class="form-control r-none" cols="25" rows="6" ng-maxlength='1000' required></textarea>
+                                    <p>
+                                        <span class="form-info" ng-show=" (form.remark.$dirty && form.remark.$error.required) || (form.remark.$error.required && formValidate)">备注不能为空</span>
+                                        <span class="form-info" ng-show="(form.remark.$dirty && form.remark.$error.maxlength) || (form.remark.$error.maxlength && formValidate)">备注长度不超过1000</span>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <!-- 流程日志 -->
+        <div class="panel-body" ng-show="processLogShow" >
+            <process-log-list-directive wf-log-type="$root.bizTypes.transfer" wf-log-no="retreatsNo" wf-log-sub-no="wfLogSubNo" > </process-log-list-directive>
+        </div>
+
+    </div>
+</div>

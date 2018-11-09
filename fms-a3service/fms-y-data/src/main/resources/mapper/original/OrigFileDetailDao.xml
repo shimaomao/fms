@@ -1,0 +1,406 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.com.leadu.fms.data.original.dao.OrigFileDetailDao">
+
+    <select id="selectOrigFileDetailsVosByPage" resultType="cn.com.leadu.fms.pojo.original.vo.origfiledetail.OrigFileDetailVo">
+        SELECT
+        orig.orig_file_detail_id,
+        orig.biz_code,
+        orig.biz_code_type,
+        bft.file_type_name fileType,
+        bft.file_qty_limit fileQtyLimit,
+        orig.file_count,
+        orig.file_post_id,
+        orig.file_record_no,
+        orig.orig_file_detail_status,
+        orig.file_info1,
+        orig.file_info2,
+        orig.file_info3,
+        orig.create_time,
+        orig.creator,
+        orig.update_time,
+        orig.updater,
+        orig.del_flag,
+        bft.file_attr
+        FROM orig_file_detail orig
+        LEFT JOIN bas_file_type bft ON orig.file_type = bft.file_type
+        AND bft.del_flag = ${delete_exist}
+        WHERE orig.del_flag = ${delete_exist}
+        <if test="origFileDetailVo.fileSolveFlag != null and origFileDetailVo.fileSolveFlag == 'mail'">
+            AND (orig.orig_file_detail_status = 0 OR orig.orig_file_detail_status = 4)
+        </if>
+        <if test="origFileDetailVo.fileSolveFlag != null and origFileDetailVo.fileSolveFlag == 'sort'">
+            AND (orig.orig_file_detail_status = 2 OR orig.orig_file_detail_status = 3)
+        </if>
+        <if test="origFileDetailVo.origFileDetailBizCodes != null">
+            AND orig.biz_code IN
+            <foreach collection="origFileDetailVo.origFileDetailBizCodes" item="item" index="index" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        ORDER BY orig.biz_code
+    </select>
+
+    <select id="selectOrigFileDetailVosByPage" resultType="cn.com.leadu.fms.pojo.original.vo.origfiledetail.OrigFileDetailVo">
+        SELECT
+        orig.orig_file_detail_id,
+        orig.biz_code,
+        orig.biz_code_type,
+        bft.file_type_name fileType,
+        bft.file_qty_limit fileQtyLimit,
+        orig.file_count,
+        orig.file_post_id,
+        orig.file_record_no,
+        orig.orig_file_detail_status,
+        orig.file_info1,
+        orig.file_info2,
+        orig.file_info3,
+        orig.orig_flag,
+        orig.create_time,
+        orig.creator,
+        orig.update_time,
+        orig.updater,
+        orig.del_flag,
+        insur.cont_no
+        FROM orig_file_detail orig
+        LEFT JOIN bas_file_type bft ON orig.file_type = bft.file_type AND bft.del_flag = ${delete_exist}
+        LEFT join renewal_register insur on orig.biz_code = insur.renewal_task_no and insur.del_flag = ${delete_exist}
+        WHERE orig.del_flag = ${delete_exist}
+        <if test="origFileDetailVo.bizCode != null">
+            AND orig.biz_code = #{origFileDetailVo.bizCode}
+        </if>
+        <if test="origFileDetailVo.bizCodeType != null">
+            AND orig.biz_code_type = #{origFileDetailVo.bizCodeType}
+        </if>
+        <if test="origFileDetailVo.origFileDetailStatus != null">
+            AND orig.orig_file_detail_status = #{origFileDetailVo.origFileDetailStatus}
+        </if>
+        ORDER BY orig.biz_code
+    </select>
+
+    <select id="selectOrigFileBorrowDetails" resultMap="origFileBorrowDetailsMap">
+        SELECT
+        orig.orig_file_detail_id,
+        orig.biz_code,
+        orig.biz_code_type,
+        bft.file_type_name fileTypeName,
+        bft.file_qty_limit fileQtyLimit,
+        orig.file_type fileType,
+        orig.file_count,
+        orig.file_post_id,
+        orig.file_record_no,
+        orig.orig_file_detail_status,
+        orig.file_info1,
+        orig.file_info2,
+        orig.file_info3,
+        orig.orig_flag,
+        orig.create_time,
+        orig.creator,
+        orig.updater,
+        orig.update_time,
+        orig.del_flag,
+        bft.file_attr,
+        borrowTask.borrow_user
+        FROM orig_file_detail orig
+        LEFT JOIN bas_file_type bft ON orig.file_type = bft.file_type AND bft.del_flag = ${delete_exist}
+        LEFT JOIN borrow_task borrowTask ON orig.borrow_task_no = borrowTask.borrow_task_no AND borrowTask.del_flag = ${delete_exist}
+        WHERE orig.del_flag = ${delete_exist}
+        <if test="origFileDetailVo.origFlag != null">
+            AND orig.orig_flag = #{origFileDetailVo.origFlag}
+        </if>
+        <if test="origFileDetailVo.bizCode != null">
+            AND orig.biz_code = #{origFileDetailVo.bizCode}
+        </if>
+        <if test="origFileDetailVo.bizCodeType != null">
+            AND orig.biz_code_type = #{origFileDetailVo.bizCodeType}
+        </if>
+        <if test="origFileDetailVo.borrowTaskNo != null">
+            AND orig.borrow_task_no = #{origFileDetailVo.borrowTaskNo}
+        </if>
+        <if test="origFileDetailVo.borrowBackTaskNo != null">
+            AND orig.borrow_back_task_no = #{origFileDetailVo.borrowBackTaskNo}
+        </if>
+        ORDER BY orig.biz_code
+    </select>
+
+    <resultMap id="origFileBorrowDetailsMap" type="cn.com.leadu.fms.pojo.original.vo.origfiledetail.OrigFileDetailVo">
+        <id column="orig_file_detail_id" javaType="java.lang.String" property="origFileDetailId" />
+        <result column="biz_code" javaType="java.lang.String" property="bizCode" />
+        <result column="biz_code_type" javaType="java.lang.String" property="bizCodeType" />
+        <result column="fileType" javaType="java.lang.String" property="fileType" />
+        <result column="fileTypeName" javaType="java.lang.String" property="fileTypeName" />
+        <result column="file_count" javaType="java.lang.Integer" property="fileCount" />
+        <result column="fileQtyLimit" javaType="java.lang.Integer" property="fileQtyLimit" />
+        <result column="file_post_id" javaType="java.lang.String" property="filePostId" />
+        <result column="file_record_no" javaType="java.lang.String" property="fileRecordNo" />
+        <result column="orig_file_detail_status" javaType="java.lang.String" property="origFileDetailStatus" />
+        <result column="file_info1" javaType="java.lang.String" property="fileInfo1" />
+        <result column="file_info2" javaType="java.lang.String" property="fileInfo2" />
+        <result column="file_info3" javaType="java.lang.String" property="fileInfo3" />
+        <result column="update_time" javaType="java.util.Date" property="updateTime" />
+        <result column="updater" javaType="java.lang.String" property="updater" />
+        <result column="orig_flag" javaType="java.lang.String" property="origFlag" />
+        <result column="create_time" javaType="java.util.Date" property="createTime" />
+        <result column="creator" javaType="java.lang.String" property="creator" />
+        <result column="file_attr" javaType="java.lang.String" property="fileAttr" />
+        <result column="borrow_user" javaType="java.lang.String" property="borrowUser" />
+    </resultMap>
+
+    <select id="selectOrigFileBorrowBackSendByPage" resultType="cn.com.leadu.fms.pojo.original.vo.origfile.OrigFileVo">
+        select temp.* from (
+        SELECT
+        orig.orig_file_id,
+        orig.biz_code,
+        orig.file_record_no,
+        orig.name,
+        bt.borrow_user,
+        bt.deposit_amount,
+        bt.borrow_task_no,
+        bt.deposit_flag,
+        bt.borrow_task_status,
+        bt.post_date as borrowDate,
+        bt.expected_return_date,
+        backTask.borrow_back_task_status,
+        backTask.post_date as returnDate,
+        backTask.present_user,
+        con.cont_no,
+        con.vin_no,
+        ifnull(cstmCompany.name, cstmPerson.name) cstmName,
+        group_concat(fileType.file_type_name) origFileDetailNames
+        FROM
+        borrow_task bt
+        LEFT JOIN orig_file orig ON orig.file_record_no = bt.file_record_no AND bt.del_flag = ${delete_exist}
+        LEFT JOIN contract con ON orig.biz_code = con.cont_no AND con.del_flag = ${delete_exist}
+        left join cstm_company cstmCompany ON cstmCompany.apply_no = con.apply_no and cstmCompany.del_flag = ${delete_exist}
+        left join cstm_person cstmPerson on cstmPerson.apply_no = con.apply_no and cstmPerson.del_flag = ${delete_exist}
+        left join borrow_back_task backTask on bt.borrow_task_no = backTask.borrow_task_no and backTask.del_flag = ${delete_exist}
+        left join borrow_task_detail borrowDetail on bt.borrow_task_no = borrowDetail.borrow_task_no and borrowDetail.del_flag = ${delete_exist}
+        left join orig_file_detail fileDetail on fileDetail.orig_file_detail_id = borrowDetail.orig_file_detail_id and fileDetail.del_flag = ${delete_exist}
+        left join bas_file_type fileType on fileDetail.file_type = fileType.file_type and fileType.del_flag = ${delete_exist}
+        WHERE
+        bt.del_flag = ${delete_exist}
+        <if test="origFileVo.bizCodeType != null">
+            AND orig.biz_code_type = #{origFileVo.bizCodeType}
+        </if>
+        <if test="origFileVo.fileRecordNo != null">
+            AND bt.file_record_no like #{origFileVo.fileRecordNo}
+        </if>
+        <if test="origFileVo.bizCode != null">
+            AND orig.biz_code like #{origFileVo.bizCode}
+        </if>
+        <if test="origFileVo.borrowUser != null">
+            AND bt.borrow_user like #{origFileVo.borrowUser}
+        </if>
+        <if test="origFileVo.borrowTaskStatus != null">
+            AND bt.borrow_task_status like #{origFileVo.borrowTaskStatus}
+        </if>
+        <if test="origFileVo.cstmName != null">
+            AND (cstmCompany.name LIKE #{origFileVo.cstmName} OR cstmPerson.name LIKE #{origFileVo.cstmName})
+        </if>
+        <if test="origFileVo.vinNo != null">
+            AND con.vin_no LIKE #{origFileVo.vinNo}
+        </if>
+        <if test="origFileVo.borrowPurpose != null">
+            AND bt.borrow_purpose != #{origFileVo.borrowPurpose}
+        </if>
+        group by bt.borrow_task_no
+        ORDER BY bt.create_time desc
+        )temp
+        <if test="origFileVo.origFileDetailNames != null">
+            where
+            /*借阅资料*/
+            temp.origFileDetailNames like #{origFileVo.origFileDetailNames}
+        </if>
+    </select>
+
+    <!--根据借阅归还任务号获取财务制单初始化信息-->
+    <select id="selectBorrowTaskMakeVoucherByBorrowBackTaskNo" resultType="cn.com.leadu.fms.pojo.original.vo.borrowbacktask.BorrowBackTaskVo">
+        SELECT DISTINCT
+        bbt.*,
+        cp.rec_acc_bank,
+        cp.rec_acc_branch,
+        cp.rec_account_name,
+        cp.rec_account_no,
+        cp.rec_ele_bank_no,
+        cp.pay_acc_bank,
+        cp.pay_acc_branch,
+        cp.pay_account_no,
+        cp.pay_account_name,
+        cp.pay_ele_bank_no
+        --             of.biz_code
+        FROM
+        borrow_back_task bbt
+        LEFT JOIN cont_pay cp ON bbt.borrow_back_task_no = cp.biz_code and cp.payment_type = '08' AND cp.del_flag = ${delete_exist}
+        WHERE
+        bbt.del_flag = ${delete_exist}
+        <if test="borrowBackTaskNo != null">
+            AND bbt.borrow_back_task_no = #{borrowBackTaskNo}
+        </if>
+    </select>
+
+    <select id="selectOrigFileBorrowMailByBorrowBackTaskNo" resultMap="origFileBorrowDetailsMap">
+        SELECT
+        orig.orig_file_detail_id,
+        orig.biz_code,
+        orig.biz_code_type,
+        bft.file_type_name fileTypeName,
+        bft.file_qty_limit fileQtyLimit,
+        orig.file_type fileType,
+        orig.file_count,
+        orig.file_post_id,
+        orig.file_record_no,
+        orig.orig_file_detail_status,
+        orig.file_info1,
+        orig.file_info2,
+        orig.file_info3,
+        orig.orig_flag,
+        orig.create_time,
+        orig.creator,
+        orig.updater,
+        orig.update_time,
+        orig.del_flag
+        FROM borrow_back_task bbt
+        LEFT JOIN orig_file_detail orig ON bbt.borrow_back_task_no = orig.borrow_back_task_no
+        AND orig.del_flag = ${delete_exist}
+        LEFT JOIN bas_file_type bft ON orig.file_type = bft.file_type
+        AND bft.del_flag = ${delete_exist}
+        WHERE orig.del_flag = ${delete_exist}
+        <if test="borrowBackTaskNo != null">
+            AND bbt.borrow_back_task_no = #{borrowBackTaskNo}
+        </if>
+        ORDER BY orig.biz_code
+    </select>
+
+    <select id="selectOrigFileBorrowExamineByBorrowBackTaskNo" resultMap="origFileBorrowDetailsMap">
+        SELECT
+        orig.orig_file_detail_id,
+        orig.biz_code,
+        orig.biz_code_type,
+        bft.file_type_name fileTypeName,
+        bft.file_qty_limit fileQtyLimit,
+        orig.file_type fileType,
+        orig.file_count,
+        orig.file_post_id,
+        orig.file_record_no,
+        orig.orig_file_detail_status,
+        orig.file_info1,
+        orig.file_info2,
+        orig.file_info3,
+        orig.orig_flag,
+        orig.create_time,
+        orig.creator,
+        orig.updater,
+        orig.update_time,
+        orig.del_flag
+        FROM borrow_back_task bbt
+        LEFT JOIN orig_file_detail orig ON bbt.borrow_back_task_no = orig.borrow_back_task_no
+        AND orig.del_flag = ${delete_exist}
+        LEFT JOIN bas_file_type bft ON orig.file_type = bft.file_type
+        AND bft.del_flag = ${delete_exist}
+        WHERE orig.del_flag = ${delete_exist}
+        --         AND orig.orig_file_detail_status = '7'
+        <if test="origFileDetailVo.borrowBackTaskNo != null">
+            AND bbt.borrow_back_task_no = #{origFileDetailVo.borrowBackTaskNo}
+        </if>
+        ORDER BY orig.biz_code
+    </select>
+
+    <select id="selectOrigFileBorrowMailByBorrowTaskNo" resultMap="origFileBorrowDetailsMap">
+        SELECT
+        orig.orig_file_detail_id,
+        orig.biz_code,
+        orig.biz_code_type,
+        bft.file_type_name fileTypeName,
+        bft.file_qty_limit fileQtyLimit,
+        orig.file_type fileType,
+        orig.file_count,
+        orig.file_post_id,
+        orig.file_record_no,
+        orig.orig_file_detail_status,
+        orig.file_info1,
+        orig.file_info2,
+        orig.file_info3,
+        orig.orig_flag,
+        orig.create_time,
+        orig.creator,
+        orig.updater,
+        orig.update_time,
+        orig.del_flag,
+        bft.file_attr
+        FROM orig_file_detail orig
+        LEFT JOIN bas_file_type bft ON orig.file_type = bft.file_type
+        AND bft.del_flag = ${delete_exist}
+        LEFT JOIN borrow_task_detail borrowTaskDetail ON borrowTaskDetail.orig_file_detail_id = orig.orig_file_detail_id
+        AND borrowTaskDetail.del_flag = ${delete_exist}
+        WHERE orig.del_flag = ${delete_exist}
+        <if test="borrowTaskNo != null">
+            AND borrowTaskDetail.borrow_task_no = #{borrowTaskNo}
+        </if>
+        ORDER BY orig.biz_code
+    </select>
+
+    <select id="selectOrigFileBorrowBackMailByBorrowTaskNo" resultMap="origFileBorrowDetailsMap">
+        SELECT
+        bft.file_type_name fileTypeName,
+        bft.file_qty_limit fileQtyLimit,
+        bft.file_attr,
+        orig.orig_file_detail_id,
+        orig.biz_code,
+        orig.biz_code_type,
+        orig.file_type fileType,
+        orig.file_count,
+        orig.file_post_id,
+        orig.file_record_no,
+        orig.orig_file_detail_status,
+        orig.file_info1,
+        orig.file_info2,
+        orig.file_info3,
+        orig.orig_flag,
+        orig.create_time,
+        orig.creator,
+        orig.updater,
+        orig.update_time,
+        orig.del_flag
+        FROM orig_file_detail orig
+        LEFT JOIN bas_file_type bft ON orig.file_type = bft.file_type
+        AND bft.del_flag = ${delete_exist}
+        WHERE orig.del_flag = ${delete_exist}
+        <!--借阅归还显示归还状态为已借出、归还中与已归档的文件-->
+        /*AND orig.orig_file_detail_status IN ('5', '6', '7')*/
+        <if test="origFileDetailVo.borrowTaskNo != null">
+            AND orig.borrow_task_no = #{origFileDetailVo.borrowTaskNo}
+        </if>
+        ORDER BY orig.biz_code
+    </select>
+
+    <!--取待打印客户信息-->
+    <select id="selectCustomerInformationByBorrowBackTaskNo" parameterType="java.lang.String" resultType="cn.com.leadu.fms.pojo.original.vo.borrowbacktask.BorrowBackTaskVo">
+        SELECT DISTINCT
+        IFNULL(cstmPerson.name,cstmCompany.name) as cstmName,
+        sysGroup.group_name,
+        contract.vin_no as vinNo
+        FROM
+        borrow_back_task borrowBackTask
+        LEFT JOIN
+        orig_file_detail origFileDetail ON borrowBackTask.borrow_back_task_no = origFileDetail.borrow_back_task_no AND origFileDetail.del_flag = ${delete_exist}
+        LEFT JOIN
+        contract contract ON contract.cont_no = origFileDetail.biz_code AND origFileDetail.del_flag = ${delete_exist}
+        LEFT JOIN
+        cstm_company cstmCompany on contract.apply_no = cstmCompany.apply_no and cstmCompany.del_flag = ${delete_exist}
+        LEFT JOIN
+        cstm_person cstmPerson on contract.apply_no = cstmPerson.apply_no and cstmPerson.del_flag = ${delete_exist}
+        LEFT JOIN
+        contract_finance finance ON contract.cont_no=finance.cont_no AND finance.del_flag = ${delete_exist}
+        LEFT JOIN
+        sys_group sysGroup ON finance.belong_group = sysGroup.group_code AND sysGroup.del_flag =  ${delete_exist}
+        WHERE borrowBackTask.del_flag = ${delete_exist}
+        <if test="#{borrowBackTaskNo} != null">
+            AND borrowBackTask.borrow_back_task_no = #{borrowBackTaskNo}
+        </if>
+        <if test="#{bizCodeType} != null">
+            AND origFileDetail.biz_code_type != #{bizCodeType}
+        </if>
+    </select>
+</mapper>

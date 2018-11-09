@@ -1,0 +1,81 @@
+<!--<div class="bg-light lter b-b wrapper-md">-->
+    <!--<h1 class="m-n font-thin h4">prebiz管理</h1>-->
+<!--</div>-->
+<!--<div  ng-controller="orig_file_list_controller">-->
+    <!--<div>-->
+        <!--<toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>-->
+    <!--</div>-->
+    <!--<div class="panel panel-default">-->
+        <!--<div class="panel-body wrapper-sm">-->
+            <!--<div class="row">-->
+                <!--<div class="col-lg-12">-->
+                    <!--<form class="form-inline" role="form">-->
+                        <!--<div class="form-group">-->
+                            <!--<label class="sr-only" >资料邮寄业务号 </label>-->
+                            <!--<input class="form-control m-b-xs" ng-model="bizCode" placeholder="资料邮寄业务号">-->
+                        <!--</div>-->
+                        <!--<div class="form-group">-->
+                            <!--<label class="sr-only" >资料邮寄业务类型 </label>-->
+                            <!--<input class="form-control m-b-xs" ng-model="bizCodeType" placeholder="资料邮寄业务类型">-->
+                        <!--</div>-->
+
+                        <!--<div class="form-group m-b-sm">-->
+                            <!--<div class="btn-group">-->
+                                <!--<button class="btn btn-default m-b-xs btn-info" ng-click="searchOrigFile()" ><i class="fa fa-search"></i>查询</button>-->
+                                <!--<button class="btn btn-default m-b-xs" ng-click="resetOrigFile()" ><i class="fa  icon-refresh"></i>重置</button>-->
+                            <!--</div>-->
+                        <!--</div>-->
+
+                        <!--<div class="form-group pull-right">-->
+                            <!--<div class="btn-group">-->
+                                <!--<button class="btn btn-default m-b-xs" ng-click="handleOrigFile()"><i class="fa icon-pencil"></i>文件操作</button>-->
+                                <!--<button class="btn btn-default m-b-xs" ng-click="saveOrigFile()"><i class="fa fa-plus"></i>添加</button>-->
+                                <!--<button class="btn btn-default m-b-xs" ng-click="modifyOrigFile()"><i class="fa icon-pencil"></i>修改</button>-->
+                                <!--<button class="btn btn-default m-b-xs" ng-click="deleteOrigFile()"><i class="fa fa-trash-o"></i>删除</button>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</form>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--<table border="1" class="table table-striped m-b-none" id="orig_file_table">-->
+        <!--</table>-->
+    <!--</div>-->
+<!--</div>-->
+<div ng-controller="orig_file_list_controller">
+    <div class="panel panel-default">
+        <div class="row">
+            <div class="col-md-6">
+                <form class="form-inline" role="form">
+                <div class="panel-body wrapper-sm">
+                    <div class="form-group ">
+                        <div class="form-group">
+                        <label class="sr-only" >资料邮寄合同号 </label>
+                        <input class="form-control m-b-xs" ng-model="bizCode" placeholder="资料邮寄合同号">
+                        </div>
+                        <div class="form-group">
+                        <label class="sr-only" >资料邮寄业务类型 </label>
+                        <input class="form-control m-b-xs" ng-model="bizCodeType" placeholder="资料邮寄业务类型">
+                        </div>
+                        <div class="btn-group">
+                        <button class="btn btn-default m-b-xs btn-info btn-sm fms-button-margin-bottom" ng-click="searchOrigFile()" ><i class="fa fa-search"></i>查询</button>
+                        <button class="btn btn-default m-b-xs btn-sm fms-button-margin-bottom" ng-click="resetOrigFile()" ><i class="fa  icon-refresh"></i>重置</button>
+                        <button class="btn btn-default m-b-xs btn-sm fms-button-margin-bottom" ng-click="fileOperation()">邮寄</button>
+                        </div>
+                        <!--<div class="btn-group">-->
+                            <!--&lt;!&ndash;<button class="btn btn-default m-b-xs" ng-click="archivalCompletion()">归档完成确认btn</button>&ndash;&gt;-->
+                        <!--</div>-->
+                    </div>
+                </div>
+                </form>
+            </div>
+            <div class="col-md-6">
+                <span ng-if="showTitle" style="text-align: center;font-size: 16px;font-weight: bold;display: block;margin-top: 15px;">资料邮寄明细一览</span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6"><table border="1" class="table table-striped m-b-none" id="file_archive_list"></table></div>
+            <div class="col-md-6" ng-show="showTitle"><table border="1" class="table table-striped m-b-none" id="file_archive_detail"></table></div>
+        </div>
+    </div>
+</div>

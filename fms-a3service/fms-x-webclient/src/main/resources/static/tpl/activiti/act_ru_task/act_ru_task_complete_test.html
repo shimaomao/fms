@@ -1,0 +1,26 @@
+<div class="modal-header">
+    <h4 class="modal-title">工作流测试审批 <button type="button" class="close" data-dismiss="modal" aria-hidden="true" ng-click="close()">&times;</button></h4>
+</div>
+
+<div class="modal-body">
+    <form name="form" class="form-validation" novalidate>
+        <div class="panel-body">
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">状态</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <span style="margin-top: 5px;" ng-repeat="actType in actTypes">
+                        <input type="radio" name="actType" ng-model="actObj.actType"  value="{{actType.codeValue}}" /> {{actType.codeValueName}}
+                    </span>
+                </div>
+            </div>
+
+        </div>
+    </form>
+</div>
+
+
+<div class="modal-footer ng-scope">
+    <button class="btn btn-default" ng-click="close()">取消</button>
+    <button type="submit" class="btn btn-success"  ng-click="submit()">确认</button>
+</div>

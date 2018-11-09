@@ -1,0 +1,36 @@
+<div class="bg-light lter b-b wrapper-md">
+    <h1 class="m-n font-thin h4">提前还款取消</h1>
+</div>
+<div  ng-controller="cont_prepayment_approve_controller">
+    <div>
+        <toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+    </div>
+    <div class="panel panel-default" >
+        <div class="panel-body wrapper-sm">
+            <div class="row">
+                <div class="form-group pull-right">
+                    <div class="btn-group ">
+                        <button class="btn btn-success m-t-xs m-r-xs" ng-click="submitInfo()" ng-disabled="submit">提交</button>
+                        <button class="btn btn-default m-t-xs" ng-click="goback()">返回</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <form name="form" class="form-validation" novalidate>
+            <div class="form-group row">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">取消备注</b>
+                    <b class="form-error">*</b>:</label>
+                <div class="col-sm-4">
+                    <textarea limit-word placeholder="请输入备注" class="form-control m-b-xs" ng-model="memo" name="memo" required></textarea>
+                    <p>
+                        <span class="form-info" ng-show=" (form.memo.$dirty && form.memo.$error.required) || (form.memo.$error.required && formValidate)">备注不能为空</span>
+                    </p>
+                </div>
+            </div>
+        </form>
+
+        <div ng-include="'tpl/cost/cont_prepayment/cont_prepayment_modify.html'"></div>
+
+        <!--<div ng-include="'tpl/common/process_log/process_log_list.html'"></div>-->
+    </div>
+</div>

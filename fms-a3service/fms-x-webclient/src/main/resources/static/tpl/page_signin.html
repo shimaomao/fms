@@ -1,0 +1,59 @@
+<div class="container w-xxl w-auto-xs logo-page" ng-controller="SigninFormController" ng-init="app.settings.container = false;">
+  <style>
+    .tab{display: table;width: 330px;}
+    .tab-td{display: table-cell;vertical-align: middle;text-align: center;}
+    .tab-td-1{width: 20%;}
+    .tab-td-1 image{display: inline-block;width: 65px;height: auto;}
+    .tab-td-2{width: 80%;font-size: 35px;color: white;font-weight: bold;letter-spacing: 5px;}
+    .text-muted{color: rgba(255,255,255,.3);}
+    .m-b-lg{padding: 20px;background-color: white;border-radius: 4px;}
+    .logo-page{position: absolute;top: 50%;left: 50%;margin-left: -180px;margin-top: -187px;}
+    .page-footer{position: absolute;bottom: 0;width: 210px;text-align:center;left: 50%;margin-left: -105px;}
+  </style>
+  <div class="tab">
+    <div class="tab-td tab-td-1">
+      <img src="img/wl01.png">
+    </div>
+    <div class="tab-td tab-td-2">
+      万量融资租赁
+    </div>
+  </div>
+  <h3 class="block m-t" style="text-align:center;color: white;margin: 15px 0;">{{app.name}}</h3>
+  <div class="m-b-lg">
+
+    <form name="form" class="form-validation" novalidate>
+
+      <div class="alert alert-danger alert-dismissable" ng-show="authError">
+        <button type="button" class="close" data-dismiss="alert"
+                aria-hidden="true" ng-click="close()">
+          &times;
+        </button>
+        {{authError}}
+      </div>
+      <div class="list-group list-group-sm" ng-init="user={username:'leaduadmin',password:'00000000'}">
+        <div class="list-group-item">
+          <input  placeholder="请填写您的账号" class="form-control no-border" ng-model="user.user" required>
+        </div>
+        <div class="list-group-item">
+           <input type="password" placeholder="请填写您的密码" class="form-control no-border" ng-model="user.userPassword" required>
+        </div>
+        <div class="list-group-item">
+          <div class="input-group">
+            <input type="text" placeholder="请输入验证码" class="form-control " ng-model="user.code" required>
+            <span class="input-group-addon no-bg"  role="button" tabindex="0" ng-click="getVerifyCode()">{{randomNum}}</span>
+          </div>
+        </div>
+      </div>
+
+      <button type="submit" class="btn btn-lg btn-primary btn-block" ng-click="login()">
+        登&nbsp;&nbsp;&nbsp;&nbsp;录
+      </button>
+      <!--
+      <div class="line line-dashed"></div>
+      <p class="text-center" style="color: #FFFFFF"><small>如果您还没有账号，请点击下面按钮?</small></p>
+      <a ui-sref="access.signup" class="btn btn-lg btn-default btn-block">创建账号</a>
+      -->
+    </form>
+  </div>
+</div>
+<div class="page-footer" ng-include="'tpl/blocks/page_footer.html'"></div>

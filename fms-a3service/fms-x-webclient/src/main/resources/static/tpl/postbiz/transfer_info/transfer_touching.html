@@ -1,0 +1,58 @@
+<div class="bg-light lter b-b wrapper-md">
+    <h1 class="m-n font-thin h4">财务审核</h1>
+</div>
+<div  ng-controller="transfer_touching_controller" style="padding: 10px;">
+    <div>
+        <toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+    </div>
+    <div class="panel panel-default" >
+        <div class="panel-body">
+            <div class="row m-b-xs">
+                <div class="form-group pull-right">
+                    <div class="btn-group ">
+                        <button class="btn btn-success m-t-xs m-r-xs" ng-click="printPayment()" ng-disabled="submit">打印付款单</button>
+                        <button class="btn btn-success m-t-xs m-r-xs" ng-click="submitInfo()" ng-disabled="submit">提交</button>
+                        <button class="btn btn-default m-t-xs" ng-click="goback()">返回</button>
+                    </div>
+                </div>
+            </div>
+            <form name="form" class="form-validation" novalidate>
+                <div class="row m-t-md">
+                    <!-- 付款银行信息 -->
+                    <div class="form-group row">
+                        <label class="col-sm-2 control-label text-right"><b class="form-text-black">付款银行分行</b>:</label>
+                        <div class="col-sm-2">
+                            <input type="text" title="{{transferInfoVo.payAccBranch}}" name="payAccBranch" class="form-control m-b-xs" ng-model="transferInfoVo.payAccBranch" disabled required/>
+                            <p>
+                                <span class="form-info" ng-show=" (form.payAccBranch.$dirty && form.payAccBranch.$error.required) || (form.payAccBranch.$error.required && formValidate)">付款银行不能为空</span>
+                            </p>
+                        </div>
+                        <div class="col-sm-1">
+                            <button class="btn btn-info m-b-xs m-l-sm  btn-sm" ng-click="selectBasBankInfo()"><i class="fa fa-pencil-square-o m-r-xs"></i>选择</button>
+                        </div>
+                        <label class="col-sm-1 control-label text-right"><b class="form-text-black">付款账户名</b>:</label>
+                        <div class="col-sm-2">
+                            <input type="text" title="{{transferInfoVo.payAccountName}}" name="payAccountName" class="form-control m-b-xs" ng-model="transferInfoVo.payAccountName" disabled  required/>
+                        </div>
+                        <label class="col-sm-1 control-label text-right"><b class="form-text-black">付款卡号</b>:</label>
+                        <div class="col-sm-2">
+                            <input type="text" title="{{transferInfoVo.payAccountNo}}" name="payAccountNo" class="form-control m-b-xs" ng-model="transferInfoVo.payAccountNo" disabled required/>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 control-label text-right"><b class="form-text-black">备注</b><b class="form-error">*</b>:</label>
+                        <div class="col-sm-4">
+                            <textarea limit-word placeholder="请输入备注" class="form-control m-b-xs" ng-model="transferInfoVo.remark" ng-maxlength='1000' name="remark" required></textarea>
+                            <p>
+                                <span class="form-info" ng-show=" (form.remark.$dirty && form.remark.$error.required) || (form.remark.$error.required && formValidate)">备注不能为空</span>
+                                <span class="form-info" ng-show="(form.remark.$dirty && form.remark.$error.maxlength) || (form.remark.$error.maxlength && formValidate)">备注长度不超过1000</span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <!-- 详情页面 -->
+            <div ng-include="'tpl/postbiz/transfer_info/transfer_info_detail.html'"></div>
+        </div>
+    </div>
+</div>

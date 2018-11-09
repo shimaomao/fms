@@ -1,0 +1,12 @@
+spring:
+  application:
+    name: fms-b-config
+  profiles:
+    active: ${leadu-profiles-active:dev}
+
+management:
+  security:
+    enabled: false
+
+
+

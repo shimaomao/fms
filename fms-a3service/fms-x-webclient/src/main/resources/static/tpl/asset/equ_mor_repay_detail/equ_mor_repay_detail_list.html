@@ -1,0 +1,72 @@
+<div  ng-controller="equ_mor_repay_detail_list_controller">
+    <div>
+        <toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-body wrapper-sm">
+            <div class="row">
+                <div class="col-lg-12">
+                    <form class="form-inline" role="form">
+
+                        <div class="form-group m-b-sm">
+                            <select name="equRepayStatus" ng-model="params.equRepayStatus" class="form-control m-b-xs">
+                                <option value="">---还款状态---</option>
+                                <option ng-repeat="equRepayStatusObj in equRepayStatusList" value="{{equRepayStatusObj.codeValue}}" ng-selected="params.equRepayStatus == equRepayStatusObj.codeValue">{{equRepayStatusObj.codeValueName}}</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group m-b-sm">
+                            <select name="management" ng-model="params.management" class="form-control m-b-xs">
+                                <option value="">---资方名称---</option>
+                                <option ng-repeat="managementObj in managementList" value="{{managementObj.codeValue}}" ng-selected="params.management == managementObj.codeValue">{{managementObj.codeValueName}}</option>
+                            </select>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label class="sr-only" >客户合同编号 </label>
+                            <input class="form-control m-b-xs" ng-model="params.clientContNo" placeholder="客户合同编号">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="sr-only" >车架号 </label>
+                            <input class="form-control m-b-xs" ng-model="params.vinNo" placeholder="车架号">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="sr-only" >承租人 </label>
+                            <input class="form-control m-b-xs" ng-model="params.tenantUser" placeholder="承租人">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="sr-only" >起始日期 </label>
+                            <input class="form-control m-b-xs" ng-model="params.repaySatrtStr" placeholder="应还日期起始日" date-picker="{{dateParams}}">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="sr-only" >结束日期 </label>
+                            <input class="form-control m-b-xs" ng-model="params.repayEndStr" placeholder="应还日期结束日" date-picker="{{dateParams}}">
+                        </div>
+
+                        <div class="form-group m-b-sm">
+                            <div class="btn-group">
+                                <button class="btn btn-default m-b-xs btn-info btn-sm fms-button-margin-bottom" ng-click="searchEquMorRepayDetail()" ><i class="fa fa-search"></i>查询</button>
+                                <button class="btn btn-default m-b-xs btn-sm fms-button-margin-bottom" ng-click="resetEquMorRepayDetail()" ><i class="fa  icon-refresh"></i>重置</button>
+                            </div>
+                        </div>
+
+                        <div class="form-group pull-right">
+                            <div class="btn-group">
+                                <button class="btn btn-default m-b-xs" ng-click="exportExcel()"><i class="fa"></i>导出excel</button>
+                                <button class="btn btn-default m-b-xs btn-sm fms-button-margin-bottom" ng-click="invoice()">资方抵押还款</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <table border="1" class="table table-striped m-b-none" id="equ_mor_repay_detail_table">
+        </table>
+    </div>
+</div>
+

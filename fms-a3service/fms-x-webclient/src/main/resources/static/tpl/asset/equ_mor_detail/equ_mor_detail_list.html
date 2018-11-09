@@ -1,0 +1,67 @@
+
+<div  ng-controller="equ_mor_detail_list_controller">
+    <div>
+        <toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-body wrapper-sm">
+            <div class="row">
+                <div class="col-lg-12">
+                    <form class="form-inline" role="form">
+                        <div class="form-group">
+                            <label class="sr-only" >合同编号 </label>
+                            <input class="form-control m-b-xs" ng-model="params.mainContNo" placeholder="合同编号">
+                        </div>
+                        <div class="form-group">
+                            <label class="sr-only" >车架号码 </label>
+                            <input class="form-control m-b-xs" ng-model="params.vinNo" placeholder="车架号码">
+                        </div>
+                        <div class="form-group">
+                            <label class="sr-only" >承租人 </label>
+                            <input class="form-control m-b-xs" ng-model="params.lessee" placeholder="承租人">
+                        </div>
+                        <div class="form-group">
+                            <select   ng-model="params.serviceType" class="form-control m-b-xs" >
+                                <option value="">---选择业务类型---</option>
+                                <option ng-repeat="serviceType in serviceTypeList" value="{{serviceType.codeValue}}" ng-selected="params.serviceType == serviceType.codeValue">{{serviceType.codeValueName}}</option>
+                            </select>
+                        </div>
+
+
+                        <div class="form-group">
+                            <select ng-model="params.mortgageStatus" class="form-control m-b-xs">
+                                <option value="">---选择抵押状态---</option>
+                                <option value="{{mortgageStatusObj.codeValue}}" ng-repeat="mortgageStatusObj in mortgageStatusList" ng-selected="params.mortgageStatus == mortgageStatusObj.codeValue">{{mortgageStatusObj.codeValueName}}</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <select ng-model="params.paymentSts" class="form-control m-b-xs">
+                                <option value="">---选择还款状态---</option>
+                                <option value="{{paymentStsObj.codeValue}}" ng-repeat="paymentStsObj in paymentStsList" ng-selected="params.paymentSts == paymentStsObj.codeValue">{{paymentStsObj.codeValueName}}</option>
+                            </select>
+                        </div>
+
+
+                        <div class="form-group m-b-sm">
+                            <div class="btn-group">
+                                <button class="btn btn-success m-b-xs btn-info btn-sm fms-button-margin-bottom" ng-click="searchEquMorDetail()" ><i class="fa fa-search"></i>查询</button>
+                                <button class="btn btn-default m-b-xs btn-sm fms-button-margin-bottom" ng-click="resetEquMorDetail()" ><i class="fa  icon-refresh"></i>重置</button>
+                            </div>
+                        </div>
+
+                        <div class="form-group pull-right">
+                            <div class="btn-group">
+                                <button class="btn btn-success m-b-xs btn-sm fms-button-margin-bottom" ng-click="saveEquMorDetail()"><i class="fa"></i>提交申请</button>
+                                <button class="btn btn-default m-b-xs btn-sm fms-button-margin-bottom" ng-click="exportExcel()"><i class="fa"></i>导出数据</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <table border="1" class="table table-striped m-b-none" id="equ_mor_detail_table">
+        </table>
+    </div>
+</div>
+

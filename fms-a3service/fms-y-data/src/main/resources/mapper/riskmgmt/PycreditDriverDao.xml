@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.com.leadu.fms.data.riskmgmt.dao.PycreditDriverDao">
+    <select id="selectPycreditDriverList" parameterType="java.lang.String" resultType="cn.com.leadu.fms.pojo.riskmgmt.vo.pycreditdriver.PycreditDriverVo">
+        select * from pycredit_driver where document_no=#{documentNo} and ${ceilingNumber}>datediff(now(),query_date)
+    </select>
+
+    <select id="selectLastPycreditDriverByDocumentNo" parameterType="java.lang.String" resultType="cn.com.leadu.fms.pojo.riskmgmt.entity.PycreditDriver">
+        select * from pycredit_driver
+        where document_no=#{documentNo}
+        ORDER BY query_date DESC
+        limit 0,1
+    </select>
+</mapper>

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.com.leadu.fms.data.finance.dao.FinancialVoucherAssisDao">
+
+    <!--
+    /**
+     * @Title:
+     * @Description:   根据财务凭证id获取核算数据
+     * @param voucherDataId
+     * @return
+     * @throws
+     * @author qiaomengnan
+     * @date 2018/07/11 03:13:03
+     */
+     -->
+    <select id="selectFinancialVoucherAssisVosByVouDataId" resultType="cn.com.leadu.fms.pojo.finance.vo.financialvoucherassis.FinancialVoucherAssisVo">
+      select
+      <!-- 辅助核算数据 -->
+      finVouAssis.*,
+      <!-- 辅助核算类型名称 -->
+      assAccType.assis_account_type_name
+      <!-- 凭证辅助核算数据表 -->
+      from financial_voucher_assis finVouAssis
+      <!-- 关联辅助核算类型表 使用辅助和旋类型 -->
+      left join assis_account_type assAccType on assAccType.del_flag = ${delete_exist}
+      and assAccType.assis_account_type = finVouAssis.assis_account_type
+      <!-- 条件 -->
+      where finVouAssis.del_flag = ${delete_exist}
+      <!-- 财务凭证id -->
+      and finVouAssis.voucher_data_id = #{voucherDataId}
+      <!-- 辅助核算序号排序 -->
+      order by finVouAssis.assis_account_order
+    </select>
+
+    <!--
+     /**
+     * @Title:
+     * @Description:   根据财务凭证id获取金蝶用户列表
+     * @param finVouAssisVo
+     * @return
+     * @throws
+     * @author qiaomengnan
+     * @date 2018/07/30 10:35:44
+     */
+     -->
+    <select id="selectKingDeeCusVosByVouDataIds" resultType="cn.com.leadu.fms.pojo.thirdinterface.vo.kingdee.KingDeeCusVo">
+      select
+      distinct
+      <!--客户姓名 -->
+      ifnull(crmPerson.name,crmCompany.name) fname,
+      <!--客户代码 -->
+      finVouAssis.assis_account_value fnumber,
+      <!--客户类别 -->
+      substring(finVouAssis.assis_account_value,1,2) parentid
+      <!-- 凭证辅助核算数据表 -->
+      from financial_voucher_assis finVouAssis
+      <!-- 关联crm客户信息表 -->
+      left join crm_person crmPerson on
+      finVouAssis.assis_account_value = crmPerson.finass_cstm_code and crmPerson.del_flag = ${delete_exist}
+      <!-- 关联crm企业信息表 -->
+      left join crm_company crmCompany on
+      finVouAssis.assis_account_value = crmCompany.finass_cstm_code and crmCompany.del_flag = ${delete_exist}
+      <!-- 条件 -->
+      where finVouAssis.del_flag = ${delete_exist}
+      and finVouAssis.assis_account_type = #{finVouAssisVo.itemCustom}
+      and finVouAssis.voucher_data_id in
+      <foreach collection="finVouAssisVo.vouDataIds" item="vouDataId" open="(" separator="," close=")">
+        #{vouDataId}
+      </foreach>
+    </select>
+
+</mapper>

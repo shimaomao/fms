@@ -1,0 +1,36 @@
+<div  ng-controller="deposit_supple_upload_controller" class="col-lg-12  panel panel-default">
+    <ul type="none" style="padding-left: 20px;">
+        <div id="print" class="panel panel-default" style="margin: 10px 0; padding-right: 50px;">
+
+            <div class="form-group row">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">审批操作</b><b
+                        class="form-error">*</b>:</label>
+                <div class="col-sm-2">
+                    <div class="radio" ng-repeat="contRequestPayActTypeObj in contRequestPayActTypeList">
+                        <label>
+                            <input type="radio" name="actType" ng-model="suppleUploadVo.actType"  ng-value="contRequestPayActTypeObj.codeValue">
+                            {{contRequestPayActTypeObj.codeValueName}}
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">备注</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-10">
+                    <textarea placeholder="请输入备注" limit-word class="form-control m-b-xs r-none" name="remark" ng-model="suppleUploadVo.remark" required></textarea>
+                    <p>
+                        <span class="form-info" ng-show=" (form.remark1.$dirty && form.remark.$error.required) || (form.remark.$error.required && formValidate)">请输入审批意见备注</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </ul>
+    <p style="font-weight: bold;font-size: 16px;padding-left: 10px;">附件信息</p>
+    <!--附件信息-->
+    <div class="panel-body wrapper-sm">
+        <tree-file-directive detail-flag="$root.yesNoFlag.no" file-type="$root.basFileTypes.depositChangeSuppleFile" files="suppleUploadVo.bizFilesList" not-upload="suppleUploadVo.notUpload" not-upload-info="suppleUploadVo.msgInfo"   not-file-type="suppleUploadVo.notFileType" not-file-type-name="suppleUploadVo.notFileTypeName">
+        </tree-file-directive>
+    </div>
+    <div ng-include="'tpl/common/process_log/process_log_list.html'"></div>
+</div>

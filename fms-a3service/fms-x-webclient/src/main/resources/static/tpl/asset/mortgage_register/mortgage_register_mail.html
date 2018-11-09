@@ -1,0 +1,207 @@
+<style>
+    .panel>h4{padding: 15px;border-bottom: 1px solid #dedede;color: black;font-weight: 600;margin: 0;font-size: 14px;}
+    .ng-scope .panel:not(:first-child){margin-top: 20px;}
+</style>
+<div ng-controller="mortgage_register_mail_controller" style="padding: 20px;">
+    <div class="panel panel-default">
+        <h4>车辆融资申请信息</h4>
+        <div class="panel-body">
+            <div class="row">
+                <label class="col-sm-2 text-right"><b class="form-text-black">申请编号</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-4">
+                    {{mortgage.applyNo}}
+                </div>
+                <label class="col-sm-2 text-right"><b class="form-text-black">客户姓名</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-4">
+                    {{mortgage.name}}
+                </div>
+            </div>
+
+            <div class="row">
+                <label class="col-sm-2 text-right"><b class="form-text-black">店面</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-4">
+                    {{mortgage.applyGroupName}}
+                </div>
+                <label class="col-sm-2 text-right"><b class="form-text-black">结清日期</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-4">
+                    -
+                </div>
+            </div>
+
+            <div class="row">
+                <label class="col-sm-2 text-right"><b class="form-text-black">合同状态</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-4">
+                    {{mortgage.bizStatus}}
+                </div>
+                <label class="col-sm-2 text-right"><b class="form-text-black">合同签订日期</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-4">
+                    {{mortgage.contractDate}}
+                </div>
+            </div>
+
+            <div class="row">
+                <label class="col-sm-2 text-right"><b class="form-text-black">合同生效日期</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-4">
+                    {{mortgage.contractValidDate}}
+                </div>
+                <label class="col-sm-2 text-right"><b class="form-text-black">合同号码</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-4">
+                    {{mortgage.contNo}}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="panel panel-default">
+        <h4>车辆基本信息</h4>
+        <div class="panel-body">
+            <form name="form" class="form-validation" novalidate>
+                <div class="row">
+                    <label class="col-sm-2 text-right"><b class="form-text-black">车牌号</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-4">
+                        {{mortgage.vehicleLicenseNo}}
+                    </div>
+                    <label class="col-sm-2 text-right"><b class="form-text-black">牌照属性</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-4">
+                        {{mortgage.licenseAttr | getName:'licenseAttr'}}
+                    </div>
+                </div>
+
+                <div class="row">
+                    <label class="col-sm-2 text-right"><b class="form-text-black">品牌</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-4">
+                        {{mortgage.vehBrandCode}}
+                    </div>
+                    <label class="col-sm-2 text-right"><b class="form-text-black">车型</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-4">
+                        {{mortgage.vehicleCode}}
+                    </div>
+                </div>
+
+                <div class="row">
+                    <label class="col-sm-2 text-right"><b class="form-text-black">车辆类型</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-4">
+                        {{mortgage.vehicleForm | getName:'vehicleForm'}}
+                    </div>
+                    <label class="col-sm-2 text-right"><b class="form-text-black">车架号</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-4">
+                        {{mortgage.vinNo}}
+                    </div>
+                </div>
+
+                <div class="row">
+                    <label class="col-sm-2 text-right"><b class="form-text-black">发动机号</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-4">
+                        {{mortgage.engineNo}}
+                    </div>
+                    <label class="col-sm-2 text-right"><b class="form-text-black">车辆登记日期</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-4">
+                        {{mortgage.registDate}}
+                    </div>
+                </div>
+
+                <div class="row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">邮寄资料地址类型</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-4">
+                        <input type="text" name="postAddrType" placeholder="邮寄资料地址类型" ng-model="mortgageData.postAddrType" class="form-control m-b-xs" required />
+                        <p>
+                            <span class="form-info" ng-show=" (form.postAddrType.$dirty && form.postAddrType.$error.required) || (form.postAddrType.$error.required && formValidate)">邮寄资料地址类型不能为空</span>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">快递公司</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-4">
+                        <input type="text" name="postComp" placeholder="快递公司" ng-model="mortgageData.postComp" class="form-control m-b-xs" required/>
+                        <p>
+                            <span class="form-info" ng-show=" (form.postComp.$dirty && form.postComp.$error.required) || (form.postComp.$error.required && formValidate)">快递公司不能为空</span>
+                        </p>
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">快递单号</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-4">
+                        <input type="text" name="postNo" placeholder="快递单号" ng-model="mortgageData.postNo" class="form-control m-b-xs" required/>
+                        <p>
+                            <span class="form-info" ng-show=" (form.postNo.$dirty && form.postNo.$error.required) || (form.postNo.$error.required && formValidate)">快递单号不能为空</span>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">快递日期</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-4">
+                        <input type="text" name="postDate" placeholder="快递日期" ng-model="mortgageData.postDate" date-picker class="form-control m-b-xs" required/>
+                        <p>
+                            <span class="form-info" ng-show=" (form.postDate.$dirty && form.postDate.$error.required) || (form.postDate.$error.required && formValidate)">快递日期不能为空</span>
+                        </p>
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">邮寄快递人员</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-4">
+                        <input type="text" name="postMember" placeholder="邮寄快递人员" ng-model="mortgageData.postMember" class="form-control m-b-xs" required/>
+                        <p>
+                            <span class="form-info" ng-show=" (form.postMember.$dirty && form.postMember.$error.required) || (form.postMember.$error.required && formValidate)">邮寄快递人员不能为空</span>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">联系电话</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-4">
+                        <input type="text" name="postMemberTel" placeholder="联系电话" ng-model="mortgageData.postMemberTel" class="form-control m-b-xs" required/>
+                        <p>
+                            <span class="form-info" ng-show=" (form.postMemberTel.$dirty && form.postMemberTel.$error.required) || (form.postMemberTel.$error.required && formValidate)">联系电话不能为空</span>
+                        </p>
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">情况说明</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-4">
+                        <input type="text" name="postMemo" placeholder="情况说明" ng-model="mortgageData.postMemo" class="form-control m-b-xs" required/>
+                        <p>
+                            <span class="form-info" ng-show=" (form.postMemo.$dirty && form.postMemo.$error.required) || (form.postMemo.$error.required && formValidate)">情况说明不能为空</span>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">邮寄地址</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-10">
+                        <input type="text" name="postAddr" placeholder="邮寄地址" ng-model="mortgageData.postAddr" class="form-control m-b-xs" required/>
+                        <p>
+                            <span class="form-info" ng-show=" (form.postAddr.$dirty && form.postAddr.$error.required) || (form.postAddr.$error.required && formValidate)">邮寄地址不能为空</span>
+                        </p>
+                    </div>
+                </div>
+
+
+                <div ng-include="'tpl/common/tree_file/tree_file.html'"></div>
+
+                <div class="row">
+                    <div class="col-sm-12"><h4>待邮寄资料一览</h4></div>
+                    <div class="col-sm-12">
+                        <table border="1" class="table table-striped m-b-none" id="mortgage_register_mail"></table>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-12 text-center m-t-md">
+                        <button class="btn btn-default" ng-click="close()">取消</button>
+                        <button type="submit" class="btn btn-success" ng-disabled="submit" ng-click="save()">保存</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!--<form name="form" class="form-validation" novalidate>
+        <div class="panel-body">
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">合同编号</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="contNo" placeholder="请输入合同编号" class="form-control m-b-xs" ng-model="mortgageRegister.contNo"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.contNo.$dirty && form.contNo.$error.required) || (form.contNo.$error.required && formValidate)">合同编号不能为空</span>
+                    </p>
+                </div>
+            </div>
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+        </div>
+    </form>-->
+</div>

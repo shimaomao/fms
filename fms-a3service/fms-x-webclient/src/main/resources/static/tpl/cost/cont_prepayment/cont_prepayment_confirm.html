@@ -1,0 +1,88 @@
+<form name="form" class="form-validation" novalidate>
+    <div ng-controller="cont_prepayment_confirm_controller" class="panel panel-default">
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="form-group pull-right">
+                        <div class="btn-group">
+                            <button class="btn btn-default m-t-xs" ng-click="selectContReceiptDetail()"><i class="fa fa-plus"></i>选择收款明细</button>
+                            <button class="btn btn-default m-t-xs" ng-click="financeConfirm()"><i class="glyphicon glyphicon-check"></i>财务确认</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row" style="margin-top:14px;">
+                <div class="form-group row">
+                    <div class="form-group row">
+                        <label class="col-sm-2 control-label text-right"><b class="form-text-black">付款银行</b>:</label>
+                        <div class="col-sm-2">
+                            <label class="control-label text-left">{{contReceiptVo.payAccBank}}</label>
+                        </div>
+
+                        <label class="col-sm-2 control-label text-right"><b class="form-text-black">付款账号</b>:</label>
+                        <div class="col-sm-2">
+                            <label class=" control-label text-left">{{contReceiptVo.payAccountNo}}</label>
+                        </div>
+
+                        <label class="col-sm-2 control-label text-right"><b class="form-text-black">付款户名</b>:</label>
+                        <div class="col-sm-2">
+                            <label class=" control-label text-left">{{contReceiptVo.payAccountName}}</label>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-sm-2 control-label text-right"><b class="form-text-black">收款银行</b>:</label>
+                        <div class="col-sm-2">
+                            <label class=" control-label text-left">{{contReceiptVo.recAccBank}}</label>
+                        </div>
+                        <label class="col-sm-2 control-label text-right"><b class="form-text-black">收款账号</b>:</label>
+                        <div class="col-sm-2">
+                            <label class="control-label text-left">{{contReceiptVo.recAccountNo}}</label>
+                        </div>
+                        <label class="col-sm-2 control-label text-right"><b class="form-text-black">收款户名</b>:</label>
+                        <div class="col-sm-2">
+                            <label class="control-label text-left">{{contReceiptVo.recAccountName}}</label>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-sm-2 control-label text-right"><b class="form-text-black">到账日期</b>:</label>
+                        <div class="col-sm-2">
+                            <label class=" control-label text-left">{{contReceiptVo.receiptDate}}</label>
+                        </div>
+                        <label class="col-sm-2 control-label text-right"><b class="form-text-black">到账金额</b>:</label>
+                        <div class="col-sm-2">
+                            <label class="control-label text-left">{{contReceiptVo.receiptAmount}}</label>
+                        </div>
+                        <label class="col-sm-2 control-label text-right"><b class="form-text-black">剩余金额</b>:</label>
+                        <div class="col-sm-2">
+                            <label class="control-label text-left">{{contReceiptVo.restAmount}}</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="for-group row" style="margin-top: 10px;">
+                    <div class="form-group row">
+                        <label class="col-sm-2 control-label text-right"><b class="form-text-black">财务确认金额</b><b class="form-error">*</b>:</label>
+                        <div class="col-sm-2">
+                            <input type="text" name="financeConfirmAmount" placeholder="财务确认金额" class="form-control m-b-xs" ng-model="contReceiptVo.financeConfirmAmount"  required>
+                            <p>
+                                <span class="form-info" ng-show=" (form.financeConfirmAmount.$dirty && form.financeConfirmAmount.$error.required) || (form.financeConfirmAmount.$error.required && formValidate)">财务确认金额不能为空</span>
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-sm-2 control-label text-right"><b class="form-text-black">财务确认备注</b><b class="form-error">*</b>:</label>
+                        <div class="col-sm-4">
+                            <textarea limit-word type="textarea" name="remark1" placeholder="财务确认备注" class="form-control m-b-xs" ng-model="contReceiptVo.remark1"  required></textarea>
+                            <p>
+                                <span class="form-info" ng-show=" (form.remark1.$dirty && form.remark1.$error.required) || (form.remark1.$error.required && formValidate)">财务确认金额不能为空</span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

@@ -1,0 +1,75 @@
+<div class="panel panel-default" ng-controller="equ_mor_apply_input_controller">
+    <div>
+        <toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-body wrapper-sm">
+            <form name="form" class="form-validation" novalidate>
+                <div class="row fms-page-header" >
+                    <div class="form-inline" role="form">
+                        <div class="form-group">
+                            <h5>资方抵押申请</h5>
+                        </div>
+                        <div class="form-group pull-right">
+                            <button class="btn btn-default btn-sm fms-button-margin-top" ng-click="goBack()" ng-disabled="submit">返回</button>
+
+                            <button class="btn btn-default btn-sm fms-button-margin-top" ng-click="download()" ng-disabled="submit">下载申请表</button>
+
+                            <button ng-if="equMorTaskNo != null" class="btn btn-default btn-sm fms-button-margin-top" ng-click="cancel()" ng-disabled="submit">取消</button>
+
+                            <button class="btn btn-success m-t-xs m-r-xs btn-sm fms-button-margin-top" ng-click="save()"  ng-disabled="submit">提交</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row" style="margin: 5px; padding-right: 50px;">
+                    <div class="row">
+                        <label class="col-sm-1 control-label text-right"><b class="form-text-black">资金方</b><b class="form-error">*</b>:</label>
+                        <div class="col-sm-2">
+                            <select name="management" ng-model="equMorApplyVo.management" class="form-control m-b-xs" required >
+                                <option value="">---请选择---</option>
+                                <option ng-if="managementObj.codeValue != $root.managements.seaWing" ng-selected="equMorChargeApplyVo.management == managementObj.codeValue" ng-repeat="managementObj in managementList" value="{{managementObj.codeValue}}">{{managementObj.codeValueName}}</option>
+                            </select>
+                            <p>
+                                <span class="form-info" ng-show=" (form.management.$dirty && form.management.$error.required) || (form.management.$error.required && formValidate)">请选择资金方</span>
+                            </p>
+                        </div>
+                        <label class="col-sm-1 control-label text-right"><b class="form-text-black">抵押流程</b><b class="form-error">*</b>:</label>
+                        <div class="col-sm-2">
+                            <select name="mortgageProcess" ng-model="equMorApplyVo.mortgageProcess" class="form-control m-b-xs" required ng-disabled="equMorTaskNo != null" >
+                                <option value="">---请选择---</option>
+                                <option ng-selected="equMorChargeApplyVo.mortgageProcess == mortgageProcessObj.codeValue" ng-repeat="mortgageProcessObj in mortgageProcessList" value="{{mortgageProcessObj.codeValue}}">{{mortgageProcessObj.codeValueName}}</option>
+                            </select>
+                            <p>
+                                <span class="form-info" ng-show=" (form.mortgageProcess.$dirty && form.mortgageProcess.$error.required) || (form.mortgageProcess.$error.required && formValidate)">请选择抵押流程</span>
+                            </p>
+                        </div>
+
+                        <div class="form-group pull-right">
+                            <button class="btn btn-default btn-sm fms-button-margin-top" ng-click="selectContract()" ng-disabled="submit">增加合同</button>
+                        </div>
+                    </div>
+
+                </div>
+            </form>
+
+
+            <div class="row">
+                <table border="1" class="table table-striped m-b-none" id="equ_mor_charge_apply_input_table"></table>
+            </div>
+            <div class="row fms-div-content" ng-if="equMorTaskNo != null">
+                <label class="col-sm-1 control-label text-right"><b class="form-text-black">备注</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-11">
+                    <textarea limit-word style="height: 110px;resize: none;" limit-word="200"  name="memo" placeholder="请输入备注" class="form-control m-b-xs" ng-model="equMorApplyVo.memo"  required ></textarea>
+                    <p>
+                        <span class="form-info" ng-show=" (form.memo.$dirty && form.memo.$error.required) || (form.memo.$error.required && formValidate)">请输入备注</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="row fms-div-content">
+                <process-log-list-directive wf-log-type="$root.bizTypes.equMortgage" wf-log-no="equMorTaskNo" wf-log-sub-no="subNo" > </process-log-list-directive>
+            </div>
+        </div>
+    </div>
+</div>

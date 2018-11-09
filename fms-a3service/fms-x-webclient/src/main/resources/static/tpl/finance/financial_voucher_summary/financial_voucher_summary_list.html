@@ -1,0 +1,112 @@
+<div ng-controller="financial_voucher_summary_list_controller">
+    <div>
+        <toaster-container
+                toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-body wrapper-sm">
+            <form class="form" role="form">
+                <div class="row">
+                    <div class="col-lg-2">
+                        <div class="form-group">
+                            <label class="sr-only">凭证号 </label>
+                            <input class="form-control m-b-xs" ng-model="params.voucherNo" placeholder="凭证号">
+                        </div>
+                    </div>
+                    <div class="col-lg-2">
+                        <div class="form-group">
+                            <label class="sr-only">业务号 </label>
+                            <input class="form-control m-b-xs" ng-model="params.voucherBizCode"
+                                   placeholder="业务号">
+                        </div>
+                    </div>
+                    <div class="col-lg-2">
+                        <div class="form-group">
+                            <label class="sr-only">承租人 </label>
+                            <input class="form-control m-b-xs" ng-model="params.name" placeholder="承租人">
+                        </div>
+                    </div>
+
+                    <div class="col-lg-2">
+                        <div class="form-group">
+                            <select ng-model="params.voucherTypeName" class="form-control m-b-xs"
+                                    style="width: 200px;">
+                                <option value="">---选择凭证类型---</option>
+                                <option ng-repeat="data in voucherTypeList" ng-value="data.voucherName"
+                                        ng-selected="data.voucherName == params.voucherTypeName"
+                                        ng-if="data.creator!='INIT'">{{data.voucherName}}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-lg-2">
+                        <div class="form-group">
+                            <label class="sr-only">凭证区域 </label>
+                            <input class="form-control m-b-xs" ng-model="params.voucherGroup"
+                                   placeholder="凭证区域">
+                        </div>
+                    </div>
+                    <div class="col-lg-2">
+                        <div class="form-group">
+                            <select ng-model="params.sendStatus" class="form-control m-b-xs">
+                                <option value="">---选择发送状态---</option>
+                                <option value="{{sendStatusObj.codeValue}}"
+                                        ng-repeat="sendStatusObj in sendStatusList"
+                                        ng-selected="params.sendStatus == sendStatusObj.codeValue">
+                                    {{sendStatusObj.codeValueName}}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-2">
+                        <div class="form-group">
+                            <label class="sr-only">起始时间 </label>
+                            <input id="validStartDate" type="text" name="validStartDate" placeholder="请输入起始业务日期"
+                                   class="form-control m-b-xs" ng-model="params.startTime"
+                                   date-picker="{{maxDate}}">
+                        </div>
+                    </div>
+                    <div class="col-lg-2">
+                        <div class="form-group">
+                            <label class="sr-only">结束时间 </label>
+                            <input id="validEndDate" type="text" name="validEndDate" placeholder="请输入结束业务日期"
+                                   class="form-control m-b-xs" ng-model="params.endTime"
+                                   date-picker="{{minDate}}">
+                        </div>
+                    </div>
+                    <div class="col-lg-2">
+                        <div class="form-group m-b-sm">
+                            <div class="btn-group">
+                                <button class="btn btn-success m-b-xs btn-sm fms-button-margin-bottom"
+                                        ng-click="searchFinancialVoucherData()"><i class="fa fa-search"></i>查询
+                                </button>
+                                <button class="btn btn-default m-b-xs btn-sm fms-button-margin-bottom"
+                                        ng-click="resetFinancialVoucherData()"><i class="fa  icon-refresh"></i>重置
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <!--<div class="form-group pull-right">-->
+                    <!--<div class="btn-group">-->
+                    <!--<button class="btn btn-default m-b-xs btn-sm" ng-click="exportExcel()">导出excel</button>-->
+                    <!--</div>-->
+                    <!--</div>-->
+                    <div class="col-lg-2 pull-right">
+                        <div class="form-group pull-right">
+                            <div class="btn-group">
+                                <button ng-disabled="submit" class="btn btn-default m-b-xs btn-sm"
+                                        ng-click="sendData()">发送财务凭证
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <table border="1" class="table table-striped m-b-none" id="financial_voucher_data_table">
+        </table>
+    </div>
+</div>
+

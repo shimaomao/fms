@@ -1,0 +1,225 @@
+<div ng-controller="lawsuit_task_save_controller">
+    <div>
+        <toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+    </div>
+    <form name="form" class="form-validation" novalidate>
+            <div class="panel panel-default">
+                <div class="panel-body wrapper-sm">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="form-group pull-left"><h1 class="m-n font-thin h4">诉讼任务申请</h1></div>
+                            <div class="form-group pull-right">
+                                <div class="btn-group">
+                                    <button class="btn btn-sm fms-button-margin-bottom btn-default m-b-xs" ng-click="save()" ng-disabled="submit"><i class=""></i>提交</button>
+                                    <button class="btn btn-sm fms-button-margin-bottom btn-default m-b-xs" ng-click="close()" ng-disabled="submit"><i class=""></i>返回</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <span style="margin-left: 2%;">申请信息</span>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-sm-2 control-label text-right"><b class="form-text-black">合同编号</b><b class="form-error">*</b>:</label>
+                        <div class="col-sm-8">
+                            <div class="row">
+                                <div class="col-sm-6" >
+                                    <input type="text" name="contNo" placeholder="请选择合同编号" class="form-control m-b-xs" ng-model="lawsuitTaskVo.contNo"  required disabled>
+                                    <p>
+                                        <span class="form-info" ng-show=" (form.contNo.$dirty && form.contNo.$error.required) || (form.contNo.$error.required && formValidate)">合同编号不能为空</span>
+                                    </p>
+                                </div>
+                                <div class="col-sm-2">
+                                    <button type="button" class="btn btn-default btn-sm" ng-click="selectOverdueCont()">选择</button>
+                                </div>
+                                <div class="col-sm-2">
+                                    <button type="button" class="btn btn-default btn-sm" ng-click="contractDetails()">合同详情</button>
+                                </div>
+                                <div class="col-sm-2">
+                                    <button type="button" class="btn btn-default btn-sm" ng-click="overdueDetail()">逾期详情</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 control-label text-right"><b class="form-text-black">承租人</b>:</label>
+                        <div class="col-sm-6">
+                            <input type="text" name="cstmName" placeholder="请输入承租人" class="form-control m-b-xs" ng-model="lawsuitTaskVo.cstmName"  required disabled>
+                            <p>
+                                <span class="form-info" ng-show=" (form.lawsuitTaskVoNo.$dirty && form.lawsuitTaskVoNo.$error.required) || (form.lawsuitTaskVoNo.$error.required && formValidate)">承租人不能为空</span>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 control-label text-right"><b class="form-text-black">出租人</b>:</label>
+                        <div class="col-sm-6">
+                            <input type="text" name="belongGroupName" placeholder="请输入出租人" class="form-control m-b-xs" ng-model="lawsuitTaskVo.belongGroupName"  required disabled>
+                            <p>
+                                <span class="form-info" ng-show=" (form.belongGroupName.$dirty && form.belongGroupName.$error.required) || (form.belongGroupName.$error.required && formValidate)">出租人不能为空</span>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 control-label text-right"><b class="form-text-black">车架号</b>:</label>
+                        <div class="col-sm-2">
+                            <input type="text" name="vinNo" placeholder="请输入车架号" class="form-control m-b-xs" ng-model="lawsuitTaskVo.vinNo"  required disabled>
+                            <p>
+                                <span class="form-info" ng-show=" (form.vinNo.$dirty && form.vinNo.$error.required) || (form.vinNo.$error.required && formValidate)">车架号不能为空</span>
+                            </p>
+                        </div>
+                        <label class="col-sm-2 control-label text-right"><b class="form-text-black">车牌号</b>:</label>
+                        <div class="col-sm-2">
+                            <input type="text" name="vehicleLicenseNo" placeholder="请输入车牌号" class="form-control m-b-xs" ng-model="lawsuitTaskVo.vehicleLicenseNo"  required disabled>
+                            <p>
+                                <span class="form-info" ng-show=" (form.vehicleLicenseNo.$dirty && form.vehicleLicenseNo.$error.required) || (form.vehicleLicenseNo.$error.required && formValidate)">车牌号不能为空</span>
+                            </p>
+                        </div>
+                        <label class="col-sm-2 control-label text-right"><b class="form-text-black">发动机号</b>:</label>
+                        <div class="col-sm-2">
+                            <input type="text" name="engineNo" placeholder="请输入发动机号" class="form-control m-b-xs" ng-model="lawsuitTaskVo.engineNo"  required disabled>
+                            <p>
+                                <span class="form-info" ng-show=" (form.engineNo.$dirty && form.engineNo.$error.required) || (form.engineNo.$error.required && formValidate)">发动机号不能为空</span>
+                            </p>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="panel-body">
+                    <div class="row">
+                        <span style="margin-left: 2%;">诉讼信息</span>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 control-label text-right"><b class="form-text-black">诉讼原因</b><b class="form-error">*</b>:</label>
+                        <div class="col-sm-2">
+                            <select name="lawsuitReason" ng-model="lawsuitTaskVo.lawsuitReason" class="form-control m-b-xs" ng-options="a.codeValue as a.codeValueName for a in 'lawsuitReason' | getList" required>
+                                <option value="">---请选择诉讼原因---</option>
+                            </select>
+                            <p>
+                                <span class="form-info" ng-show=" (form.lawsuitReason.$dirty && form.lawsuitReason.$error.required) || (form.lawsuitReason.$error.required && formValidate)">诉讼原因不能为空</span>
+                            </p>
+                        </div>
+                        <label class="col-sm-2 control-label text-right"><b class="form-text-black">诉讼类型</b><b class="form-error">*</b>:</label>
+                        <div class="col-sm-2">
+                            <select name="lawsuitType" ng-model="lawsuitTaskVo.lawsuitType" class="form-control m-b-xs" ng-options="a.codeValue as a.codeValueName for a in 'lawsuitType' | getList" required>
+                                <option value="">---请选择诉讼类型---</option>
+                            </select>
+                            <p>
+                                <span class="form-info" ng-show=" (form.lawsuitType.$dirty && form.lawsuitType.$error.required) || (form.lawsuitType.$error.required && formValidate)">诉讼类型不能为空</span>
+                            </p>
+                        </div>
+                        <label class="col-sm-2 control-label text-right"><b class="form-text-black">被告人</b><b class="form-error">*</b>:</label>
+                        <div class="col-sm-2">
+                            <input type="text" limit-word="50" name="defendant" placeholder="请输入被告人" class="form-control m-b-xs" ng-model="lawsuitTaskVo.defendant"  required >
+                            <p>
+                                <span class="form-info" ng-show=" (form.defendant.$dirty && form.defendant.$error.required) || (form.defendant.$error.required && formValidate)">被告人不能为空</span>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 control-label text-right"><b class="form-text-black">诉讼金额</b><b class="form-error">*</b>:</label>
+                        <div class="col-sm-2">
+                            <input type="number" limit-number name="lawsuitAmount" placeholder="请输入诉讼金额" class="form-control m-b-xs" ng-model="lawsuitTaskVo.lawsuitAmount"  required >
+                            <p>
+                                <span class="form-info" ng-show=" (form.lawsuitAmount.$dirty && form.lawsuitAmount.$error.required) || (form.lawsuitAmount.$error.required && formValidate)">诉讼金额不能为空</span>
+                            </p>
+                        </div>
+                        <label class="col-sm-2 control-label text-right"><b class="form-text-black">诉讼发起时间</b><b class="form-error">*</b>:</label>
+                        <div class="col-sm-2">
+                            <input type="text" name="lawsuitSponsorDate" placeholder="请输入诉讼发起时间" class="form-control m-b-xs" ng-model="lawsuitTaskVo.lawsuitSponsorDate"  required date-picker>
+                            <p>
+                                <span class="form-info" ng-show=" (form.lawsuitSponsorDate.$dirty && form.lawsuitSponsorDate.$error.required) || (form.lawsuitSponsorDate.$error.required && formValidate)">诉讼发起时间不能为空</span>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 control-label text-right"><b class="form-text-black">诉讼地址</b><b class="form-error">*</b>:</label>
+                        <div class="col-sm-8">
+                            <input type="text" limit-word name="lawsuitAddr" placeholder="请输入诉讼地址" class="form-control m-b-xs" ng-model="lawsuitTaskVo.lawsuitAddr"  required >
+                            <p>
+                                <span class="form-info" ng-show=" (form.lawsuitAddr.$dirty && form.lawsuitAddr.$error.required) || (form.lawsuitAddr.$error.required && formValidate)">诉讼地址不能为空</span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="panel-body">
+                    <div class="row">
+                        <span style="margin-left: 2%;">派单信息</span>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 control-label text-right"><b class="form-text-black">派单类型</b><b class="form-error">*</b>:</label>
+                        <div class="col-sm-2">
+                            <select name="dispatchType" ng-model="lawsuitTaskVo.dispatchType" class="form-control m-b-xs" ng-options="a.codeValue as a.codeValueName for a in 'dispatchType' | getList" ng-change="changeDispatch()" required>
+                                <option value="">---请选择派单类型---</option>
+                            </select>
+                            <p>
+                                <span class="form-info" ng-show=" (form.dispatchType.$dirty && form.dispatchType.$error.required) || (form.dispatchType.$error.required && formValidate)">上门催收级别不能为空</span>
+                            </p>
+                        </div>
+                        <div ng-if="lawsuitTaskVo.dispatchType == 1">
+                            <label class="col-sm-2 control-label text-right"><b class="form-text-black">指派人员</b><b class="form-error">*</b>:</label>
+                            <div class="col-sm-2">
+                                <input type="text" name="dispatchUserName" placeholder="请输入指派人员" class="form-control m-b-xs" ng-model="lawsuitTaskVo.dispatchUserName" ng-focus="getUserName(1)" required >
+                                <input type="hidden" name="dispatchUser" class="form-control m-b-xs" ng-model="lawsuitTaskVo.dispatchUser">
+                                <p>
+                                    <span class="form-info" ng-show=" (form.dispatchUser.$dirty && form.dispatchUser.$error.required) || (form.dispatchUser.$error.required && formValidate)">指派人员不能为空</span>
+                                </p>
+                            </div>
+                        </div>
+                        <div ng-if="lawsuitTaskVo.dispatchType == 2">
+                            <label class="col-sm-2 control-label text-right"><b class="form-text-black">登记人员</b><b class="form-error">*</b>:</label>
+                            <div class="col-sm-2">
+                                <input type="text" name="registerUserName" placeholder="请输入登记人员" class="form-control m-b-xs" ng-model="lawsuitTaskVo.registerUserName" ng-focus="getUserName(2)" required >
+                                <input type="hidden" name="registerUser" class="form-control m-b-xs" ng-model="lawsuitTaskVo.registerUser">
+                                <p>
+                                    <span class="form-info" ng-show=" (form.registerUser.$dirty && form.registerUser.$error.required) || (form.registerUser.$error.required && formValidate)">登记人员不能为空</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row" ng-if="lawsuitTaskVo.dispatchType == 2">
+                        <label class="col-sm-2 control-label text-right"><b class="form-text-black">第三方机构名称</b><b class="form-error">*</b>:</label>
+                        <div class="col-sm-2">
+                            <input type="text" name="tollyName" placeholder="请输入第三方机构名称" class="form-control m-b-xs" ng-model="lawsuitTaskVo.tollyName"  required >
+                            <p>
+                                <span class="form-info" limit-word="50" ng-show=" (form.tollyName.$dirty && form.tollyName.$error.required) || (form.tollyName.$error.required && formValidate)">第三方机构名称不能为空</span>
+                            </p>
+                        </div>
+
+                        <label class="col-sm-2 control-label text-right"><b class="form-text-black">第三方机构联系人</b><b class="form-error">*</b>:</label>
+                        <div class="col-sm-2">
+                            <input type="text" limit-word="50" name="tollyContactName" placeholder="请输入第三方机构联系人" class="form-control m-b-xs" ng-model="lawsuitTaskVo.tollyContactName"  required >
+                            <p>
+                                <span class="form-info" ng-show=" (form.tollyContactName.$dirty && form.tollyContactName.$error.required) || (form.tollyContactName.$error.required && formValidate)">第三方机构联系人不能为空</span>
+                            </p>
+                        </div>
+
+                        <label class="col-sm-2 control-label text-right"><b class="form-text-black">第三方机构联系电话</b><b class="form-error">*</b>:</label>
+                        <div class="col-sm-2">
+                            <input type="text" limit-word="20" name="tollyMobileNo" placeholder="请输入第三方机构联系电话" class="form-control m-b-xs" ng-model="lawsuitTaskVo.tollyMobileNo" ng-pattern="/^1[345789]\d{9}$/" required >
+                            <p>
+                                <span class="form-info" ng-show=" (form.tollyMobileNo.$dirty && form.tollyMobileNo.$error.required) || (form.tollyMobileNo.$error.required && formValidate)">第三方机构联系电话不能为空</span>
+                                <span class="form-info" ng-show=" (form.tollyMobileNo.$error.pattern && !form.tollyMobileNo.$error.required) || (form.tollyMobileNo.$error.pattern && formValidate && !form.tollyMobileNo.$error.required)">请输入正确的手机号码</span>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 control-label text-right"><b class="form-text-black">备注</b>:</label>
+                        <div class="col-sm-8">
+                            <textarea type="text" limit-word="1000" name="remark" placeholder="请输入备注" class="form-control m-b-xs" ng-model="lawsuitTaskVo.remark"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <!--流程日志-->
+                <div class="panel-body wrapper-sm">
+                    <div ng-include="'tpl/common/process_log/process_log_list.html'"></div>
+                </div>
+            </div>
+
+        </form>
+</div>

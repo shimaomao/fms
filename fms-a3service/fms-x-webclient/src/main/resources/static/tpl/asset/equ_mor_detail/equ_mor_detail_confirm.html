@@ -1,0 +1,66 @@
+<style>
+    #equ_mor_detail_table_wrapper .row{
+        display: none;
+    }
+    #tabContent {margin:20px 5px 10px 5px;}
+    #tabContent .tab-con{padding: 10px;border:1px solid #dee5e7;border-top: none;}
+    #tabContent .tabs{background-color: #F5F5F5;padding-left: 0;margin-bottom: 0;  list-style: none; height: 40px; display: block;border:1px solid #dee5e7;border-bottom: none;}
+    #tabContent .tabs > li{float:left;}
+    #tabContent .tabs > li > a{border: none;font-weight: bold;margin-right: 2px;line-height: 1.42857143;border-radius: 4px 4px 0 0;display: block;padding: 10px 15px;}
+    #tabContent .selectTab{background-color: #ffffff;}
+    #tabContent .selectTab > a{color: black;}
+    #tabContent .noneTab > a{color: #999;}
+</style>
+<div  ng-controller="equ_mor_detail_confirm_controller">
+    <div>
+        <toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+    </div>
+    <div class="panel panel-default">
+        <div class="row" style="margin: 0; padding: 10px; border: 1px solid #dddddd">
+            <div class="form-inline">
+                <div class="form-group">
+                    <h5 >资方解押确认</h5>
+                </div>
+            <div class="form-group pull-right">
+                <div class="btn-group">
+                    <button type="submit" class="btn btn-success btn-sm fms-button-margin-bottom" ng-disabled="submit" ng-click="save()">确认解抵押</button>
+                    <button class="btn btn-default btn-sm fms-button-margin-bottom" ng-click="goback()">返回</button>
+                </div>
+            </div>
+                </div>
+        </div>
+        <form name="form" class="form-validation" novalidate>
+                        <table border="1" class="table table-striped m-b-none" id="equ_mor_detail_table" style="padding: 0px">
+                        </table>
+
+                        <div class="row" id="tabContent" >
+                            <ul class="tabs">
+                                <li ng-repeat="equMorDetailObj in equMorDetailList" >
+                                    <a data-toggle="tab"  id="a_tab_{{equMorDetailObj.equMorDetailId}}"  ng-click="switchTab('{{equMorDetailObj.equMorDetailId}}')">
+                                        {{equMorDetailObj.mainContNo}}合同附件信息<b class="form-error">*</b>
+                                    </a>
+                                </li>
+                            </ul>
+
+                            <div id="div_tab_{{equMorDetailObj.equMorDetailId}}" class="tab-content tab-con clearfix ng-hide" ng-repeat="equMorDetailObj in equMorDetailList" repeat-finish>
+                                <!--<tree-file-directive tree-file-id="equMorDetailObj.equMorDetailId" file-type="'mortgageRelConfFile'" common-biz-files-vo=equMorDetailObj.commonBizFilesVo >-->
+                                <!--</tree-file-directive>-->
+
+                                <tree-file-directive detail-flag="$root.yesNoFlag.no" file-type="$root.basFileTypes.mortgageRelConfFile" files="equMorDetailObj.bizFilesVoList" not-upload="equMorDetailObj.notUpload" not-upload-info = "equMorDetailObj.notUploadInfo" not-file-type="equMorDetailObj.notFileType" not-file-type-name="equMorDetailObj.notFileTypeName" >
+                                </tree-file-directive>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 control-label text-right"><b class="form-text-black">备注</b><b class="form-error">*</b>:</label>
+                            <div class="col-sm-10">
+                                <textarea limit-word cols="100" maxlength="200" rows="5" name="remark1" ng-model="equMorDetail.remark1" required></textarea>
+                                <p>
+                                    <span class="form-info" ng-show=" (form.remark1.$dirty && form.remark1.$error.required) || (form.remark1.$error.required && formValidate)">请输入备注</span>
+                                </p>
+                            </div>
+                        </div>
+                    </form>
+        <!--<div ng-include="'tpl/common/process_log/process_log_list.html'"></div>-->
+        <process-log-list-directive wf-log-type="wfLogType" wf-log-no="wfLogNo"></process-log-list-directive>
+    </div>
+</div>

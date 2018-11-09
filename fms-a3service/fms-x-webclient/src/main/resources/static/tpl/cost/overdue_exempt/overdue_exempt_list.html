@@ -1,0 +1,55 @@
+
+<div  ng-controller="overdue_exempt_list_controller">
+    <div>
+        <toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-body wrapper-sm">
+            <div class="row">
+                <div class="col-lg-12">
+                    <form class="form-inline" role="form">
+                        <div class="form-group">
+                            <label class="sr-only" >合同编号 </label>
+                            <input class="form-control m-b-xs" ng-model="params.contNo" placeholder="请输入合同编号">
+                        </div>
+                        <div class="form-group">
+                            <label class="sr-only" >出租人区域 </label>
+                            <input class="form-control m-b-xs" ng-model="params.groupDistrict" placeholder="请输入出租人区域">
+                        </div>
+                        <div class="form-group">
+                            <label class="sr-only" >承租人</label>
+                            <input class="form-control m-b-xs" ng-model="params.cstmName" placeholder="请输入承租人">
+                        </div>
+                        <div class="form-group">
+                            <label class="sr-only" >车架号 </label>
+                            <input class="form-control m-b-xs" ng-model="params.vinNo" placeholder="请输入车架号">
+                        </div>
+                        <div class="form-group">
+                            <label class="sr-only" >未还期数(开始) </label>
+                            <input class="form-control m-b-xs" ng-model="params.gtSurplusPeriod" placeholder="请输入未还期数(开始)" type="number" oninput="CommonNumberUtils.numberLength(2,this)">
+                        </div>
+                        <div class="form-group">
+                            <label class="sr-only" >未还期数(结束) </label>
+                            <input class="form-control m-b-xs" ng-model="params.ltSurplusPeriod" placeholder="请输入未还期数(结束)" type="number" oninput="CommonNumberUtils.numberLength(2,this)">
+                        </div>
+                        <div class="form-group m-b-sm">
+                            <div class="btn-group">
+                                <button class="btn btn-default m-b-xs btn-info" ng-click="searchOverdueCont()" ><i class="fa fa-search"></i>查询</button>
+                                <button class="btn btn-default m-b-xs" ng-click="resetOverdueCont()" ><i class="fa  icon-refresh"></i>重置</button>
+                            </div>
+                        </div>
+
+                        <div class="form-group pull-right">
+                            <div class="btn-group">
+                                <button class="btn btn-default m-b-xs" ng-click="modifyOverdueCont()"><i class="fa"></i>罚息免除</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <table border="1" class="table table-striped m-b-none" id="overdue_exempt_table">
+        </table>
+    </div>
+</div>
+

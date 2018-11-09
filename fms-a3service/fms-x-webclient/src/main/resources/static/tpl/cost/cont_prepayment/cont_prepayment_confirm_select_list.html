@@ -1,0 +1,48 @@
+<style>
+    .btn-default, .btn-default:hover, .btn-default:focus, .btn-default:active, .btn-default.active, .open .dropdown-toggle.btn-default{margin-bottom: 5px}
+    .col-sm-12.title-left {font-size: 16px;margin: 10px 0;font-weight: bold;  }
+</style>
+<div class="panel panel-default" ng-init="init()">
+    <div class="col-sm-12 title-left">收款明细一览</div>
+    <div >
+        <div class="panel-body wrapper-sm">
+            <div class="row">
+                <div class="col-lg-12">
+                    <form class="form-inline" role="form">
+                        <div class="form-group">
+                            <label class="sr-only" >收款账号 </label>
+                            <input class="form-control m-b-xs" ng-model="recAccountNo" placeholder="收款账号">
+                        </div>
+                        <div class="form-group">
+                            <label class="sr-only" >到账日期 </label>
+                            <input class="form-control m-b-xs" ng-model="receiptDateSearch" placeholder="到账日期" date-picker  onchange="">
+                        </div>
+
+                        <div class="form-group m-b-sm">
+                            <div class="btn-group">
+                                <button class="btn btn-default m-b-xs btn-info" ng-click="searchContReceipt()" ><i class="fa fa-search"></i>查询</button>
+                                <button class="btn btn-default m-b-xs" ng-click="resetContReceipt()" ><i class="fa  icon-refresh"></i>重置</button>
+                            </div>
+                        </div>
+
+                        <div class="form-group pull-right">
+                            <div class="btn-group">
+                                <button class="btn btn-default m-b-xs" ng-click="exportExcel()">导出excel</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <table border="1" class="table table-striped m-b-none" id="cont_receipt_table">
+        </table>
+        <div class="modal-footer ng-scope text-center">
+            <div class="text-center">
+                <button class="btn btn-default" ng-click="close()">关闭</button>
+                <button class="btn btn-success" ng-click="confirm('select')">确认</button>
+            </div>
+        </div>
+    </div>
+
+</div>
+

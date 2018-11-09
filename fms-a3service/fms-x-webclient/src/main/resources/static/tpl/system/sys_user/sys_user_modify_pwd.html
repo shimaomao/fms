@@ -1,0 +1,34 @@
+<div class="modal-header">
+    <h4 class="modal-title">修改密码 <button type="button" class="close" data-dismiss="modal" aria-hidden="true" ng-click="close()">&times;</button></h4>
+</div>
+<div class="panel-body">
+    <form name="form" class="form-validation" novalidate>
+        <div class="form-group">
+            <label class="col-sm-3 control-label text-right"><b class="form-text-black">用户密码</b><b class="form-error">*</b>:</label>
+            <div class="col-sm-9">
+                <input type="password" name="password"  placeholder="请输入用户密码(必填)"class="form-control m-b-xs" ng-model="sysUser.password"  ng-minlength="6"
+                       ng-maxlength="20"  required >
+                <p>
+                    <span class="form-info" ng-show="(form.password.$dirty && form.password.$error.required) || (form.password.$error.required && formValidate)">用户密码不能为空</span>
+                    <span class="form-info" ng-show="(form.password.$dirty && form.password.$error.minlength) || (form.password.$error.minlength && formValidate)">密码长度不小于6</span>
+                    <span class="form-info" ng-show="(form.password.$dirty && form.password.$error.maxlength) || (form.password.$error.maxlength && formValidate)">密码长度不超过20</span>
+                </p>
+            </div>
+        </div>
+        <div class="line line-dashed b-b line-lg pull-in"></div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label text-right"><b class="form-text-black">确认密码</b><b class="form-error">*</b>:</label>
+            <div class="col-sm-9">
+                <input type="password" name="confirm_password" placeholder="请确认密码(必填)" class="form-control m-b-xs" ng-model="confirm_password" ui-validate=" '$value==sysUser.password' " ui-validate-watch=" 'sysUser.password' "  required  >
+                <p>
+                    <span class="form-info" ng-show="(form.confirm_password.$dirty && form.confirm_password.$error.required) || (form.confirm_password.$error.required && formValidate)">确认密码不能为空</span>
+                    <span class="form-info" ng-show="confirm_password!= sysUser.password">两次密码输入不一致</span>
+                </p>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="modal-footer ng-scope">
+    <button class="btn btn-default" ng-click="close()">取消</button>
+    <button type="submit" class="btn btn-success" ng-click="modify()">保存</button>
+</div>

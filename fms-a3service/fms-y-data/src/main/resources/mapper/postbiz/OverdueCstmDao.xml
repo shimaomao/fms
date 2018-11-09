@@ -1,0 +1,653 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.com.leadu.fms.data.postbiz.dao.OverdueCstmDao">
+    <select id="selectOverdueCstmsByPage" resultType="cn.com.leadu.fms.pojo.postbiz.vo.overduecstm.OverduePostVo">
+        SELECT DISTINCT
+            oc.overdue_cstm_id,
+            oc.cstm_name,
+            oc.certif_no,
+            oc.overdue_days,
+            oc.overdue_periods,
+            oc.overdue_principal,
+            oc.overdue_rent,
+            oc.overdue_amount,
+            oa.assignment_type,
+            u.user_name assignUser,
+            oa.assignment_sts,
+            /*逾期合同信息*/
+            cont.cont_no,
+            cont.vin_no,
+            cont.vehicle_form,
+            cont.contract_valid_date,
+            cont.engine_no,
+            cont.vehicle_license_no,
+            cont.veh_brand_code,
+            cont.vehicle_code,
+            cont.vehicle_comment,
+            cont.color,
+            cont.overdue_days contOverdueDays,
+            cont.overdue_periods contOverduePeriods,
+            cont.overdue_principal contOverduePrincipal,
+            cont.overdue_rent contOverdueRent,
+            cont.overdue_amount contOverdueAmount,
+            cont.overdue_sum contOverdueSum,
+            vehBrandCode.vehicle_name AS vehBrandCodeName,
+            vehicleCode.vehicle_name AS vehicleCodeName,
+            cont.overdue_flag,
+            apply.apply_type,
+            cont.overdue_cont_id,
+            /*出租人*/
+            sysGroup.group_name,
+            /*逾期客户初登日期*/
+            oc.first_overdue_date cstmFirstOverdueDate,
+            /*逾期合同初登日期*/
+            cont.first_overdue_date contFirstOverdueDate
+        FROM overdue_cstm oc
+        LEFT JOIN overdue_assignment oa ON oa.overdue_cstm_id = oc.overdue_cstm_id AND oa.del_flag=${delete_exist}
+        left join overdue_cont cont on oc.overdue_cstm_id = cont.overdue_cstm_id and cont.del_flag = ${delete_exist}
+        left join contract_finance contractFinance on contractFinance.del_flag = ${delete_exist}
+        and contractFinance.cont_no = cont.cont_no and contractFinance.apply_no = cont.apply_no
+        left join apply apply on cont.apply_no = apply.apply_no and apply.del_flag = ${delete_exist}
+        left join sys_group sysGroup on sysGroup.del_flag = ${delete_exist} and sysGroup.group_code = contractFinance.belong_group
+        LEFT JOIN bas_vehicle vehBrandCode ON cont.veh_brand_code=vehBrandCode.vehicle_code AND vehBrandCode.del_flag = ${delete_exist}
+        LEFT JOIN bas_vehicle vehicleCode ON cont.vehicle_code=vehicleCode.vehicle_code AND vehicleCode.del_flag = ${delete_exist}
+        left join sys_user u on oa.assign_user = u.user and u.del_flag = ${delete_exist}
+        WHERE oa.del_flag=${delete_exist}
+        /*出租人*/
+        <if test="overdueCstmVo.groupName != null">
+            AND sysGroup.group_name like #{overdueCstmVo.groupName}
+        </if>
+        /*催收类型*/
+        <if test="overdueCstmVo.assignmentType != null">
+            AND oa.assignment_type = #{overdueCstmVo.assignmentType}
+        </if>
+        /*分配人员账号*/
+        <if test="overdueCstmVo.assignUser != null">
+            AND oa.assign_user like #{overdueCstmVo.assignUser}
+        </if>
+        <if test="overdueCstmVo.cstmName != null">
+            AND oc.cstm_name like #{overdueCstmVo.cstmName}
+        </if>
+        <if test="overdueCstmVo.vinNo != null">
+            AND cont.vin_no like #{overdueCstmVo.vinNo}
+        </if>
+        <if test="overdueCstmVo.contNo != null">
+            AND cont.cont_no like #{overdueCstmVo.contNo}
+        </if>
+        <if test="overdueCstmVo.cstmOverdueStartDays != null">
+            AND oc.overdue_days &gt;= #{overdueCstmVo.cstmOverdueStartDays}
+        </if>
+        <if test="overdueCstmVo.cstmOverdueEndDays != null">
+            AND oc.overdue_days &lt;= #{overdueCstmVo.cstmOverdueEndDays}
+        </if>
+        <if test="overdueCstmVo.contOverdueStartDays != null">
+            AND cont.overdue_days &gt;= #{overdueCstmVo.contOverdueStartDays}
+        </if>
+        <if test="overdueCstmVo.contOverdueEndDays != null">
+            AND cont.overdue_days &lt;= #{overdueCstmVo.contOverdueEndDays}
+        </if>
+        <if test="overdueCstmVo.overdueFlag != null">
+            AND cont.overdue_flag = #{overdueCstmVo.overdueFlag}
+        </if>
+        <if test="overdueCstmVo.assignUser != null">
+            AND oa.assign_user = #{overdueCstmVo.assignUser}
+        </if>
+        <if test="overdueCstmVo.assignmentSts != null">
+            AND oa.assignment_sts = #{overdueCstmVo.assignmentSts}
+        </if>
+    </select>
+
+    <select id="selectOverdueCstmByOverdueCstmId" parameterType="java.lang.String" resultMap="OverdueCstmMap">
+        SELECT
+            oc.overdue_cstm_id,
+            oc.cstm_name,
+            oc.apply_type,
+            oc.first_overdue_date,
+            oc.certif_type,
+            oc.certif_no,
+            oc.sex,
+            oc.overdue_days,
+            oc.overdue_sum,
+            oc.overdue_periods,
+            oc.overdue_days_his,
+            oc.overdue_cond_cd,
+            oc.overdue_flag,
+            oc.rest_principal,
+            oc.fin_rest_principal,
+            oc.overdue_risk,
+            oc.overdue_principal
+        FROM overdue_cstm oc
+        WHERE
+            oc.del_flag = ${delete_exist}
+        <if test="overdueCstmId != null">
+            AND oc.overdue_cstm_id = #{overdueCstmId}
+        </if>
+    </select>
+    
+    <resultMap id="OverdueCstmMap" type="cn.com.leadu.fms.pojo.postbiz.vo.overduecstm.OverdueCstmVo">
+        <id column="overdue_cstm_id" javaType="java.lang.String" property="overdueCstmId" />
+        <result column="cstm_name" javaType="java.lang.String" property="cstmName" />
+        <result column="apply_type" javaType="java.lang.String" property="applyType" />
+        <result column="first_overdue_date" javaType="java.util.Date" property="firstOverdueDate" />
+        <result column="certif_type" javaType="java.lang.String" property="certifType" />
+        <result column="certif_no" javaType="java.lang.String" property="certifNo" />
+        <result column="sex" javaType="java.lang.String" property="sex" />
+        <result column="overdue_days" javaType="java.lang.Integer" property="overdueDays" />
+        <result column="overdue_sum" javaType="java.math.BigDecimal" property="overdueSum" />
+        <result column="overdue_periods" javaType="java.lang.Integer" property="overduePeriods" />
+        <result column="repay_periods" javaType="java.lang.Integer" property="repayPeriods" />
+        <result column="overdue_days_his" javaType="java.lang.Integer" property="overdueDaysHis" />
+        <result column="overdue_risk" javaType="java.lang.String" property="overdueRisk" />
+        <result column="overdue_cond_cd" javaType="java.lang.String" property="overdueCondCd" />
+        <result column="overdue_flag" javaType="java.lang.String" property="overdueFlag" />
+        <result column="rest_principal" javaType="java.math.BigDecimal" property="restPrincipal" />
+        <result column="fin_rest_principal" javaType="java.math.BigDecimal" property="finRestPrincipal" />
+        <result column="overdue_principal" javaType="java.math.BigDecimal" property="overduePrincipal" />
+        <collection property="overdueContVoList" ofType="cn.com.leadu.fms.pojo.postbiz.vo.overduecont.OverdueContVo"
+                    javaType="java.util.ArrayList" select="getOverdueContVoList" column="overdue_cstm_id">
+        </collection>
+    </resultMap>
+
+    <!--<select id="selectOverdueCstmVoByOverdueCstmId" parameterType="java.lang.String" resultType="cn.com.leadu.fms.pojo.postbiz.vo.overduecstm.OverduePostVo">
+        SELECT
+        oc.cstm_name,
+        oc.overdue_days,
+        oc.overdue_principal,
+        oa.assignment_type,
+        oa.assign_user
+        FROM overdue_cstm oc
+        LEFT JOIN overdue_assignment oa ON oa.overdue_cstm_id = oc.overdue_cstm_id AND oa.del_flag=${delete_exist}
+        WHERE
+        oa.del_flag = ${delete_exist}
+        <if test="overdueCstmId != null">
+            AND oc.overdue_cstm_id = #{overdueCstmId}
+        </if>
+    </select>-->
+
+    <select id="selectOverdueCstmVoByOverdueCstmId" parameterType="java.lang.String" resultMap="OverdueCstmVoMap">
+        SELECT
+        oc.cstm_name,
+        oc.overdue_days,
+        oc.overdue_principal,
+        oa.assignment_type,
+        oa.assign_user
+        FROM overdue_cstm oc
+        LEFT JOIN overdue_assignment oa ON oa.overdue_cstm_id = oc.overdue_cstm_id AND oa.del_flag=${delete_exist}
+        WHERE
+        oa.del_flag = ${delete_exist}
+        <if test="overdueCstmId != null">
+            AND oc.overdue_cstm_id = #{overdueCstmId}
+        </if>
+    </select>
+
+    <resultMap id="OverdueCstmVoMap" type="cn.com.leadu.fms.pojo.postbiz.vo.overduecstm.OverdueCstmVo">
+        <id column="overdue_cstm_id" javaType="java.lang.String" property="overdueCstmId" />
+        <result column="cstm_name" javaType="java.lang.String" property="cstmName" />
+        <result column="overdue_days" javaType="java.lang.Integer" property="overdueDays" />
+        <result column="overdue_principal" javaType="java.math.BigDecimal" property="overduePrincipal" />
+        <result column="assignment_type" javaType="java.lang.String" property="assignmentType" />
+        <result column="assign_user" javaType="java.lang.String" property="assignUser" />
+    </resultMap>
+
+    <select id="getOverdueContVoList" resultMap="OverdueContVoListMap">
+        SELECT
+            ocont.overdue_cont_id,
+            ocont.apply_no,
+            ocont.cont_no,
+            ocont.contract_date,
+            ocont.contract_valid_date,
+            ocont.rent,
+            basVehicle.vehicle_name vehBrandCode,
+            ocont.vin_no,
+            ocont.vehicle_comment,
+            ocont.vehicle_license_no,
+            bv.vehicle_name vehicleCode,
+            ocont.color,
+            ocont.vehicle_form,
+            ocont.engine_no,
+            ocont.overdue_days,
+            ocont.overdue_periods,
+            ocont.overdue_sum,
+            ocont.rest_principal,
+            ocont.fin_rest_principal,
+            ocont.repay_periods,
+            ocont.overdue_days_his,
+            ocont.overdue_flag,
+            ocont.orig_file_status,
+            bp.partner_name,
+            bp.sales_exec,
+            ocont.fin_period_type,
+            sysGroup.group_name,
+            /*当前逾期本金*/
+            ocont.overdue_principal,
+            /*当前逾期租金*/
+            ocont.overdue_rent,
+            /*当前逾期罚息*/
+            ocont.overdue_amount,
+            /*初登日期*/
+            ocont.first_overdue_date,
+            /*逾期次数*/
+            ocont.overdue_times,
+            /*归档期限*/
+            ocont.orig_deadline,
+            u.user_name salesCounselor
+        FROM  overdue_cont ocont
+        left join contract contract on ocont.cont_no = contract.cont_no and contract.apply_no = ocont.apply_no and contract.del_flag = ${delete_exist}
+        left join contract_finance contractFinance on contractFinance.del_flag = ${delete_exist}
+        and contractFinance.cont_no = ocont.cont_no and contractFinance.apply_no = ocont.apply_no
+        left join sys_group sysGroup on sysGroup.del_flag = ${delete_exist} and sysGroup.group_code = contractFinance.belong_group
+        LEFT JOIN bas_partner bp ON ocont.apply_group = bp.partner_code
+        AND bp.del_flag = ${delete_exist}
+        LEFT JOIN bas_vehicle bv ON bv.vehicle_code = ocont.vehicle_code AND bv.del_flag = ${delete_exist}
+        left join bas_vehicle basVehicle on ocont.veh_brand_code = basVehicle.vehicle_code and basVehicle.del_flag = ${delete_exist}
+        left join sys_user u on contract.apply_user = u.user and u.del_flag = ${delete_exist}
+        WHERE
+            ocont.del_flag = ${delete_exist}
+        AND ocont.overdue_cstm_id = #{overdueCstmId}
+    </select>
+
+    <resultMap id="OverdueContVoListMap" type="cn.com.leadu.fms.pojo.postbiz.vo.overduecont.OverdueContVo">
+        <id column="overdue_cont_id" javaType="java.lang.String" property="overdueContId" />
+        <result column="apply_no" javaType="java.lang.String" property="applyNo" />
+        <result column="cont_no" javaType="java.lang.String" property="contNo" />
+        <result column="contract_date" javaType="java.util.Date" property="contractDate" />
+        <result column="contract_valid_date" javaType="java.util.Date" property="contractValidDate" />
+        <result column="rent" javaType="java.math.BigDecimal" property="rent" />
+        <result column="vehBrandCode" javaType="java.lang.String" property="vehBrandCode" />
+        <result column="vin_no" javaType="java.lang.String" property="vinNo" />
+        <result column="vehicle_comment" javaType="java.lang.String" property="vehicleComment" />
+        <result column="vehicle_license_no" javaType="java.lang.String" property="vehicleLicenseNo" />
+        <result column="vehicleCode" javaType="java.lang.String" property="vehicleCode" />
+        <result column="color" javaType="java.lang.String" property="color" />
+        <result column="vehicle_form" javaType="java.lang.String" property="vehicleForm" />
+        <result column="engine_no" javaType="java.lang.String" property="engineNo" />
+        <result column="partner_name" javaType="java.lang.String" property="partnerName" />
+        <result column="sales_exec" javaType="java.lang.String" property="salesExec" />
+        <result column="overdue_days" javaType="java.lang.Integer" property="overdueDays" />
+        <result column="overdue_periods" javaType="java.lang.Integer" property="overduePeriods" />
+        <result column="overdue_sum" javaType="java.math.BigDecimal" property="overdueSum" />
+        <result column="rest_principal" javaType="java.math.BigDecimal" property="restPrincipal" />
+        <result column="fin_rest_principal" javaType="java.math.BigDecimal" property="finRestPrincipal" />
+        <result column="repay_periods" javaType="java.lang.Integer" property="repayPeriods" />
+        <result column="overdue_days_his" javaType="java.lang.Integer" property="overdueDaysHis" />
+        <result column="overdue_flag" javaType="java.lang.String" property="overdueFlag" />
+        <result column="orig_file_status" javaType="java.lang.String" property="origFileStatus" />
+        <result column="fin_period_type" javaType="java.lang.String" property="finPeriodType" />
+        <result column="group_name" javaType="java.lang.String" property="lessor" />
+        <result column="salesCounselor" javaType="java.lang.String" property="salesCounselor" />
+    </resultMap>
+
+    <select id="selectContRepaySkedAndOverduByoverdueCstmId" resultType="cn.com.leadu.fms.pojo.postbiz.vo.overduecstm.ContRepaySkedOverdueTotalVo">
+        SELECT
+            crs.cont_no,
+            crs.period,
+            crs.repay_date,
+            crs.rent,
+            crs.principal,
+            crs.interest,
+            crs.charge,
+            crs.rest_principal,
+            crs.repay_status rentRepayStatus,
+            crs.overdue_status,
+            crs.deposit,
+            crs.rent_actual,
+            crs.receipt_date,
+            co.overdue_day_rate,
+            co.overdue_amount,
+            co.receipt_amount,
+            co.exempt_amount,
+            co.rest_overdue_amount,
+            co.repay_status overdueRepayStatus,
+            co.overdue_days
+        FROM
+            cont_repay_sked crs
+        LEFT JOIN cont_overdue co ON crs.cont_no = co.cont_no and crs.period = co.period
+        AND co.del_flag = ${delete_exist}
+        WHERE
+            crs.del_flag = ${delete_exist}
+        <if test="overdueCstmVo.contNoList != null">
+            AND crs.cont_no IN
+            <foreach collection="overdueCstmVo.contNoList" item="item" index="index" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="overdueCstmVo.contNo != null">
+            AND crs.cont_no = #{overdueCstmVo.contNo}
+        </if>
+        order by crs.cont_no,crs.period asc
+    </select>
+
+    <select id="selectContRepaySkedVoByContNo" resultType="cn.com.leadu.fms.pojo.finance.vo.contrepaysked.ContRepaySkedVo">
+        SELECT
+            *
+        FROM
+            cont_repay_sked
+        WHERE
+            del_flag = ${delete_exist}
+        <if test="overdueCstmVo.contNoList != null">
+            AND cont_no IN
+            <foreach collection="overdueCstmVo.contNoList" item="item" index="index" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="overdueCstmVo.contNo != null">
+            AND cont_no = #{overdueCstmVo.contNo}
+        </if>
+        order by cont_no,period
+    </select>
+
+    <select id="selectContOverdueVoByContNo" resultType="cn.com.leadu.fms.pojo.finance.vo.finrepaysked.FinRepaySkedVo">
+        SELECT
+            frs.cont_no,
+            frs.period,
+            frs.repay_date,
+            frs.repay_status,
+            frs.rent,
+            frs.principal,
+            frs.interest,
+            frs.rest_principal,
+            frs.revenue,
+            frs.tax,
+            crs.receipt_date,
+            crs.charge,
+            crs.rest_principal,
+            crs.repay_status
+        FROM
+            fin_repay_sked frs
+        LEFT JOIN cont_repay_sked crs ON frs.cont_no = crs.cont_no AND frs.period = crs.period
+        AND crs.del_flag = ${delete_exist}
+        WHERE
+            frs.del_flag = ${delete_exist}
+        <if test="overdueCstmVo.contNo != null">
+            AND frs.cont_no = #{overdueCstmVo.contNo}
+        </if>
+        order by frs.cont_no,frs.period
+    </select>
+
+    <select id="selectContNoListByOverdueCstmId" resultType="java.lang.String">
+        SELECT DISTINCT
+            cont_no
+        FROM overdue_cont
+        WHERE del_flag = ${delete_exist}
+        AND overdue_flag = '1'
+        AND overdue_cstm_id = #{overdueCstmId}
+    </select>
+
+    <select id="selectOverdueTelRegister" resultType="cn.com.leadu.fms.pojo.postbiz.vo.overduetelregister.OverdueTelRegisterVo">
+        SELECT
+            oct.relation_type,
+            oct.cstm_name,
+            oct.tel_no,
+            otr.tel_memo,
+            otr.assign_user,
+            otr.assign_date,
+            otr.overdue_detail,
+            otr.overdue_risk,
+            oc.overdue_cond_name overdueCondCd,
+            otr.commit_repay_date
+        FROM
+            overdue_tel_register otr
+        INNER JOIN overdue_cstm_tel oct ON otr.overdue_cstm_tel_id = oct.overdue_cstm_tel_id
+        AND oct.del_flag = ${delete_exist}
+        LEFT JOIN overdue_condition oc ON otr.overdue_cond_cd = oc.overdue_cond_cd
+        AND oc.del_flag = ${delete_exist}
+        WHERE otr.del_flag = ${delete_exist}
+        AND otr.overdue_cstm_id = #{overdueCstmId}
+    </select>
+
+    <select id="selectOverdueCstmTelVoByOverdueCstmTelId" resultType="cn.com.leadu.fms.pojo.postbiz.vo.overduecstmtel.OverdueCstmTelVo">
+        SELECT
+            oct.apply_no,
+            oc.cstm_name,
+            oct.cstm_name relationer,
+            oct.relation_type,
+            oct.tel_no
+        FROM
+            overdue_cstm_tel oct
+        LEFT JOIN overdue_cstm oc ON oct.certif_no = oc.certif_no
+        /*当前是否逾期为"是"的客户*/
+        and oc.overdue_flag = '1'
+        AND oc.del_flag = ${delete_exist}
+        WHERE
+            oct.del_flag = ${delete_exist}
+        <if test="overdueCstmTelId">
+            AND oct.overdue_cstm_tel_id = #{overdueCstmTelId}
+        </if>
+    </select>
+
+    <select id="selectOverdueTelRegisterVoByOverdueCstmId" resultType="cn.com.leadu.fms.pojo.postbiz.vo.overduetelregister.OverdueTelRegisterVo">
+        SELECT
+            oct.relation_type,
+            oct.cstm_name,
+            oct.tel_no,
+            otr.tel_memo,
+            otr.assign_user,
+            otr.assign_date,
+            oc.overdue_cond_name overdueCondCd,
+            otr.overdue_detail
+        FROM
+            overdue_tel_register otr
+        INNER JOIN overdue_cstm_tel oct ON otr.overdue_cstm_tel_id = oct.overdue_cstm_tel_id
+        AND oct.del_flag = ${delete_exist}
+        LEFT JOIN overdue_condition oc ON oc.overdue_cond_cd = otr.overdue_cond_cd
+        AND oc.del_flag = ${delete_exist}
+        WHERE
+            otr.del_flag = ${delete_exist}
+        <if test="overdueCstmId">
+            AND otr.overdue_cstm_id = #{overdueCstmId}
+        </if>
+    </select>
+
+    <!--获取收车信息List-->
+    <select id="selectRetrieveCarsTaskVoList" resultType="cn.com.leadu.fms.pojo.postbiz.vo.retrievecarstask.RetrieveCarsTaskVo">
+        select DISTINCT
+            retrieve.submit_user,
+            retrieve.submit_date,
+            retrieve.retrieve_reason,
+            retrieve.dispach_type,
+            retrieve.dispach_people,
+            u.user_name dispachPeople,
+            u1.user_name registerPeople,
+            retrieve.for_retr_amount,
+            retrieve.retrieve_result,
+            retrieve.retr_process_des,
+            retrieve.storage_date,
+            retrieve.storage_addr,
+            retrieve.act_retr_amount,
+            retrieve.car_status_des,
+            cont.vin_no,
+            cont.cont_no
+        from retrieve_cars_task retrieve
+        left join overdue_cont cont on retrieve.overdue_cont_id = cont.overdue_cont_id and cont.del_flag = ${delete_exist}
+        left join sys_user u on retrieve.dispach_people = u.user and u.del_flag = ${delete_exist}
+        left join sys_user u1 on retrieve.register_people = u1.user and u1.del_flag = ${delete_exist}
+        where retrieve.del_flag = ${delete_exist}
+        <if test="overdueCstmId != null">
+          and cont.overdue_cstm_id = #{overdueCstmId}
+        </if>
+    </select>
+
+    <!--获取诉讼列表信息-->
+    <select id="selectLawsuitTaskVoList" resultType="cn.com.leadu.fms.pojo.postbiz.vo.lawsuittask.LawsuitTaskVo">
+        select DISTINCT
+            lawsuit.cont_no,
+            lawsuit.submit_user,
+            lawsuit.submit_date,
+            lawsuit.dispatch_type,
+            u.user_name dispatchUser,
+            u1.user_name registerUser,
+            lawsuit.lawsuit_reason,
+            lawsuit.lawsuit_type,
+            lawsuit.lawsuit_amount,
+            lawsuit.lawsuit_amount,
+            lawsuit.defendant,
+            lawsuit.lawsuit_addr,
+            lawsuit.lawsuit_sponsor_date,
+            lawsuit.lawsuit_end_date,
+            lawsuit.lawsuit_end_reason,
+            lawsuit.lawsuit_end_remark,
+            cont.vin_no
+        from lawsuit_task lawsuit
+        left join overdue_cont cont on lawsuit.overdue_cont_id = cont.overdue_cont_id and cont.del_flag = ${delete_exist}
+        left join sys_user u on lawsuit.dispatch_user = u.user and u.del_flag = ${delete_exist}
+        left join sys_user u1 on lawsuit.register_user = u1.user and u1.del_flag = ${delete_exist}
+        where lawsuit.del_flag = ${delete_exist}
+        <if test="overdueCstmId != null">
+          and cont.overdue_cstm_id = #{overdueCstmId}
+        </if>
+    </select>
+
+    <select id="selectCollectionTaskList" resultType="cn.com.leadu.fms.pojo.postbiz.vo.collectiontask.CollectionTaskVo">
+        select
+            u2.user_name applyUser,
+            task.apply_visit_date,
+            task.collection_level,
+            task.collection_reason,
+            task.dispatch_type,
+            u.user_name dispatchUser,
+            u1.user_name registerUser,
+            task.repay_desire,
+            task.self_use_flag,
+            task.witness_flag
+        from collection_task task
+        left join sys_user u on task.dispatch_user = u.user and u.del_flag = ${delete_exist}
+        left join sys_user u1 on task.register_user = u1.user and u1.del_flag = ${delete_exist}
+        left join sys_user u2 on task.apply_user = u2.user and u2.del_flag = ${delete_exist}
+        where task.del_flag = ${delete_exist}
+        <if test="overdueCstmId != null">
+            and task.overdue_cstm_id = #{overdueCstmId}
+        </if>
+    </select>
+
+    <!--获取催收函需要数据-->
+    <select id="selectCollectionLetterInfo" resultMap="collectionLetterResultMap">
+        select DISTINCT
+            cstm.cstm_name,
+            cont.cont_no,
+            cont.vehicle_license_no,
+            vehicleCode.vehicle_name AS vehicleForm,
+            sysGroup.group_name,
+--             cont.overdue_sum,
+            finance.repay_day,
+            contractFinance.belong_group,
+            cont.apply_no,
+            cont.vin_no
+        from overdue_cont cont
+        left join overdue_cstm cstm on cstm.overdue_cstm_id = cont.overdue_cstm_id and cstm.del_flag = ${delete_exist}
+        left join contract_finance contractFinance on contractFinance.del_flag = ${delete_exist}
+        and contractFinance.cont_no = cont.cont_no and contractFinance.apply_no = cont.apply_no
+        left join sys_group sysGroup on sysGroup.del_flag = ${delete_exist} and sysGroup.group_code = contractFinance.belong_group
+        left join contract_finance finance on cont.cont_no = finance.cont_no and finance.del_flag = ${delete_exist}
+        LEFT JOIN bas_vehicle vehicleCode ON cont.vehicle_code=vehicleCode.vehicle_code AND vehicleCode.del_flag = ${delete_exist}
+        where cont.del_flag = ${delete_exist}
+        <if test="contNo != null">
+            and cont.cont_no = #{contNo}
+        </if>
+    </select>
+
+    <resultMap id="collectionLetterResultMap" type="cn.com.leadu.fms.pojo.postbiz.vo.overduecstm.CollectionLetterVo">
+        <id column="cont_no" javaType="java.lang.String" property="contNo" />
+        <id column="cstm_name" javaType="java.lang.String" property="cstmName" />
+        <id column="vehicle_license_no" javaType="java.lang.String" property="vehicleLicenseNo" />
+        <id column="vehicleForm" javaType="java.lang.String" property="vehicleForm" />
+        <id column="group_name" javaType="java.lang.String" property="groupName" />
+        <id column="overdue_sum" javaType="java.math.BigDecimal" property="overdueSum" />
+        <id column="repay_day" javaType="java.lang.String" property="repayDay" />
+        <id column="belong_group" javaType="java.lang.String" property="belongGroup" />
+        <id column="vin_no" javaType="java.lang.String" property="vinNo" />
+        <collection property="contRepaySkedVoList" ofType="cn.com.leadu.fms.pojo.finance.vo.contrepaysked.ContRepaySkedVo"
+                    javaType="java.util.ArrayList" select="getContRepaySkedVoList" column="cont_no">
+        </collection>
+        <collection property="guaranteePersVoList" ofType="cn.com.leadu.fms.pojo.prebiz.vo.guaranteepers.GuaranteePersVo"
+                    javaType="java.util.ArrayList" select="getGuaranteePersVoList" column="apply_no">
+        </collection>
+        <collection property="guaranteeCompVoList" ofType="cn.com.leadu.fms.pojo.prebiz.vo.guaranteecomp.GuaranteeCompVo"
+                    javaType="java.util.ArrayList" select="getGuaranteeCompVoList" column="apply_no">
+        </collection>
+    </resultMap>
+
+    <!--获取担保个人信息-->
+    <select id="getGuaranteePersVoList" resultType="cn.com.leadu.fms.pojo.prebiz.vo.guaranteepers.GuaranteePersVo">
+          select * from guarantee_pers where del_flag = ${delete_exist} and apply_no = #{applyNo}
+    </select>
+
+    <!--获取担保企业信息-->
+    <select id="getGuaranteeCompVoList" resultType="cn.com.leadu.fms.pojo.prebiz.vo.guaranteecomp.GuaranteeCompVo">
+        select * from guarantee_comp where del_flag = ${delete_exist} and apply_no = #{applyNo}
+    </select>
+
+    <!--获取逾期的还款计划表数据-->
+    <select id="getContRepaySkedVoList" resultType="cn.com.leadu.fms.pojo.finance.vo.contrepaysked.ContRepaySkedVo">
+        select repaySked.*,contOverdue.rest_overdue_amount
+        from cont_repay_sked repaySked
+        left join cont_overdue contOverdue on repaySked.cont_no = contOverdue.cont_no and repaySked.period = contOverdue.period
+        and contOverdue.del_flag = ${delete_exist}
+        where repaySked.del_flag = ${delete_exist}
+        and repaySked.cont_no = #{contNo}
+        /*还款日小于当日*/
+        and DATEDIFF(repaySked.repay_date, NOW()) &lt; 0
+        /*还款状态等于代扣款，扣款中或扣款时便*/
+        and repaySked.repay_status in ('0', '1', '3')
+        order by repaySked.period asc
+    </select>
+
+    <!--获取律师函需要数据-->
+    <select id="selectLawyerLetterInfo" resultMap="lawyerLetterResultMap">
+        select DISTINCT
+            cstm.cstm_name,
+            cont.cont_no,
+            cont.vehicle_license_no,
+            vehicleCode.vehicle_name AS vehicleForm,
+            sysGroup.group_name,
+            contractFinance.belong_group,
+            finance.repay_day,
+            cont.apply_no,
+            cont.vin_no,
+            cont.rent,
+            cont.fin_period_type
+        from overdue_cont cont
+        left join overdue_cstm cstm on cstm.overdue_cstm_id = cont.overdue_cstm_id and cstm.del_flag = ${delete_exist}
+        left join contract_finance contractFinance on contractFinance.del_flag = ${delete_exist}
+        and contractFinance.cont_no = cont.cont_no and contractFinance.apply_no = cont.apply_no
+        left join sys_group sysGroup on sysGroup.del_flag = ${delete_exist} and sysGroup.group_code = contractFinance.belong_group
+        left join contract_finance finance on cont.cont_no = finance.cont_no and finance.del_flag = ${delete_exist}
+        LEFT JOIN bas_vehicle vehicleCode ON cont.vehicle_code=vehicleCode.vehicle_code AND vehicleCode.del_flag = ${delete_exist}
+        where cont.del_flag = ${delete_exist}
+        <if test="contNo != null">
+            and cont.cont_no = #{contNo}
+        </if>
+    </select>
+
+    <resultMap id="lawyerLetterResultMap" type="cn.com.leadu.fms.pojo.postbiz.vo.overduecstm.LawyerLetterVo">
+        <id column="cont_no" javaType="java.lang.String" property="contNo" />
+        <id column="cstm_name" javaType="java.lang.String" property="cstmName" />
+        <id column="vehicle_license_no" javaType="java.lang.String" property="vehicleLicenseNo" />
+        <id column="vehicleForm" javaType="java.lang.String" property="vehicleForm" />
+        <id column="group_name" javaType="java.lang.String" property="groupName" />
+        <id column="repay_day" javaType="java.lang.String" property="repayDay" />
+        <id column="vin_no" javaType="java.lang.String" property="vinNo" />
+        <id column="belong_group" javaType="java.lang.String" property="belongGroup" />
+        <id column="fin_period_type" javaType="java.lang.String" property="finPeriodType" />
+        <id column="rent" javaType="java.math.BigDecimal" property="rent" />
+        <collection property="contRepaySkedVoList" ofType="cn.com.leadu.fms.pojo.finance.vo.contrepaysked.ContRepaySkedVo"
+                    javaType="java.util.ArrayList" select="getContRepaySkedVoList" column="cont_no">
+        </collection>
+    </resultMap>
+
+    <select id="selectAssignUsers" resultType="cn.com.leadu.fms.pojo.system.entity.SysUser">
+        select DISTINCT u.*
+        from sys_user u
+        left join sys_user_role ur on u.user_id = ur.user_id and ur.del_flag = ${delete_exist}
+        left join sys_role r on ur.role_id = r.role_id and r.del_flag = ${delete_exist}
+        where u.del_flag = ${delete_exist}
+        <if test="roleCodeList != null">
+            and r.role in
+            <foreach collection="roleCodeList" item="item" index="index" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+    </select>
+
+</mapper>

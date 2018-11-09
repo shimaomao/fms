@@ -1,0 +1,283 @@
+<div ng-controller="bas_partner_handler_controller">
+    <div class="panel panel-default">
+        <div class="row">
+            <div class="btn-group m-r-lg pull-left" style="margin-left: 25px">
+                <h4>{{frameTitle}}</h4>
+            </div>
+            <div class="btn-group m-r-lg pull-right" style="margin: 15px 30px 0px 0px">
+                <button class="btn btn-success m-t-xs m-r-xs" ng-show="showSave"  ng-click="save()" ng-disabled="submit">新增</button>
+                <button class="btn btn-success m-t-xs m-r-xs" ng-show="showUpdate" ng-click="modify()" ng-disabled="submit">保存</button>
+                <button class="btn btn-default m-t-xs" ng-click="goBack()">返回</button>
+            </div>
+        </div>
+        <form name="form" class="form-validation" novalidate on-finish-render-filters>
+            <div class="panel-body wrapper-sm">
+            <ul id="applyTab" class="nav nav-tabs">
+                <li class="active"><a href="javascript:void(0);" data-toggle="tab" data-id="message"
+                                      onclick="switchPageTab(this, 'applyTab')">经销商基本信息</a></li>
+                <li><a href="javascript:void(0);" data-toggle="tab" data-id="fjmessage"
+                       onclick="switchPageTab(this, 'applyTab')">附件信息</a></li>
+            </ul>
+          <div  class="tab-content" style="margin-top: 25px">
+            <div class="tab-pane fade in active" id="message" ng-show="!showDetail">
+            <div class="form-group row">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">经销商代码</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-3">
+                    <input type="text" name="partnerCode" placeholder="请输入经销商代码" class="form-control m-b-xs" ng-model="basPartner.partnerCode" title="{{basPartner.partnerCode}}"  required ng-disabled="showUpdate">
+                    <p><span class="form-info" ng-show=" (form.partnerCode.$dirty && form.partnerCode.$error.required) || (form.partnerCode.$error.required && formValidate)">经销商代码不能为空</span>
+                    </p>
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">经销商全称</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-3">
+                    <input type="text" name="partnerName" placeholder="请输入经销商全称" class="form-control m-b-xs" ng-model="basPartner.partnerName"  required >
+                    <p>
+                                <span class="form-info"
+                                      ng-show=" (form.partnerName.$dirty && form.partnerName.$error.required) || (form.partnerName.$error.required && formValidate)">经销商全称不能为空</span>
+                    </p>
+                </div>
+            </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">经销商简称</b><b class="form-error"></b>:</label>
+                    <div class="col-sm-3">
+                        <input type="text"  name="partnerNameShort" placeholder="请输入经销商简称" class="form-control m-b-xs"
+                               ng-model="basPartner.partnerNameShort">
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">经销商联系人员</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-3">
+                        <input type="text"  name="contact" placeholder="请输入经销商联系人员" class="form-control m-b-xs"
+                               ng-model="basPartner.contact" required>
+                        <p>
+                                <span class="form-info"
+                                      ng-show=" (form.contact.$dirty && form.contact.$error.required) || (form.contact.$error.required && formValidate)">经销商联系人员不能为空</span>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">经销商联系方式1</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-3">
+                        <input type="text"  name="contactTel1" placeholder="经销商联系方式1" class="form-control m-b-xs" ng-pattern="/^1[345789]\d{9}$/"
+                               ng-model="basPartner.contactTel1" required onKeyUp="value=value.replace(/[^\d.]/g,'')">
+                        <p>
+                                <span class="form-info"
+                                      ng-show=" (form.contactTel1.$dirty && form.contactTel1.$error.required) || (form.contactTel1.$error.required && formValidate)">经销商联系方式1不能为空</span>
+                                <span class="form-info" ng-show=" (form.contactTel1.$dirty && form.contactTel1.$error.pattern) || (form.contactTel1.$error.pattern && formValidate)">请输入正确的联系方式</span>
+                        </p>
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">经销商联系方式2</b><b class="form-error"></b>:</label>
+                    <div class="col-sm-3">
+                        <input type="text"  name="contactTel2" placeholder="请输入经销商联系方式2" class="form-control m-b-xs"
+                               ng-model="basPartner.contactTel2" onKeyUp="value=value.replace(/[^\d.]/g,'')">
+
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">经销商合作类型</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-10">
+                    <div  class="checkbox" ng-repeat="partnerTypeObj in partnerTypeList" >
+                        <label><input type="checkbox" name="partnerType" ng-checked="basPartner.partnerType.indexOf(partnerTypeObj.codeValue)!=-1"
+                                      ng-true-value="{{partnerTypeObj.codeValue}}" ng-click="checkboxValue('partnerType');">{{partnerTypeObj.codeValueName}}</label>
+                    </div>
+                        <p>
+                            <span class="form-info"  ng-show="(form.partnerType && basPartner.partnerType.length<1) || (basPartner.partnerType == '' && formValidate)">请选择经销商合作类型</span>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">车辆类型</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-10">
+                    <div class="checkbox"  ng-repeat="vehicleFormObj in vehicleFormList" >
+                        <label><input type="checkbox" name="vehicleForm" ng-checked="basPartner.vehicleForm.indexOf(vehicleFormObj.codeValue)!=-1"
+                                      ng-true-value="{{vehicleFormObj.codeValue}}" ng-click="checkboxValue('vehicleForm');">{{vehicleFormObj.codeValueName}}</label>
+                    </div>
+                    <p>
+                        <span class="form-info" ng-show="(basPartner.vehicleForm==''&&formValidate) || (form.vehicleForm && basPartner.vehicleForm.length<1)">请选择车辆类型</span>
+                    </p>
+                </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">放款模式</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-10">
+                    <div class="checkbox"  ng-repeat="remitTypeObj in remitTypeList" >
+                        <label><input type="checkbox" name="remitType" ng-checked="basPartner.remitType.indexOf(remitTypeObj.codeValue)!=-1"
+                                      ng-true-value="{{remitTypeObj.codeValue}}" ng-click="checkboxValue('remitType');">{{remitTypeObj.codeValueName}}</label>
+                    </div>
+                    <p>
+                                <span class="form-info" ng-show="(basPartner.remitType==''&&formValidate) || (form.remitType && basPartner.remitType.length<1)">请选择放款模式</span>
+                    </p>
+                </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">经营牌照类型</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-10">
+                    <div class="checkbox"  ng-repeat="rentTypeObj in rentTypeList" >
+                        <label><input type="checkbox" name="rentType" ng-checked="basPartner.rentType.indexOf(rentTypeObj.codeValue)!=-1"
+                                      ng-true-value="{{rentTypeObj.codeValue}}" ng-click="checkboxValue('rentType');">{{rentTypeObj.codeValueName}}</label>
+                    </div>
+                    <p>
+                                <span class="form-info" ng-show="(basPartner.rentType==''&&formValidate) || (form.rentType && basPartner.rentType.length<1)">请选择经营牌照类型</span>
+                    </p>
+                </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">金融专员</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-3">
+                        <input type="text"  name="salesExec" placeholder="请输入金融专员" class="form-control m-b-xs"
+                               ng-model="basPartner.salesExec" required>
+                        <p>
+                                <span class="form-info"
+                                      ng-show=" (form.salesExec.$dirty && form.salesExec.$error.required) || (form.salesExec.$error.required && formValidate)">金融专员不能为空</span>
+                        </p>
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">联系方式</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-3">
+                        <input type="text"  name="salesExecMobno" placeholder="请输入联系方式" class="form-control m-b-xs"
+                               ng-model="basPartner.salesExecMobno" required onKeyUp="value=value.replace(/[^\d.]/g,'')">
+                        <p>
+                                <span class="form-info"
+                                      ng-show=" (form.salesExecMobno.$dirty && form.salesExecMobno.$error.required) || (form.salesExecMobno.$error.required && formValidate)">联系方式不能为空</span>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">经销商层级</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-3  form-inline">
+                        <input type="text"  name="levelName" placeholder="请选择经销商层级" readonly class="form-control m-b-xs"
+                               ng-model="basPartner.groupLevName" title="{{basPartner.groupLevName}}" required>
+                        <input type="text" class="hidden" ng-model="basPartner.groupLev">
+                        <button class="btn btn-info m-b-xs m-l-sm btn-sm" ng-click="selectlevel()"><i class="fa fa-pencil-square-o m-r-xs"></i>选择</button>
+                        <p>
+                                <span class="form-info"
+                                      ng-show=" (form.levelName.$dirty && form.levelName.$error.required) || (form.levelName.$error.required && formValidate)">经销商层级不能为空</span>
+                        </p>
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">经营品牌</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-3">
+                        <input type="text"  name="brand" placeholder="请输入经营品牌" class="form-control m-b-xs"
+                               ng-model="basPartner.brand" required>
+                        <p>
+                                <span class="form-info"
+                                      ng-show=" (form.brand.$dirty && form.brand.$error.required) || (form.brand.$error.required && formValidate)">经营品牌不能为空</span>
+                        </p>
+                    </div>
+
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">上级组织代码</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-3 form-inline">
+                        <input type="text"  name="parentGroupCode" placeholder="请选择上级组织代码" class="form-control m-b-xs"
+                               ng-model="basPartner.parentGroupCode" title="{{basPartner.parentGroupCode}}" readonly required>
+                        <button class="btn btn-info m-b-xs m-l-sm btn-sm" ng-click="selectOrg()"><i class="fa fa-pencil-square-o m-r-xs"></i>选择</button>
+
+                        <p>
+                                <span class="form-info"
+                                      ng-show=" (form.parentGroupCode.$dirty && form.parentGroupCode.$error.required) || (form.parentGroupCode.$error.required && formValidate)">上级组织代码不能为空</span>
+                        </p>
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">组织名称</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-3">
+                        <input type="text"  name="parentGroupName" placeholder="上级组织名称" class="form-control m-b-xs"
+                               ng-model="basPartner.parentGroupName" title="{{basPartner.parentGroupName}}" readonly required>
+                        <p>
+                                <span class="form-info"
+                                      ng-show=" (form.parentGroupName.$dirty && form.parentGroupName.$error.required) || (form.parentGroupName.$error.required && formValidate)">上级组织名称不能为空</span>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">区域经理</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-3  form-inline">
+                        <input type="text" name="areaManagerName" placeholder="请选择区域经理" readonly class="form-control m-b-xs"
+                               ng-model="basPartner.areaManagerName" title="{{basPartner.areaManagerName}}" required>
+                        <input type="text" class="hidden" ng-model="basPartner.areaManager">
+                        <button class="btn btn-info m-b-xs m-l-sm btn-sm" ng-click="selectsysUser()"><i class="fa fa-pencil-square-o m-r-xs"></i>选择</button>
+
+                        <p>
+                                <span class="form-info"
+                                      ng-show=" (form.areaManagerName.$dirty && form.areaManagerName.$error.required) || (form.areaManagerName.$error.required && formValidate)">请选择区域经理</span>
+                        </p>
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">区域经理手机</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-3 form-inline">
+                        <input type="text" id="areaManagerMobno" name="areaManagerMobno" readonly  class="form-control m-b-xs"
+                               ng-model="basPartner.areaManagerMobno" title="{{basPartner.areaManagerMobno}}" placeholder="请输入区域经理手机" required onKeyUp="value=value.replace(/[^\d.]/g,'')">
+                        <button class="btn btn-info m-b-xs m-l-sm btn-sm" onclick="$('#areaManagerMobno').attr('readonly',false)">修改</button>
+                        <p>
+                                <span class="form-info"
+                                      ng-show=" (form.areaManagerMobno.$dirty && form.areaManagerMobno.$error.required) || (form.areaManagerMobno.$error.required && formValidate)">区域经理手机不能为空</span>
+                        </p>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">经销商地址</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <select  name="partnerProv" ng-model="basPartner.partnerProv" class="form-control m-b-xs" ng-change="changeProvince()" required>
+                            <option value="">--请选择省份--</option>
+                            <option value="{{provinceObj.areaCode}}" ng-repeat="provinceObj in provinceList">{{provinceObj.areaName}}</option>
+                        </select>
+                        <p>
+                                <span class="form-info"
+                                      ng-show=" (form.partnerProv.$dirty && form.partnerProv.$error.required) || (form.partnerProv.$error.required && formValidate)">经营省份不能为空</span>
+                        </p>
+                    </div>
+
+                    <div class="col-sm-2">
+                        <select name="partnerCity" ng-model="basPartner.partnerCity" class="form-control m-b-xs" ng-change="changeCity()" required>
+                            <option value="">--请选择城市--</option>
+                            <option value="{{cityObj.areaCode}}" ng-selected="cityObj.areaCode==basPartner.partnerCity?1:0" ng-repeat="cityObj in cityList">{{cityObj.areaName}}</option>
+                        </select>
+                        <p>
+                                <span class="form-info"
+                                      ng-show=" (form.partnerCity.$dirty && form.partnerCity.$error.required) || (form.partnerCity.$error.required && formValidate)">经营城市不能为空</span>
+                        </p>
+                    </div>
+                    <div class="col-sm-2">
+                        <select name="partnerCounty" ng-model="basPartner.partnerCounty" class="form-control m-b-xs" required>
+                            <option value="" >--请选择区县--</option>
+                            <option value="{{areaObj.areaCode}}" ng-selected="areaObj.areaCode==basPartner.partnerCounty?1:0" ng-repeat="areaObj in areaList">{{areaObj.areaName}}</option>
+                        </select>
+                        <p>
+                                <span class="form-info"
+                                      ng-show=" (form.partnerCounty.$dirty && form.partnerCounty.$error.required) || (form.partnerCounty.$error.required && formValidate)">经营区县不能为空</span>
+                        </p>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">经销商经营地址</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-3">
+                            <input type="text" name="partnerAddr"  class="form-control m-b-xs"
+                                   ng-model="basPartner.partnerAddr" placeholder="请输入经销商经营地址" required>
+                            <p>
+                                <span class="form-info"
+                                      ng-show=" (form.partnerAddr.$dirty && form.partnerAddr.$error.required) || (form.partnerAddr.$error.required && formValidate)">经销商经营地址不能为空</span>
+                            </p>
+                        </div>
+                    </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">备注</b><b class="form-error"></b>:</label>
+                    <div class="col-sm-3">
+                <textarea limit-word name="remark"  class="form-control m-b-xs"
+                          ng-model="basPartner.remark" placeholder="备注"></textarea>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-pane fade" id="fjmessage">
+                <ul type="none" style="padding-left: 20px;">
+                    <!--<div ng-include="'tpl/common/tree_file/tree_file.html'"></div>-->
+                    <tree-file-directive detail-flag="$root.yesNoFlag.no" file-type="$root.basFileTypes.partnerFile" files="basPartner.bizFilesList" not-upload="notUpload" not-upload-info = "notUploadInfo" not-file-type="notFileType" not-file-type-name="notFileTypeName" >
+                    </tree-file-directive>
+                </ul>
+            </div>
+            </div>
+                </div>
+        </form>
+    </div>
+</div>

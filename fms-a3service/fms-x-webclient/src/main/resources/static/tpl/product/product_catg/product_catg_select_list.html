@@ -1,0 +1,39 @@
+<div class="bg-light lter b-b wrapper-md">
+    <h1 class="m-n font-thin h4">产品大类管理<button type="button" class="close" data-dismiss="modal" aria-hidden="true" ng-click="close()">&times;</button></h1>
+</div>
+<div ng-init="init()">
+    <div class="panel panel-default">
+        <div class="panel-body wrapper-sm">
+            <div class="row">
+                <div class="col-lg-12">
+                    <form class="form-inline" role="form">
+                        <div class="form-group">
+                            <label class="sr-only" >产品大类代码 </label>
+                            <input class="form-control m-b-xs" ng-model="productCatg" placeholder="产品大类代码">
+                        </div>
+                        <div class="form-group">
+                            <label class="sr-only" >产品大类名称 </label>
+                            <input class="form-control m-b-xs" ng-model="productCatgName" placeholder="产品大类名称">
+                        </div>
+
+                        <div class="form-group m-b-sm">
+                            <div class="btn-group">
+                                <button class="btn btn-default m-b-xs btn-info" ng-click="searchProductCatg()" ><i class="fa fa-search"></i>查询</button>
+                                <button class="btn btn-default m-b-xs" ng-click="resetProductCatg()" ><i class="fa  icon-refresh"></i>重置</button>
+                            </div>
+                        </div>
+
+                        <div class="form-group pull-right">
+                            <div class="btn-group">
+                                <button class="btn btn-default m-b-xs m-r-xs" ng-click="confirm()">确认</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <table border="1" class="table table-striped m-b-none" id="product_catg_select_table">
+        </table>
+    </div>
+
+</div>

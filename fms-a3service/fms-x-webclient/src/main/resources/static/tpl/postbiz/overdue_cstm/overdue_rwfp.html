@@ -1,0 +1,68 @@
+<style>
+    .panel h4{padding: 15px;border-bottom: 1px solid #dedede;color: black;font-weight: 600;margin: 0;font-size: 14px;}
+    .ng-scope .panel:not(:first-child){margin-top: 20px;}
+    .main-header{position: fixed;right: 0;left: 0;top: 0;padding: 20px 20px 0 20px;z-index: 1;background: #F5F5F5;}
+    .main-content{padding: 20px;margin-top: 70px;}
+    .limit-word{white-space: nowrap;overflow: hidden;text-overflow: ellipsis;max-width: 100px;display: inline-block;}
+</style>
+<div>
+    <toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+</div>
+<div ng-controller="overdue_rwfp_controller">
+    <form name="form" class="form-validation" novalidate>
+    <div class="main-content">
+        <div class="panel panel-default">
+            <h4>催收任务分配</h4>
+            <div class="panel-body">
+
+                <div class="row">
+                    <label class="col-sm-2 text-right"><b class="form-text-black">客户姓名</b>:</label>
+                    <div class="col-sm-2">
+                        {{cstmData.cstmName}}
+                    </div>
+
+                    <label class="col-sm-2 text-right"><b class="form-text-black">客户当前逾期天数</b>:</label>
+                    <div class="col-sm-2">
+                        {{cstmData.overdueDays}}
+                    </div>
+
+                    <label class="col-sm-2 text-right"><b class="form-text-black">客户当前逾期本金</b>:</label>
+                    <div class="col-sm-2">
+                        {{cstmData.overduePrincipal}}
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">催收类型</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-2 form-inline">
+                        <input type="text" readonly name="collectionType"  class="form-control m-b-xs" value="{{collectionPerson.collectionType | getName:'assignmentType'}}" required >
+                        <p>
+                            <span class="form-info" ng-show=" (form.collectionType.$dirty && form.collectionType.$error.required) || (form.collectionType.$error.required && formValidate)">催收人员姓名不能为空</span>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">催收人员账号</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <input type="text" readonly name="collectionPersonNum"  class="form-control m-b-xs" ng-model="collectionPerson.collectionPersonNum"  required >
+                        <p>
+                            <span class="form-info" ng-show=" (form.collectionPersonNum.$dirty && form.collectionPersonNum.$error.required) || (form.collectionPersonNum.$error.required && formValidate)">催收人员账号不能为空</span>
+                        </p>
+                    </div>
+                    <button class="btn btn-sm btn-primary m-b-xs m-l-sm" ng-click="selectCollectionPerson()"><i class="fa fa-pencil-square-o m-r-xs"></i>请选择<b class="form-error"></b></button>
+                </div>
+
+                <div class="text-center">
+                    <div class="col-sm-15 m-b">
+                        <button class="btn btn-default" ng-click="goBack()">返回</button>
+                        <button type="submit" class="btn btn-success" ng-disabled="submit" ng-click="save()">保存</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+    </form>
+</div>

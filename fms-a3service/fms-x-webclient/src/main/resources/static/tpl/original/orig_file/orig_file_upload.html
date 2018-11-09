@@ -1,0 +1,49 @@
+<div  ng-controller="orig_file_upload_controller">
+        <div class="panel panel-default">
+            <div class="panel-body wrapper-sm">
+                <div class="row m-b-md">
+                    <div class="col-lg-12">
+                        <div class="form-group"><h1 class="m-n font-thin h4">资料上传</h1></div>
+                        <div class="form-group pull-right">
+                            <div class="btn-group">
+                                <button class="btn btn-default m-b-xs btn-sm fms-button-margin-bottom" ng-click="backUp()"><i class=""></i>返回</button>
+                                <button class="btn btn-success m-b-xs btn-sm fms-button-margin-bottom" ng-if="!detail" ng-click="submit()"><i class=""></i>保存</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel-body wrapper-sm">
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">合同编号</b>:</label>
+                    <div class="col-sm-2">
+                        <input type="text" title="{{origFileMailVo.bizCode}}" name="bizCode" placeholder="合同编号" class="form-control m-b-xs" ng-model="origFileMailVo.bizCode" disabled>
+                    </div>
+
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">承租人</b>:</label>
+                    <div class="col-sm-2">
+                        <input type="text" title="{{origFileObj.cstmName}}" name="cstmName"  class="form-control m-b-xs" ng-model="origFileObj.cstmName" disabled>
+                    </div>
+
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">车架号</b>:</label>
+                    <div class="col-sm-2">
+                        <input type="text" title="{{origFileObj.vinNo}}" name="vinNo"  class="form-control m-b-xs" ng-model="origFileObj.vinNo" disabled>
+                    </div>
+                </div>
+            </div>
+
+            <!--附件信息-->
+            <div class="panel-body wrapper-sm" ng-if="httpData && !detail">
+                <tree-file-directive detail-flag="$root.yesNoFlag.no" file-type="$parent.fileType" files="$parent.bizFilesList" not-upload="$parent.notUpload" not-upload-info="$parent.msgInfo"  not-upload-info = "$parent.notUploadInfo" not-file-type="$parent.notFileType" not-file-type-name="$parent.notFileTypeName">
+                </tree-file-directive>
+            </div>
+
+            <!--&lt;!&ndash;附件信息&ndash;&gt;-->
+            <div class="panel-body wrapper-sm" ng-if="detail">
+                <tree-file-directive detail-flag="$root.yesNoFlag.yes" file-type="$parent.fileType" files="$parent.bizFilesList" not-upload="$parent.notUpload" not-upload-info="$parent.msgInfo"  not-upload-info = "$parent.notUploadInfo" not-file-type="$parent.notFileType" not-file-type-name="$parent.notFileTypeName">
+                </tree-file-directive>
+            </div>
+        </div>
+</div>
+

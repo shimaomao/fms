@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.com.leadu.fms.data.postbiz.dao.VehMaintainDao">
+
+    <select id="selectVeMaintainVosByPage" parameterType="java.lang.String" resultType="cn.com.leadu.fms.pojo.postbiz.vo.vehmaintain.VehMaintainVo">
+        SELECT
+        veh_maintain.veh_maintain_id,
+        veh_maintain.maintain_flag,
+        veh_maintain.cont_insur_claim_no,
+        veh_maintain.vin_no,
+        veh_maintain.engine_no,
+        veh_maintain.vehicle_license_no,
+        veh_maintain.maintain_date,
+        veh_maintain.maintain_addr,
+        veh_maintain.maintain_amount,
+        veh_maintain.maintain_memo,
+        veh_maintain.del_flag,
+        IFNULL(cstm_person.`name`,cstm_company.`name`) AS vehTenant , sys_group.group_name AS vehLessor ,contract.cont_no AS vehContNo
+        FROM veh_maintain
+        LEFT JOIN contract ON veh_maintain.vin_no = contract.vin_no
+        and  contract.del_flag = ${delete_exist}
+        LEFT JOIN cstm_company ON  contract.apply_no = cstm_company.apply_no
+        and  cstm_company.del_flag = ${delete_exist}
+        LEFT JOIN cstm_person ON 	contract.apply_no = cstm_person.apply_no
+        and  cstm_person.del_flag = ${delete_exist}
+        LEFT JOIN contract_finance ON contract_finance.cont_no = contract.cont_no
+        and  contract_finance.del_flag = ${delete_exist}
+        LEFT JOIN sys_group ON contract_finance.belong_group = sys_group.group_code
+        and  sys_group.del_flag = ${delete_exist}
+        WHERE veh_maintain.del_flag = ${delete_exist}
+        <if test="vehMaintainVo.maintainFlag !=null">
+            AND veh_maintain.`maintain_flag` = #{vehMaintainVo.maintainFlag}
+        </if>
+        <if test="vehMaintainVo.vinNo != null">
+            AND veh_maintain.vin_no LIKE #{vehMaintainVo.vinNo}
+        </if>
+        <if test="vehMaintainVo.vehContNo != null">
+            AND contract.cont_no LIKE #{vehMaintainVo.vehContNo}
+        </if>
+        <if test="vehMaintainVo.vehTenant != null">
+            AND (cstm_person.`name` LIKE #{vehMaintainVo.vehTenant} or cstm_company.`name` LIKE #{vehMaintainVo.vehTenant})
+        </if>
+        ORDER BY  veh_maintain.update_time desc
+    </select>
+
+    <select id="selectVehMaintainVoByVehMaintainId" parameterType="java.lang.String" resultType="cn.com.leadu.fms.pojo.postbiz.vo.vehmaintain.VehMaintainVo">
+        SELECT
+        veh_maintain.veh_maintain_id,
+        veh_maintain.maintain_flag,
+        veh_maintain.cont_insur_claim_no,
+        veh_maintain.vin_no,
+        veh_maintain.engine_no,
+        veh_maintain.vehicle_license_no,
+        veh_maintain.maintain_date,
+        veh_maintain.maintain_addr,
+        veh_maintain.maintain_amount,
+        veh_maintain.maintain_memo,
+        veh_maintain.del_flag,
+
+        IFNULL(cstm_person.`name`,cstm_company.`name`) AS vehTenant ,
+        sys_group.group_name AS vehLessor ,
+        contract.cont_no AS vehContNo
+        FROM veh_maintain
+        LEFT JOIN contract ON veh_maintain.vin_no = contract.vin_no
+        and  contract.del_flag = ${delete_exist}
+        LEFT JOIN cstm_company ON  contract.apply_no = cstm_company.apply_no
+        and  cstm_company.del_flag = ${delete_exist}
+        LEFT JOIN cstm_person ON 	contract.apply_no = cstm_person.apply_no
+        and  cstm_person.del_flag = ${delete_exist}
+        LEFT JOIN contract_finance ON contract_finance.cont_no = contract.cont_no
+        and  contract_finance.del_flag = ${delete_exist}
+        LEFT JOIN sys_group ON contract_finance.belong_group = sys_group.group_code
+        and  sys_group.del_flag = ${delete_exist}
+        WHERE veh_maintain.del_flag = ${delete_exist}
+        AND veh_maintain.veh_maintain_id = #{vehMaintainId}
+    </select>
+</mapper>

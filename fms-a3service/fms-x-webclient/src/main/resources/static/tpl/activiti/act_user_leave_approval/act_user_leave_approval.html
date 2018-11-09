@@ -1,0 +1,46 @@
+<div ng-controller="act_user_leave_save_controller">
+<div class="modal-header">
+    <h4 class="modal-title">请假审批 <button type="button" class="close" data-dismiss="modal" aria-hidden="true" ng-click="close()">&times;</button></h4>
+</div>
+<div class="modal-body">
+    <form name="form" class="form-validation" novalidate>
+
+        <div class="panel-body">
+
+            <div class="form-group row">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">请假标题</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-8">
+                    <label class="col-sm-12 control-label text-left">{{actUserLeave.leaveTitle}}</label>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group row">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">请假天数</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-8">
+                    <label class="col-sm-12 control-label text-left">{{actUserLeave.leaveDay}}</label>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group row">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">请假原因</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-8">
+                    <label class="col-sm-12 control-label text-left">{{actUserLeave.leaveRemark}}</label>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+
+        </div>
+
+    </form>
+</div>
+<div class="modal-footer ng-scope">
+    <button class="btn btn-default" ng-click="goBack()">返回</button>
+    <button type="submit" class="btn btn-success" ng-click="save()">同意</button>
+</div>
+</div>

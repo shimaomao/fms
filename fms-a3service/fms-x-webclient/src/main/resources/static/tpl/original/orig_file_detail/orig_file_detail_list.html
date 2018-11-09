@@ -1,0 +1,67 @@
+<div  ng-controller="orig_file_detail_list_controller">
+    <div>
+        <toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-body wrapper-sm">
+            <div class="row">
+                <table border="1" class="table table-striped m-b-none" id="orig_file_detail_table">
+                </table>
+                <div class="col-lg-12">
+                    <form name="form" class="form-validation" novalidate>
+                            <div class="form-group row">
+                                <label class="col-sm-2 control-label text-right"><b class="form-text-black">快递公司</b><b class="form-error">*</b>:</label>
+                                <div class="col-sm-2">
+                                    <input type="text" name="postComp" placeholder="请输入快递公司" class="form-control m-b-xs" ng-model="fileSend.postComp"  required >
+                                    <p>
+                                        <span class="form-info" ng-show=" (form.postComp.$dirty && form.postComp.$error.required) || (form.postComp.$error.required && formValidate)">快递公司不能为空</span>
+                                    </p>
+                                </div>
+                                <label class="col-sm-2 control-label text-right"><b class="form-text-black">快递日期</b><b class="form-error">*</b>:</label>
+                                <div class="col-sm-2">
+                                    <input type="text" date-picker onchange="" name="postDate" placeholder="请输入快递日期" class="form-control m-b-xs" ng-model="fileSend.postDate"  required >
+                                    <p>
+                                        <span class="form-info" ng-show=" (form.postDate.$dirty && form.postDate.$error.required) || (form.postDate.$error.required && formValidate)">快递日期不能为空</span>
+                                    </p>
+                                </div>
+                                <div class="col-sm-4"></div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-sm-2 control-label text-right"><b class="form-text-black">快递编号</b><b class="form-error">*</b>:</label>
+                                <div class="col-sm-2">
+                                    <input type="text" name="postNo" placeholder="请输入快递编号" class="form-control m-b-xs" ng-model="fileSend.postNo" ng-pattern="/^[0-9a-zA_Z]+$/"  required >
+                                    <p>
+                                        <span class="form-info" ng-show=" (form.postNo.$dirty && form.postNo.$error.required) || (form.postNo.$error.required && formValidate)">快递编号不能为空</span>
+                                        <span class="form-info" ng-show=" (form.postNo.$error.pattern && !form.postNo.$error.required) || (form.postNo.$error.pattern && formValidate && !form.postNo.$error.required)">请输入正确的快递编号</span>
+                                    </p>
+                                </div>
+                                <label class="col-sm-2 control-label text-right"><b class="form-text-black">邮寄快递人员</b><b class="form-error">*</b>:</label>
+                                <div class="col-sm-2">
+                                    <input type="text" name="postMember" placeholder="请输入邮寄快递人员" class="form-control m-b-xs" ng-model="fileSend.postMember"  required >
+                                    <p>
+                                        <span class="form-info" ng-show=" (form.postMember.$dirty && form.postMember.$error.required) || (form.postMember.$error.required && formValidate)">邮寄快递人员不能为空</span>
+                                    </p>
+                                </div>
+
+                                <label class="col-sm-2 control-label text-right"><b class="form-text-black">手机号码</b><b class="form-error">*</b>:</label>
+                                <div class="col-sm-2">
+                                    <input type="text" name="postMemberTel" placeholder="请输入联系电话" class="form-control m-b-xs" ng-model="fileSend.postMemberTel" ng-pattern="/^1[345789]\d{9}$/" required >
+                                    <p>
+                                        <span class="form-info" ng-show=" (form.postMemberTel.$dirty && form.postMemberTel.$error.required) || (form.postMemberTel.$error.required && formValidate)">手机号码不能为空</span>
+                                        <span class="form-info" ng-show=" (form.postMemberTel.$error.pattern && !form.postMemberTel.$error.required) || (form.postMemberTel.$error.pattern && formValidate && !form.postMemberTel.$error.required)">请输入正确的手机号</span>
+                                    </p>
+                                </div>
+                            </div>
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-default" ng-disabled="submit" ng-click="close()">取消</button>
+                            <button type="submit" class="btn btn-success" ng-disabled="submit" ng-click="filePost()">确认邮寄</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+

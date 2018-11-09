@@ -1,0 +1,43 @@
+<#assign className = table.className>
+<#assign classNameLower = className?uncap_first>
+<#assign tableNameNew = table.tableNameNew>
+<#assign tableNameNewLowerCase = table.tableNameNewLowerCase>
+<#assign tableNameNewLowerCaseAll = table.tableNameNewLowerCaseAll>
+<#assign pkColumn = table.firstPkColumnName>
+<#assign pkColumnFirstLower = table.firstPkColumnNameFirstLower>
+<div class="modal-header">
+    <h4 class="modal-title">编辑${servicename} <button type="button" class="close" data-dismiss="modal" aria-hidden="true" ng-click="close()">&times;</button></h4>
+</div>
+<div class="modal-body">
+    <form name="form" class="form-validation" novalidate>
+
+        <div class="panel-body">
+
+            <#assign index = 0>
+            <#list table.columns as column>
+            <#if column.columnNameFirstLower!=pkColumnFirstLower && column.columnNameFirstLower!="createTime" && column.columnNameFirstLower!="creator" && column.columnNameFirstLower!="updateTime" && column.columnNameFirstLower!="updater" && column.columnNameFirstLower!="delFlag">
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">${(column.remarks!="")?string(column.remarks,column.columnNameFirstLower)}</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="${column.columnNameFirstLower}" placeholder="请输入${(column.remarks!="")?string(column.remarks,column.columnNameFirstLower)}" class="form-control m-b-xs" ng-model="${tableNameNewLowerCase!classNameLower}.${column.columnNameFirstLower}"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.${column.columnNameFirstLower}.$dirty && form.${column.columnNameFirstLower}.$error.required) || (form.${column.columnNameFirstLower}.$error.required && formValidate)">${(column.remarks!="")?string(column.remarks,column.columnNameFirstLower)}不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <#if index != (table.columns?size - 7)>
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            </#if>
+            <#assign index = index + 1>
+            </#if>
+            </#list>
+
+        </div>
+    </form>
+</div>
+<div class="modal-footer ng-scope">
+    <button class="btn btn-default" ng-click="close()">取消</button>
+    <button type="submit" class="btn btn-success" ng-disabled="submit" ng-click="modify()">保存</button>
+</div>

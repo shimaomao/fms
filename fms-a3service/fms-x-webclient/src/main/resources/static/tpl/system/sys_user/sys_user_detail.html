@@ -1,0 +1,137 @@
+<div  ng-controller="sys_user_detail_controller">
+
+    <div>
+        <toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="row" style="margin: 0; padding: 15px; border: 1px solid #dddddd">
+            <h4 class="m-n font-thin h4">用户详情</h4>
+        </div>
+        <form name="form" class="form-validation" novalidate>
+
+            <div class="panel-body wrapper-sm">
+                <!--用户代码-->
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">用户代码</b>:</label>
+                    <!--项目不可编辑-->
+                    <div class="col-sm-2">
+                        <label class="col-sm-12 control-label text-left">{{sysUser.user}}</label>
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">用户名称</b>:</label>
+                    <!--项目不可编辑-->
+                    <div class="col-sm-2">
+                        <label class="col-sm-12 control-label text-left">{{sysUser.userName}}</label>
+                    </div>
+                </div>
+
+                <!--用户名称-->
+
+                <!--（机构）用户组-->
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">机构(用户组)</b>:</label>
+                    <!--不可编辑-->
+                    <div class="col-sm-8">
+                        <label class="col-sm-12 control-label text-left">{{sysUser.groupName}}</label>
+                    </div>
+                </div>
+
+                <!--用户角色-->
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">用户角色</b>:</label>
+                    <!--不可编辑-->
+                    <div class="col-sm-8" >
+                        <label class="col-sm-12 control-label text-left">{{sysUser.userRoles}}</label>
+                    </div>
+                </div>
+                <!--电话号码-->
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">用户电话</b>:</label>
+                    <!--项目不可编辑-->
+                    <div class="col-sm-2">
+                        <label class="col-sm-12 control-label text-left">{{sysUser.userTelNo}}</label>
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">用户手机</b>:</label>
+                    <!--不可编辑-->
+                    <div class="col-sm-2" >
+                        <label class="col-sm-12 control-label text-left">{{sysUser.userMobileNo}}</label>
+                    </div>
+                </div>
+
+                <!--用户手机号-->
+                <!--用户邮箱-->
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">用户邮箱</b>:</label>
+                    <!--不可编辑-->
+                    <div class="col-sm-2" >
+                        <label class="col-sm-12 control-label text-left">{{sysUser.userMailAddress}}</label>
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">启用标识</b>:</label>
+                    <!--项目不可编辑-->
+                    <div class="col-sm-2">
+                        <label class="col-sm-12 control-label text-left">{{sysUser.enableFlagName}}</label>
+                    </div>
+                </div>
+                <!--启用标识-->
+                <!--入职日期-->
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">入职日期</b>:</label>
+                    <!--项目不可编辑-->
+                    <div class="col-sm-2">
+                        <label class="col-sm-12 control-label text-left">{{sysUser.employDate}}</label>
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">用户证件类型</b>:</label>
+                    <div class="col-sm-2">
+                        <label class="col-sm-12 control-label text-left">{{sysUser.certifType}}</label>
+                    </div>
+                </div>
+                <!--证件类型 仅编辑和添加-->
+
+                <!--用户证件号码-->
+                <div class="form-group row" >
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">用户证件号码</b>:</label>
+                    <!--不可编辑-->
+                    <div class="col-sm-2">
+                        <label class="col-sm-12 control-label text-left">{{sysUser.certifNo}}</label>
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">用户性别</b>:</label>
+                    <!--不可编辑-->
+                    <div class="col-sm-2">
+                        <label class="col-sm-12 control-label text-left">{{sysUser.userGender}}</label>
+                    </div>
+                </div>
+                <!--用户性别-->
+                <!--菜单权限类型-->
+                <div class="form-group row" >
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">菜单权限类型</b>:</label>
+                    <!--不可编辑-->
+                    <div class="col-sm-2">
+                        <label class="col-sm-12 control-label text-left">{{sysUser.userValidMenuType}}</label>
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">用户管理级别</b>:</label>
+                    <!--不可编辑-->
+                    <div class="col-sm-2" >
+                        <label class="col-sm-12 control-label text-left">{{sysUser.userDeptLevelName}}</label>
+                    </div>
+                </div>
+
+                <!--用户管理级别-->
+
+                <!--最后登陆时间-->
+                <div class="form-group row" >
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">最后登录时间</b>:</label>
+                    <div class="col-sm-8">
+                        <label class="col-sm-12 control-label text-left">{{sysUser.lastLoginTime}}</label>
+                    </div>
+                </div>
+            </div>
+
+                <div class="text-center">
+                <div class="col-sm-15 m-b">
+                    <button class="btn btn-default" ng-click="goBack()">返回</button>
+                </div>
+                </div>
+
+        </form>
+    </div>
+</div>

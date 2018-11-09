@@ -1,0 +1,50 @@
+<div class="modal-header">
+    <h4 class="modal-title">申请请假 <button type="button" class="close" data-dismiss="modal" aria-hidden="true" ng-click="close()">&times;</button></h4>
+</div>
+<div class="modal-body">
+    <form name="form" class="form-validation" novalidate>
+
+        <div class="panel-body">
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">请假标题</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="leaveTitle" placeholder="请输入请假标题" class="form-control m-b-xs" ng-model="actUserLeave.leaveTitle"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.leaveTitle.$dirty && form.leaveTitle.$error.required) || (form.leaveTitle.$error.required && formValidate)">请假标题不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">请假天数</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="number" min="1" name="leaveDay" placeholder="请输入请假天数" class="form-control m-b-xs" ng-model="actUserLeave.leaveDay"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.leaveDay.$dirty && form.leaveDay.$error.required) || (form.leaveDay.$error.required && formValidate)">请假天数不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">请假原因</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="leaveRemark" placeholder="请输入请假原因" class="form-control m-b-xs" ng-model="actUserLeave.leaveRemark"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.leaveRemark.$dirty && form.leaveRemark.$error.required) || (form.leaveRemark.$error.required && formValidate)">请假原因不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+
+        </div>
+
+    </form>
+</div>
+<div class="modal-footer ng-scope">
+    <button class="btn btn-default" ng-click="close()">取消</button>
+    <button type="submit" class="btn btn-success" ng-disabled="submit" ng-click="save()">新增</button>
+</div>

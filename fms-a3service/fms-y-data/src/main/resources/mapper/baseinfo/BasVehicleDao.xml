@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.com.leadu.fms.data.baseinfo.dao.BasVehicleDao">
+    <!-- 分页获取车辆信息Vo -->
+    <select id="selectBasVehicleVosByPages" parameterType="java.lang.String" resultType="cn.com.leadu.fms.pojo.baseinfo.vo.basvehicle.BasVehicleVo">
+        select basVehicle.vehicle_id,basVehicle.vehicle_code,basVehicle.vehicle_name,basVehicle.guide_price,
+        basVehicle.enable_flag,basVehicle.vehicle_type1,basVehicle.vehicle_type2,basVehicle.new_energy
+        ,basSeries.vehicle_code as vehSeriesCode,basSeries.vehicle_name as vehSeriesName
+        ,basBrand.vehicle_code as vehBrandCode,basBrand.vehicle_name as vehBrandName
+        ,basMaker.vehicle_code as vehMakerCode,basMaker.vehicle_name as vehMakerName
+        from bas_vehicle basVehicle
+        left join bas_vehicle basSeries on basSeries.vehicle_code = basVehicle.parent_vehicle_code
+        and basSeries.vehicle_level = '3' and basSeries.del_flag = ${delete_exist}
+        left join bas_vehicle basBrand on basBrand.vehicle_code = basSeries.parent_vehicle_code
+        and basBrand.vehicle_level = '2' and basBrand.del_flag = ${delete_exist}
+        left join bas_vehicle basMaker on basMaker.vehicle_code = basBrand.parent_vehicle_code
+        and basMaker.vehicle_level = '1' and basMaker.del_flag = ${delete_exist}
+        where basVehicle.vehicle_level = '4'
+        and basVehicle.del_flag = ${delete_exist}
+        <if test="basVehicleVo.vehicleName != null">
+            and basVehicle.vehicle_name like #{basVehicleVo.vehicleName}
+        </if>
+        <if test="basVehicleVo.vehSeriesName != null">
+            and basSeries.vehicle_name like #{basVehicleVo.vehSeriesName}
+        </if>
+        <if test="basVehicleVo.vehBrandName != null">
+            and basBrand.vehicle_name like #{basVehicleVo.vehBrandName}
+        </if>
+        <if test="basVehicleVo.vehMakerName != null">
+            and basMaker.vehicle_name like #{basVehicleVo.vehMakerName}
+        </if>
+        <!-- 指导价格 -->
+        <if test="basVehicleVo.guidePrice != null">
+            and basVehicle.guide_price = #{basVehicleVo.guidePrice}
+        </if>
+        <!-- 车辆Code -->
+        <if test="basVehicleVo.vehicleCodeList != null and basVehicleVo.vehicleCodeList.size > 0">
+            <!-- 车型 -->
+            and (basVehicle.vehicle_code in
+            <foreach collection="basVehicleVo.vehicleCodeList" item="item" index="index" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+            <!-- 车系 -->
+            or basSeries.vehicle_code in
+            <foreach collection="basVehicleVo.vehicleCodeList" item="item" index="index" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+            <!-- 品牌 -->
+            or basBrand.vehicle_code in
+            <foreach collection="basVehicleVo.vehicleCodeList" item="item" index="index" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+            <!-- 制造商 -->
+            or basMaker.vehicle_code in
+            <foreach collection="basVehicleVo.vehicleCodeList" item="item" index="index" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+            )
+        </if>
+        <!-- 车辆种类 -->
+        <if test="basVehicleVo.vehicleTypeList != null and basVehicleVo.vehicleTypeList.size > 0">
+            and basVehicle.vehicle_type1 in
+            <foreach collection="basVehicleVo.vehicleTypeList" item="item" index="index" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <!-- 是否启用 -->
+        <if test="basVehicleVo.enableFlag != null">
+            AND basVehicle.enable_flag=#{basVehicleVo.enableFlag}
+        </if>
+        order by basVehicle.update_time desc
+    </select>
+
+    <!-- 分页获取车辆信息Vo -->
+    <select id="findBasVehicleLevelsByPages" parameterType="java.lang.String" resultType="cn.com.leadu.fms.pojo.baseinfo.vo.basvehicle.BasVehicleVo">
+        select *
+        from bas_vehicle
+        where
+        del_flag = ${delete_exist}
+        <if test="basVehicleVo.vehicleName != null">
+            and vehicle_name like #{basVehicleVo.vehicleName}
+        </if>
+        <if test="basVehicleVo.vehicleLevel != null">
+            and vehicle_level=#{basVehicleVo.vehicleLevel}
+        </if>
+        order by update_time desc
+    </select>
+
+    <select id="findBasVehicleByVehicleId" parameterType="java.lang.String" resultType="cn.com.leadu.fms.pojo.baseinfo.vo.basvehicle.BasVehicleVo">
+        select v.*,v2.vehicle_name as parent_vehicle_name
+        from bas_vehicle v
+        left join bas_vehicle v2 on v.parent_vehicle_code=v2.vehicle_code
+        where
+        v.del_flag = ${delete_exist}
+        <if test="vehicleId!= null">
+            and v.vehicle_id = #{vehicleId}
+        </if>
+    </select>
+
+    <!-- 分页获取车辆信息Vo -->
+    <select id="selectBasVehicleVoByVehicleCode" parameterType="java.lang.String" resultType="cn.com.leadu.fms.pojo.baseinfo.vo.basvehicle.BasVehicleVo">
+    select basVehicle.*
+    ,basSeries.vehicle_code as vehSeriesCode,basSeries.vehicle_name as vehSeriesName
+    ,basBrand.vehicle_code as vehBrandCode,basBrand.vehicle_name as vehBrandName
+    ,basMaker.vehicle_code as vehMakerCode,basMaker.vehicle_name as vehMakerName
+    from bas_vehicle basVehicle
+    left join bas_vehicle basSeries on basSeries.vehicle_code = basVehicle.parent_vehicle_code
+    and basSeries.vehicle_level = '3' and basSeries.del_flag = ${delete_exist}
+    left join bas_vehicle basBrand on basBrand.vehicle_code = basSeries.parent_vehicle_code
+    and basBrand.vehicle_level = '2' and basBrand.del_flag = ${delete_exist}
+    left join bas_vehicle basMaker on basMaker.vehicle_code = basBrand.parent_vehicle_code
+    and basMaker.vehicle_level = '1' and basMaker.del_flag = ${delete_exist}
+    where basVehicle.vehicle_level = '4'
+    and basVehicle.vehicle_code = #{vehicleCode}
+    and basVehicle.del_flag = ${delete_exist}
+    </select>
+
+    <!--根据车型代码取得车型名称,并封装合同号与车型名称的对应关系,为了后续更新合同任务信息车型信息-->
+    <select id="findVehicleNameForContConfirm" parameterType="java.lang.String" resultType="java.lang.String">
+        SELECT
+        basVehicle.vehicle_name
+        FROM
+        bas_vehicle basVehicle
+        WHERE
+        basVehicle.del_flag = ${delete_exist}
+        AND basVehicle.vehicle_code = #{vehicleCode}
+    </select>
+
+</mapper>

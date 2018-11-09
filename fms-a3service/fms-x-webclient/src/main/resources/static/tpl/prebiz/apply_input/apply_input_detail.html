@@ -1,0 +1,127 @@
+<style>
+    .panel h4{padding: 15px;border-bottom: 1px solid #dedede;color: black;font-weight: 600;margin: 0;font-size: 14px;}
+    .panel .m-t-20{margin-top: 20px;}
+    .p-tlf{padding: 0 20px 20px 20px}
+    .checkbox,.radio {display: inline-block;margin: 2px 10px 0 0;}
+    .table > tbody > tr > td, .table > tfoot > tr > td{vertical-align: middle;}
+</style>
+<div  ng-controller="apply_input_detail_controller">
+    <div>
+        <toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-body wrapper-sm" style="position: fixed;width: 100%;background-color: white;z-index: 10;margin-top: -1px;padding-bottom: 0;">
+            <div class="row" style="padding-left: 10px;color: #2685FF" ng-if="applyBaseData">
+                <label>申请编号 :</label>&nbsp; {{applyBaseData.applyNo}}&nbsp;&nbsp;<label style="padding-left: 10px;padding-right: 10px">--->></label>
+                <label>申请状态 :</label>&nbsp; {{applyBaseData.bizStatus | getName:'bizStatus'}}&nbsp;&nbsp;<label style="padding-left: 10px;padding-right: 10px">--->></label>
+                <label>当前操作用户 :</label>&nbsp; {{applyBaseData.presentUserName == null ? '无' : applyBaseData.presentUserName}}
+            </div>
+            <div class="row" style="padding-left: 10px;color: #2685FF" ng-if="contBaseData">
+                <label>合同编号 :</label>&nbsp; {{contBaseData.contNo}}&nbsp;&nbsp;<label style="padding-left: 10px;padding-right: 10px">--->></label>
+                <label>合同状态 :</label>&nbsp; {{contBaseData.bizStatus | getName:'bizStatus'}}&nbsp;&nbsp;<label style="padding-left: 10px;padding-right: 10px">--->></label>
+                <label>当前操作用户 :</label>&nbsp; {{contBaseData.presentUserName == null ? '无' : contBaseData.presentUserName}}&nbsp;&nbsp;
+                <label style="padding-left: 10px;padding-right: 10px" ng-if="contBaseData.bizStatus == CommonCodeUtils.codeValues.contractValid">--->></label>
+                <label ng-if="contBaseData.bizStatus == '0206'">还款状态 :&nbsp; {{contBaseData.paymentSts | getName:'paymentSts'}}</label>
+            </div>
+            <div class="row">
+                <div class="form-group pull-right" style="margin-top: 4px;" ng-if="btnFlag">
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-default m-t-xs" ng-click="goBack()">返回</button>
+                    </div>
+                </div>
+                <ul id="applyTab" class="nav nav-tabs">
+                    <li ng-if="applyType==1" class="active"><a href="javascript:void(0);" data-toggle="tab" data-id="customer" onclick="switchPageTab(this, 'applyTab')">客户基本信息</a></li>
+                    <li ng-if="applyType==2" class="active"><a href="javascript:void(0);" data-toggle="tab" data-id="compCustomer" onclick="switchPageTab(this, 'applyTab')">企业基本信息</a></li>
+                    <li><a href="javascript:void(0);" data-toggle="tab" data-id="vehicleFin" onclick="switchPageTab(this, 'applyTab')">车辆融资信息</a></li>
+                    <li><a href="javascript:void(0);" data-toggle="tab" data-id="guarantee" onclick="switchPageTab(this, 'applyTab')">担保人基本信息</a></li>
+                    <li ng-if="applyType==1"><a href="javascript:void(0);" data-toggle="tab" data-id="borrower" onclick="switchPageTab(this, 'applyTab')">共同承租人</a></li>
+                    <li><a href="javascript:void(0);" data-toggle="tab" data-id="applyFile" onclick="switchPageTab(this, 'applyTab')">附件信息</a></li>
+                    <li><a href="javascript:void(0);" data-toggle="tab" data-id="homeVisit" onclick="switchPageTab(this, 'applyTab')">家访</a></li>
+                    <li ng-if="roleState && bizStatusAccord"><a href="javascript:void(0);" data-toggle="tab" data-id="audit" onclick="switchPageTab(this, 'applyTab')">风控审核</a></li>
+                    <li ng-if="roleState && bizStatusAccord"><a href="javascript:void(0);" data-toggle="tab" data-id="credit" onclick="switchPageTab(this, 'applyTab')">鹏元征信</a></li>
+                    <li ng-if="roleState && bizStatusAccord"><a href="javascript:void(0);" data-toggle="tab" data-id="report" onclick="switchPageTab(this, 'applyTab')">风控报告</a></li>
+                    <li ng-if="contractDate"><a href="javascript:void(0);" data-toggle="tab" data-id="cont_create" onclick="switchPageTab(this, 'applyTab')">合同信息</a></li>
+                    <li ng-if="contractRequestDate"><a href="javascript:void(0);" data-toggle="tab" data-id="cont_request_pay" onclick="switchPageTab(this, 'applyTab')">请款详情</a></li>
+                    <li ng-if="rolePay && payStatus"><a href="javascript:void(0);" data-toggle="tab" data-id="payment" onclick="switchPageTab(this, 'applyTab')">收付款信息</a></li>
+                    <li ><a href="javascript:void(0);" data-toggle="tab" data-id="work_flow" onclick="switchPageTab(this, 'applyTab')">日志备注</a></li>
+                    <li ng-if="changeVo.deferTaskNo"><a href="javascript:void(0);" data-toggle="tab" data-id="defer_info" onclick="switchPageTab(this, 'applyTab')">展期详情</a></li>
+                    <li ng-if="changeVo.depositTaskNo"><a href="javascript:void(0);" data-toggle="tab" data-id="deposit_change_info" onclick="switchPageTab(this, 'applyTab')">增加保证金详情</a></li>
+                    <li ng-if="changeVo.lesseeTaskNo"><a href="javascript:void(0);" data-toggle="tab" data-id="change_lessee_info" onclick="switchPageTab(this, 'applyTab')">变更承租人</a></li>
+                </ul>
+            </div>
+        </div>
+        <form name="form" class="form-validation" novalidate style="margin-top: 80px;">
+            <div id="applyTabContent" class="tab-content">
+                <!-- 客户基本信息 -->
+                <div class="tab-pane fade in active" id="customer" ng-if="applyType==1">
+                    <div ng-include="'tpl/prebiz/apply_input/cstm_person_detail.html'" class="row m-xs"></div>
+                </div>
+                <!--企业信息-->
+                <div class="tab-pane fade in active" id="compCustomer" ng-if="applyType==2">
+                    <div ng-include="'tpl/prebiz/apply_input/cstm_company_detail.html'" class="row m-xs"></div>
+                </div>
+                <!-- 车辆融资信息 -->
+                <div class="tab-pane fade" id="vehicleFin">
+                    <div ng-include="'tpl/prebiz/apply_input/apply_finance_vehicle_detail.html'" class="row m-xs"></div>
+                </div>
+                <!--担保人基本信息-->
+                <div class="tab-pane fade " id="guarantee">
+                    <div ng-include="'tpl/prebiz/apply_input/guarantee_info_detail.html'" class="row m-xs"></div>
+                </div>
+                <!--共同借款人-->
+                <div class="tab-pane fade " id="borrower" ng-if="applyType==1">
+                    <div ng-include="'tpl/prebiz/apply_input/borrower_info_detail.html'" class="row m-xs"></div>
+                </div>
+                <!--附件上传-->
+                <div class="tab-pane fade " id="applyFile">
+                    <div ng-include="'tpl/prebiz/apply_input/apply_input_file_detail.html'" class="row m-xs"></div>
+                </div>
+                <!--家访-->
+                <div class="tab-pane fade " id="homeVisit">
+                    <div ng-include="'tpl/prebiz/apply_input/home_visit_detail.html'" class="row m-xs"></div>
+                </div>
+                <!-- 风控审核 -->
+                <div ng-if="roleState && bizStatusAccord" class="tab-pane fade" id="audit">
+                    <div class="p-tlf" ng-include="'tpl/prebiz/apply_risk/risk_audit_person_save.html'"></div>
+                </div>
+                <!-- 鹏元征信 -->
+                <div ng-if="roleState && bizStatusAccord" class="tab-pane fade" id="credit">
+                    <div class="p-tlf" ng-include="'tpl/prebiz/apply_risk/risk_credit_person_save.html'"></div>
+                </div>
+                <!-- 风控报告 -->
+                <div ng-if="roleState && bizStatusAccord" class="tab-pane fade" id="report">
+                    <div ng-if="applyType==1" class="p-tlf" ng-include="'tpl/prebiz/apply_risk/risk_report_person_save.html'"></div>
+                    <div ng-if="applyType==2" class="p-tlf" ng-include="'tpl/prebiz/apply_risk/risk_report_company_save.html'"></div>
+                </div>
+                <!-- 合同详情 -->
+                <div class="tab-pane fade" id="cont_create">
+                    <div ng-if="contractDate" ng-include="'tpl/prebiz/cont_create/cont_create_detail.html'" class="row m-xs"></div>
+                </div>
+                <!-- 请款详情-->
+                <div class="tab-pane fade" id="cont_request_pay" ng-if="contractRequestDate">
+                    <div ng-include="'tpl/prebiz/cont_request_pay/cont_request_pay_detail.html'" class="row m-xs"></div>
+                </div>
+                <!-- 收付款信息 -->
+                <div class="tab-pane fade" id="payment" ng-if="rolePay && payStatus">
+                    <div ng-if="payStatus" ng-include="'tpl/prebiz/cont_receipt_pay/cont_payment_detail.html'" class="row m-xs"></div>
+                </div>
+                <!-- 日志信息 -->
+                <div class="tab-pane fade" id="work_flow">
+                    <process-log-list-directive wf-log-type="wfLogType" wf-log-no="wfLogNo" wf-log-sub-no="wfLogSubNo"></process-log-list-directive>
+                </div>
+                <!-- 展期详情-->
+                <div class="tab-pane fade" id="defer_info" ng-if="changeVo.deferTaskNo">
+                    <div ng-include="'tpl/postbiz/defer_task/defer_task_detail.html'" class="row m-xs"></div>
+                </div>
+                <!-- 增加保证金详情-->
+                <div class="tab-pane fade" id="deposit_change_info" ng-if="changeVo.depositTaskNo">
+                    <div ng-include="'tpl/postbiz/deposit_change_task/deposit_change_detail.html'" class="row m-xs"></div>
+                </div>
+                <!-- 承租人变更详情-->
+                <div class="tab-pane fade" id="change_lessee_info" ng-if="changeVo.lesseeTaskNo">
+                    <div ng-include="'tpl/postbiz/basic_change/basic_change_lessee.html'" class="row m-xs"></div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

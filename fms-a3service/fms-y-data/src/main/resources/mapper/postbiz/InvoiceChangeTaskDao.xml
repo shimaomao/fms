@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.com.leadu.fms.data.postbiz.dao.InvoiceChangeTaskDao">
+
+    <select id="selectCompanyInvoiceListByPage" resultType="cn.com.leadu.fms.pojo.postbiz.vo.invoicechange.InvoiceChangeVo">
+        select
+        crmCompany.invoice_type,
+        crmCompany.ticket_opening,
+        crmCompany.duty_paragraph,
+        crmCompany.invoice_addr,
+        crmCompany.bank_name,
+        crmCompany.account_number,
+        crmCompany.name,
+        crmCompany.social_certif_no
+        from crm_company crmCompany
+        where crmCompany.del_flag = ${delete_exist}
+        <if test="invoiceChangeVo.name != null">
+            and crmCompany.name like #{invoiceChangeVo.name}
+        </if>
+        <if test="invoiceChangeVo.socialCertifNo != null">
+            and crmCompany.social_certif_no like #{invoiceChangeVo.socialCertifNo}
+        </if>
+    </select>
+
+    <select id="selectInvoiceChangeVosByPage" resultType="cn.com.leadu.fms.pojo.postbiz.vo.invoicechange.InvoiceChangeVo">
+        select DISTINCT
+        task.invoice_task_status,
+        task.present_user,
+        task.submit_user,
+        task.submit_date,
+        invoiceChange.*,
+        crmCompany.name,
+        sysGroup.group_district
+        from invoice_change_task task
+        LEFT JOIN invoice_change invoiceChange ON invoiceChange.invoice_task_no = task.invoice_task_no and invoiceChange.del_flag = ${delete_exist}
+        and invoiceChange.solve_type = #{invoiceChangeVo.solveType}
+        left join crm_company crmCompany on task.social_certif_no = CrmCompany.social_certif_no and crmCompany.del_flag = ${delete_exist}
+        left join sys_user sysUser on task.submit_user = sysUser.user and sysUser.del_flag = ${delete_exist} and enable_flag = ${delete_exist}
+        left join sys_group sysGroup on sysUser.group_code = sysGroup.group_code and sysGroup.del_flag = ${delete_exist}
+        where task.del_flag = ${delete_exist}
+        <if test="invoiceChangeVo.name != null">
+            and crmCompany.name like #{invoiceChangeVo.name}
+        </if>
+        <if test="invoiceChangeVo.socialCertifNo != null">
+            and task.social_certif_no like #{invoiceChangeVo.socialCertifNo}
+        </if>
+        <if test="invoiceChangeVo.bizStatus != null">
+            and task.invoice_task_status = #{invoiceChangeVo.bizStatus}
+        </if>
+        <if test="invoiceChangeVo.submitDateStartSearch != null">
+            and LEFT(task.submit_date, 10) &gt;= #{invoiceChangeVo.submitDateStartSearch}
+        </if>
+        <if test="invoiceChangeVo.submitDateEndSearch != null">
+            and LEFT(task.submit_date, 10) &lt;= #{invoiceChangeVo.submitDateEndSearch}
+        </if>
+        <if test="invoiceChangeVo.groupDistrict != null">
+            and sysGroup.group_district like #{invoiceChangeVo.groupDistrict}
+        </if>
+        order by task.update_time desc
+    </select>
+
+    <select id="selectHistoryByPage" resultType="cn.com.leadu.fms.pojo.postbiz.vo.invoicechange.HistoryChangeVo">
+        select DISTINCT
+        task.invoice_task_no,
+        task.submit_user,
+        task.submit_date,
+        task.remark,
+        task.invoice_task_status,
+        invoiceChangeNew.invoice_type,
+        invoiceChangeNew.ticket_opening,
+        invoiceChangeNew.duty_paragraph,
+        invoiceChangeNew.invoice_addr,
+        invoiceChangeNew.account_number,
+        invoiceChangeNew.bank_name,
+        invoiceChangeOld.invoice_type invoiceTypeOld,
+        invoiceChangeOld.ticket_opening ticketOpeningOld,
+        invoiceChangeOld.duty_paragraph dutyParagraphOld,
+        invoiceChangeOld.invoice_addr invoiceAddrOld,
+        invoiceChangeOld.account_number accountNumberOld,
+        invoiceChangeOld.bank_name bankNameOld
+        from invoice_change_task task
+        LEFT JOIN invoice_change invoiceChangeNew ON invoiceChangeNew.invoice_task_no = task.invoice_task_no and invoiceChangeNew.del_flag = ${delete_exist}
+        and invoiceChangeNew.solve_type = '1'
+        LEFT JOIN invoice_change invoiceChangeOld ON invoiceChangeOld.invoice_task_no = task.invoice_task_no and invoiceChangeOld.del_flag = ${delete_exist}
+        and invoiceChangeOld.solve_type = '0'
+        where task.del_flag = ${delete_exist}
+        and task.social_certif_no = #{historyChangeVo.socialCertifNo}
+        order by task.update_time desc
+    </select>
+</mapper>

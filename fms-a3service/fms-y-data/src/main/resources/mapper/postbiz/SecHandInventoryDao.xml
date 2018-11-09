@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.com.leadu.fms.data.postbiz.dao.SecHandInventoryDao">
+    <select id="selectSecHandInventoryVosByPage" parameterType="java.lang.String" resultType="cn.com.leadu.fms.pojo.postbiz.vo.sechandinventory.SecHandInventoryVo">
+        select
+        secHand.sec_hand_id,
+        secHand.vin_no,
+        secHand.engine_no,
+        secHand.color,
+        secHand.vehicle_code,
+        secHand.miles,
+        secHand.regist_date,
+        secHand.veh_age_months,
+        secHand.produce_date,
+        secHand.evaluation_price,
+        secHand.status,
+        secHand.car_source,
+        secHand.recovery_task_no,
+        secHand.del_flag,
+        bas_vehicle.vehicle_name as vehicleName,
+        retrieveCarsTask.storage_date
+        from sec_hand_inventory secHand
+        left join bas_vehicle on bas_vehicle.vehicle_code = secHand.vehicle_code
+        AND bas_vehicle.del_flag = ${delete_exist}
+        left join retrieve_cars_task retrieveCarsTask on secHand.recovery_task_no = retrieveCarsTask.retrieve_car_task_no
+        AND retrieveCarsTask.del_flag = ${delete_exist}
+        WHERE secHand.del_flag = ${delete_exist}
+        <if test="secHandInventoryVo.vinNo !=null">
+            AND secHand.vin_no LIKE #{secHandInventoryVo.vinNo}
+        </if>
+        <if test="secHandInventoryVo.engineNo != null">
+            AND secHand.engine_no LIKE #{secHandInventoryVo.engineNo}
+        </if>
+        <if test="secHandInventoryVo.vehicleName != null">
+            AND bas_vehicle.vehicle_name LIKE #{secHandInventoryVo.vehicleName}
+        </if>
+        <if test="secHandInventoryVo.startTime != null">
+            AND  retrieveCarsTask.storage_date &gt;= #{secHandInventoryVo.startTime}
+        </if>
+        <if test="secHandInventoryVo.endTime != null">
+            AND  retrieveCarsTask.storage_date &lt;= #{secHandInventoryVo.endTime}
+        </if>
+        ORDER BY  secHand.update_time desc
+    </select>
+</mapper>

@@ -1,0 +1,82 @@
+<div ng-controller="sys_code_handler_controller">
+    <div class="panel panel-default">
+        <div class="modal-header">
+            <h4 class="modal-title">{{frameTitle}}</h4>
+        </div>
+        <form name="form" class="form-validation" novalidate>
+            <div class="panel-body wrapper-sm">
+                <div ng-show="!showDetail">
+                    <div class="form-group row">
+                        <label class="col-sm-3 control-label text-right"><b class="form-text-black">还款日</b><b
+                                class="form-error">*</b>:</label>
+                        <div class="col-sm-3">
+                            <input type="text" maxlength="2" name="repayDay" placeholder="请输入还款日" class="form-control m-b-xs"
+                                   ng-model="basRepayRule.repayDay" required onKeyUp="value=form.repayDay.value.replace(/[^\d.]/g,'')>31?31:form.repayDay.value.replace(/[^\d.]/g,'')">
+                            <p>
+                                <span class="form-info"
+                                      ng-show=" (form.repayDay.$dirty && form.repayDay.$error.required) || (form.repayDay.$error.required && formValidate)">还款日不能为空</span>
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-sm-3 control-label text-right"><b class="form-text-black">开始区间</b><b
+                                class="form-error">*</b>:</label>
+                        <div class="col-sm-3">
+                            <input type="text" maxlength="2" name="beginInterval" placeholder="请输入开始区间" class="form-control m-b-xs"
+                                   ng-model="basRepayRule.beginInterval" required   onKeyUp="value=form.beginInterval.value.replace(/[^\d.]/g,'')>31?31:form.beginInterval.value.replace(/[^\d.]/g,'')">
+                            <p>
+                                <span class="form-info"
+                                      ng-show=" (form.beginInterval.$dirty && form.beginInterval.$error.required) || (form.beginInterval.$error.required && formValidate)">开始区间不能为空</span>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-3 control-label text-right"><b class="form-text-black">结束区间</b><b
+                                class="form-error">*</b>:</label>
+                        <div class="col-sm-3">
+                            <input type="text" maxlength="2" name="endInterval" placeholder="请输入结束区间" class="form-control m-b-xs"
+                                   ng-model="basRepayRule.endInterval" required onKeyUp="value=form.endInterval.value.replace(/[^\d.]/g,'')>31?31:form.endInterval.value.replace(/[^\d.]/g,'')">
+                            <p>
+                                <span class="form-info"
+                                      ng-show=" (form.endInterval.$dirty && form.endInterval.$error.required) || (form.endInterval.$error.required && formValidate)">结束区间不能为空</span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <!--查看详情-->
+                <div   class="panel-body row"  ng-show="showDetail">
+                    <div class="form-group row">
+                        <label class="col-sm-3 control-label text-right"><b class="form-text-black">还款日</b>:</label>
+                        <div class="col-sm-3">
+                            <label class="col-sm-3 control-label text-left" ng-bind="basRepayRule.repayDay"></label>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-sm-3 control-label text-right"><b class="form-text-black">开始区间</b>:</label>
+                        <div class="col-sm-3">
+                            <label class="col-sm-3 control-label text-left" ng-bind="basRepayRule.beginInterval"></label>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-3 control-label text-right"><b class="form-text-black">结束区间</b>:</label>
+                        <div class="col-sm-3">
+                            <label class="col-sm-3 control-label text-left" ng-bind="basRepayRule.endInterval"></label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--查看详情-->
+        </form>
+
+        <div class="col-sm-15 m-b text-center">
+            <button class="btn btn-default" ng-click="goback()">取消</button>
+            <button type="submit" class="btn btn-success ng-scope" ng-show="showSave" ng-disabled="submit" ng-click="save()">新增
+            </button>
+            <button type="submit" class="btn btn-success ng-scope" ng-show="showUpdate" ng-disabled="submit" ng-click="modify()">
+                保存
+            </button>
+        </div>
+    </div>
+</div>

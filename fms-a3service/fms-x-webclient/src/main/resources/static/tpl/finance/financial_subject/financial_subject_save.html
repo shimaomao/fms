@@ -1,0 +1,104 @@
+<div ng-controller="financial_subject_save_controller">
+    <div>
+        <toaster-container
+                toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+    </div>
+    <div class="panel panel-default">
+        <div class="row" style="margin: 0; padding: 15px; border: 1px solid #dddddd">
+            <h4 class="m-n font-thin h4">{{frameTitle}}</h4>
+        </div>
+        <form name="form" class="form-validation" novalidate>
+            <div class="panel-body wrapper-sm">
+
+
+                <div class="form-group row">
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">科目代码</b><b
+                            class="form-error">*</b>:</label>
+                    <div class="col-sm-3">
+                        <input type="text" name="subjectCd" placeholder="请输入科目代码" class="form-control m-b-xs"
+                               ng-model="financialSubject.subjectCd" required>
+                        <p>
+                            <span class="form-info"
+                                  ng-show=" (form.subjectCd.$dirty && form.subjectCd.$error.required) || (form.subjectCd.$error.required && formValidate)">科目代码不能为空</span>
+                        </p>
+                    </div>
+                </div>
+
+
+                <div class="form-group row">
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">科目名称</b><b
+                            class="form-error">*</b>:</label>
+                    <div class="col-sm-3">
+                        <input type="text" name="subjectName" placeholder="请输入科目名称" class="form-control m-b-xs"
+                               ng-model="financialSubject.subjectName" required>
+                        <p>
+                            <span class="form-info"
+                                  ng-show=" (form.subjectName.$dirty && form.subjectName.$error.required) || (form.subjectName.$error.required && formValidate)">科目名称不能为空</span>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">辅助核算类型</b><b
+                            class="form-error">*</b>:</label>
+                        <div class="col-sm-6">
+                        <!--<div style="padding: 0 20px;">-->
+                            <div class="dataTables_wrapper form-inline dt-bootstrap no-footer">
+                                <table border="1" class="table table-striped m-b-none dataTable no-footer" width="100%">
+                                    <thead>
+                                    <tr>
+                                        <th class="sorting_disabled center" rowspan="1" colspan="1" style="width: 0px;">序号</th>
+                                        <th class="sorting_disabled center" rowspan="1" colspan="1" style="width: 0px;">辅助核算类型</th>
+                                        <th class="sorting_disabled center" rowspan="1" colspan="1" style="width: 0px;">辅助核算类型名称</th>
+                                        <th class="sorting_disabled center" rowspan="1" colspan="1" style="width: 0px;">核算项目值设值</th>
+                                        <th class="sorting_disabled center" rowspan="1" colspan="1" style="width: 0px;"></th>
+                                     </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr ng-show="assisAccountTypeList.length == 0">
+                                        <td colspan="7" class="dataTables_empty"><a class="a1">当前没有数据</a></td>
+                                    </tr>
+                                    <tr click-tr ng-show="assisAccountTypeList.length != 0" ng-repeat="a in assisAccountTypeList track by $index">
+                                        <td>{{a.assisAccountIndex = $index+1}}</td>
+                                        <td>{{a.assisAccountType}}</td>
+                                        <td>{{a.assisAccountTypeName}}</td>
+                                        <td>{{a.assisAccountValue}}</td>
+                                        <td>
+                                            <a class="a1" ng-click="del($index)">删除</a>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <!--</div>-->
+                        </div>
+                        <div class="col-sm-2">
+                            <button class="btn btn-primary btn-sm m-b-xs fms-button-margin-bottom" ng-click="selectAssisAccountType()"><i class="fa fa-pencil-square-o m-r-xs"></i>选择</button>
+                        </div>
+                </div>
+
+
+                <div class="form-group row">
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">用途备注</b><b
+                            class="form-error">*</b>:</label>
+                    <div class="col-sm-3">
+                        <textarea limit-word cols="100" rows="5" name="subjectMemo" ng-model="financialSubject.subjectMemo" required></textarea>
+                        <p>
+                            <span class="form-info"
+                                  ng-show=" (form.subjectMemo.$dirty && form.subjectMemo.$error.required) || (form.subjectMemo.$error.required && formValidate)">用途备注不能为空</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer ng-scope text-center">
+                <button class="btn btn-default btn-sm fms-button-margin-bottom" ng-click="goback()">返回</button>
+                <button type="submit" class="btn btn-success btn-sm fms-button-margin-bottom" ng-show="showSave" ng-disabled="submit"
+                        ng-click="save()">新增
+                </button>
+                <!--<button type="submit" class="btn btn-success" ng-show="showUpdate" ng-disabled="submit"-->
+                        <!--ng-click="modify()">保存-->
+                <!--</button>-->
+            </div>
+        </form>
+    </div>
+</div>

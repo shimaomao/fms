@@ -1,0 +1,45 @@
+<div  ng-controller="cont_print_detail_controller">
+
+        <!--合同打印内容-->
+        <div style="padding: 18px 80px 0px 60px;">
+            <div class="form-group row">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">操作分类</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-4" style="margin-top: -7px;">
+                    <div class="radio" ng-repeat="contPrintModeObj in contPrintModeList">
+                        <label><input type="radio" ng-value="contPrintModeObj.codeValue" ng-model="contPrintInfo.contPrintMode">{{contPrintModeObj.codeValueName}}</label>
+                    </div>
+                </div>
+            </div>
+            <!--<div class="form-group row no-gutte">
+                <div ng-if="contPrintInfo.contPrintMode == 2">
+                        <label class="col-sm-2 control-label text-right">退回原因<b class="form-error">*</b>:</label>
+                    <div class="col-sm-4">
+                        <select name="printSendBackReason" ng-model="contPrintInfo.printSendBackReason" class="form-control m-b-xs" required>
+                            <option value="">请选择退回原因</option>
+                            <option ng-repeat="printSendBackReason in printSendBackReasonList" value="{{printSendBackReason.codeValue}}">{{printSendBackReason.codeValueName}}</option>
+                        </select>
+                        <p>
+                            <span class="form-info" ng-show=" (form.printSendBackReason.$dirty && form.printSendBackReason.$error.required) || (form.printSendBackReason.$error.required && formValidate)">退回原因不能为空</span>
+                        </p>
+                    </div>
+                </div>
+            </div>-->
+            <div class="form-group row no-gutte">
+                <label class="col-sm-2 control-label text-right">审批备注:</label>
+                <div class = "col-sm-10 text-left">
+                    <textarea limit-word type="text" name="remark1" placeholder="请输入审批备注" class="form-control m-b-xs" ng-model="contPrintInfo.remark1"  rows = "3"></textarea>
+                    <!--<p>-->
+                        <!--<span class="form-info" ng-show=" (form.remark1.$dirty && form.remark1.$error.required) || (form.remark1.$error.required && formValidate)">审批备注不能为空</span>-->
+                    <!--</p>-->
+                </div>
+            </div>
+        </div>
+
+        <!--附件信息-->
+        <!--<div type="none" style="padding-left: 20px;">
+            <div ng-include="'tpl/common/tree_file/tree_file.html'" class="clearfix"></div>
+        </div>-->
+
+        <!--流程日志-->
+        <div ng-include="'tpl/common/process_log/process_log_list.html'"></div>
+</div>

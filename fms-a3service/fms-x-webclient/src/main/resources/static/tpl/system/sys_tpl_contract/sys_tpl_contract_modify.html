@@ -1,0 +1,64 @@
+<div  ng-controller="sys_tpl_contract_modify_controller">
+    <div>
+        <toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+    </div>
+    <div class="panel panel-default">
+        <div class="row" style="margin: 0; padding: 15px; border: 1px solid #dddddd">
+            <h4 class="m-n font-thin h4">编辑合同模板</h4>
+        </div>
+        <form name="form" class="form-validation" novalidate>
+            <div class="panel-body wrapper-sm">
+                <div class="form-group row">
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">模板名称</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-4">
+                        <input type="text" name="tplName" placeholder="请输入模板名称" class="form-control m-b-xs" ng-model="sysTpl.tplName"  required >
+                        <p>
+                            <span class="form-info" ng-show=" (form.tplName.$dirty && form.tplName.$error.required) || (form.tplName.$error.required && formValidate)">模板名称不能为空</span>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">合同模板类型</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-4 form-inline">
+                        <input type="text" name="tplTypeName" placeholder="请选择合同模板类型" class="form-control m-b-xs" ng-model="sysTpl.tplTypeName" disabled  required >
+                        <input type="text" name="tplTypeKey" class="hidden" ng-model="sysTpl.tplTypeKey" required >
+                        <button class="btn btn-primary btn-sm m-b-xs" ng-click="selectSysTplType()"><i class="fa fa-pencil-square-o m-r-xs"></i>选择</button>
+                        <p>
+                            <span class="form-info" ng-show=" (form.tplTypeKey.$dirty && form.tplTypeKey.$error.required) || (form.tplTypeKey.$error.required && formValidate)">合同模板类型不能为空</span>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">启用标志</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-4">
+                        <select ng-model="sysTpl.enableFlag" class="form-control m-b-xs" style="width: 130px;" required>
+                            <option value="{{enableFlagObj.codeValue}}" ng-repeat="enableFlagObj in enableFlagList">{{enableFlagObj.codeValueName}}</option>
+                        </select>
+                        <p>
+                            <span class="form-info" ng-show=" (form.enableFlag.$dirty && form.enableFlag.$error.required) || (form.enableFlag.$error.required && formValidate)">启用标志不能为空</span>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">合同模板文件:</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-7">
+                        <div ng-include="'tpl/common/file/file_list.html'"></div>
+                        <!--<input type="text" name="tplContent" placeholder="请输入合同模板文件" class="form-control m-b-xs" maxlength="1000" ng-model="sysTpl.tplContent"  required />-->
+                        <!--<p>-->
+                            <!--<span class="form-info" ng-show=" (form.tplContent.$dirty && form.tplContent.$error.required) || (form.tplContent.$error.required && formValidate)">合同模板文件不能为空</span>-->
+                        <!--</p>-->
+                    </div>
+                </div>
+            </div>
+            <div class="row" style="margin: 10px 0 0 15px;">
+                <div class="col-sm-15 m-b text-center">
+                    <button class="btn btn-default m-r-xs" ng-click="goBack()">返回</button>
+                    <button type="submit" class="btn btn-success" ng-disabled="submit" ng-click="modify()">保存</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,170 @@
+<div class="modal-header">
+    <h4 class="modal-title">添加prebiz <button type="button" class="close" data-dismiss="modal" aria-hidden="true" ng-click="close()">&times;</button></h4>
+</div>
+<div class="modal-body">
+    <form name="form" class="form-validation" novalidate>
+
+        <div class="panel-body">
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">订单编号</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="applyNo" placeholder="请输入订单编号" class="form-control m-b-xs" ng-model="cstmPersJob.applyNo"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.applyNo.$dirty && form.applyNo.$error.required) || (form.applyNo.$error.required && formValidate)">订单编号不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">单位名称</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="compName" placeholder="请输入单位名称" class="form-control m-b-xs" ng-model="cstmPersJob.compName"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.compName.$dirty && form.compName.$error.required) || (form.compName.$error.required && formValidate)">单位名称不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">单位电话</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="compTel" placeholder="请输入单位电话" class="form-control m-b-xs" ng-model="cstmPersJob.compTel"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.compTel.$dirty && form.compTel.$error.required) || (form.compTel.$error.required && formValidate)">单位电话不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">在职年限</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="workYear" placeholder="请输入在职年限" class="form-control m-b-xs" ng-model="cstmPersJob.workYear"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.workYear.$dirty && form.workYear.$error.required) || (form.workYear.$error.required && formValidate)">在职年限不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">职业</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="profession" placeholder="请输入职业" class="form-control m-b-xs" ng-model="cstmPersJob.profession"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.profession.$dirty && form.profession.$error.required) || (form.profession.$error.required && formValidate)">职业不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">职位</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="position" placeholder="请输入职位" class="form-control m-b-xs" ng-model="cstmPersJob.position"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.position.$dirty && form.position.$error.required) || (form.position.$error.required && formValidate)">职位不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">单位所属行业类别</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="industry" placeholder="请输入单位所属行业类别" class="form-control m-b-xs" ng-model="cstmPersJob.industry"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.industry.$dirty && form.industry.$error.required) || (form.industry.$error.required && formValidate)">单位所属行业类别不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">单位所在省份</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="compProv" placeholder="请输入单位所在省份" class="form-control m-b-xs" ng-model="cstmPersJob.compProv"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.compProv.$dirty && form.compProv.$error.required) || (form.compProv.$error.required && formValidate)">单位所在省份不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">单位所在城市</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="compCity" placeholder="请输入单位所在城市" class="form-control m-b-xs" ng-model="cstmPersJob.compCity"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.compCity.$dirty && form.compCity.$error.required) || (form.compCity.$error.required && formValidate)">单位所在城市不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">单位所在区县</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="compCounty" placeholder="请输入单位所在区县" class="form-control m-b-xs" ng-model="cstmPersJob.compCounty"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.compCounty.$dirty && form.compCounty.$error.required) || (form.compCounty.$error.required && formValidate)">单位所在区县不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">单位详细地址</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="compAddr" placeholder="请输入单位详细地址" class="form-control m-b-xs" ng-model="cstmPersJob.compAddr"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.compAddr.$dirty && form.compAddr.$error.required) || (form.compAddr.$error.required && formValidate)">单位详细地址不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">税后年薪</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="salary" placeholder="请输入税后年薪" class="form-control m-b-xs" ng-model="cstmPersJob.salary"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.salary.$dirty && form.salary.$error.required) || (form.salary.$error.required && formValidate)">税后年薪不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">其他税后年薪</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="elseSalary" placeholder="请输入其他税后年薪" class="form-control m-b-xs" ng-model="cstmPersJob.elseSalary"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.elseSalary.$dirty && form.elseSalary.$error.required) || (form.elseSalary.$error.required && formValidate)">其他税后年薪不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+
+        </div>
+
+    </form>
+</div>
+<div class="modal-footer ng-scope">
+    <button class="btn btn-default" ng-click="close()">取消</button>
+    <button type="submit" class="btn btn-success" ng-disabled="submit" ng-click="save()">新增</button>
+</div>

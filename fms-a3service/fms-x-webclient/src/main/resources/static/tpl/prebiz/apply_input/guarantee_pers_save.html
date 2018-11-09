@@ -1,0 +1,585 @@
+<style>
+    .modal-dialog{
+        width: 1150px;
+    }
+    .modal-dialog .modal-body{
+        max-height: 300px;
+        overflow: auto;
+    }
+</style>
+<div class="modal-header">
+    <h4 class="modal-title">添加担保人信息</h4>
+</div>
+<div class="modal-body">
+    <form name="form" class="form-validation" novalidate>
+        <div class="row" style="margin: 5px; padding-right: 50px;">
+            <div class="row line-lg" style="font-weight: bold;font-size: 14px;">担保人基本信息</div>
+            <div class="form-group row">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">担保人姓名</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-2">
+                    <input type="text" name="name" placeholder="请输入担保人姓名" class="form-control m-b-xs" ng-model="guaranteePers.name"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.name.$dirty && form.name.$error.required) || (form.name.$error.required && formValidate)">担保人姓名不能为空</span>
+                    </p>
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">承租人与担保人关系</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-2">
+                    <select name="relation" ng-model="guaranteePers.relation" class="form-control m-b-xs" required>
+                        <option value="">---请选择---</option>
+                        <option ng-repeat="relation in relationTypeList" value="{{relation.codeValue}}" ng-selected="guaranteePers.relation==relation.codeValue">{{relation.codeValueName}}</option>
+                    </select>
+                    <p>
+                        <span class="form-info" ng-show=" (form.relation.$dirty && form.relation.$error.required) || (form.relation.$error.required && formValidate)">承租人与担保人关系不能为空</span>
+                    </p>
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">证件类型</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-2">
+                    <select name="certifType" ng-model="guaranteePers.certifType" ng-change="guaranteePersValidate()" class="form-control m-b-xs" required>
+                        <option value="">---请选择---</option>
+                        <option ng-repeat="certifType in certifTypeList" value="{{certifType.codeValue}}" ng-selected="guaranteePers.certifType==certifType.codeValue">{{certifType.codeValueName}}</option>
+                    </select>
+                    <p>
+                        <span class="form-info" ng-show=" (form.certifType.$dirty && form.certifType.$error.required) || (form.certifType.$error.required && formValidate)">证件类型不能为空</span>
+                    </p>
+                </div>
+            </div>
+            <div class="form-group row">
+
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">证件号码</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-3">
+                    <div class="row">
+                        <div class="col-sm-8">
+                            <input type="text" title="{{guaranteePers.certifNo}}" id="guaranteePersCertiNo" name="certifNo" placeholder="请输入证件号码"  class="form-control m-b-xs" ng-model="guaranteePers.certifNo" ng-pattern="guaranteePersCertiNo" ng-pattern="/^[0-9a-zA-Z]+$/" required >
+                            <p>
+                                <span class="form-info" ng-show=" (form.certifNo.$dirty && form.certifNo.$error.required) || (form.certifNo.$error.required && formValidate)">证件号码不能为空</span>
+                                <span class="form-info" ng-show=" (form.certifNo.$error.pattern && !form.certifNo.$error.required) || (form.certifNo.$error.pattern && formValidate && !form.certifNo.$error.required)">请输入合法的证件号</span>
+                            </p>
+                        </div>
+                        <div class="col-sm-4">
+                            <button style="margin-left: -30px;" type="button" class="btn btn-sm btn-default" ng-click="selectCertiNo(1);">选择</button>
+                        </div>
+                    </div>
+                </div>
+                <label class="col-sm-1 control-label text-right"><b class="form-text-black">性别</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-2">
+                    <select name="sex" ng-model="guaranteePers.sex" class="form-control m-b-xs" required>
+                        <option value="">---请选择---</option>
+                        <option ng-repeat="gender in genderList" value="{{gender.codeValue}}" ng-selected="guaranteePers.sex==gender.codeValue">{{gender.codeValueName}}</option>
+                    </select>
+                    <p>
+                        <span class="form-info" ng-show=" (form.sex.$dirty && form.sex.$error.required) || (form.sex.$error.required && formValidate)">性别不能为空</span>
+                    </p>
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">生日</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-2">
+                    <input type="text" name="birthDate" placeholder="请输入生日" class="form-control m-b-xs" ng-model="guaranteePers.birthDate" date-picker onchange=""  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.birthDate.$dirty && form.birthDate.$error.required) || (form.birthDate.$error.required && formValidate)">生日不能为空</span>
+                    </p>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">手机号码</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-2">
+                    <input type="text" name="mobileNo" placeholder="请输入手机号码" class="form-control m-b-xs" ng-model="guaranteePers.mobileNo" ng-pattern="/^1[345789]\d{9}$/"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.mobileNo.$dirty && form.mobileNo.$error.required) || (form.mobileNo.$error.required && formValidate)">手机号不能为空</span>
+                        <span class="form-info" ng-show=" (form.mobileNo.$error.pattern && !form.mobileNo.$error.required) || (form.mobileNo.$error.pattern && formValidate && !form.mobileNo.$error.required)">请输入正确的手机号</span>
+
+                    </p>
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">担保人与担保人关系</b><b ng-show="isRequire" class="form-error">*</b>:</label>
+                <div class="col-sm-2">
+                    <select name="guaRelation" ng-model="guaranteePers.guaRelation" class="form-control m-b-xs" ng-required="isRequire">
+                        <option value="">---请选择---</option>
+                        <option ng-repeat="relation in relationTypeList2" value="{{relation.codeValue}}" ng-selected="guaranteePers.guaRelation==relation.codeValue">{{relation.codeValueName}}</option>
+                    </select>
+                    <p>
+                        <span class="form-info" ng-show=" (form.guaRelation.$dirty && form.guaRelation.$error.required) || (form.guaRelation.$error.required && formValidate)">担保人与担保人关系不能为空</span>
+                    </p>
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">电话号码</b>:</label>
+                <div class="col-sm-2">
+                    <input type="text" name="telNo" placeholder="请输入电话号码" class="form-control m-b-xs" ng-model="guaranteePers.telNo" ng-pattern="/^0\d{2,3}-\d{7,8}$/">
+                    <p>
+                        <span class="form-info" ng-show=" (form.telNo.$dirty && form.telNo.$error.required) || (form.telNo.$error.required && formValidate)">电话号码不能为空</span>
+                        <span class="form-info" ng-show=" (form.telNo.$error.pattern && !form.telNo.$error.required) || (form.telNo.$error.pattern && formValidate && !form.telNo.$error.required)">请输入正确的电话号码</span>
+                    </p>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">婚姻状况</b>:</label>
+                <div class="col-sm-2">
+                    <select name="marriageStatus" ng-model="guaranteePers.marriageStatus" class="form-control m-b-xs">
+                        <option value="">---请选择---</option>
+                        <option ng-repeat="relation in marriageStatusList" value="{{relation.codeValue}}" ng-selected="guaranteePers.marriageStatus==relation.codeValue">{{relation.codeValueName}}</option>
+                    </select>
+                    <p></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="row" style="margin: 5px; padding-right: 50px;">
+            <div class="row line-lg" style="font-weight: bold;font-size: 14px;">担保人职业信息</div>
+            <div class="form-group row">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">单位名称</b>:</label>
+                <div class="col-sm-2">
+                    <input type="text" name="compName" placeholder="请输入单位名称" class="form-control m-b-xs" ng-model="guaranteePers.compName">
+                    <p>
+                        <!--
+                                                    <span class="form-info" ng-show=" (form.compName.$dirty && form.compName.$error.required) || (form.compName.$error.required && formValidate)">单位名称不能为空</span>
+                        -->
+                    </p>
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">单位所属类型</b>:</label>
+                <div class="col-sm-2">
+                    <select name="industry" ng-model="guaranteePers.industry" class="form-control m-b-xs">
+                        <option value="">---请选择---</option>
+                        <option ng-repeat="industry in industryTypeList" value="{{industry.codeValue}}" ng-selected="guaranteePers.industry == industry.codeValue">{{industry.codeValueName}}</option>
+                    </select>
+                    <p>
+                        <!--
+                                                    <span class="form-info" ng-show=" (form.industry.$dirty && form.industry.$error.required) || (form.industry.$error.required && formValidate)">单位所属类型不能为空</span>
+                        -->
+                    </p>
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">单位电话</b>:</label>
+                <div class="col-sm-2">
+                    <input type="text" name="compTel" placeholder="请输入单位电话" class="form-control m-b-xs" ng-model="guaranteePers.compTel" ng-pattern="/^0\d{2,3}-\d{7,8}$/">
+                    <p>
+                        <!--<span class="form-info" ng-show=" (form.compTel.$dirty && form.compTel.$error.required) || (form.compTel.$error.required && formValidate)">电话号码不能为空</span>-->
+                        <span class="form-info" ng-show=" (form.compTel.$error.pattern && !form.compTel.$error.required) || (form.compTel.$error.pattern && formValidate && !form.compTel.$error.required)">请输入正确的电话号码</span>
+                    </p>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">单位所在省份</b>:</label>
+                <div class="col-sm-2">
+                    <select name="compProv"  ng-model="guaranteePers.compProv" class="form-control m-b-xs" ng-change="changeCountryJob()">
+                        <option value="">---请选择---</option>
+                        <option value="{{provinceObj.areaCode}}" ng-repeat="provinceObj in provinceListJob" ng-selected="guaranteePers.compProv == provinceObj.areaCode">{{provinceObj.areaName}}</option>
+                    </select>
+                    <p>
+                        <!--
+                                                    <span class="form-info" ng-show=" (form.compProv.$dirty && form.compProv.$error.required) || (form.compProv.$error.required && formValidate)">省份不能为空</span>
+                        -->
+                    </p>
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">单位所在市</b>:</label>
+                <div class="col-sm-2">
+                    <select name="compCity" ng-model="guaranteePers.compCity" class="form-control m-b-xs" ng-change="changeCityJob()">
+                        <option value="">---请选择---</option>
+                        <option value="{{cityObj.areaCode}}" ng-selected="cityObj.areaCode==guaranteePers.compCity?1:0" ng-repeat="cityObj in cityListJob[guaranteePers.compProv]">{{cityObj.areaName}}</option>
+                    </select>
+                    <p>
+                        <!--
+                                                    <span class="form-info" ng-show=" (form.compCity.$dirty && form.compCity.$error.required) || (form.compCity.$error.required && formValidate)">城市不能为空</span>
+                        -->
+                    </p>
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">单位所在区县</b>:</label>
+                <div class="col-sm-2">
+                    <select name="compCounty"  ng-model="guaranteePers.compCounty" class="form-control m-b-xs">
+                        <option value="" >---请选择---</option>
+                        <option value="{{areaObj.areaCode}}" ng-selected="areaObj.areaCode==guaranteePers.compCounty?1:0" ng-repeat="areaObj in areaListJob[guaranteePers.compCity]">{{areaObj.areaName}}</option>
+                    </select>
+                    <p>
+                        <!--
+                                                    <span class="form-info" ng-show=" (form.compCounty.$dirty && form.compCounty.$error.required) || (form.compCounty.$error.required && formValidate)">单位所在区县不能为空</span>
+                        -->
+                    </p>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">单位详细地址</b>:</label>
+                <div class="col-sm-6">
+                    <input type="text" title="{{guaranteePers.compAddr}}" name="compAddr" placeholder="请输入单位详细地址" class="form-control m-b-xs" ng-model="guaranteePers.compAddr">
+                    <p>
+                        <!--
+                                                    <span class="form-info" ng-show=" (form.compAddr.$dirty && form.compAddr.$error.required) || (form.compAddr.$error.required && formValidate)">单位详细地址不能为空</span>
+                        -->
+                    </p>
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">职业</b>:</label>
+                <div class="col-sm-2">
+                    <select name="profession" ng-model="guaranteePers.profession" class="form-control m-b-xs">
+                        <option value="">---请选择---</option>
+                        <option ng-repeat="profession in professionTypeList" value="{{profession.codeValue}}" ng-selected="guaranteePers.profession == profession.codeValue">{{profession.codeValueName}}</option>
+                    </select>
+                    <p>
+                        <!--
+                                                    <span class="form-info" ng-show=" (form.profession.$dirty && form.profession.$error.required) || (form.profession.$error.required && formValidate)">职业不能为空</span>
+                        -->
+                    </p>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">职位</b>:</label>
+                <div class="col-sm-2">
+                    <select name="position" ng-model="guaranteePers.position" class="form-control m-b-xs">
+                        <option value="">---请选择---</option>
+                        <option ng-repeat="position in positionTypeList" value="{{position.codeValue}}" ng-selected="guaranteePers.position == position.codeValue">{{position.codeValueName}}</option>
+                    </select>
+                    <p>
+                        <!--
+                                                    <span class="form-info" ng-show=" (form.position.$dirty && form.position.$error.required) || (form.position.$error.required && formValidate)">职位不能为空</span>
+                        -->
+                    </p>
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">工作年限</b>:</label>
+                <div class="col-sm-2">
+                    <input type="text" name="workYear" placeholder="请输入工作年限" class="form-control m-b-xs" ng-model="guaranteePers.workYear" ng-pattern="/(^\d{1,2}$)/">
+                    <p>
+                        <!--<span class="form-info" ng-show=" (form.workYear.$dirty && form.workYear.$error.required) || (form.workYear.$error.required && formValidate)">工作年限不能为空</span>-->
+                        <span class="form-info" ng-show=" (form.workYear.$dirty && form.workYear.$error.pattern) || (form.workYear.$error.pattern && formValidate)">请输入正确的数字</span>
+                    </p>
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">年薪(万元)</b>:</label>
+                <div class="col-sm-2">
+                    <input type="number" limit-number="4" name="salary" placeholder="请输入年薪(万元)" class="form-control m-b-xs" ng-model="guaranteePers.salary" ng-pattern="/^[1-9]\d*\,\d*|[1-9]\d*$/">
+                    <p>
+                        <!--<span class="form-info" ng-show=" (form.salary.$dirty && form.salary.$error.required) || (form.salary.$error.required && formValidate)">年薪(万元)不能为空</span>-->
+                        <span class="form-info" ng-show=" (form.salary.$error.pattern && !form.salary.$error.required) || (form.salary.$error.pattern && formValidate && !form.salary.$error.required)">请输入合法的数值</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div ng-if="guaranteePers.marriageStatus != 2 && guaranteePers.marriageStatus != 3 && guaranteePers.marriageStatus != 4" class="row" style="margin: 5px; padding-right: 50px;">
+            <div class="row line-lg" style="font-weight: bold;font-size: 14px;">担保人配偶信息</div>
+            <div class="form-group row">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">配偶姓名</b>:</label>
+                <div class="col-sm-2">
+                    <input type="text" name="mateName" placeholder="请输入配偶姓名" class="form-control m-b-xs" ng-model="guaranteePers.mateName">
+                    <p>
+                        <!--<span class="form-info" ng-show=" (form.mateName.$dirty && form.mateName.$error.required) || (form.mateName.$error.required && formValidate)">配偶姓名不能为空</span>-->
+                    </p>
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">证件类型</b>:</label>
+                <div class="col-sm-2">
+                    <select name="mateCertifType" ng-model="guaranteePers.mateCertifType" ng-change="mateValidate()" class="form-control m-b-xs">
+                        <option value="">---请选择---</option>
+                        <option ng-repeat="certifType in certifTypeList" value="{{certifType.codeValue}}" ng-selected="guaranteePers.mateCertifType == certifType.codeValue">{{certifType.codeValueName}}</option>
+                    </select>
+                    <p>
+                        <!--<span class="form-info" ng-show=" (form.mateCertifType.$dirty && form.mateCertifType.$error.required) || (form.mateCertifType.$error.required && formValidate)">证件类型不能为空</span>-->
+                    </p>
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">证件号</b>:</label>
+                <div class="col-sm-2">
+                    <div class="row">
+                        <div class="col-sm-9">
+                            <input type="text" title="{{guaranteePers.mateCertifNo}}" id="mateCertiNo2" name="mateCertifNo" placeholder="请输入证件号" class="form-control m-b-xs" ng-model="guaranteePers.mateCertifNo" ng-pattern="mateCertiNo2">
+                            <p>
+                                <!--<span class="form-info" ng-show=" (form.mateCertifNo.$dirty && form.mateCertifNo.$error.required) || (form.mateCertifNo.$error.required && formValidate)">证件号不能为空</span>-->
+                                <span class="form-info" ng-show=" (form.mateCertifNo.$error.pattern && !form.mateCertifNo.$error.required) || (form.mateCertifNo.$error.pattern && formValidate && !form.mateCertifNo.$error.required)">请输入合法的证件号</span>
+                            </p>
+                        </div>
+                        <div class="col-sm-3">
+                            <button style="margin-left: -30px;" type="button" class="btn btn-sm btn-default" ng-click="selectCertiNo(2);">选择</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">手机号码</b>:</label>
+                <div class="col-sm-2">
+                    <input type="text" name="mateMobileNo" placeholder="请输入手机号" class="form-control m-b-xs" ng-model="guaranteePers.mateMobileNo" ng-pattern="/^1[345789]\d{9}$/">
+                    <p>
+                        <!--<span class="form-info" ng-show=" (form.mateMobileNo.$dirty && form.mateMobileNo.$error.required) || (form.mateMobileNo.$error.required && formValidate)">手机号不能为空</span>-->
+                        <span class="form-info" ng-show=" (form.mateMobileNo.$error.pattern && !form.mateMobileNo.$error.required) || (form.mateMobileNo.$error.pattern && formValidate && !form.mateMobileNo.$error.required)">请输入正确的手机号</span>
+
+                    </p>
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">单位名称</b>:</label>
+                <div class="col-sm-2">
+                    <input type="text" name="mateCompName" placeholder="请输入单位名称" class="form-control m-b-xs" ng-model="guaranteePers.mateCompName">
+                    <p>
+                        <!--<span class="form-info" ng-show=" (form.mateCompName.$dirty && form.mateCompName.$error.required) || (form.mateCompName.$error.required && formValidate)">单位名称不能为空</span>-->
+                    </p>
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">单位电话</b>:</label>
+                <div class="col-sm-2">
+                    <input type="text" name="mateCompTel" placeholder="请输入单位电话" class="form-control m-b-xs" ng-model="guaranteePers.mateCompTel" ng-pattern="/^0\d{2,3}-\d{7,8}$/">
+                    <p>
+                        <!--<span class="form-info" ng-show=" (form.mateCompTel.$dirty && form.mateCompTel.$error.required) || (form.mateCompTel.$error.required && formValidate)">电话号码不能为空</span>-->
+                        <span class="form-info" ng-show=" (form.mateCompTel.$error.pattern && !form.mateCompTel.$error.required) || (form.mateCompTel.$error.pattern && formValidate && !form.mateCompTel.$error.required)">请输入正确的电话号码</span>
+                    </p>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">单位所在省份</b>:</label>
+                <div class="col-sm-2">
+                    <select name="mateCompProv"  ng-model="guaranteePers.mateCompProv" class="form-control m-b-xs" ng-change="changeP('mateCompProv','mateCompCity','mateCompCounty','mateCompCityList','mateCompCountyList')">
+                        <option value="">---请选择---</option>
+                        <option value="{{provinceObj.areaCode}}" ng-repeat="provinceObj in provinceList" ng-selected="guaranteePers.mateCompProv == provinceObj.areaCode">{{provinceObj.areaName}}</option>
+                    </select>
+                    <p>
+                        <!--<span class="form-info" ng-show=" (form.mateCompProv.$dirty && form.mateCompProv.$error.required) || (form.mateCompProv.$error.required && formValidate)">省份不能为空</span>-->
+                    </p>
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">单位所在市</b>:</label>
+                <div class="col-sm-2">
+                    <select name="mateCompCity" ng-model="guaranteePers.mateCompCity" class="form-control m-b-xs" ng-change="changeC('mateCompProv','mateCompCity','mateCompCounty','mateCompCityList','mateCompCountyList')">
+                        <option value="">---请选择---</option>
+                        <option value="{{cityObj.areaCode}}" ng-selected="cityObj.areaCode==guaranteePers.mateCompCity?1:0" ng-repeat="cityObj in mateCompCityList[guaranteePers.mateCompProv]">{{cityObj.areaName}}</option>
+                    </select>
+                    <p>
+                        <!--<span class="form-info" ng-show=" (form.mateCompCity.$dirty && form.mateCompCity.$error.required) || (form.mateCompCity.$error.required && formValidate)">城市不能为空</span>-->
+                    </p>
+                </div>
+
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">单位所在区县</b>:</label>
+                <div class="col-sm-2">
+                    <select name="mateCompCounty"  ng-model="guaranteePers.mateCompCounty" class="form-control m-b-xs">
+                        <option value="" >---请选择---</option>
+                        <option value="{{areaObj.areaCode}}" ng-selected="areaObj.areaCode==guaranteePers.mateCompCounty" ng-repeat="areaObj in mateCompCountyList[guaranteePers.mateCompCity]">{{areaObj.areaName}}</option>
+                    </select>
+                    <p>
+                        <!--<span class="form-info" ng-show=" (form.mateCompCounty.$dirty && form.mateCompCounty.$error.required) || (form.mateCompCounty.$error.required && formValidate)">区县不能为空</span>-->
+                    </p>
+                </div>
+            </div>
+            <div class="form-group row" id="mateCompAddr">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">单位详细地址</b>:</label>
+                <div class="col-sm-10">
+                    <input type="text" title="{{guaranteePers.mateCompAddr}}" name="mateCompAddr" placeholder="请输入单位详细地址" class="form-control m-b-xs" ng-model="guaranteePers.mateCompAddr">
+                    <p>
+                        <!--<span class="form-info" ng-show=" (form.mateCompAddr.$dirty && form.mateCompAddr.$error.required) || (form.mateCompAddr.$error.required && formValidate)">单位详细地址不能为空</span>-->
+                    </p>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">配偶职位</b>:</label>
+                <div class="col-sm-2">
+                    <select name="matePosition" ng-model="guaranteePers.matePosition" class="form-control m-b-xs">
+                        <option value="">---请选择---</option>
+                        <option ng-repeat="position in positionTypeList" value="{{position.codeValue}}" ng-selected="guaranteePers.matePosition == position.codeValue">{{position.codeValueName}}</option>
+                    </select>
+                    <p>
+                        <!--<span class="form-info" ng-show=" (form.matePosition.$dirty && form.matePosition.$error.required) || (form.matePosition.$error.required && formValidate)">职位不能为空</span>-->
+                    </p>
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">税后年薪(万元)</b>:</label>
+                <div class="col-sm-2">
+                    <input type="number" limit-number="4" name="mateSalary" placeholder="请输入年薪" class="form-control m-b-xs" ng-model="guaranteePers.mateSalary" ng-pattern="/^[0-9]+([.]{1}[0-9]+){0,1}$/">
+                    <p>
+                        <!--<span class="form-info" ng-show=" (form.mateSalary.$dirty && form.mateSalary.$error.required) || (form.mateSalary.$error.required && formValidate)">年薪不能为空</span>-->
+                        <span class="form-info" ng-show=" (form.mateSalary.$dirty && form.mateSalary.$error.pattern) || (form.mateSalary.$error.pattern && formValidate)">请输入合法的数值</span>
+                    </p>
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">是否共同担保人</b>:</label>
+                <div class="col-sm-2">
+                    <select name="isCommGuarantee" ng-model="guaranteePers.isCommGuarantee" class="form-control m-b-xs">
+                        <option value="">---请选择---</option>
+                        <option ng-repeat="a in 'yesNoFlag'|getList" value="{{a.codeValue}}" ng-selected="guaranteePers.isCommGuarantee==a.codeValue">{{a.codeValueName}}</option>
+                    </select>
+                    <p>
+                        <!--<span class="form-info" ng-show=" (form.isCommGuarantee.$dirty && form.isCommGuarantee.$error.required) || (form.isCommGuarantee.$error.required && formValidate)">是否共同担保人不能为空</span>-->
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="row" style="margin: 5px; padding-right: 50px;">
+            <div class="row line-lg" style="font-weight: bold;font-size: 14px;">担保人地址信息</div>
+            <div class="form-group row">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">居住状况</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-2">
+                    <select name="addrResideCond" ng-model="guaranteePers.resideCond" class="form-control m-b-xs" required>
+                        <option value="">---请选择---</option>
+                        <option ng-repeat="resideCond in resideCondList" value="{{resideCond.codeValue}}" ng-selected="guaranteePers.resideCond == resideCond.codeValue">{{resideCond.codeValueName}}</option>
+                    </select>
+                    <p>
+                        <span class="form-info" ng-show=" (form.addrResideCond.$dirty && form.addrResideCond.$error.required) || (form.addrResideCond.$error.required && formValidate)">居住状况不能为空</span>
+                    </p>
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">居住年份</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-2">
+                    <select name="addrResideYear" ng-model="guaranteePers.resideYear" class="form-control m-b-xs" required>
+                        <option value="">---请选择---</option>
+                        <option ng-repeat="resideYear in resideYearList" value="{{resideYear.codeValue}}" ng-selected="guaranteePers.resideYear == resideYear.codeValue">{{resideYear.codeValueName}}</option>
+                    </select>
+                    <p>
+                        <span class="form-info" ng-show=" (form.addrResideYear.$dirty && form.addrResideYear.$error.required) || (form.addrResideYear.$error.required && formValidate)">居住年份不能为空</span>
+                    </p>
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">是否有房产</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-2">
+                    <select name="isHaveProperty" ng-model="guaranteePers.isHaveProperty" class="form-control m-b-xs" required>
+                        <option value="">---请选择---</option>
+                        <option ng-repeat="a in isHavePropertyList" value="{{a.codeValue}}" ng-selected="guaranteePers.isHaveProperty == a.codeValue">{{a.codeValueName}}</option>
+                    </select>
+                    <p>
+                        <span class="form-info" ng-show=" (form.isHaveProperty.$dirty && form.isHaveProperty.$error.required) || (form.isHaveProperty.$error.required && formValidate)">是否有房产不能为空</span>
+                    </p>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">居住省份</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-2">
+                    <select name="resideProv"  ng-model="guaranteePers.resideProv" class="form-control m-b-xs" ng-change="changeCountry()" required>
+                        <option value="">---请选择---</option>
+                        <option value="{{provinceObj.areaCode}}" ng-repeat="provinceObj in provinceList" ng-selected="guaranteePers.resideProv == provinceObj.areaCode">{{provinceObj.areaName}}</option>
+                    </select>
+                    <p>
+                        <span class="form-info" ng-show=" (form.resideProv.$dirty && form.resideProv.$error.required) || (form.resideProv.$error.required && formValidate)">联系人所在省份不能为空</span>
+                    </p>
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">居住城市</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-2">
+                    <select name="resideCity" ng-model="guaranteePers.resideCity" class="form-control m-b-xs" ng-change="changeCity()" required>
+                        <option value="">---请选择---</option>
+                        <option value="{{cityObj.areaCode}}" ng-selected="cityObj.areaCode==guaranteePers.resideCity?1:0" ng-repeat="cityObj in cityList[guaranteePers.resideProv]">{{cityObj.areaName}}</option>
+                    </select>
+                    <p>
+                        <span class="form-info" ng-show=" (form.resideCity.$dirty && form.resideCity.$error.required) || (form.resideCity.$error.required && formValidate)">联系人所在城市不能为空</span>
+                    </p>
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">居住区县</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-2">
+                    <select name="resideCounty"  ng-model="guaranteePers.resideCounty" class="form-control m-b-xs" required>
+                        <option value="" >---请选择---</option>
+                        <option value="{{areaObj.areaCode}}" ng-selected="areaObj.areaCode==guaranteePers.resideCounty?1:0" ng-repeat="areaObj in areaList[guaranteePers.resideCity]">{{areaObj.areaName}}</option>
+                    </select>
+                    <p>
+                        <span class="form-info" ng-show=" (form.resideCounty.$dirty && form.resideCounty.$error.required) || (form.resideCounty.$error.required && formValidate)">居住区县不能为空</span>
+                    </p>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">居住详细地址</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-10">
+                    <input type="text" title="{{guaranteePers.resideAddr}}" name="resideAddr" placeholder="请输入居住详细地址" class="form-control m-b-xs" ng-model="guaranteePers.resideAddr"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.resideAddr.$dirty && form.resideAddr.$error.required) || (form.resideAddr.$error.required && formValidate)">居住详细地址不能为空</span>
+                    </p>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">户籍省份</b>:</label>
+                <div class="col-sm-2">
+                    <select name="censusProv"  ng-model="guaranteePers.censusProv" class="form-control m-b-xs" ng-change="changeP('censusProv','censusCity','censusCounty','censusCityList','censusCountyList')">
+                        <option value="">---请选择---</option>
+                        <option value="{{provinceObj.areaCode}}" ng-repeat="provinceObj in provinceListJob" ng-selected="guaranteePers.censusProv == provinceObj.areaCode">{{provinceObj.areaName}}</option>
+                    </select>
+                    <p>
+                        <span class="form-info" ng-show=" (form.censusProv.$dirty && form.censusProv.$error.required) || (form.censusProv.$error.required && formValidate)">省份不能为空</span>
+                    </p>
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">户籍城市</b>:</label>
+                <div class="col-sm-2">
+                    <select name="censusCity" ng-model="guaranteePers.censusCity" class="form-control m-b-xs" ng-change="changeC('censusProv','censusCity','censusCounty','censusCityList','censusCountyList')">
+                        <option value="">---请选择---</option>
+                        <option value="{{cityObj.areaCode}}" ng-selected="cityObj.areaCode==guaranteePers.censusCity?1:0" ng-repeat="cityObj in censusCityList[guaranteePers.censusProv]">{{cityObj.areaName}}</option>
+                    </select>
+                    <p>
+                        <span class="form-info" ng-show=" (form.censusCity.$dirty && form.censusCity.$error.required) || (form.censusCity.$error.required && formValidate)">城市不能为空</span>
+                    </p>
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">户籍区县</b>:</label>
+                <div class="col-sm-2">
+                    <div class="row">
+                        <div class="col-sm-8">
+                            <select name="censusCounty"  ng-model="guaranteePers.censusCounty" class="form-control m-b-xs">
+                                <option value="">---请选择---</option>
+                                <option value="{{areaObj.areaCode}}" ng-selected="areaObj.areaCode==guaranteePers.censusCounty?1:0" ng-repeat="areaObj in censusCountyList[guaranteePers.censusCity]">{{areaObj.areaName}}</option>
+                            </select>
+                            <p>
+                                <span class="form-info" ng-show=" (form.censusCounty.$dirty && form.censusCounty.$error.required) || (form.censusCounty.$error.required && formValidate)">区县不能为空</span>
+                            </p>
+                        </div>
+                        <div class="col-sm-4">
+                            <button type="button" class="btn btn-default btn-sm" ng-click="synchroniz(1);">同步</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">户籍详细地址</b>:</label>
+                <div class="col-sm-10">
+                    <input type="text" title="{{guaranteePers.censusAddr}}" name="censusAddr" placeholder="请输入户籍详细地址" class="form-control m-b-xs" ng-model="guaranteePers.censusAddr">
+                    <p>
+                        <span class="form-info" ng-show=" (form.censusAddr.$dirty && form.censusAddr.$error.required) || (form.censusAddr.$error.required && formValidate)">户籍详细地址不能为空</span>
+                    </p>
+                </div>
+            </div>
+            <div ng-if="guaranteePers.isHaveProperty == 1">
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">房产省份</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <select name="addrPropertyProv"  ng-model="guaranteePers.propertyProv" class="form-control m-b-xs" ng-change="changeP('propertyProv','propertyCity','propertyCounty','propertyCityList','propertyCountyList')" required>
+                            <option value="">---请选择---</option>
+                            <option value="{{provinceObj.areaCode}}" ng-repeat="provinceObj in provinceList" ng-selected="guaranteePers.propertyProv==provinceObj.areaCode">{{provinceObj.areaName}}</option>
+                        </select>
+                        <p>
+                            <span class="form-info" ng-show=" (form.addrPropertyProv.$dirty && form.addrPropertyProv.$error.required) || (form.addrPropertyProv.$error.required && formValidate)">房产省份不能为空</span>
+                        </p>
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">房产城市</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <select name="addrPropertyCity" ng-model="guaranteePers.propertyCity" class="form-control m-b-xs" ng-change="changeC('propertyProv','propertyCity','propertyCounty','propertyCityList','propertyCountyList')" required>
+                            <option value="">---请选择---</option>
+                            <option value="{{cityObj.areaCode}}" ng-selected="cityObj.areaCode==guaranteePers.propertyCity?1:0" ng-repeat="cityObj in propertyCityList[guaranteePers.propertyProv]">{{cityObj.areaName}}</option>
+                        </select>
+                        <p>
+                            <span class="form-info" ng-show=" (form.addrPropertyCity.$dirty && form.addrPropertyCity.$error.required) || (form.addrPropertyCity.$error.required && formValidate)">房产城市不能为空</span>
+                        </p>
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">房产区县</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <div class="row">
+                            <div class="col-sm-8">
+                                <select name="addrPropertyCounty"  ng-model="guaranteePers.propertyCounty" class="form-control m-b-xs" required>
+                                    <option value="" >---请选择---</option>
+                                    <option value="{{areaObj.areaCode}}" ng-selected="areaObj.areaCode==guaranteePers.propertyCounty?1:0" ng-repeat="areaObj in propertyCountyList[guaranteePers.propertyCity]">{{areaObj.areaName}}</option>
+                                </select>
+                                <p>
+                                    <span class="form-info" ng-show=" (form.addrPropertyCounty.$dirty && form.addrPropertyCounty.$error.required) || (form.addrPropertyCounty.$error.required && formValidate)">房产区县不能为空</span>
+                                </p>
+                            </div>
+                            <div class="col-sm-4">
+                                <button type="button" class="btn btn-default btn-sm" ng-click="synchroniz(2);">同步</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">房产详细地址</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-10">
+                        <input type="text" title="{{guaranteePers.propertyAddr}}" name="propertyAddr" placeholder="请输入房产详细地址" class="form-control m-b-xs" ng-model="guaranteePers.propertyAddr"  required >
+                        <p>
+                            <span class="form-info" ng-show=" (form.propertyAddr.$dirty && form.propertyAddr.$error.required) || (form.propertyAddr.$error.required && formValidate)">房产详细地址不能为空</span>
+                        </p>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">房产类型</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <select name="propertyType" ng-model="guaranteePers.propertyType" class="form-control m-b-xs" required>
+                            <option value="">---请选择---</option>
+                            <option ng-repeat="propertyType in propertyTypeList" value="{{propertyType.codeValue}}" ng-selected="guaranteePers.propertyType==propertyType.codeValue">{{propertyType.codeValueName}}</option>
+                        </select>
+                        <p>
+                            <span class="form-info" ng-show=" (form.addrPropertyType.$dirty && form.addrPropertyType.$error.required) || (form.addrPropertyType.$error.required && formValidate)">房产类型不能为空</span>
+                        </p>
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">房产建筑面积(m²)</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <input type="text" name="propertySize" placeholder="请输入房产建筑面积" class="form-control m-b-xs" ng-model="guaranteePers.propertySize" ng-pattern="/^[1-9]\d*\,\d*|[1-9]\d*$/"  required >
+                        <p>
+                            <span class="form-info" ng-show=" (form.propertySize.$dirty && form.propertySize.$error.required) || (form.propertySize.$error.required && formValidate)">房产建筑面积不能为空</span>
+                            <span class="form-info" ng-show=" (form.propertySize.$dirty && form.propertySize.$error.pattern) || (form.propertySize.$error.pattern && formValidate)">请输入合法的数值</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="modal-footer ng-scope">
+    <div class="text-center">
+    <button class="btn btn-default" ng-click="close()">取消</button>
+    <button type="button" class="btn btn-success" ng-disabled="submit" ng-click="save()">新增</button>
+    </div>
+    </div>

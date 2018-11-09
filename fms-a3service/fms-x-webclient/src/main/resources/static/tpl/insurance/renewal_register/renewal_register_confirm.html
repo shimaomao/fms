@@ -1,0 +1,137 @@
+<div ng-controller="renewal_register_confirm_controller">
+    <div>
+        <toaster-container
+                toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+    </div>
+    <div class="panel panel-default">
+        <div class="row" style="margin: 0; padding: 10px; border: 1px solid #dddddd">
+            <div class="form-inline">
+                <div class="form-group">
+                    <h5 >确认客户类型</h5>
+                </div>
+            <div class="form-group pull-right">
+                <div class="btn-group">
+                    <button type="submit" class="btn btn-success btn-sm fms-button-margin-bottom" ng-disabled="submit" ng-click="save()">提交</button>
+                    <button class="btn btn-default btn-sm fms-button-margin-bottom" ng-click="goback()">返回</button>
+                </div>
+            </div>
+                </div>
+        </div>
+        <form name="form" class="form-validation" novalidate>
+
+            <div class="panel-body">
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">客户姓名</b>:</label>
+                    <div class="col-sm-2">
+                        <input type="text" title="{{renewalRegister.name}}" name="name" placeholder="客户姓名" class="form-control m-b-xs" ng-model="renewalRegister.name"  disabled>
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">车架号</b>:</label>
+                    <div class="col-sm-2">
+                        <input type="text" title="{{renewalRegister.vinNo}}" name="vinNo" placeholder="车架号" class="form-control m-b-xs" ng-model="renewalRegister.vinNo"  disabled>
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">保险融资额(元)</b>:</label>
+                    <div class="col-sm-2">
+                        <input type="text" title="{{renewalRegister.finAmount}}" name="finAmount" placeholder="保险融资额" class="form-control m-b-xs" ng-model="renewalRegister.finAmount"  disabled>
+                    </div>
+
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">是否融保险</b>:</label>
+                    <div class="col-sm-10">
+                        <div class="radio" ng-repeat="flag in finFlagList">
+                            <label>
+                                <input type="radio" name="finFlag" value="{{flag.codeValue}}" ng-model="renewalRegister.finFlag" ng-checked="renewalRegister.finFlag == flag.codeValue" disabled>{{flag.codeValueName}}
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row" ng-if="renewalRegister.finFlag == 0">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">保险购买方式</b>:</label>
+                    <div class="col-sm-10">
+                        <div class="radio" ng-repeat="insurPurType in insurPurTypeList">
+                            <label>
+                                <input type="radio" name="insurPurType" value="{{insurPurType.codeValue}}" ng-model="renewalRegister.insurPurType" >{{insurPurType.codeValueName}}
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row" ng-if="renewalRegister.finFlag == 1">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">保险购买方式</b>:</label>
+                    <div class="col-sm-10">
+                        <div class="radio" ng-repeat="insurPurType in insurPurTypeList">
+                            <label>
+                                <input type="radio" name="insurPurType" value="{{insurPurType.codeValue}}" ng-model="renewalRegister.insurPurType" ng-checked="insurPurType.codeValue == 1" disabled>{{insurPurType.codeValueName}}
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group row" ng-if="renewalRegister.finFlag == 0 && renewalRegister.insurPurType == 1">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">客户打款金额(元)</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-3">
+                        <input type="text" limit-number name="customPaymentAmount" placeholder="请输入客户打款金额" class="form-control m-b-xs" ng-model="renewalRegister.customPaymentAmount" ng-pattern="/^[1-9]\d*\,\d*|[1-9]\d*$/" required >
+                        <p>
+                            <span class="form-info" ng-show=" (form.customPaymentAmount.$dirty && form.customPaymentAmount.$error.required) || (form.customPaymentAmount.$error.required && formValidate)">客户打款金额不能为空</span>
+                            <span class="form-info" ng-show=" (form.customPaymentAmount.$error.pattern && !form.customPaymentAmount.$error.required) || (form.customPaymentAmount.$error.pattern && formValidate && !form.customPaymentAmount.$error.required)">请输入合法的数值</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+                <div class="panel-body wrapper-sm" style="margin: 0; padding: 15px; border: 1px solid #dddddd">
+                    <div class="row line-lg" style="font-weight: bold;font-size: 14px;">当前保险信息</div>
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">保险公司名称</b>:</label>
+                    <div class="col-sm-3">
+                        <input type="text" title="{{renewalRegister.insCompName}}" name="insCompName" placeholder="请输入保险公司名称" class="form-control m-b-xs" ng-model="renewalRegister.insCompName"  disabled>
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">商业险保费单号</b>:</label>
+                    <div class="col-sm-3">
+                        <input type="text" title="{{renewalRegister.insPolicyNo}}" name="insPolicyNo" placeholder="请输入商业险保费单号" class="form-control m-b-xs" ng-model="renewalRegister.insPolicyNo"  disabled>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">投保生效日</b>:</label>
+                    <div class="col-sm-3">
+                        <input type="text" name="validStartDay" placeholder="请输入投保生效日" class="form-control m-b-xs" ng-model="renewalRegister.validStartDay"  disabled>
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">投保失效日</b>:</label>
+                    <div class="col-sm-3">
+                        <input type="text" name="validEndDay" placeholder="请输入投保失效日" class="form-control m-b-xs" ng-model="renewalRegister.validEndDay"  disabled>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">保单实际金额(元)</b>:</label>
+                    <div class="col-sm-3">
+                        <input type="text" name="insFee" placeholder="请输入保单实际金额" class="form-control m-b-xs" ng-model="renewalRegister.insFee"  disabled>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">基本险种</b>:</label>
+                    <div class="col-sm-10 ">
+                        <div class="checkbox" ng-repeat="insuranceType in insuranceTypeList">
+                            <label>
+                                <input type="checkbox" name="insuranceType" value="{{insuranceType.codeValue}}" ng-model="renewalRegister.insuranceType" ng-checked="insuranceType.orderNo == 'check'" disabled>{{insuranceType.codeValueName}}
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                    </div>
+            <div class="panel-body wrapper-sm" style="margin: 0; padding: 15px; border: 1px solid #dddddd">
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">备注</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-10">
+                        <textarea limit-word cols="100" rows="5" maxlength="200" name="remark1" ng-model="renewalRegister.remark1" required></textarea>
+                        <p>
+                            <span class="form-info" ng-show=" (form.remark1.$dirty && form.remark1.$error.required) || (form.remark1.$error.required && formValidate)">请输入审批意见备注</span>
+                        </p>
+                    </div>
+                </div>
+</div>
+        </form>
+        <!--<div ng-include="'tpl/common/process_log/process_log_list.html'"></div>-->
+        <process-log-list-directive wf-log-type="wfLogType" wf-log-no="wfLogNo"></process-log-list-directive>
+    </div>
+</div>
+

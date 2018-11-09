@@ -1,0 +1,54 @@
+<div class="modal-header">
+    <h4 class="modal-title">生效合同一览 <button type="button" class="close" data-dismiss="modal" aria-hidden="true" ng-click="close()">&times;</button></h4>
+</div>
+<div ng-init="init()">
+    <div class="panel-body">
+        <div class="panel-body wrapper-sm">
+            <div class="row">
+                <div class="col-lg-12">
+                    <form class="form-inline" role="form">
+                        <!-- <div class="form-group">
+                             <select ng-model="accBank" class="form-control m-b-xs">
+                                 <option value="">-&#45;&#45;请选择开户行-&#45;&#45;</option>
+                                 <option value="{{openingBankObj.codeValue}}" ng-repeat="openingBankObj in openingBankList">{{openingBankObj.codeValueName}}</option>
+                             </select>
+                         </div>-->
+                        <div class="form-group">
+                            <label class="sr-only" >请输入合同号 </label>
+                            <input class="form-control m-b-xs" ng-model="contNo" placeholder="合同号">
+                        </div>
+                        <div class="form-group">
+                            <label class="sr-only" >请输入车架号 </label>
+                            <input class="form-control m-b-xs" ng-model="vinNo" placeholder="车架号">
+                        </div>
+                        <div class="form-group">
+                            <label class="sr-only" >请输入承租人 </label>
+                            <input class="form-control m-b-xs" ng-model="name" placeholder="承租人">
+                        </div>
+                        <div class="form-group">
+                            <label class="sr-only" >请输入出租人区域 </label>
+                            <input class="form-control m-b-xs" ng-model="groupDistrict" placeholder="出租人区域">
+                        </div>
+
+
+                        <div class="form-group m-b-sm">
+                            <div class="btn-group">
+                                <button class="btn btn-default m-b-xs btn-info" ng-click="searchBasBankInfo()" ><i class="fa fa-search"></i>查询</button>
+                                <button class="btn btn-default m-b-xs" ng-click="resetBasBankInfo()" ><i class="fa  icon-refresh"></i>重置</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-default" style="border: 0">
+            <table border="1" class="table table-striped m-b-none" id="bas_bank_info_select_table"></table>
+        </div>
+    </div>
+</div>
+<div class="modal-footer ng-scope text-center">
+    <div class="text-center">
+        <button class="btn btn-default" ng-click="close()">关闭</button>
+        <button class="btn btn-success" ng-click="confirm('select')">确认</button>
+    </div>
+</div>

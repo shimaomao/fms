@@ -1,0 +1,111 @@
+<div>
+    <toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+</div>
+<div ng-controller="basic_change_list_controller">
+    <div class="panel panel-default">
+        <div class="panel-body wrapper-sm">
+            <div class="row">
+                <div class="col-lg-2">
+                    <div class="form-group">
+                        <label class="sr-only">合同编号 </label>
+                        <input class="form-control m-b-xs" ng-model="params.contNo" placeholder="请输入合同编号">
+                    </div>
+                </div>
+                <div class="col-lg-2">
+                    <div class="form-group">
+                        <label class="sr-only">申请编号 </label>
+                        <input class="form-control m-b-xs" ng-model="params.applyNo" placeholder="请输入申请编号">
+                    </div>
+                </div>
+                <div class="col-lg-2">
+                    <div class="form-group">
+                        <label class="sr-only">承租人 </label>
+                        <input class="form-control m-b-xs" ng-model="params.name" placeholder="请输入承租人">
+                    </div>
+                </div>
+                <div class="col-lg-2">
+                    <div class="form-group">
+                        <label class="sr-only">车架号 </label>
+                        <input class="form-control m-b-xs" ng-model="params.vinNo" placeholder="请输入车架号">
+                    </div>
+                </div>
+                <div class="col-lg-2">
+                    <div class="form-group">
+                        <label class="sr-only">产品名称 </label>
+                        <input class="form-control m-b-xs" ng-model="params.productName" placeholder="请输入产品名称">
+                    </div>
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="col-lg-2">
+                    <div class="form-group">
+                        <label class="sr-only">合同生效开始日期 </label>
+                        <input id="validStartTime" class="form-control m-b-xs" placeholder="请输入合同生效开始日期" name="validStartTime"
+                               type="text" ng-model="params.validStartTime" date-picker="{{maxDate}}">
+                    </div>
+                </div>
+                <div class="col-lg-2">
+                    <div class="form-group">
+                        <label class="sr-only">合同生效结束日期 </label>
+                        <input id="validEndTime" class="form-control m-b-xs" name="validEndTime" placeholder="请输入合同生效结束日期"
+                               type="text" ng-model="params.validEndTime" date-picker="{{minDate}}">
+                    </div>
+                </div>
+                <div class="col-lg-2">
+                    <div class="form-group">
+                        <select ng-model="params.applyType" class="form-control m-b-xs">
+                            <option value="">---选择申请类型---</option>
+                            <option value="{{applyTypeObj.codeValue}}" ng-repeat="applyTypeObj in applyTypeList" ng-selected="params.applyType == applyTypeObj.codeValue">
+                                {{applyTypeObj.codeValueName}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-lg-2">
+                    <div class="form-group">
+                        <select ng-model="params.licenseAttr" class="form-control m-b-xs">
+                            <option value="">---业务类型---</option>
+                            <option value="{{licenseAttrObj.codeValue}}" ng-repeat="licenseAttrObj in licenseAttrList" ng-selected="params.licenseAttr == licenseAttrObj.codeValue">{{licenseAttrObj.codeValueName}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-lg-2">
+                    <div class="form-group m-b-sm">
+                        <div class="btn-group">
+                            <button class="btn btn-sm fms-button-margin-bottom btn-default m-b-xs btn-info"
+                                    ng-click="searchContractList()"><i class="fa fa-search"></i>查询
+                            </button>
+                            <button class="btn btn-sm fms-button-margin-bottom btn-default m-b-xs"
+                                    ng-click="resetContractList()"><i class="fa  icon-refresh"></i>重置
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="form-group pull-right">
+                    <div class="btn-group">
+                        <button class="btn btn-default m-b-xs btn-sm fms-button-margin-bottom" ng-click="basicChange()">基础信息变更</button>
+                        <!--<button class="btn btn-default m-b-xs btn-sm fms-button-margin-bottom" ng-click="">承租人变更</button>-->
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" button-click>承租人变更</button>
+                            <ul class="dropdown-menu" style="min-width: 80px;font-size: 12px;">
+                                <li ng-click="changeUser(1);"><a href="javascript:void(0);">个人</a></li>
+                                <li ng-click="changeUser(2);"><a href="javascript:void(0);">企业</a></li>
+                            </ul>
+                        </div>
+                        <button class="btn btn-default m-b-xs btn-sm fms-button-margin-bottom" ng-click="deferTaskApply()">展期申请</button>
+                        <button class="btn btn-default m-b-xs btn-sm fms-button-margin-bottom" ng-click="depositChange()">增加保证金</button>
+                        <button class="btn btn-default m-b-xs btn-sm fms-button-margin-bottom" ng-click="exportExcel()">导出EXCEL</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <table border="1" class="table table-striped m-b-none" id="contract_table">
+        </table>
+    </div>
+</div>
+

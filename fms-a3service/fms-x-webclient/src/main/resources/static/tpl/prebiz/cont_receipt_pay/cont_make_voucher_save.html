@@ -1,0 +1,210 @@
+
+<ul type="none" style="padding-left:0">
+    <form name="form" class="form-validation" novalidate>
+        <div class="panel panel-default">
+            <div class="panel-body wrapper-sm">
+
+                <li style="font-weight: bold;font-size: 14px;">合同融资信息</li>
+                <div class="">
+                    <div class="form-group row">
+                        <label class="col-sm-2 control-label text-right"><b class="form-text-black">承租人</b><b class="form-error"></b>:</label>
+                        <div class="col-sm-2">
+                            {{contRequestPay.personName}}
+                        </div>
+
+                        <label class="col-sm-2 control-label text-right"><b class="form-text-black">车架号</b><b
+                                class="form-error"></b>:</label>
+                        <div class="col-sm-2">
+                            {{contRequestPay.vinNo}}
+                        </div>
+
+                        <label class="col-sm-2 control-label text-right"><b class="form-text-black">车型</b><b
+                                class="form-error"></b>:</label>
+                        <div class="col-sm-2">
+                            {{contRequestPay.vehicleCodeName}}
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-sm-2 control-label text-right"><b class="form-text-black">业务类型</b><b class="form-error"></b>:</label>
+                        <div class="col-sm-2">
+                            {{contRequestPay.licenseAttr | getName:'licenseAttr'}}
+                        </div>
+
+                        <label class="col-sm-2 control-label text-right"><b class="form-text-black">实际销售方</b><b
+                                class="form-error"></b>:</label>
+                        <div class="col-sm-2">
+                            {{contRequestPay.saleGroupName}}
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-sm-2 control-label text-right"><b class="form-text-black">首付款</b><b class="form-error"></b>:</label>
+                        <div class="col-sm-2">
+                            {{contRequestPay.initAmount}}
+                        </div>
+
+                        <label class="col-sm-2 control-label text-right"><b class="form-text-black">保证金</b><b
+                                class="form-error"></b>:</label>
+                        <div class="col-sm-2">
+                            {{contRequestPay.deposit}}
+                        </div>
+
+                        <label class="col-sm-2 control-label text-right"><b class="form-text-black">续保押金</b><b
+                                class="form-error"></b>:</label>
+                        <div class="col-sm-2">
+                            {{contRequestPay.renewalDeposit}}
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-sm-2 control-label text-right"><b class="form-text-black">月租金</b><b class="form-error"></b>:</label>
+                        <div class="col-sm-2">
+                            {{contRequestPay.rent}}
+                        </div>
+
+                        <label class="col-sm-2 control-label text-right"><b class="form-text-black">尾款</b><b
+                                class="form-error"></b>:</label>
+                        <div class="col-sm-2">
+                            {{contRequestPay.finalAmount}}
+                        </div>
+
+                        <label class="col-sm-2 control-label text-right"><b class="form-text-black">手续费</b><b
+                                class="form-error"></b>:</label>
+                        <div class="col-sm-2">
+                            {{contRequestPay.charge}}
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-sm-2 control-label text-right"><b class="form-text-black">年供</b><b class="form-error"></b>:</label>
+                        <div class="col-sm-2">
+                            {{contRequestPay.annualSupplyAmount}}
+                        </div>
+
+                        <label class="col-sm-2 control-label text-right"><b class="form-text-black">订金金额</b><b
+                                class="form-error"></b>:</label>
+                        <div class="col-sm-2">
+                            {{contRequestPay.vehDeposit}}
+                        </div>
+
+                        <label class="col-sm-2 control-label text-right"><b class="form-text-black">订金是否抵扣车款</b><b
+                                class="form-error"></b>:</label>
+                        <div class="col-sm-2">
+                            {{contRequestPay.deductibleFees | getName:'deductibleFees'}}
+                        </div>
+                    </div>
+
+                    <li style="font-weight: bold;font-size: 14px;">收款明细信息</li>
+                    <table border="1" class="table table-striped m-b-none" id="cont_receipt_table"> </table>
+
+                    <li style="font-weight: bold;font-size: 14px;">融资费用确认</li>
+                    <div class="">
+                        <div class="col-sm-12">
+                            <div class="dataTables_wrapper form-inline dt-bootstrap no-footer">
+                                <table border="1" class="table table-striped m-b-none dataTable no-footer">
+                                    <thead>
+                                    <tr>
+                                        <th>付款项目</th>
+                                        <th>融资额</th>
+                                        <th>付款金额</th>
+                                        <th>收款户名</th>
+                                        <th>收款银行</th>
+                                        <th>收款银行分行</th>
+                                        <th>收款账号</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr click-tr ng-repeat="a in contRequestPay.contFinPayVoList">
+                                        <td>{{a.finItemName}}<span ng-show="a.finItemYear != 0">第{{a.finItemYear}}年</span></td>
+                                        <td>{{a.finAmount}}</td>
+                                        <td>
+                                            <input name="payAmount_{{$index}}" type="number" ng-change="changeValue(a);" class="form-control" ng-model="a.contPay.payAmount" required>
+                                            <span class="form-info" ng-show=" (form.payAmount_{{$index}}.$dirty && form.payAmount_{{$index}}.$error.required) || (form.payAmount_{{$index}}.$error.required && formValidate)">付款金额不能为空</span>
+                                        </td>
+
+                                        <td>
+                                            {{a.contPay.recAccountName}}
+                                        </td>
+
+                                        <td>
+                                            {{a.contPay.recAccBank}}
+                                        </td>
+                                        <td>
+                                            {{a.contPay.recAccBranch}}
+                                        </td>
+                                        <td>
+                                            {{a.contPay.recAccountNo}}
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--<div class="form-group row">-->
+                    <!--<label class="col-sm-2 control-label text-right"><b class="form-text-black">请选择付款银行分行</b><b-->
+                    <!--class="form-error"></b>:</label>-->
+                    <!--<div class="col-sm-2">-->
+                    <!--<button class="btn btn-info m-b-xs m-l-sm  btn-sm" ng-click="selectBasBankInfo()"><i-->
+                    <!--class="fa fa-pencil-square-o m-r-xs"></i>选择-->
+                    <!--</button>-->
+                    <!--<p>-->
+                    <!--<span class="form-info" ng-show="showError">请选择付款银行分行</span>-->
+                    <!--</p>-->
+                    <!--</div>-->
+                    <!--</div>-->
+
+                    <div class="form-group row">
+
+                        <!-- <label class="col-sm-2 control-label text-right"><b class="form-text-black">付款银行</b><b
+                                 class="form-error"></b>:</label>
+                         <div class="col-sm-2">
+                             <input type="text" name="payAccBank" class="form-control m-b-xs" ng-disabled="true"
+                                    ng-model="contRequestPay.contPay.payAccBank">
+                         </div>-->
+
+                        <label class="col-sm-2 control-label text-right"><b class="form-text-black">付款银行分行</b><b
+                                class="form-error"></b>:</label>
+                        <div class="col-sm-2">
+                            <input type="text" title="{{contRequestPay.contPay.payAccBranch}}" name="payAccBranch" class="form-control m-b-xs" ng-disabled="true"
+                                   ng-model="contRequestPay.contPay.payAccBranch">
+                        </div>
+                        <div class="col-sm-1">
+                            <button class="btn btn-info m-b-xs m-l-sm  btn-sm" ng-click="selectBasBankInfo()"><i
+                                    class="fa fa-pencil-square-o m-r-xs"></i>选择
+                            </button>
+                        </div>
+
+                        <label class="col-sm-1 control-label text-right"><b class="form-text-black">付款账户</b><b
+                                class="form-error"></b>:</label>
+                        <div class="col-sm-2">
+                            <input type="text" title="{{contRequestPay.contPay.payAccountName}}" name="payAccountName" class="form-control m-b-xs" ng-disabled="true"
+                                   ng-model="contRequestPay.contPay.payAccountName">
+                        </div>
+                        <label class="col-sm-2 control-label text-right"><b class="form-text-black">付款卡号</b><b
+                                class="form-error"></b>:</label>
+                        <div class="col-sm-2">
+                            <input type="text" title="{{contRequestPay.contPay.payAccountNo}}" name="payAccountNo" class="form-control m-b-xs" ng-disabled="true"
+                                   ng-model="contRequestPay.contPay.payAccountNo">
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-sm-2 control-label text-right"><b
+                                class="form-text-black">审批备注</b><b class="form-error">*</b>:</label>
+                        <div class="col-sm-4">
+                            <textarea limit-word name="memo" placeholder="请输入审批备注" class="form-control m-b-xs" ng-model="contRequestPay.memo" required></textarea>
+                            <p>
+                                <span class="form-info" ng-show=" (form.memo.$dirty && form.memo.$error.required) || (form.memo.$error.required && formValidate)">备注不能为空</span>
+                            </p>
+                        </div>
+                    </div>
+                    <div ng-include="'tpl/common/process_log/process_log_list.html'"></div>
+                </div>
+
+            </div>
+        </div>
+    </form>
+</ul>

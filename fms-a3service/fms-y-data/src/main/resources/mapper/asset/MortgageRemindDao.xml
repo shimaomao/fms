@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.com.leadu.fms.data.asset.dao.MortgageRemindDao">
+<select id="selectMortgageRemindsByPage" resultType="cn.com.leadu.fms.pojo.asset.vo.mortgageremind.MortgageRemindVo">
+        SELECT
+        mortgage_remind.mor_remind_id,
+        mortgage_remind.update_time,
+        mortgage_remind.mortgage_date,
+        IF (
+            apply.apply_type = #{mortgageRemindVo.applyType},
+            cstm_person.`name`,
+            cstm_company.`name`
+        ) lessee,
+         sys_group.group_name lessor,
+         contract.vin_no,
+         contract.cont_no,
+         contract.contract_valid_date,
+         contract_finance.fin_total finTotal,
+         contract_finance.fin_period_type leasePeriod,
+         IFNULL(
+            mortgage_remind.mortgage_status,
+            #{mortgageRemindVo.mortgageType}
+        ) mortgageStatus
+        FROM
+            contract
+        LEFT JOIN mortgage_remind ON contract.cont_no = mortgage_remind.cont_no
+        AND mortgage_remind.del_flag = ${delete_exist}
+        LEFT JOIN apply ON apply.apply_no = contract.apply_no
+        AND apply.del_flag = ${delete_exist}
+        LEFT JOIN cstm_person ON contract.apply_no = cstm_person.apply_no
+        AND cstm_person.del_flag = ${delete_exist}
+        LEFT JOIN cstm_company ON contract.apply_no = cstm_company.apply_no
+        AND cstm_company.del_flag = ${delete_exist}
+        LEFT JOIN contract_finance ON contract.cont_no = contract_finance.cont_no
+        AND contract_finance.del_flag = ${delete_exist}
+        LEFT JOIN sys_group ON contract_finance.belong_group = sys_group.group_code
+        AND sys_group.del_flag = ${delete_exist}
+        WHERE
+            contract_finance.license_attr = #{mortgageRemindVo.licenseAttr}
+        AND contract.del_flag = ${delete_exist}
+        AND contract.contract_valid_date is not null
+        <if test="mortgageRemindVo.vinNo != null">
+          AND contract.vin_no LIKE #{mortgageRemindVo.vinNo}
+        </if>
+        <if test="mortgageRemindVo.lessee != null">
+          AND (cstm_person.name like #{mortgageRemindVo.lessee} OR cstm_company.name LIKE #{mortgageRemindVo.lessee})
+        </if>
+        <if test="mortgageRemindVo.mortgageStatus != null">
+            <if test="mortgageRemindVo.mortgageStatus == '2'.toString()">
+              AND (mortgage_remind.mortgage_status is NULL OR mortgage_remind.mortgage_status = #{mortgageRemindVo.mortgageStatus})
+            </if>
+            <if test="mortgageRemindVo.mortgageStatus != '2'.toString()">
+              AND mortgage_remind.mortgage_status = #{mortgageRemindVo.mortgageStatus}
+            </if>
+        </if>
+
+    ORDER BY mortgage_remind.update_time DESC
+</select>
+
+    <select id="selectMortgageRemindVosBymorRemindId" resultType="cn.com.leadu.fms.pojo.asset.vo.mortgageremind.MortgageRemindVo">
+        SELECT
+        mortgage_remind.mor_remind_id,
+        mortgage_remind.cont_no,
+        mortgage_remind.mortgage_status,
+        mortgage_remind.mortgage_date,
+        IFNULL(cstm_person.`name`,cstm_company.`name`) AS lessee ,
+        sys_group.group_name  AS lessor,
+        contract.vin_no,
+        contract.contract_valid_date,
+        contract_finance.fin_total AS finTotal,
+        contract_finance.fin_period_type AS leasePeriod
+
+        FROM
+        mortgage_remind
+        LEFT JOIN contract ON mortgage_remind.cont_no = contract.cont_no
+        AND contract.del_flag = ${delete_exist}
+        LEFT JOIN cstm_person ON contract.apply_no = cstm_person.apply_no
+        AND cstm_person.del_flag = ${delete_exist}
+        LEFT JOIN cstm_company ON contract.apply_no = cstm_company.apply_no
+        AND cstm_company.del_flag = ${delete_exist}
+        LEFT JOIN contract_finance ON contract.cont_no = contract_finance.cont_no
+        AND contract_finance.del_flag = ${delete_exist}
+        LEFT JOIN sys_group ON contract_finance.belong_group = sys_group.group_code
+        AND sys_group.del_flag = ${delete_exist}
+        WHERE
+        mortgage_remind.mor_remind_id = #{morRemindId}
+    </select>
+
+
+</mapper>

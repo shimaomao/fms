@@ -1,0 +1,200 @@
+<div  ng-controller="license_idx_modify_controller">
+
+    <div>
+        <toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="row">
+            <div class="btn-group m-r-lg pull-left" style="margin-left: 25px">
+                <h4>变更指标有效期</h4>
+            </div>
+            <div class="btn-group m-r-lg pull-right" style="margin-left: 25px">
+                <button class="btn btn-success m-t-xs m-r-xs" ng-click="modify()" ng-disabled="submit">保存</button>
+                <button class="btn btn-default m-t-xs" ng-click="goBack()">返回</button>
+            </div>
+        </div>
+        <form name="form" class="form-validation" novalidate>
+
+            <div class="panel-body wrapper-sm">
+                <ul id="applyTab" class="nav nav-tabs">
+                    <li class="active"><a href="javascript:void(0);" data-toggle="tab" data-id="message"
+                                          onclick="switchPageTab(this, 'applyTab')">变更指标有效期</a></li>
+                    <li><a href="javascript:void(0);" data-toggle="tab" data-id="fjmessage"
+                           onclick="switchPageTab(this, 'applyTab')">附件信息</a></li>
+                </ul>
+                <div  class="tab-content"  style="margin-top: 25px">
+                    <div class="tab-pane fade in active"  id="message">
+                <!--指标编号-->
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">指标编号</b><b class="form-error" >*</b>:</label>
+                    <!--项目可编辑-->
+                    <div class="col-sm-2">
+                        <input type="text" name="licenseIdxNo" placeholder="请输入指标编号" class="form-control m-b-xs" ng-model="licenseIdx.licenseIdxNo" disabled required >
+                        <p>
+                            <span class="form-info" ng-show=" (form.licenseIdxNo.$dirty && form.licenseIdxNo.$error.required) || (form.licenseIdxNo.$error.required && formValidate)">指标编号不能为空</span>
+                        </p>
+                    </div>
+                </div>
+
+                <!--指标所属分公司-->
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">指标所属区域</b><b class="form-error" >*</b>:</label>
+                    <!--项目可编辑-->
+                    <div class="col-sm-2">
+                        <input type="text" name="groupDistrict" placeholder="请输入指标所属区域" class="form-control m-b-xs" ng-model="licenseIdx.groupDistrict" disabled required >
+                        <p>
+                            <span class="form-info" ng-show=" (form.groupDistrict.$dirty && form.groupDistrict.$error.required) || (form.groupDistrict.$error.required && formValidate)">指标所属区域不能为空</span>
+                        </p>
+                    </div>
+
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">指标所属分公司</b><b class="form-error" >*</b>:</label>
+                    <!--不可编辑-->
+                    <div class="col-sm-3" >
+                        <input type="text" name="groupName" placeholder="请选择所属分公司" class="form-control m-b-xs" ng-model="licenseIdx.groupName"  disabled   required>
+                        <input type="hidden" name="idxGroup" placeholder="请选择所属分公司" class="form-control m-b-xs" ng-model="licenseIdx.idxGroup"  disabled   required>
+                        <p>
+                            <span class="form-info" ng-show=" (form.groupName.$dirty && form.groupName.$error.required) || (form.groupName.$error.required && formValidate)">指标所属分公司不能为空</span>
+                        </p>
+                    </div>
+                </div>
+                <!--指标失效日期-->
+                <div ng-if="licenseIdxzt == 1">
+                    <div class="form-group row">
+                        <label class="col-sm-2 control-label text-right"><b class="form-text-black">指标失效日期</b><b class="form-error">*</b>:</label>
+                        <!--项目可编辑-->
+                        <div class="col-sm-2">
+                            <input type="text" onchange="" name="idxInvalidDate" placeholder="请输入指标失效日期" class="form-control m-b-xs" ng-model="licenseIdx.idxInvalidDate" required date-picker>
+                            <p>
+                                <span class="form-info" ng-show=" (form.idxInvalidDate.$dirty && form.idxInvalidDate.$error.required) || (form.idxInvalidDate.$error.required && formValidate)">指标失效日期不能为空</span>
+                            </p>
+                        </div>
+                        <label class="col-sm-2 control-label text-right"><b class="form-text-black">有效天数</b><b class="form-error">*</b>:</label>
+                        <div class="col-sm-2">
+                            <input type="text" name="idxValidDay" placeholder="请输入有效天数" class="form-control m-b-xs" ng-model="licenseIdx.idxValidDay" ng-pattern="/^[0-9]+$/" required >
+                            <p>
+                                <span class="form-info" ng-show=" (form.idxValidDay.$dirty && form.idxValidDay.$error.required) || (form.idxValidDay.$error.required && formValidate)">有效天数不能为空</span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <!--指标失效日期-->
+                <div ng-if="licenseIdxzt == 2">
+                    <div class="form-group row">
+                        <label class="col-sm-2 control-label text-right"><b class="form-text-black">指标失效日期</b>:</label>
+                        <!--项目可编辑-->
+                        <div class="col-sm-2">
+                            <input type="text" onchange="" name="idxInvalidDate" placeholder="请输入指标失效日期" class="form-control m-b-xs" ng-model="licenseIdx.idxInvalidDate" required disabled>
+                        </div>
+                        <label class="col-sm-2 control-label text-right"><b class="form-text-black">有效天数</b>:</label>
+                        <div class="col-sm-2">
+                            <input type="text" name="idxValidDay" placeholder="请输入有效天数" class="form-control m-b-xs" ng-model="licenseIdx.idxValidDay" required disabled>
+                        </div>
+                    </div>
+                </div>
+
+                <!--指标状态-->
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">指标状态</b>:</label>
+                    <div class="col-sm-2" >
+                        <select name="licenseIdxStatus" ng-model="licenseIdx.licenseIdxStatus" class="form-control m-b-xs" disabled required>
+                            <option value="">---请选择---</option>
+                            <option ng-repeat="licenseIdxStatus in licenseStatusList" value="{{licenseIdxStatus.codeValue}}" ng-selected="licenseIdx.licenseIdxStatus == licenseIdxStatus.codeValue">{{licenseIdxStatus.codeValueName}}</option>
+                        </select>
+                        <p>
+                            <span class="form-info" ng-show=" (form.licenseIdxStatus.$dirty && form.licenseIdxStatus.$error.required) || (form.licenseIdxStatus.$error.required && formValidate)">指标状态不能为空</span>
+                        </p>
+                    </div>
+                    <div ng-if="licenseIdxzt == 2">
+                        <label class="col-sm-2 control-label text-right"><b class="form-text-black">指标使用人</b>:</label>
+                        <div class="col-sm-2">
+                            <input type="text" name="useCustomer"  class="form-control m-b-xs" ng-model="licenseIdx.useCustomer" disabled >
+                        </div>
+                    </div>
+                </div>
+
+                <div ng-if="licenseIdxzt == 2">
+                    <div class="form-group row">
+                        <label class="col-sm-2 control-label text-right"><b class="form-text-black">使用人证件号</b>:</label>
+                        <div class="col-sm-2">
+                            <input type="text" name="useCertifNo"  class="form-control m-b-xs" ng-model="licenseIdx.useCertifNo" disabled >
+                        </div>
+                        <label class="col-sm-2 control-label text-right"><b class="form-text-black">使用人电话</b>:</label>
+                        <div class="col-sm-2">
+                            <input type="text" name="usePhoneNo"  class="form-control m-b-xs" ng-model="licenseIdx.usePhoneNo" disabled >
+                        </div>
+                    </div>
+                </div>
+
+                <div ng-if="licenseIdxzt == 2">
+                    <div class="form-group row">
+                        <label class="col-sm-2 control-label text-right"><b class="form-text-black">指标合同编号</b>:</label>
+                        <div class="col-sm-2">
+                            <input type="text" name="useContNo"  class="form-control m-b-xs" ng-model="licenseIdx.useContNo" disabled >
+                        </div>
+                        <label class="col-sm-2 control-label text-right"><b class="form-text-black">车牌号</b>:</label>
+                        <div class="col-sm-2">
+                            <input type="text" name="useLicenseNo"  class="form-control m-b-xs" ng-model="licenseIdx.useLicenseNo" disabled >
+                        </div>
+                    </div>
+                </div>
+
+                <div ng-if="licenseIdxzt == 2">
+                    <div class="form-group row">
+                        <label class="col-sm-2 control-label text-right"><b class="form-text-black">合同开始日</b>:</label>
+                        <div class="col-sm-2">
+                            <input type="text" name="contractDate"  class="form-control m-b-xs" ng-model="licenseIdx.leaseTermStartDate" disabled >
+                        </div>
+                        <label class="col-sm-2 control-label text-right"><b class="form-text-black">合同结束日</b>:</label>
+                        <div class="col-sm-2">
+                            <input type="text" name="contractValidDate"  class="form-control m-b-xs" ng-model="licenseIdx.leaseTermEndDate" disabled >
+                        </div>
+                    </div>
+                </div>
+
+                <div ng-if="licenseIdxzt == 2">
+                    <div class="form-group row">
+                        <label class="col-sm-2 control-label text-right"><b class="form-text-black">指标续约开始日</b><b class="form-error">*</b>:</label>
+                        <div class="col-sm-2">
+                            <input type="text" id="leaseStartDate" name="leaseStartDate"  class="form-control m-b-xs" ng-model="licenseIdx.leaseStartDate" required
+                                   onfocus="WdatePicker({onpicked: function(){$(this).trigger('change')},dateFmt:'yyyy-MM-dd',skin:'twoer',maxDate:'#F{$dp.$D(\'leaseEndDate\')}'})"
+                                   autocomplete="off">
+                        </div>
+                        <label class="col-sm-2 control-label text-right"><b class="form-text-black">指标续约结束日</b><b class="form-error">*</b>:</label>
+                        <div class="col-sm-2">
+                            <input type="text" id="leaseEndDate" name="leaseEndDate"  class="form-control m-b-xs" ng-model="licenseIdx.leaseEndDate" required
+                                   onfocus="WdatePicker({onpicked: function(){$(this).trigger('change')},dateFmt:'yyyy-MM-dd',skin:'twoer',minDate:'#F{$dp.$D(\'leaseStartDate\')}',leaseStartDate:'#F{$dp.$D(\'leaseStartDate\',{d:+1})}'})"
+                                   autocomplete="off">
+                        </div>
+                    </div>
+                </div>
+
+                <!--备注-->
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">备注</b>:</label>
+                    <div ng-if="licenseIdxzt == 1">
+                        <div class="col-sm-2">
+                            <textarea name="idxMemo" ng-model="licenseIdx.idxMemo"cols="100" rows="5" disabled></textarea>
+                        </div>
+                    </div>
+                    <div ng-if="licenseIdxzt == 2">
+                        <div class="col-sm-2">
+                            <textarea name="idxMemo" ng-model="licenseIdx.idxMemo"cols="100" rows="5"></textarea>
+                        </div>
+                    </div>
+                </div>
+                </div>
+                    <!--附件信息-->
+                    <div class="tab-pane fade" id="fjmessage">
+                        <ul type="none" style="padding-left: 20px;">
+                            <div class="panel-body wrapper-sm">
+                                <tree-file-directive detail-flag="$root.yesNoFlag.no" file-type="$root.basFileTypes.indexAnnexFile" files="bizFilesList" not-upload="notUpload" not-upload-info="msgInfo"   not-file-type="notFileType" not-file-type-name="notFileTypeName">
+                                </tree-file-directive>
+                            </div>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

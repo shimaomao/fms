@@ -1,0 +1,43 @@
+<div  class="panel panel-default wrapper-md"   ng-controller="assis_account_type_modify_controller">
+<div class="modal-header">
+    <h4 class="modal-title">编辑辅助核算类型 <button type="button" class="close" data-dismiss="modal" aria-hidden="true" ng-click="close()">&times;</button></h4>
+</div>
+<div class="modal-body">
+    <form name="form" class="form-validation" novalidate>
+        <div class="panel-body">
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">辅助核算类型</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-3">
+                    <input type="text" name="assisAccountType" placeholder="请输入辅助核算类型" class="form-control m-b-xs" ng-model="assisAccountType.assisAccountType"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.assisAccountType.$dirty && form.assisAccountType.$error.required) || (form.assisAccountType.$error.required && formValidate)">辅助核算类型不能为空</span>
+                    </p>
+                </div>
+            </div>
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">辅助核算类型名称</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-3">
+                    <input type="text" name="assisAccountTypeName" placeholder="请输入辅助核算类型名称" class="form-control m-b-xs" ng-model="assisAccountType.assisAccountTypeName"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.assisAccountTypeName.$dirty && form.assisAccountTypeName.$error.required) || (form.assisAccountTypeName.$error.required && formValidate)">辅助核算类型名称不能为空</span>
+                    </p>
+                </div>
+            </div>
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">核算项目值设值</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-3">
+                    <input type="text" name="assisAccountValue" placeholder="请输入核算项目值设值" class="form-control m-b-xs" ng-model="assisAccountType.assisAccountValue"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.assisAccountValue.$dirty && form.assisAccountValue.$error.required) || (form.assisAccountValue.$error.required && formValidate)">核算项目值设值不能为空</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="modal-footer ng-scope">
+    <button class="btn btn-default" ng-click="close()">取消</button>
+    <button type="submit" class="btn btn-success" ng-disabled="submit" ng-click="modify()">保存</button>
+</div>

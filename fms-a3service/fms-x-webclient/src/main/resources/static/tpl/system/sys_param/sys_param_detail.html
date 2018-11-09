@@ -1,0 +1,79 @@
+<div ng-controller="sys_param_detail_controller">
+    <div>
+        <toaster-container
+                toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+    </div>
+    <div class="panel panel-default">
+        <div class="row" style="margin: 0; padding: 15px; border: 1px solid #dddddd">
+            <h4 class="m-n font-thin h4">{{frameTitle}}</h4>
+        </div>
+        <form name="form" class="form-validation" novalidate>
+            <div class="panel-body wrapper-sm">
+
+
+                <div class="form-group row">
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">参数主键</b><b
+                            class="form-error" ></b>:</label>
+                    <div class="col-sm-8">
+                        <label class="col-sm-12 control-label text-left">{{sysParam.paramKey}}</label>
+                    </div>
+                </div>
+
+
+                <div class="form-group row">
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">参数名称</b><b
+                            class="form-error"></b>:</label>
+                     <div class="col-sm-8">
+                         <label class="col-sm-12 control-label text-left">{{sysParam.paramName}}</label>
+                     </div>
+                </div>
+
+
+                <div class="form-group row">
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">参数值</b><b
+                            class="form-error"></b>:</label>
+                     <div class="col-sm-8">
+                         <label class="col-sm-12 control-label text-left">{{sysParam.paramValue}}</label>
+                     </div>
+                </div>
+
+
+                <div class="form-group row">
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">开始日期</b><b
+                            class="form-error"></b>:</label>
+                    <div class="col-sm-8">
+                        <label class="col-sm-12 control-label text-left">{{sysParam.validStartDate}}</label>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">结束日期</b><b
+                            class="form-error"></b>:</label>
+                    <div class="col-sm-8">
+                        <label class="col-sm-12 control-label text-left">{{sysParam.validEndDate}}</label>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">更新时间</b><b
+                            class="form-error"></b>:</label>
+                    <div class="col-sm-8">
+                        <label class="col-sm-12 control-label text-left">{{sysParam.updateTime}}</label>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">更新人员</b><b
+                            class="form-error"></b>:</label>
+                    <div class="col-sm-8">
+                        <label class="col-sm-12 control-label text-left">{{sysParam.updater}}</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer ng-scope text-center">
+                <button class="btn btn-default" ng-click="goback()">返回</button>
+            </div>
+        </form>
+    </div>
+</div>

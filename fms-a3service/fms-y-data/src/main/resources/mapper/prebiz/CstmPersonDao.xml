@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.com.leadu.fms.data.prebiz.dao.CstmPersonDao">
+    <select id="selectCstmPersonAddTelVoByApplyNo" resultType="cn.com.leadu.fms.pojo.finance.vo.countdistributeoverdue.CstmPersonAddTelVo">
+        SELECT cstmPerson.apply_no,cstmPerson.certif_no,cstmPerson.`name`,cstmPerson.mobile_no
+        ,cstmPerson.driver,cstmPerson.driver_mobno
+        ,cstmPerJob.comp_addr,cstmPerAddr.reside_addr,cstmPerAddr.census_addr,cstmPerAddr.property_addr
+        ,cstmPerMate.`name` AS mateName,cstmPerMate.mobile_no AS mateMobile,cstmPerMate.comp_addr AS mateCompAddr
+        FROM cstm_person cstmPerson
+        LEFT JOIN cstm_pers_job cstmPerJob ON cstmPerson.apply_no = cstmPerJob.apply_no AND cstmPerJob.del_flag = ${delete_exist}
+        LEFT JOIN cstm_pers_addr cstmPerAddr ON cstmPerson.apply_no = cstmPerAddr.apply_no AND cstmPerAddr.del_flag = ${delete_exist}
+        LEFT JOIN cstm_pers_mate cstmPerMate ON cstmPerson.apply_no = cstmPerMate.apply_no AND cstmPerMate.del_flag = ${delete_exist}
+        WHERE cstmPerson.del_flag = ${delete_exist}
+        AND cstmPerson.apply_no = #{applyNo}
+    </select>
+</mapper>

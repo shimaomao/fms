@@ -1,0 +1,46 @@
+<div  ng-controller="financial_voucher_save_controller">
+    <div>
+        <toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+    </div>
+    <div class="panel panel-default">
+        <div class="row" style="margin: 0; padding: 10px; border: 1px solid #dddddd">
+            <div class="form-group pull-right">
+                <div class="btn-group">
+                    <button class="btn btn-primary m-b-xs btn-sm fms-button-margin-bottom" ng-click="save()"><i class="fa"></i>保存</button>
+                    <button class="btn btn-default m-b-xs btn-sm fms-button-margin-bottom" ng-click="goBack()"><i class="fa"></i>返回</button>
+                </div>
+            </div>
+        </div>
+
+        <form name="form" class="form-validation" novalidate>
+            <div class="panel-body">
+                <div class="form-group">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">凭证类型</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <input type="text" name="voucherType" placeholder="请输入凭证类型" class="form-control m-b-xs" ng-model="financialVoucher.voucherType"  required >
+                        <p>
+                            <span class="form-info" ng-show=" (form.voucherType.$dirty && form.voucherType.$error.required) || (form.voucherType.$error.required && formValidate)">凭证类型不能为空</span>
+                        </p>
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">凭证类型名称</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <input type="text" name="voucherName" placeholder="请输入凭证类型名称" class="form-control m-b-xs" ng-model="financialVoucher.voucherName"  required >
+                        <p>
+                            <span class="form-info" ng-show=" (form.voucherName.$dirty && form.voucherName.$error.required) || (form.voucherName.$error.required && formValidate)">凭证类型名称不能为空</span>
+                        </p>
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">凭证类型备注</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <input limit-word type="text" name="voucherMemo" placeholder="请输入凭证类型备注" class="form-control m-b-xs" ng-model="financialVoucher.voucherMemo"  required >
+                        <p>
+                            <span class="form-info" ng-show=" (form.voucherMemo.$dirty && form.voucherMemo.$error.required) || (form.voucherMemo.$error.required && formValidate)">凭证类型备注不能为空</span>
+                        </p>
+                    </div>
+                </div>
+
+
+            </div>
+
+        </form>
+    </div>
+</div>

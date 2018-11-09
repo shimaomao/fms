@@ -1,0 +1,429 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.com.leadu.fms.data.original.dao.OrigFileDao">
+    <!--原件归档-->
+    <select id="selectOrigFileVosByOrigFileStatus" resultType="cn.com.leadu.fms.pojo.original.vo.origfile.OrigFileVo">
+        SELECT DISTINCT
+            origfile.*, con.vin_no
+        FROM
+            orig_file origfile
+        LEFT JOIN contract con ON origfile.biz_code = con.cont_no
+        AND con.del_flag = ${delete_exist}
+        WHERE origfile.del_flag = ${delete_exist}
+        <if test="origFileVo.origFileStatus != null">
+            AND origfile.orig_file_status = #{origFileVo.origFileStatus}
+        </if>
+        <if test="origFileVo.bizCode != null">
+            AND origfile.biz_code LIKE #{origFileVo.bizCode}
+        </if>
+    </select>
+    <!--原件借阅-->
+    <select id="selectBorrowOrigFilesByOrigFileStatus" resultType="cn.com.leadu.fms.pojo.original.vo.origfile.OrigFileVo">
+        SELECT DISTINCT
+            origfile.*, con.vin_no,
+            ifnull(cstmCompany.name, cstmPerson.name) cstmName
+        FROM
+            orig_file origfile
+        LEFT JOIN contract con ON origfile.biz_code = con.cont_no AND con.del_flag = ${delete_exist}
+        left join cstm_company cstmCompany ON cstmCompany.apply_no = con.apply_no and cstmCompany.del_flag = ${delete_exist}
+        left join cstm_person cstmPerson on cstmPerson.apply_no = con.apply_no and cstmPerson.del_flag = ${delete_exist}
+        WHERE origfile.del_flag = ${delete_exist}
+        <!--如果是原件借阅，则必须是已经归档的数据-->
+        AND origfile.orig_file_status = #{origFileVo.origFileStatusParam}
+        <if test="origFileVo.bizCodeType != null">
+            AND origfile.biz_code_type != #{origFileVo.bizCodeType}
+        </if>
+        <if test="origFileVo.bizCode != null">
+            AND origfile.biz_code LIKE #{origFileVo.bizCode}
+        </if>
+        <if test="origFileVo.cstmName != null">
+            AND (cstmCompany.name LIKE #{origFileVo.cstmName} OR cstmPerson.name LIKE #{origFileVo.cstmName})
+        </if>
+        <if test="origFileVo.vinNo != null">
+            AND con.vin_no LIKE #{origFileVo.vinNo}
+        </if>
+        order by
+        origfile.orig_file_status asc,
+        if(origfile.orig_file_status = 0,DATEDIFF(origfile.orig_deadline,now()), DATEDIFF(now(),origfile.orig_deadline) ) asc
+    </select>
+
+    <!--续保归档-->
+    <select id="selectRenewalOrigFilesByOrigFileStatus" resultType="cn.com.leadu.fms.pojo.original.vo.origfile.OrigFileVo">
+        SELECT DISTINCT
+            origfile.*, con.vin_no,
+            ifnull(cstmCompany.name, cstmPerson.name) cstmName
+        FROM
+            orig_file origfile
+        LEFT JOIN contract con ON origfile.biz_code = con.cont_no AND con.del_flag = ${delete_exist}
+        left join cstm_company cstmCompany ON cstmCompany.apply_no = con.apply_no and cstmCompany.del_flag = ${delete_exist}
+        left join cstm_person cstmPerson on cstmPerson.apply_no = con.apply_no and cstmPerson.del_flag = ${delete_exist}
+        WHERE origfile.del_flag = ${delete_exist}
+        <if test="origFileVo.bizCode != null">
+            AND origfile.biz_code LIKE #{origFileVo.bizCode}
+        </if>
+    </select>
+    <!--贷前归档邮寄与上传-->
+    <select id="selectPreOrigFilesByOrigFileStatus" resultType="cn.com.leadu.fms.pojo.original.vo.origfile.OrigFileVo">
+        SELECT DISTINCT
+        origfile.*, con.vin_no vinNo,
+        ifnull(cstmCompany.name, cstmPerson.name) cstmName
+        FROM
+        orig_file origfile
+        LEFT JOIN contract con ON origfile.biz_code = con.cont_no AND con.del_flag = ${delete_exist}
+        left join orig_file_detail origFileDetail on origfile.biz_code = origFileDetail.biz_code and origfile.biz_code_type = origFileDetail.biz_code_type
+        left join cstm_company cstmCompany ON cstmCompany.apply_no = con.apply_no and cstmCompany.del_flag = ${delete_exist}
+        left join cstm_person cstmPerson on cstmPerson.apply_no = con.apply_no and cstmPerson.del_flag = ${delete_exist}
+        WHERE origfile.del_flag = ${delete_exist}
+        <!--如果是贷前归档邮寄与上传，则必须是未归档的数据-->
+        <!--AND origfile.orig_file_status = #{origFileVo.origFileStatusParam}-->
+        <!--如果是贷前归档邮寄与上传，则必须是合同成交类的数据-->
+        AND origfile.biz_code_type = #{origFileVo.bizCodeType}
+        <if test="origFileVo.bizCode != null">
+            AND origfile.biz_code LIKE #{origFileVo.bizCode}
+        </if>
+        <if test="origFileVo.origFileDetailStatus != null">
+            AND origFileDetail.orig_file_detail_status = #{origFileVo.origFileDetailStatus}
+        </if>
+        <if test="origFileVo.origFileStatus != null">
+            AND origfile.orig_file_status = #{origFileVo.origFileStatus}
+        </if>
+        <if test="origFileVo.origFileDetailStatus != null">
+            AND origFileDetail.orig_file_detail_status = #{origFileVo.origFileDetailStatus}
+        </if>
+        <if test="origFileVo.cstmName != null">
+            AND (cstmPerson.name LIKE #{origFileVo.cstmName} OR cstmCompany.name LIKE #{origFileVo.cstmName})
+        </if>
+        <if test="origFileVo.vinNo != null" >
+            AND con.vin_no LIKE #{origFileVo.vinNo}
+        </if>
+        <if test="origFileVo.sysUser != null">
+            AND con.apply_user = #{origFileVo.sysUser}
+        </if>
+        <!--超期数据:归档期限小于当前日期并且归档状态不是已归档-->
+        <if test="origFileVo.daysRemainingStatus == 1">
+            AND (origfile.orig_deadline &lt; current_date AND origfile.orig_file_status != 1)
+        </if>
+        <!--不超期数据:与超期数据相反-->
+        <if test="origFileVo.daysRemainingStatus == 0">
+            AND !(origfile.orig_deadline &lt; current_date AND origfile.orig_file_status != 1)
+        </if>
+        <if test="origFileVo.sysUserGroup != null">
+            AND con.apply_group IN
+            <foreach collection="origFileVo.sysUserGroup" item="item" index="index" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        order by
+        origfile.orig_file_status asc,
+        if(origfile.orig_file_status = 0,DATEDIFF(origfile.orig_deadline,now()), DATEDIFF(now(),origfile.orig_deadline) ) asc
+    </select>
+    <!-- 根据订单编号 获取融资信息 -->
+    <select id="selectOrigFileListByPage" resultType="cn.com.leadu.fms.pojo.original.vo.origfile.OrigFileVo">
+        SELECT DISTINCT
+        origfile.*, con.vin_no vinNo,
+        ifnull(cstmCompany.name, cstmPerson.name) cstmName
+        FROM
+        orig_file origfile
+        LEFT JOIN contract con ON origfile.biz_code = con.cont_no AND con.del_flag = ${delete_exist}
+        left join orig_file_detail origFileDetail on origfile.biz_code = origFileDetail.biz_code and origfile.biz_code_type = origFileDetail.biz_code_type
+        left join cstm_company cstmCompany ON cstmCompany.apply_no = con.apply_no and cstmCompany.del_flag = ${delete_exist}
+        left join cstm_person cstmPerson on cstmPerson.apply_no = con.apply_no and cstmPerson.del_flag = ${delete_exist}
+        WHERE origfile.del_flag = ${delete_exist}
+        <if test="origFileVo.origFileStatus != null">
+            AND origfile.orig_file_status = #{origFileVo.origFileStatus}
+        </if>
+        <if test="origFileVo.bizCode != null">
+            AND origfile.biz_code LIKE #{origFileVo.bizCode}
+        </if>
+        <if test="origFileVo.bizCodeType != null">
+            AND origfile.biz_code_type = #{origFileVo.bizCodeType}
+        </if>
+        <if test="origFileVo.origFileDetailStatus != null">
+            AND origFileDetail.orig_file_detail_status = #{origFileVo.origFileDetailStatus}
+        </if>
+        <if test="origFileVo.cstmName != null">
+            AND (cstmPerson.name LIKE #{origFileVo.cstmName} OR cstmCompany.name LIKE #{origFileVo.cstmName})
+        </if>
+        <if test="origFileVo.vinNo != null" >
+            AND con.vin_no LIKE #{origFileVo.vinNo}
+        </if>
+        <if test="origFileVo.sysUser != null">
+            AND con.apply_user = #{origFileVo.sysUser}
+        </if>
+        <if test="origFileVo.sysUserGroup != null">
+            AND con.apply_group IN
+            <foreach collection="origFileVo.sysUserGroup" item="item" index="index" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        order by
+        origfile.orig_file_status asc,
+        if(origfile.orig_file_status = 1,DATEDIFF(now(),origfile.orig_deadline), DATEDIFF(origfile.orig_deadline,now()) ) asc
+    </select>
+
+    <!-- 根据订单编号 获取融资信息 -->
+    <select id="selectOrigFileInsListByPage" resultType="cn.com.leadu.fms.pojo.original.vo.origfile.OrigFileVo">
+        SELECT DISTINCT
+        origfile.*, con.vin_no as vinNo,con.cont_no as contNo,
+        ifnull(cstmCompany.name, cstmPerson.name) cstmName
+        FROM
+        orig_file origfile
+        LEFT join renewal_register insur on origfile.biz_code = insur.renewal_task_no and insur.del_flag = ${delete_exist}
+        LEFT JOIN contract con ON insur.cont_no = con.cont_no AND con.del_flag = ${delete_exist}
+        left join orig_file_detail origFileDetail on origfile.biz_code = origFileDetail.biz_code and origfile.biz_code_type = origFileDetail.biz_code_type
+        left join cstm_company cstmCompany ON cstmCompany.apply_no = con.apply_no and cstmCompany.del_flag = ${delete_exist}
+        left join cstm_person cstmPerson on cstmPerson.apply_no = con.apply_no and cstmPerson.del_flag = ${delete_exist}
+        WHERE origfile.del_flag = ${delete_exist}
+        <if test="origFileVo.contNo != null">
+            AND con.cont_no LIKE #{origFileVo.contNo}
+        </if>
+        <if test="origFileVo.origFileStatus != null">
+            AND origfile.orig_file_status = #{origFileVo.origFileStatus}
+        </if>
+        <if test="origFileVo.bizCode != null">
+            AND origfile.biz_code LIKE #{origFileVo.bizCode}
+        </if>
+        <if test="origFileVo.bizCodeType != null">
+            AND origfile.biz_code_type = #{origFileVo.bizCodeType}
+        </if>
+        <if test="origFileVo.origFileDetailStatus != null">
+            AND origFileDetail.orig_file_detail_status = #{origFileVo.origFileDetailStatus}
+        </if>
+        <if test="origFileVo.vinNo != null" >
+            AND con.vin_no LIKE #{origFileVo.vinNo}
+        </if>
+        <if test="origFileVo.cstmName != null">
+            AND (cstmCompany.name LIKE #{origFileVo.cstmName} OR cstmPerson.name LIKE #{origFileVo.cstmName})
+        </if>
+    </select>
+
+
+    <select id="selectOrigFileSortDetailsByPage" resultMap="origFileSortDetailsByPageMap">
+        SELECT
+            of.orig_file_id,
+            of.file_record_no,
+            of.biz_code,
+            of.biz_code_type,
+            of.name ,
+            of.orig_file_type,
+            of.orig_file_status,
+            of.orig_vin_no,
+            of.orig_enginee_no,
+            of.orig_memo,
+            con.vin_no,
+            ifnull(cstmCompany.name, cstmPerson.name) cstmName
+        FROM
+            orig_file of
+        LEFT JOIN contract con ON of.biz_code = con.cont_no AND con.del_flag = ${delete_exist}
+        left join cstm_company cstmCompany ON cstmCompany.apply_no = con.apply_no and cstmCompany.del_flag = ${delete_exist}
+        left join cstm_person cstmPerson on cstmPerson.apply_no = con.apply_no and cstmPerson.del_flag = ${delete_exist}
+        WHERE
+            of.del_flag = ${delete_exist}
+        <if test="origFileDetailVo.origFileTaskNo == null">
+            <if test="origFileDetailVo.bizCode != null">
+                AND of.biz_code = #{origFileDetailVo.bizCode}
+            </if>
+            <if test="origFileDetailVo.bizCodeType != null">
+                AND of.biz_code_type = #{origFileDetailVo.bizCodeType}
+            </if>
+        </if>
+        <if test="origFileDetailVo.origFileTaskNo != null">
+            AND orig_file_task_no = #{origFileDetailVo.origFileTaskNo}
+        </if>
+    </select>
+    
+    <resultMap id="origFileSortDetailsByPageMap" type="cn.com.leadu.fms.pojo.original.vo.origfile.OrigFileSortVo">
+        <id column="orig_file_id" javaType="java.lang.String" property="origFileId" />
+        <result column="biz_code" javaType="java.lang.String" property="bizCode" />
+        <result column="biz_code_type" javaType="java.lang.String" property="bizCodeType" />
+        <result column="file_record_no" javaType="java.lang.String" property="fileRecordNo" />
+        <result column="cstmName" javaType="java.lang.String" property="cstmName" />
+        <result column="orig_file_type" javaType="java.lang.String" property="origFileType" />
+        <result column="vin_no" javaType="java.lang.String" property="vinNo" />
+        <collection property="origFileDetailVoList" ofType="cn.com.leadu.fms.pojo.original.vo.origfiledetail.OrigFileDetailVo"
+                    javaType="java.util.ArrayList" select="getOrigFileDetailVoList" column="{bizCode=biz_code, bizCodeType=biz_code_type}">
+        </collection>
+        <collection property="contInsuranceVo" ofType="cn.com.leadu.fms.pojo.prebiz.vo.continsurance.ContInsuranceVo"
+                    select="getContInsuranceVo" column="biz_code">
+        </collection>
+        <collection property="contractVo" ofType="cn.com.leadu.fms.pojo.prebiz.vo.contract.ContractVo"
+                    select="getContractVo" column="biz_code">
+        </collection>
+    </resultMap>
+
+    <select id="getOrigFileDetailVoList" resultType="cn.com.leadu.fms.pojo.original.vo.origfiledetail.OrigFileDetailVo">
+        SELECT
+            orig.*,
+            bft.file_type_name,
+            bft.file_qty_limit,
+            fd.post_comp,
+            fd.post_no,
+            fd.post_date,
+            insur.cont_no
+        FROM
+            orig_file_detail orig
+        LEFT JOIN renewal_register insur on orig.biz_code = insur.renewal_task_no and insur.del_flag = ${delete_exist}
+        LEFT JOIN bas_file_type bft ON orig.file_type = bft.file_type AND bft.del_flag = ${delete_exist}
+        LEFT JOIN file_send fd ON orig.file_post_id = fd.file_post_id
+        AND fd.del_flag = ${delete_exist}
+        WHERE
+            orig.del_flag = ${delete_exist}
+        AND orig.biz_code = #{bizCode}
+        AND orig.biz_code_type = #{bizCodeType}
+    </select>
+
+    <!-- 根据合同号取得首次归档的保险信息 -->
+    <select id="getContInsuranceVo" resultType="cn.com.leadu.fms.pojo.prebiz.vo.continsurance.ContInsuranceVo">
+        SELECT
+            *
+        FROM
+            cont_insurance
+        WHERE
+            del_flag = ${delete_exist}
+        AND cont_no = #{bizCode}
+        order by valid_start_day,valid_end_day ASC
+        limit 0,1
+    </select>
+
+    <select id="getContractVo" resultType="cn.com.leadu.fms.pojo.prebiz.vo.contract.ContractVo">
+        SELECT
+            *
+        FROM
+            contract
+        WHERE
+            del_flag = ${delete_exist}
+        AND cont_no = #{bizCode}
+    </select>
+
+    <select id="selectOrigFileMailList" resultType="cn.com.leadu.fms.pojo.original.vo.origfiledetail.OrigFileDetailVo">
+        SELECT
+            ofd.*,
+            fd.post_comp,
+            fd.post_no,
+            fd.post_date,
+            fd.remark,
+            bft.file_type_name,
+            bft.file_qty_limit
+        FROM
+            orig_file_detail ofd
+        LEFT JOIN file_send fd ON ofd.file_post_id = fd.file_post_id
+        AND fd.del_flag = ${delete_exist}
+        LEFT JOIN bas_file_type bft ON ofd.file_type = bft.file_type
+        AND bft.del_flag = ${delete_exist}
+        WHERE
+            ofd.del_flag = ${delete_exist}
+        AND ofd.biz_code = #{origFileVo.bizCode}
+        AND ofd.biz_code_type = #{origFileVo.bizCodeType}
+    </select>
+
+    <select id="selectOrigFileRenewalSortDetailsByPage" resultMap="origFileRenewalSortDetailsByPageMap">
+        SELECT
+            orig_file_id,
+            file_record_no,
+            biz_code,
+            biz_code_type,
+            orig_file_type
+        FROM
+            orig_file
+        WHERE
+            del_flag = ${delete_exist}
+        <if test="origFileDetailVo.bizCode != null">
+            AND biz_code = #{origFileDetailVo.bizCode}
+        </if>
+        <if test="origFileDetailVo.bizCodeType != null">
+            AND biz_code_type = #{origFileDetailVo.bizCodeType}
+        </if>
+    </select>
+
+    <resultMap id="origFileRenewalSortDetailsByPageMap" type="cn.com.leadu.fms.pojo.original.vo.origfile.OrigFileSortVo">
+        <id column="orig_file_id" javaType="java.lang.String" property="origFileId" />
+        <result column="biz_code" javaType="java.lang.String" property="bizCode" />
+        <result column="biz_code_type" javaType="java.lang.String" property="bizCodeType" />
+        <result column="file_record_no" javaType="java.lang.String" property="fileRecordNo" />
+        <collection property="origFileDetailVoList" ofType="cn.com.leadu.fms.pojo.original.vo.origfiledetail.OrigFileDetailVo"
+                    javaType="java.util.ArrayList" select="getOrigFileDetailVoList" column="{bizCode=biz_code, bizCodeType=biz_code_type}">
+        </collection>
+        <collection property="renewalRegisterVo" ofType="cn.com.leadu.fms.pojo.insurance.vo.renewalregister.RenewalRegisterVo"
+                    select="getrenewalRegisterVo" column="biz_code">
+        </collection>
+    </resultMap>
+
+    <select id="getrenewalRegisterVo" resultType="cn.com.leadu.fms.pojo.insurance.vo.renewalregister.RenewalRegisterVo">
+        SELECT
+            *
+        FROM
+            renewal_register
+        WHERE
+            del_flag = ${delete_exist}
+        AND renewal_task_no = #{bizCode}
+    </select>
+
+    <select id="selectOrigFileVos" resultType="cn.com.leadu.fms.pojo.original.vo.origfile.OrigFileVo">
+         SELECT
+            orig_file.*,
+            if(
+            apply.apply_type = #{origFileVo.applyType},
+            cstm_person.`name`,
+            cstm_company.contact_name
+            ) costum,
+            if(
+            apply.apply_type = #{origFileVo.applyType},
+            cstm_person.mobile_no,
+            cstm_company.contact_mobno
+            ) mobileNo,
+            cont_insurance.valid_start_day,
+            cont_insurance.valid_end_day,
+            contract.vehicle_license_no,
+            renewal_register.insurance_post_no postNo
+        FROM
+            orig_file
+        INNER JOIN renewal_register ON orig_file.biz_code = renewal_register.renewal_task_no
+        AND renewal_register.fin_flag = '1'
+        AND renewal_register.del_flag = ${delete_exist}
+        LEFT JOIN cont_insurance ON cont_insurance.cont_vehins_id = renewal_register.renewal_cont_vehins_id
+        AND cont_insurance.del_flag = ${delete_exist}
+        LEFT JOIN contract ON contract.cont_no = cont_insurance.cont_no
+        AND contract.del_flag = ${delete_exist}
+        LEFT JOIN apply ON apply.apply_no = contract.apply_no
+        AND apply.del_flag = ${delete_exist}
+        LEFT JOIN cstm_person ON cstm_person.apply_no = apply.apply_no
+        AND cstm_person.del_flag = ${delete_exist}
+        LEFT JOIN cstm_company ON cstm_company.apply_no = apply.apply_no
+        AND cstm_company.del_flag = ${delete_exist}
+        WHERE
+            orig_file.biz_code_type = '2'
+        AND orig_file.orig_file_status = '1'
+        AND orig_file.orig_file_date = #{origFileVo.jugTime}
+        AND  (apply.company_type1 != '1' or apply.company_type1 is  null)
+        AND orig_file.del_flag = ${delete_exist}
+    </select>
+
+    <select id="selectOrigFileInfoByBizCodeAndBizCodeType" resultType="cn.com.leadu.fms.pojo.original.vo.origfile.OrigFileVo">
+        SELECT
+            of.*, con.vin_no,
+            ifnull(cstmCompany.name, cstmPerson.name) cstmName
+        FROM
+            orig_file of
+        LEFT JOIN contract con ON of.biz_code = con.cont_no AND con.del_flag = ${delete_exist}
+        LEFT JOIN cstm_company cstmCompany ON cstmCompany.apply_no = con.apply_no and cstmCompany.del_flag = ${delete_exist}
+        LEFT JOIN cstm_person cstmPerson on cstmPerson.apply_no = con.apply_no and cstmPerson.del_flag = ${delete_exist}
+        WHERE
+            of.del_flag = ${delete_exist}
+        <if test="origFileVo.bizCode != null">
+            AND of.biz_code = #{origFileVo.bizCode}
+        </if>
+        <if test="origFileVo.bizCodeType != null">
+            AND of.biz_code_type = #{origFileVo.bizCodeType}
+        </if>
+    </select>
+
+    <select id="selectOrigFileStatusVoByContNo" resultType="cn.com.leadu.fms.pojo.original.vo.origfiledetail.OrigFileStatusVo">
+        select
+          contract.payment_sts, trans.transfer_sts
+        from contract contract
+        left join transfer_info trans on contract.cont_no = trans.cont_no and trans.del_flag = ${delete_exist}
+        where contract.del_flag = ${delete_exist} and contract.cont_no = #{contNo}
+    </select>
+</mapper>

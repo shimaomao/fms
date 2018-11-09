@@ -1,0 +1,156 @@
+<div ng-controller="cont_request_pay_detail_controller">
+    <ul type="none" style="padding-left:20px">
+        <li style="font-weight: bold;font-size: 14px;">合同融资信息</li>
+        <div class="">
+            <div class="form-group row">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">承租人</b><b class="form-error"></b>:</label>
+                <div class="col-sm-2">
+                    <input type="text" title="{{contRequestPay.personName}}" name="personName" class="form-control m-b-xs" ng-model="contRequestPay.personName" disabled>
+                </div>
+
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">车架号</b><b
+                        class="form-error"></b>:</label>
+                <div class="col-sm-2">
+                    <input type="text" title="{{contRequestPay.vinNo}}" name="vinNo" class="form-control m-b-xs" ng-model="contRequestPay.vinNo" disabled>
+                </div>
+
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">车型</b><b
+                        class="form-error"></b>:</label>
+                <div class="col-sm-2">
+                    <input type="text" title="{{contRequestPay.vehicleCodeName}}" name="vehicleCodeName" class="form-control m-b-xs" ng-model="contRequestPay.vehicleCodeName" disabled >
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">业务类型</b><b class="form-error"></b>:</label>
+                <div class="col-sm-2">
+                    <input type="text" title="{{contRequestPay.licenseAttr | getName:'licenseAttr'}}" name="licenseAttr" class="form-control m-b-xs" ng-value="contRequestPay.licenseAttr | getName:'licenseAttr'" disabled >
+                </div>
+
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">实际销售方</b><b
+                        class="form-error"></b>:</label>
+                <div class="col-sm-6">
+                    <input type="text" title="{{contRequestPay.saleGroupName}}" name="saleGroupName" class="form-control m-b-xs" ng-model="contRequestPay.saleGroupName" disabled>
+                </div>
+
+            </div>
+
+            <div class="form-group row">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">首付款</b><b class="form-error"></b>:</label>
+                <div class="col-sm-2">
+                    <input type="text" title="{{contRequestPay.initAmount}}" name="initAmount" class="form-control m-b-xs" ng-model="contRequestPay.initAmount" disabled >
+                </div>
+
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">保证金</b><b
+                        class="form-error"></b>:</label>
+                <div class="col-sm-2">
+                    <input type="text" title="{{contRequestPay.deposit}}" name="deposit" class="form-control m-b-xs" ng-model="contRequestPay.deposit" disabled>
+                </div>
+
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">续保押金</b><b
+                        class="form-error"></b>:</label>
+                <div class="col-sm-2">
+                    <input type="text" title="{{contRequestPay.renewalDeposit}}" name="renewalDeposit" class="form-control m-b-xs" ng-model="contRequestPay.renewalDeposit" disabled >
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">月租金</b><b class="form-error"></b>:</label>
+                <div class="col-sm-2">
+                    <input type="text" title="{{contRequestPay.rent}}" name="rent" class="form-control m-b-xs" ng-model="contRequestPay.rent"  disabled>
+                </div>
+
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">尾款</b><b
+                        class="form-error"></b>:</label>
+                <div class="col-sm-2">
+                    <input type="text" title="{{contRequestPay.finalAmount}}" name="finalAmount" class="form-control m-b-xs" ng-model="contRequestPay.finalAmount" disabled>
+                </div>
+
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">手续费</b><b
+                        class="form-error"></b>:</label>
+                <div class="col-sm-2">
+                    <input type="text" title="{{contRequestPay.charge}}" name="charge" class="form-control m-b-xs" ng-model="contRequestPay.charge" disabled >
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">年供</b><b class="form-error"></b>:</label>
+                <div class="col-sm-2">
+                    <input type="text" title="{{contRequestPay.annualSupplyAmount}}" name="annualSupplyAmount" class="form-control m-b-xs" ng-model="contRequestPay.annualSupplyAmount" disabled >
+                </div>
+
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">订金金额</b><b
+                        class="form-error"></b>:</label>
+                <div class="col-sm-2">
+                    <input type="text" title="{{contRequestPay.vehDeposit}}" name="vehDeposit" class="form-control m-b-xs" ng-model="contRequestPay.vehDeposit" disabled>
+                </div>
+
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">订金是否抵扣车款</b><b
+                        class="form-error"></b>:</label>
+                <div class="col-sm-2">
+                    <input type="text" title="{{contRequestPay.deductibleFees | getName:'deductibleFees'}}" name="deductibleFees" class="form-control m-b-xs" ng-value="contRequestPay.deductibleFees | getName:'deductibleFees'"  disabled>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">保险公司名称</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-2">
+                    <input title="{{contRequestPay.insCompName}}" type="text" name="insCompName" class="form-control m-b-xs" ng-model="contRequestPay.insCompName" disabled>
+                </div>
+
+            </div>
+
+            <li style="font-weight: bold;font-size: 14px;">融资费用</li>
+            <div class="">
+                <div class="col-sm-12">
+                    <div class="dataTables_wrapper form-inline dt-bootstrap no-footer">
+                        <table border="1" class="table table-striped m-b-none dataTable no-footer">
+                            <thead>
+                            <tr>
+                                <th>付款项目</th>
+                                <th>融资额</th>
+                                <th>付款金额</th>
+                                <th>收款户名</th>
+                                <th>收款银行分行</th>
+                                <th>收款账号</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr click-tr ng-repeat="a in contRequestPay.contFinPayVoList">
+                                <td>{{a.finItemName}}<span ng-show="a.finItemYear != 0">第{{a.finItemYear}}年</span></td>
+                                <td>{{a.finAmount}}</td>
+                                <td>
+                                    {{a.contPay.payAmount}}
+                                </td>
+                                <td>
+                                    {{a.contPay.recAccountName}}
+                                </td>
+                                <td>
+                                    {{a.contPay.recAccBranch}}
+                                </td>
+                                <td>
+                                    {{a.contPay.recAccountNo}}
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!--<ul type="none" style="padding-left: 0px;">
+                <li style="font-weight: bold;font-size: 14px;">请款附件</li>
+                <div ng-include="'tpl/common/tree_file/tree_file.html'"></div>
+            </ul>-->
+
+            <!--附件信息-->
+            <div class="panel-body wrapper-sm">
+                <div>
+                    <tree-file-directive detail-flag="$root.yesNoFlag.yes" file-type="$root.basFileTypes.requestPayFile" files="contRequestPay.bizFilesList" not-upload="notUpload" not-upload-info = "notUploadInfo" not-file-type="notFileType" not-file-type-name="notFileTypeName" >
+                    </tree-file-directive>
+                </div>
+            </div>
+        </div>
+    </ul>
+
+</div>

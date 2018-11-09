@@ -1,0 +1,561 @@
+<div class="panel panel-default" ng-controller="equ_mor_sea_wing_apply_list_detail_controller">
+    <div>
+        <toaster-container
+                toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+    </div>
+    <div ng-if="type == 'list'" class="row fms-page-header">
+        <div class="form-inline" role="form">
+            <div class="form-group">
+                <h5>海翼资方抵押申请详情</h5>
+            </div>
+            <div class="form-group pull-right">
+                <button class="btn btn-default btn-sm fms-button-margin-top" ng-click="goBack()" ng-disabled="submit">返回</button>
+                <button class="btn btn-default btn-sm fms-button-margin-top" ng-click="print()"
+                        ng-disabled="submit">打印
+                </button>
+            </div>
+        </div>
+    </div>
+    <form name="form" class="form-validation" novalidate>
+        <fieldset ng-disabled="true">
+
+
+            <div class="row fms-div-content">
+
+                <div class="row fms-div-content">
+                    <h4 class="fms-margin-bottom-30"><b>终端客户业务单情况概况</b></h4>
+                    <div class="row" style="margin: 5px; padding-right: 50px;">
+
+
+                        <div class="row">
+                            <label class="col-sm-2 control-label text-right"><b class="form-text-black">资金方</b>:</label>
+                            <div class="col-sm-2">
+                                <label class="col-sm-12 control-label text-left">海翼</label>
+                            </div>
+                            <label class="col-sm-2 control-label text-right"><b class="form-text-black">抵押流程</b><b
+                                    class="form-error">*</b>:</label>
+                            <div class="col-sm-2">
+                                <select name="mortgageProcess" ng-model="equMorTask.mortgageProcess"
+                                        class="form-control m-b-xs" required ng-disabled="equMorTaskNo != null">
+                                    <option value="">---请选择---</option>
+                                    <option ng-selected="equMorTask.mortgageProcess == mortgageProcessObj.codeValue"
+                                            ng-repeat="mortgageProcessObj in mortgageProcessList"
+                                            value="{{mortgageProcessObj.codeValue}}">
+                                        {{mortgageProcessObj.codeValueName}}
+                                    </option>
+                                </select>
+                                <p>
+                                <span class="form-info"
+                                      ng-show=" (form.mortgageProcess.$dirty && form.mortgageProcess.$error.required) || (form.mortgageProcess.$error.required && formValidate)">请选择抵押流程</span>
+                                </p>
+                            </div>
+
+
+                            <label class="col-sm-2 control-label text-right"><b class="form-text-black">业务类别</b><b
+                                    class="form-error">*</b>:</label>
+                            <div class="col-sm-2">
+                                <select name="serviceCategory" ng-model="equMorDetail.serviceCategory"
+                                        ng-change="changeServiceCategory(equMorDetail.serviceCategory);"
+                                        class="form-control m-b-xs" required>
+                                    <option value="">---请选择---</option>
+                                    <option ng-selected="equMorTask.serviceCategory == serviceCategoryObj.codeValue"
+                                            ng-repeat="serviceCategoryObj in serviceCategoryList"
+                                            value="{{serviceCategoryObj.codeValue}}">
+                                        {{serviceCategoryObj.codeValueName}}
+                                    </option>
+                                </select>
+                                <p>
+                                <span class="form-info"
+                                      ng-show=" (form.serviceCategory.$dirty && form.serviceCategory.$error.required) || (form.serviceCategory.$error.required && formValidate)">请选择业务类别</span>
+                                </p>
+                            </div>
+                        </div>
+
+
+                        <div class="row">
+
+                            <div class="col-sm-12">
+                                <!-- 融资明细 -->
+                                <div class="form-group row vehicleGroup">
+                                    <div class="form-inline vehicleTableDiv"
+                                         ng-show="equMorApplyVo.contFinDetailVos != null && equMorApplyVo.contFinDetailVos.length > 0">
+                                        <table border="2" class="table m-b-none dataTable no-footer" role="grid">
+                                            <thead>
+                                            <tr>
+                                                <th class="sorting_disabled text-center">业务单融资包含项目</th>
+                                                <th class="sorting_disabled text-center"
+                                                    ng-repeat="item in equMorApplyVo.contFinDetailVos">
+                                                    {{item.finItemName}}
+                                                </th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr>
+                                                <td class="text-center">各项目金额(元)</td>
+                                                <td class="text-center"
+                                                    ng-repeat="item in equMorApplyVo.contFinDetailVos">
+                                                    <label class="col-sm-12 control-label text-center">
+                                                        {{item.finAmount}}</label>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+
+                        <div class="row">
+                            <label class="col-sm-2 control-label text-right"><b class="form-text-black">承租人</b>:</label>
+                            <div class="col-sm-2">
+                                <label class="col-sm-12 control-label text-left"> {{equMorApplyVo.lessee}}</label>
+                            </div>
+                            <!--<label class="col-sm-2 control-label text-right"><b class="form-text-black">出租人</b>:</label>
+                            <div class="col-sm-2">
+                                <label class="col-sm-12 control-label text-left"> {{equMorApplyVo.belongGroupName}}</label>
+                            </div>-->
+                            <label class="col-sm-2 control-label text-right"><b
+                                    class="form-text-black">业务类型</b>:</label>
+                            <div class="col-sm-2">
+                                <label class="col-sm-12 control-label text-left">
+                                    {{equMorApplyVo.licenseAttrName}}</label>
+                            </div>
+                            <label class="col-sm-2 control-label text-right"><b
+                                    class="form-text-black">每期租金(元)</b>:</label>
+                            <div class="col-sm-2">
+                                <label class="col-sm-12 control-label text-left"> {{equMorApplyVo.rent}}</label>
+                            </div>
+                        </div>
+
+
+                        <div class="row">
+                            <label class="col-sm-2 control-label text-right"><b
+                                    class="form-text-black">租赁年限(年)</b>:</label>
+                            <div class="col-sm-2">
+                                <label class="col-sm-12 control-label text-left">
+                                    {{equMorApplyVo.finPeriodYears}}</label>
+                            </div>
+                            <label class="col-sm-2 control-label text-right"><b
+                                    class="form-text-black">还款期次</b>:</label>
+                            <div class="col-sm-2">
+                                <label class="col-sm-12 control-label text-left">
+                                    {{equMorApplyVo.finPeriodType}}</label>
+                            </div>
+                            <label class="col-sm-2 control-label text-right"><b
+                                    class="form-text-black">首付金额(元)</b>:</label>
+                            <div class="col-sm-2">
+                                <label class="col-sm-12 control-label text-left"> {{equMorApplyVo.initAmount}}</label>
+                            </div>
+                        </div>
+
+
+                        <div class="row">
+                            <label class="col-sm-2 control-label text-right"><b
+                                    class="form-text-black">首期租金支付日</b>:</label>
+                            <div class="col-sm-2">
+                                <label class="col-sm-12 control-label text-left">
+                                    {{equMorApplyVo.leaseTermStartDate}}</label>
+                            </div>
+                            <label class="col-sm-2 control-label text-right"><b
+                                    class="form-text-black">支付方式</b>:</label>
+                            <div class="col-sm-2">
+                                <label class="col-sm-12 control-label text-left">
+                                    {{equMorApplyVo.rentPayModeName}}</label>
+                            </div>
+                            <label class="col-sm-2 control-label text-right"><b
+                                    class="form-text-black">每月支付日期</b>:</label>
+                            <div class="col-sm-2">
+                                <label class="col-sm-12 control-label text-left"> {{equMorApplyVo.repayDay}}</label>
+                            </div>
+                        </div>
+
+
+                        <!--<div class="row">
+
+                            <div class="col-sm-12">
+
+                                <table border="2" class="table m-b-none dataTable no-footer" role="grid" >
+                                    <tr>
+                                        <td class="sorting_disabled text-center" style="vertical-align: middle !important;text-align: center;" rowspan="2" >计划首期租金支付日<b class="form-error">*</b></td>
+                                        <td class="sorting_disabled text-center" style="vertical-align: middle !important;text-align: center;" rowspan="2" >
+                                            <input type="text" autocomplete="off" date-picker  name="leaseTermStartDate" placeholder="请选择计划首期租金支付日" class="form-control m-b-xs fms-margin-top-10" ng-model="equMorApplyVo.leaseTermStartDate" required disabled>
+                                            <p>
+                                                <span class="form-info" ng-show=" (form.leaseTermStartDate.$dirty && form.leaseTermStartDate.$error.required) || (form.leaseTermStartDate.$error.required && formValidate)">请选择计划首期租金支付日</span>
+                                            </p>
+                                        </td>
+                                        <td class="sorting_disabled text-center" style="vertical-align: middle !important;text-align: center;" rowspan="2" > 每期租金偿付要求</td>
+                                        <td class="sorting_disabled text-center">支付方式</td>
+                                        <td class="sorting_disabled text-center">每月支付日期</td>
+
+                                    </tr>
+                                    <tr >
+                                        <td class="text-center"><label class="col-sm-12 control-label text-center"> {{equMorApplyVo.rentPayModeName}}</label></td>
+                                        <td class="text-center"><label class="col-sm-12 control-label text-center"> {{equMorApplyVo.repayDay}}</label></td>
+                                    </tr>
+                                </table>
+
+                            </div>
+
+
+                        </div>-->
+
+                        <!--<div class="row">
+                            <label class="col-sm-2 control-label text-right"><b class="form-text-black">业务推荐单位</b><b class="form-error">*</b>:</label>
+                            <div class="col-sm-10">
+                                <input type="text" title="{{equMorDetail.servRecommComp}}" maxlength="50" name="servRecommComp" placeholder="请输入业务推荐单位" class="form-control m-b-xs" ng-model="equMorDetail.servRecommComp" required >
+                                <p>
+                                    <span class="form-info" ng-show=" (form.servRecommComp.$dirty && form.servRecommComp.$error.required) || (form.servRecommComp.$error.required && formValidate)">请输入业务推荐单位</span>
+                                </p>
+                            </div>
+                        </div>-->
+
+                        <div class="row">
+                            <label class="col-sm-2 control-label text-right"><b
+                                    class="form-text-black">融资金额(元)</b>:</label>
+                            <div class="col-sm-2">
+                                <label class="col-sm-12 control-label text-left"> {{equMorApplyVo.finTotal}}</label>
+                            </div>
+                            <label class="col-sm-2 control-label text-right"><b
+                                    class="form-text-black">尾付比例(%)</b>:</label>
+                            <div class="col-sm-2">
+                                <label class="col-sm-12 control-label text-left"> {{equMorApplyVo.finalPerc}}</label>
+                            </div>
+                            <label class="col-sm-2 control-label text-right"><b
+                                    class="form-text-black">尾付金额(元)</b>:</label>
+                            <div class="col-sm-2">
+                                <label class="col-sm-12 control-label text-left"> {{equMorApplyVo.finalAmount}}</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <label class="col-sm-2 control-label text-right"><b
+                                    class="form-text-black">租赁期限结束日</b>:</label>
+                            <div class="col-sm-2">
+                                <label class="col-sm-12 control-label text-left">
+                                    {{equMorApplyVo.leaseTermEndDate}}</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <label class="col-sm-2 control-label text-right"><b
+                                    class="form-text-black">业务推荐单位</b>:</label>
+                            <div class="col-sm-10">
+                                <label class="col-sm-12 control-label text-left">
+                                    {{equMorApplyVo.belongGroupName}}</label>
+                            </div>
+                        </div>
+
+
+                        <div class="row">
+                            <label class="col-sm-2 control-label text-right"><b class="form-text-black">车架号</b>:</label>
+                            <div class="col-sm-2">
+                                <label class="col-sm-12 control-label text-left"> {{equMorApplyVo.vinNo}}</label>
+                            </div>
+                            <label class="col-sm-2 control-label text-right"><b
+                                    class="form-text-black">发动机号</b>:</label>
+                            <div class="col-sm-2">
+                                <label class="col-sm-12 control-label text-left"> {{equMorApplyVo.engineNo}}</label>
+                            </div>
+                            <label class="col-sm-2 control-label text-right"><b class="form-text-black">品牌</b>:</label>
+                            <div class="col-sm-2">
+                                <label class="col-sm-12 control-label text-left">
+                                    {{equMorApplyVo.vehBrandCodeName}}</label>
+                            </div>
+                        </div>
+
+
+                        <div class="row">
+                            <label class="col-sm-2 control-label text-right"><b class="form-text-black">计划提车时间</b><b
+                                    class="form-error">*</b>:</label>
+                            <div class="col-sm-2">
+                                <input type="text" date-picker onchange="" maxlength="50" name="planPickCarDate"
+                                       placeholder="请选择计划提车时间" class="form-control m-b-xs"
+                                       ng-model="equMorDetail.planPickCarDate" required>
+                                <p>
+                                <span class="form-info"
+                                      ng-show=" (form.planPickCarDate.$dirty && form.planPickCarDate.$error.required) || (form.planPickCarDate.$error.required && formValidate)">请选择计划提车时间</span>
+                                </p>
+                            </div>
+                            <label class="col-sm-2 control-label text-right"><b
+                                    class="form-text-black">终端客户尾款比例</b>:</label>
+                            <div class="col-sm-2">
+                                <label class="col-sm-12 control-label text-left"> {{equMorApplyVo.finalPerc}}</label>
+                            </div>
+                            <label class="col-sm-2 control-label text-right"><b
+                                    class="form-text-black">终端客户尾款金额</b>:</label>
+                            <div class="col-sm-2">
+                                <label class="col-sm-12 control-label text-left"> {{equMorApplyVo.finalAmount}}</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row fms-div-content">
+                    <h4 class="fms-margin-bottom-30"><b>与海翼租赁对接该租赁资产的计划商务方案</b></h4>
+                    <div class="row" style="margin: 5px; padding-right: 50px;">
+                        <div class="row">
+                            <label class="col-sm-2 control-label text-right"><b class="form-text-black">合同金额(元)</b><b
+                                    class="form-error">*</b>:</label>
+                            <div class="col-sm-2">
+                                <input type="number" limit-number="10" name="contAmount"
+                                       placeholder="请输入合同金额(元)" class="form-control m-b-xs"
+                                       ng-model="equMorDetail.contAmount" required>
+                                <p>
+                                <span class="form-info"
+                                      ng-show=" (form.contAmount.$dirty && form.contAmount.$error.required) || (form.contAmount.$error.required && formValidate)">请输入合同金额</span>
+                                </p>
+                            </div>
+
+
+                            <label class="col-sm-2 control-label text-right"><b class="form-text-black">租赁期限</b><b
+                                    class="form-error">*</b>:</label>
+
+                            <div class="col-sm-2"
+                                 ng-if="equMorDetail.serviceCategory !=0&&equMorDetail.serviceCategory !=1">
+                                <select name="leasePeriod" ng-model="equMorDetail.leasePeriod"
+                                        class="form-control m-b-xs"
+                                        required>
+                                    <option value="">---请选择---</option>
+                                </select>
+                                <p>
+                                <span class="form-info"
+                                      ng-show=" (form.leasePeriod.$dirty && form.leasePeriod.$error.required) || (form.leasePeriod.$error.required && formValidate)">请选择租赁期限</span>
+                                </p>
+                            </div>
+
+                            <div class="col-sm-2" ng-if="equMorDetail.serviceCategory ==0">
+                                <select name="leasePeriod" ng-model="equMorDetail.leasePeriod"
+                                        ng-change="changeLeasePeriod1()" class="form-control m-b-xs" required>
+                                    <option value="">---请选择---</option>
+                                    <option ng-selected="equMorDetail.leasePeriod == leasePeriodObj.codeValue"
+                                            ng-repeat="leasePeriodObj in leasePeriodCgList"
+                                            value="{{leasePeriodObj.codeValue}}">{{leasePeriodObj.codeValueName}}
+                                    </option>
+                                </select>
+                                <p>
+                                <span class="form-info"
+                                      ng-show=" (form.leasePeriod.$dirty && form.leasePeriod.$error.required) || (form.leasePeriod.$error.required && formValidate)">请选择租赁期限</span>
+                                </p>
+                            </div>
+
+                            <div class="col-sm-2" ng-if="equMorDetail.serviceCategory ==1">
+                                <select name="leasePeriod" ng-model="equMorDetail.leasePeriod"
+                                        ng-change="changeLeasePeriod2()" class="form-control m-b-xs" required>
+                                    <option value="">---请选择---</option>
+                                    <option ng-selected="equMorDetail.leasePeriod == leasePeriodObj.codeValue"
+                                            ng-repeat="leasePeriodObj in leasePeriodWkList"
+                                            value="{{leasePeriodObj.codeValue}}">{{leasePeriodObj.codeValueName}}
+                                    </option>
+                                </select>
+                                <p>
+                                <span class="form-info"
+                                      ng-show=" (form.leasePeriod.$dirty && form.leasePeriod.$error.required) || (form.leasePeriod.$error.required && formValidate)">请选择租赁期限</span>
+                                </p>
+                            </div>
+
+
+                            <!--<div class="col-sm-2"
+                                 ng-if="equMorDetail.serviceCategory !=0&&equMorDetail.serviceCategory !=1">
+                                <select name="leasePeriod" ng-model="equMorDetail.leasePeriod" class="form-control m-b-xs"
+                                        required>
+                                    <option value="">-&#45;&#45;请选择-&#45;&#45;</option>
+                                    <option value="">-&#45;&#45;请先选择业务类别-&#45;&#45;</option>
+                                </select>
+                                <p>
+                                    <span class="form-info"
+                                          ng-show=" (form.leasePeriod.$dirty && form.leasePeriod.$error.required) || (form.leasePeriod.$error.required && formValidate)">请选择租赁期限</span>
+                                </p>
+                            </div>
+
+                            <div class="col-sm-2" ng-if="equMorDetail.serviceCategory ==0">
+                                <select name="leasePeriod" ng-model="equMorDetail.leasePeriod"
+                                        ng-change="changeLeasePeriod1();" class="form-control m-b-xs" required>
+                                    <option value="">-&#45;&#45;请选择-&#45;&#45;</option>
+                                    <option ng-if="leasePeriodObj.codeValue.startsWith('1')"
+                                            ng-selected="equMorDetail.leasePeriod == leasePeriodObj.codeValue"
+                                            ng-repeat="leasePeriodObj in leasePeriodList"
+                                            value="{{leasePeriodObj.codeValue}}">{{leasePeriodObj.codeValueName}}
+                                    </option>
+                                    <option ng-if="leasePeriodObj.codeValue.startsWith('2')"
+                                            ng-selected="equMorDetail.leasePeriod == leasePeriodObj.codeValue"
+                                            ng-repeat="leasePeriodObj in leasePeriodList"
+                                            value="{{leasePeriodObj.codeValue}}">{{leasePeriodObj.codeValueName}}
+                                    </option>
+                                    <option ng-if="leasePeriodObj.codeValue.startsWith('3')"
+                                            ng-selected="equMorDetail.leasePeriod == leasePeriodObj.codeValue"
+                                            ng-repeat="leasePeriodObj in leasePeriodList"
+                                            value="{{leasePeriodObj.codeValue}}">{{leasePeriodObj.codeValueName}}
+                                    </option>
+                                </select>
+                                <p>
+                                    <span class="form-info"
+                                          ng-show=" (form.leasePeriod.$dirty && form.leasePeriod.$error.required) || (form.leasePeriod.$error.required && formValidate)">请选择租赁期限</span>
+                                </p>
+                            </div>
+
+                            <div class="col-sm-2" ng-if="equMorDetail.serviceCategory ==1">
+                                <select name="leasePeriod" ng-model="equMorDetail.leasePeriod"
+                                        ng-change="changeLeasePeriod2();" class="form-control m-b-xs" required>
+                                    <option value="">-&#45;&#45;请选择-&#45;&#45;</option>
+                                    <option ng-if="leasePeriodObj.codeValue.startsWith('4')"
+                                            ng-selected="equMorDetail.leasePeriod == leasePeriodObj.codeValue"
+                                            ng-repeat="leasePeriodObj in leasePeriodList"
+                                            value="{{leasePeriodObj.codeValue}}">{{leasePeriodObj.codeValueName}}
+                                    </option>
+                                    <option ng-if="leasePeriodObj.codeValue.startsWith('5')"
+                                            ng-selected="equMorDetail.leasePeriod == leasePeriodObj.codeValue"
+                                            ng-repeat="leasePeriodObj in leasePeriodList"
+                                            value="{{leasePeriodObj.codeValue}}">{{leasePeriodObj.codeValueName}}
+                                    </option>
+                                </select>
+                                <p>
+                                    <span class="form-info"
+                                          ng-show=" (form.leasePeriod.$dirty && form.leasePeriod.$error.required) || (form.leasePeriod.$error.required && formValidate)">请选择租赁期限</span>
+                                </p>
+                            </div>-->
+
+
+                            <label class="col-sm-2 control-label text-right"><b class="form-text-black">计划还款期次</b><b
+                                    class="form-error">*</b>:</label>
+                            <div class="col-sm-2">
+                                <input type="number" limit-number="2" name="planRepaymentPeriod"
+                                       ng-change="changePlanRepaymentPeriod();"
+                                       placeholder="请输入计划还款期次" class="form-control m-b-xs"
+                                       ng-model="equMorDetail.planRepaymentPeriod" required>
+                                <p>
+                                <span class="form-info"
+                                      ng-show=" (form.planRepaymentPeriod.$dirty && form.planRepaymentPeriod.$error.required) || (form.planRepaymentPeriod.$error.required && formValidate)">请输入计划还款期次</span>
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <label class="col-sm-2 control-label text-right"><b class="form-text-black">合同保证金比例(%)</b><b
+                                    class="form-error"></b>:</label>
+                            <div class="col-sm-2">
+                                <input type="number" limit-number="2" name="contractMarginRatio"
+                                       name="contractMarginRatio" placeholder="请输入合同保证金比例" class="form-control m-b-xs"
+                                       ng-model="equMorDetail.contractMarginRatio" required disabled>
+                            </div>
+
+                            <label class="col-sm-2 control-label text-right"><b class="form-text-black">合同保证金(元)</b><b
+                                    class="form-error">*</b>:</label>
+                            <div class="col-sm-2">
+                                <input type="number" name="contMargin" placeholder="合同保证金"
+                                       class="form-control m-b-xs" ng-model="equMorDetail.contMargin" required disabled>
+                                <p>
+                                <span class="form-info"
+                                      ng-show=" (form.contMargin.$dirty && form.contMargin.$error.required) || (form.contMargin.$error.required && formValidate)">请输入合同保证金</span>
+                                </p>
+                            </div>
+
+                            <!--<label class="col-sm-2 control-label text-right"><b class="form-text-black">常规方案利率(%)</b><b class="form-error">*</b>:</label>
+                            <div class="col-sm-2">
+                                <input type="number" limit-number="2"  name="balanceRatio" name="regularProgramRate" placeholder="请输入常规方案利率" class="form-control m-b-xs" ng-model="equMorDetail.regularProgramRate" required disabled >
+                                <p>
+                                    <span class="form-info" ng-show=" (form.regularProgramRate.$dirty && form.regularProgramRate.$error.required) || (form.regularProgramRate.$error.required && formValidate)">请输入常规方案利率</span>
+                                </p>
+                            </div>-->
+
+                            <label class="col-sm-2 control-label text-right"><b class="form-text-black">年利率(%)</b><b
+                                    class="form-error">*</b>:</label>
+                            <div class="col-sm-2">
+                                <input type="number" limit-number="2" name="balanceAnnualRate"
+                                       name="balanceAnnualRate" placeholder="请输入年利率" class="form-control m-b-xs"
+                                       ng-model="equMorDetail.balanceAnnualRate" required disabled>
+                                <p>
+                                <span class="form-info"
+                                      ng-show=" (form.balanceAnnualRate.$dirty && form.balanceAnnualRate.$error.required) || (form.balanceAnnualRate.$error.required && formValidate)">请输入年利率</span>
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <label class="col-sm-2 control-label text-right"><b class="form-text-black">尾款比例(%)</b><b
+                                    class="form-error">*</b>:</label>
+                            <div class="col-sm-2" ng-if="equMorDetail.serviceCategory!=1">
+                                <input type="number" limit-number="2" name="balanceRatio"
+                                       placeholder="请输入尾款比例" class="form-control m-b-xs"
+                                       ng-model="equMorDetail.balanceRatio" required disabled>
+                                <p>
+                                <span class="form-info"
+                                      ng-show=" (form.balanceRatio.$dirty && form.balanceRatio.$error.required) || (form.balanceRatio.$error.required && formValidate)">请输入尾款比例</span>
+                                </p>
+                            </div>
+
+                            <div class="col-sm-2" ng-if="equMorDetail.serviceCategory==1">
+                                <input type="number" limit-number="2" name="balanceRatio"
+                                       placeholder="请输入尾款比例" class="form-control m-b-xs"
+                                       ng-model="equMorDetail.balanceRatio" required>
+                                <p>
+                                <span class="form-info"
+                                      ng-show=" (form.balanceRatio.$dirty && form.balanceRatio.$error.required) || (form.balanceRatio.$error.required && formValidate)">请输入尾款比例</span>
+                                </p>
+                            </div>
+
+                            <label class="col-sm-2 control-label text-right"><b class="form-text-black">尾款金额(元)</b><b
+                                    class="form-error">*</b>:</label>
+                            <div class="col-sm-2">
+                                <input type="number" name="balanceAmount" placeholder="尾款金额"
+                                       class="form-control m-b-xs" ng-model="equMorDetail.balanceAmount" required
+                                       disabled>
+                                <p>
+                                <span class="form-info"
+                                      ng-show=" (form.balanceAmount.$dirty && form.balanceAmount.$error.required) || (form.balanceAmount.$error.required && formValidate)">请输入尾款金额</span>
+                                </p>
+                            </div>
+
+                            <label class="col-sm-2 control-label text-right"><b class="form-text-black">每期租金(元)</b><b
+                                    class="form-error">*</b>:</label>
+                            <div class="col-sm-2 ">
+                                <input type="number" name="rent" placeholder="每期租金" style="width: 100%"
+                                       class="form-control m-b-xs" ng-model="equMorDetail.rent" required disabled>
+                                <p>
+                                <span class="form-info"
+                                      ng-show=" (form.rent.$dirty && form.rent.$error.required) || (form.rent.$error.required && formValidate)">每期租金不能为空</span>
+                                </p>
+                            </div>
+
+
+                            <!--<label class="col-sm-2 control-label text-right"><b class="form-text-black">合同利息总额(元)</b><b class="form-error">*</b>:</label>
+                            <div class="col-sm-2">
+                                <input type="number" name="totalContInterest" placeholder="合同利息总额" class="form-control m-b-xs" ng-model="equMorDetail.totalContInterest" disabled >
+                            </div>-->
+                        </div>
+                        <!--<div class="row">
+                            <label class="col-sm-2 control-label text-right"><b class="form-text-black">起租日</b><b
+                                    class="form-error">*</b>:</label>
+                            <div class="col-sm-2">
+                                <input type="text" date-picker onchange="" name="rentalDate" placeholder="请选择起租日"
+                                       class="form-control m-b-xs" ng-model="equMorDetail.rentalDate" required>
+                                <p>
+                                    <span class="form-info"
+                                          ng-show=" (form.rentalDate.$dirty && form.rentalDate.$error.required) || (form.rentalDate.$error.required && formValidate)">请选择起租日</span>
+                                </p>
+                            </div>
+                        </div>-->
+                    </div>
+                </div>
+                <div class="row fms-div-content">
+                    <div class="row" style="margin: 5px; padding-right: 50px;">
+                        <div class="row">
+                            <label class="col-sm-2 control-label text-right"><b class="form-text-black">备注</b><b
+                                    class="form-error">*</b>:</label>
+                            <div class="col-sm-10">
+                            <textarea limit-word type="text" maxlength="200" name="memo" placeholder="请输入备注"
+                                      class="form-control m-b-xs" ng-model="equMorDetail.memo" required></textarea>
+                                <p>
+                                <span class="form-info"
+                                      ng-show=" (form.memo.$dirty && form.memo.$error.required) || (form.memo.$error.required && formValidate)">请输入备注</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+        <div class="row fms-div-content" ng-if="type == 'list'" >
+            <process-log-list-directive wf-log-type="$root.bizTypes.equMortgage" wf-log-no="equMorTaskNo"></process-log-list-directive>
+        </div>
+    </form>
+</div>

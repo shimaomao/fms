@@ -1,0 +1,108 @@
+<div class="modal-header">
+    <h4 class="modal-title">{{frameTitle}} <button type="button" class="close" data-dismiss="modal" aria-hidden="true" ng-click="close()">&times;</button></h4>
+</div>
+<div class="modal-body">
+    <form name="form" class="form-validation" novalidate>
+
+        <div class="panel-body">
+            <div class="form-group" ng-show="itemWidgetMap['I000003'].showMod">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">画面名称</b><b class="form-error" ng-show="itemWidgetMap['I000003'].checkMod">*</b>:</label>
+                <div class="col-sm-9" ng-show="itemWidgetMap['I000003'].writeMod">
+                    <input type="text" name="frmWidgetId" placeholder="请输入画面名称" class="form-control m-b-xs" ng-model="sysWidgetAttribute.frmWidgetName" ng-required="itemWidgetMap['I000003'].checkMod" >
+                    <p>
+                        <span class="form-info" ng-show=" (form.frmWidgetName.$dirty && form.frmWidgetName.$error.required) || (form.frmWidgetName.$error.required && formValidate)">画面名称不能为空</span>
+                    </p>
+                </div>
+                <div class="col-sm-8" ng-show="!itemWidgetMap['I000003'].writeMod">
+                    <label class="col-sm-12 control-label text-left">{{sysWidgetAttribute.frmWidgetName}}</label>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group" ng-show="itemWidgetMap['I000004'].showMod">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">项目ID</b><b class="form-error" ng-show="itemWidgetMap['I000004'].checkMod">*</b>:</label>
+                <div class="col-sm-9" ng-show="itemWidgetMap['I000004'].writeMod">
+                    <input type="text" name="eleWidgetId" placeholder="请输入项目ID" class="form-control m-b-xs" ng-model="sysWidgetAttribute.eleWidgetId" ng-required="itemWidgetMap['I000004'].checkMod" >
+                    <p>
+                        <span class="form-info" ng-show=" (form.eleWidgetId.$dirty && form.eleWidgetId.$error.required) || (form.eleWidgetId.$error.required && formValidate)">项目ID不能为空</span>
+                    </p>
+                </div>
+                <div class="col-sm-8" ng-show="!itemWidgetMap['I000004'].writeMod">
+                    <label class="col-sm-12 control-label text-left">{{sysWidgetAttribute.eleWidgetId}}</label>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in" ng-show="itemWidgetMap['I000004'].showMod"></div>
+
+            <div class="form-group" ng-show="itemWidgetMap['I000005'].showMod">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">项目名称</b><b class="form-error" ng-show="itemWidgetMap['I000005'].checkMod">*</b>:</label>
+                <div class="col-sm-9 form-inline" ng-show="itemWidgetMap['I000005'].writeMod">
+                    <input type="text" name="eleWidgetName" placeholder="请选择项目名称" class="form-control m-b-xs" ng-disabled="true" ng-model="sysWidgetAttribute.eleWidgetName" ng-required="itemWidgetMap['I000005'].checkMod" >
+                    <input type="text" name="eleWidgetId"  class="hidden" ng-model="sysWidgetAttribute.eleWidgetId" required >
+                    <button class="btn btn-info m-b-xs m-l-sm" ng-click="selectItem()"><i class="fa fa-pencil-square-o m-r-xs"></i>选择</button>
+                    <p>
+                        <span class="form-info" ng-show=" (form.eleWidgetName.$dirty && form.eleWidgetName.$error.required) || (form.eleWidgetName.$error.required && formValidate)">项目名称不能为空</span>
+                    </p>
+                </div>
+                <div class="col-sm-8" ng-show="!itemWidgetMap['I000005'].writeMod">
+                    <label class="col-sm-12 control-label text-left">{{sysWidgetAttribute.eleWidgetName}}</label>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group" ng-show="itemWidgetMap['I000006'].showMod">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">项目是否显示</b><b class="form-error" ng-show="itemWidgetMap['I000006'].checkMod">*</b>:</label>
+                <div class="col-sm-9 m-t-xs" ng-show="itemWidgetMap['I000006'].writeMod">
+                    <label class="i-checks i-checks-sm" ng-repeat=" showModObj in modList">
+                        <input type="radio" ng-model="sysWidgetAttribute.showMod" value="{{showModObj.dataDicCode}}" name="showMod">
+                        <i></i>
+                        {{showModObj.dataDicName}}
+                    </label>
+                </div>
+                <div class="col-sm-8" ng-show="!itemWidgetMap['I000006'].writeMod">
+                    <label class="col-sm-12 control-label text-left">{{sysWidgetAttribute.showModName}}</label>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group" ng-show="itemWidgetMap['I000007'].showMod">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">项目是否可编辑</b><b class="form-error" ng-show="itemWidgetMap['I000007'].checkMod">*</b>:</label>
+                <div class="col-sm-9 m-t-xs" ng-show="itemWidgetMap['I000007'].writeMod">
+                    <label class="i-checks i-checks-sm" ng-repeat=" writeModObj in modList">
+                        <input type="radio" ng-model="sysWidgetAttribute.writeMod" value="{{writeModObj.dataDicCode}}" name="writeMod">
+                        <i></i>
+                        {{writeModObj.dataDicName}}
+                    </label>
+                </div>
+                <div class="col-sm-8" ng-show="!itemWidgetMap['I000007'].writeMod">
+                    <label class="col-sm-12 control-label text-left">{{sysWidgetAttribute.writeModName}}</label>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group" ng-show="itemWidgetMap['I000008'].showMod">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">项目是否必须</b><b class="form-error" ng-show="itemWidgetMap['I000008'].checkMod">*</b>:</label>
+                <div class="col-sm-9 m-t-xs" ng-show="itemWidgetMap['I000008'].writeMod">
+                    <label class="i-checks i-checks-sm" ng-repeat=" checkModObj in modList">
+                        <input type="radio" ng-model="sysWidgetAttribute.checkMod" value="{{checkModObj.dataDicCode}}" name="checkMod">
+                        <i></i>
+                        {{checkModObj.dataDicName}}
+                    </label>
+                </div>
+                <div class="col-sm-8" ng-show="!itemWidgetMap['I000008'].writeMod">
+                    <label class="col-sm-12 control-label text-left">{{sysWidgetAttribute.checkModName}}</label>
+                </div>
+            </div>
+        </div>
+
+    </form>
+</div>
+<div class="modal-footer ng-scope">
+    <button class="btn btn-default" ng-click="close()">取消</button>
+    <button type="submit" class="btn btn-success" ng-show="showSaveButton" ng-disabled="submit" ng-click="save()">新增</button>
+    <button type="submit" class="btn btn-success" ng-show="showModifySaveButton" ng-disabled="submit" ng-click="modify()">保存</button>
+</div>

@@ -1,0 +1,18 @@
+server:
+  port: 8761
+
+eureka:
+  client:
+    register-with-eureka: false
+    fetch-registry: false
+
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 20000 #缺省为1000
+  threadpool:
+    default:
+      coreSize: 50 #缺省为10

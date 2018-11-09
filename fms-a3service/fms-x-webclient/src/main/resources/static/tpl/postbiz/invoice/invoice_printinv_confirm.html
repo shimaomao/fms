@@ -1,0 +1,55 @@
+<div class="modal-header">
+    <h4 class="modal-title">开票信息确认</h4>
+</div>
+<div ng-init="init()">
+    <div class="panel-body">
+        <div class="panel-body wrapper-sm text-center">
+
+            <div class="row m-b-md" ng-if="invoiceResult.invoiceAutos.length <= 0">
+                <div class="col-lg-12">开票失败</div>
+            </div>
+
+            <div ng-if="invoiceResult.invoiceAutos.length > 0">
+                <div class="row ">
+                    <div class="col-lg-12">本次成功开票信息</div>
+                </div>
+                <div class="row m-b-md">
+                    <div class="col-lg-4" ng-repeat="invoiceAuto in invoiceResult.invoiceAutos">
+                        发票号码：{{invoiceAuto.infonumber}} 发票金额：{{invoiceAuto.infoamount}}
+                    </div>
+                </div>
+            </div>
+
+            <div ng-if="invoiceResult.notSendInvoiceVos.length > 0">
+                <div class="row">
+                    <div class="col-lg-12">本次因为开票失败导致未发送合同号</div>
+                </div>
+                <div class="row m-b-md">
+                    <div class="col-lg-4" ng-repeat="invoiceVo in invoiceResult.notSendInvoiceVos">
+                        合同号：{{invoiceVo.contNo}}
+                    </div>
+                </div>
+            </div>
+
+            <div ng-if="invoiceResult.errorInvoiceVos.length > 0">
+                <div class="row">
+                    <div class="col-lg-12">本次开票失败信息合同号</div>
+                </div>
+                <div class="row m-b-md">
+                    <div class="col-lg-4" ng-repeat="invoiceVo in invoiceResult.errorInvoiceVos">
+                        合同号：{{invoiceVo.contNo}}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12">失败原因：{{invoiceResult.errorMsg}}</div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<div class="modal-footer ng-scope text-center">
+    <div class="text-center">
+        <button class="btn btn-success" ng-click="confirm()">确认</button>
+    </div>
+</div>

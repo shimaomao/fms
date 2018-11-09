@@ -1,0 +1,81 @@
+<div  ng-controller="collection_person_modify_controller">
+    <div>
+        <toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+    </div>
+    <div class="panel panel-default">
+
+        <div class="row" style="margin: 0; padding: 15px; border: 1px solid #dddddd">
+            <h4 class="m-n font-thin h4">修改催收组员</h4>
+        </div>
+    <form name="form" class="form-validation" novalidate>
+        <div class="panel-body ">
+            <div class="form-group row">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">催收类型</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-3">
+                    <select name="collectionType" ng-model="collectionPerson.collectionType" class="form-control m-b-xs" required>
+                        <option value="">---请选择催收类型---</option>
+                        <option ng-repeat="enableFlagObj in collectionList" value="{{enableFlagObj.codeValue}}">{{enableFlagObj.codeValueName}}</option>
+                    </select>
+                    <p>
+                        <span class="form-info" ng-show=" (form.collectionType.$dirty && form.collectionType.$error.required) || (form.collectionType.$error.required && formValidate)">催收类型不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">催收组员姓名</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-3 form-inline">
+                    <input type="text" readonly name="collectionPersonName"  class="form-control m-b-xs" ng-model="collectionPerson.collectionPersonName"  required >
+                    <!--<button class="btn btn-success m-b-xs btn-sm form-inline fms-button-margin-top"  ng-click="selectSysUser()">选择<b class="form-error">*</b></button>-->
+                    <p>
+                        <span class="form-info" ng-show=" (form.collectionPersonName.$dirty && form.collectionPersonName.$error.required) || (form.collectionPersonName.$error.required && formValidate)">催收组员账号不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">催收组员账号</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-3">
+                    <input type="text" readonly name="collectionPersonNum" placeholder="请输入催收组员账号" class="form-control m-b-xs" ng-model="collectionPerson.collectionPersonNum"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.collectionPersonNum.$dirty && form.collectionPersonNum.$error.required) || (form.collectionPersonNum.$error.required && formValidate)">催收组员账号不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">启用标识</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-3">
+                    <select name="enableFlag" ng-model="collectionPerson.enableFlag" class="form-control m-b-xs" required>
+                        <option value="">---请选择---</option>
+                        <option ng-repeat="enableFlagObj in enableFlagList" value="{{enableFlagObj.codeValue}}">{{enableFlagObj.codeValueName}}</option>
+                    </select>
+                </div>
+                <p>
+                    <span class="form-info" ng-show=" (form.enableFlag.$dirty && form.enableFlag.$error.required) || (form.enableFlag.$error.required && formValidate)">启用标识不能为空</span>
+                </p>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">备注</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-3">
+                    <textarea limit-word cols="100" rows="5" maxlength="500" name="remark" class="form-control m-b-xs" ng-model="collectionPerson.remark" required></textarea>
+                    <p>
+                        <span class="form-info" ng-show=" (form.remark.$dirty && form.remark.$error.required) || (form.remark.$error.required && formValidate)">备注不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+
+
+            <div class="text-center">
+                <div class="col-sm-15 m-b">
+                    <button class="btn btn-default" ng-click="goBack()">返回</button>
+                    <button type="submit" class="btn btn-success" ng-disabled="submit" ng-click="modify()">保存</button>
+                </div>
+            </div>
+        </div>
+    </form>
+    </div>
+</div>
+

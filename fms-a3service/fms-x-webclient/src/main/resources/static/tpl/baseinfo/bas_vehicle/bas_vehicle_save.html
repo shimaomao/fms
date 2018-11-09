@@ -1,0 +1,218 @@
+<div class="panel panel-default" ng-controller="bas_vehicle_save_controller">
+    <div class="modal-header">
+        <h4 class="modal-title">{{title}}</h4>
+    </div>
+    <div class="modal-body">
+        <form name="form" class="form-validation" novalidate>
+
+            <div class="panel-body">
+                <div class="form-group row">
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">级别</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <select  ng-model="basVehicle.vehicleLevel" class="form-control m-b-xs" disabled >
+                            <option ng-value="vehicleLevelObj.codeValue" ng-repeat="vehicleLevelObj in vehicleLevelList" ng-selected="vehicleLevelObj.codeValue == basVehicle.vehicleLevel">{{vehicleLevelObj.codeValueName}}</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">{{CODE}}代码</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-3">
+                        <input type="text" name="vehicleCode" placeholder="请输入{{CODE}}代码" class="form-control m-b-xs" ng-model="basVehicle.vehicleCode"  required >
+                        <p>
+                            <span class="form-info" ng-show=" (form.vehicleCode.$dirty && form.vehicleCode.$error.required) || (form.vehicleCode.$error.required && formValidate)">{{CODE}}代码不能为空</span>
+                        </p>
+                    </div>
+                </div>
+
+
+                <div class="form-group row">
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">{{CODE}}名称</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-3">
+                        <input type="text" name="vehicleName" placeholder="请输入{{CODE}}名称" class="form-control m-b-xs" ng-model="basVehicle.vehicleName"  required >
+                        <p>
+                            <span class="form-info" ng-show=" (form.vehicleName.$dirty && form.vehicleName.$error.required) || (form.vehicleName.$error.required && formValidate)">{{CODE}}名称不能为空</span>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="form-group row" ng-if="basVehicle.vehicleLevel!='1'">
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">{{name}}</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-3 form-inline">
+                        <input type="text" name="parentVehicleName" placeholder="请选择{{name}}" class="form-control m-b-xs" ng-model="basVehicle.parentVehicleName"  ng-required="basVehicle.vehicleLevel!='1'"  readonly>
+                        <input type="hidden" name="parentVehicleCode"  ng-model="basVehicle.parentVehicleCode">
+                        <button class="btn btn-sm btn-primary m-b-xs m-l-sm" ng-click="select(basVehicle.vehicleLevel-1)"><i class="fa fa-pencil-square-o m-r-xs"></i>选择</button>
+                        <p>
+                            <span class="form-info" ng-show=" (form.parentVehicleName.$dirty && form.parentVehicleName.$error.required) || (form.parentVehicleName.$error.required && formValidate)">{{name}}不能为空</span>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">首字母</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-3">
+                        <input type="text" maxlength="1" name="firstLetter" placeholder="请输入首字母" class="form-control m-b-xs" ng-model="basVehicle.firstLetter"  required >
+                        <p>
+                            <span class="form-info" ng-show=" (form.firstLetter.$dirty && form.firstLetter.$error.required) || (form.firstLetter.$error.required && formValidate)">首字母不能为空</span>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">是否启用</b><b
+                            class="form-error">*</b>:</label>
+                    <div class="col-sm-3">
+                        <select name="enableFlag" ng-model="basVehicle.enableFlag" class="form-control m-b-xs"
+                                required>
+                            <option value="">--请选择启用状态--</option>
+                            <option value="{{enableFlagObj.codeValue}}" ng-repeat="enableFlagObj in enableFlagList">
+                                {{enableFlagObj.codeValueName}}
+                            </option>
+                        </select>
+                        <p>
+                            <span class="form-info"
+                                  ng-show=" (form.enableFlag.$dirty && form.enableFlag.$error.required) || (form.enableFlag.$error.required && formValidate)">请选择启用状态</span>
+                        </p>
+                    </div>
+                </div>
+                <div ng-if="basVehicle.vehicleLevel=='4'">
+                <!--<div class="form-group row">
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">车辆大类</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-3">
+                        <select  name="vehicleType1" ng-model="basVehicle.vehicleType1" class="form-control m-b-xs" ng-required="basVehicle.vehicleLevel=='4'" >
+                            <option value="">&#45;&#45;请选择车辆大类&#45;&#45;</option>
+                            <option value="{{vehicleType1Obj.codeValue}}" ng-repeat="vehicleType1Obj in vehicleType1List">{{vehicleType1Obj.codeValueName}}</option>
+                        </select>
+                        <p>
+                            <span class="form-info" ng-show=" (form.vehicleType1.$dirty && form.vehicleType1.$error.required) || (form.vehicleType1.$error.required && formValidate)">请选择车辆大类</span>
+                        </p>
+                    </div>
+                </div>-->
+
+
+                <div class="form-group row">
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">车辆分类</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-3">
+                        <select  name="vehicleType2"  ng-model="basVehicle.vehicleType2" class="form-control m-b-xs" ng-required="basVehicle.vehicleLevel=='4'" >
+                            <option value="">&#45;&#45;请选择车辆分类&#45;&#45;</option>
+                            <option value="{{vehicleType2Obj.codeValue}}" ng-repeat="vehicleType2Obj in vehicleType2List">{{vehicleType2Obj.codeValueName}}</option>
+                        </select>
+                        <p>
+                            <span class="form-info" ng-show=" (form.vehicleType2.$dirty && form.vehicleType2.$error.required) || (form.vehicleType2.$error.required && formValidate)">请选择车辆分类</span>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">是否新能源车</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-3">
+                        <div class="radio" ng-repeat="	newEnergyObj in newEnergyList">
+                            <label>
+                                <input type="radio" name="newEnergy" ng-model="basVehicle.newEnergy"  ng-value="newEnergyObj.codeValue" required>
+                                {{newEnergyObj.codeValueName}}
+                            </label>
+                        </div>
+                        <p>
+                            <span class="form-info" ng-show=" (form.newEnergy.$dirty && form.newEnergy.$error.required) || (form.newEnergy.$error.required && formValidate)">请选择是否新能源车</span>
+                        </p>
+                    </div>
+                </div>
+
+
+                <div class="form-group row">
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">指导价格</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-3">
+                        <input type="text" name="guidePrice" placeholder="请输入指导价格" class="form-control m-b-xs" ng-model="basVehicle.guidePrice"  ng-required="basVehicle.vehicleLevel=='4'"  >
+                        <p>
+                            <span class="form-info" ng-show=" (form.guidePrice.$dirty && form.guidePrice.$error.required) || (form.guidePrice.$error.required && formValidate)">指导价格不能为空</span>
+                        </p>
+                    </div>
+                </div>
+
+
+                <div class="form-group row">
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">排量</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-3">
+                        <input type="text" name="displacement" placeholder="请输入排量" class="form-control m-b-xs" ng-model="basVehicle.displacement"  ng-required="basVehicle.vehicleLevel=='4'"  >
+                        <p>
+                            <span class="form-info" ng-show=" (form.displacement.$dirty && form.displacement.$error.required) || (form.displacement.$error.required && formValidate)">排量不能为空</span>
+                        </p>
+                    </div>
+                </div>
+
+
+                <div class="form-group row">
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">座位数量</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-3">
+                        <input type="text" name="seat" placeholder="请输入座位数量" class="form-control m-b-xs" ng-model="basVehicle.seat"  ng-required="basVehicle.vehicleLevel=='4'"  >
+                        <p>
+                            <span class="form-info" ng-show=" (form.seat.$dirty && form.seat.$error.required) || (form.seat.$error.required && formValidate)">座位数量不能为空</span>
+                        </p>
+                    </div>
+                </div>
+
+
+                <div class="form-group row">
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">车型年款</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-3">
+                        <input type="text" name="modelYear" placeholder="请输入车型年款" class="form-control m-b-xs" ng-model="basVehicle.modelYear"  ng-required="basVehicle.vehicleLevel=='4'"  >
+                        <p>
+                            <span class="form-info" ng-show=" (form.modelYear.$dirty && form.modelYear.$error.required) || (form.modelYear.$error.required && formValidate)">车型年款不能为空</span>
+                        </p>
+                    </div>
+                </div>
+
+
+                <div class="form-group row">
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">吨位</b><b class="form-error"></b>:</label>
+                    <div class="col-sm-3">
+                        <input type="text" name="weight" placeholder="请输入吨位" class="form-control m-b-xs" ng-model="basVehicle.weight"    >
+                        <p>
+                            <span class="form-info" ng-show=" (form.weight.$dirty && form.weight.$error.required) || (form.weight.$error.required && formValidate)">吨位不能为空</span>
+                        </p>
+                    </div>
+                </div>
+
+
+                <div class="form-group row">
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">功率</b><b class="form-error"></b>:</label>
+                    <div class="col-sm-3">
+                        <input type="text" name="power" placeholder="请输入功率" class="form-control m-b-xs" ng-model="basVehicle.power"    >
+                        <p>
+                            <span class="form-info" ng-show=" (form.power.$dirty && form.power.$error.required) || (form.power.$error.required && formValidate)">功率不能为空</span>
+                        </p>
+                    </div>
+                </div>
+
+
+                <div class="form-group row">
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">轮毂尺寸</b><b class="form-error"></b>:</label>
+                    <div class="col-sm-3">
+                        <input type="text" name="wheelSize" placeholder="请输入轮毂尺寸" class="form-control m-b-xs" ng-model="basVehicle.wheelSize"    >
+                        <p>
+                            <span class="form-info" ng-show=" (form.wheelSize.$dirty && form.wheelSize.$error.required) || (form.wheelSize.$error.required && formValidate)">轮毂尺寸不能为空</span>
+                        </p>
+                    </div>
+                </div>
+
+
+                <div class="form-group row">
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">排放标准</b><b class="form-error"></b>:</label>
+                    <div class="col-sm-3">
+                        <input type="text" name="effluentStd" placeholder="请输入排放标准" class="form-control m-b-xs" ng-model="basVehicle.effluentStd"    >
+                        <p>
+                            <span class="form-info" ng-show=" (form.effluentStd.$dirty && form.effluentStd.$error.required) || (form.effluentStd.$error.required && formValidate)">排放标准不能为空</span>
+                        </p>
+                    </div>
+                </div>
+                </div>
+
+            </div>
+
+        </form>
+    </div>
+    <div class="col-sm-15 m-b text-center">
+        <button class="btn btn-default" ng-click="goback()">取消</button>
+        <button type="submit" class="btn btn-success" ng-disabled="submit" ng-click="save()">新增</button>
+    </div>
+</div>

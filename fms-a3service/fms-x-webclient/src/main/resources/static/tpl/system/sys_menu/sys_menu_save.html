@@ -1,0 +1,90 @@
+<div  ng-controller="sys_menu_save_controller">
+    <div>
+        <toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+    </div>
+    <div class="panel panel-default">
+        <div class="row" style="margin: 0; padding: 15px; border: 1px solid #dddddd">
+            <h4 class="m-n font-thin h4">添加菜单</h4>
+        </div>
+    <form name="form" class="form-validation" novalidate>
+
+        <div class="panel-body">
+
+            <div class="row">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">菜单名称</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-3">
+                    <input type="text" name="menuName" placeholder="请输入菜单名称" class="form-control m-b-xs" ng-model="sysMenu.menuName"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.menuName.$dirty && form.menuName.$error.required) || (form.menuName.$error.required && formValidate)">菜单名称不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class=" row">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">启用标识</b><b class="form-error">*</b>:</label>
+
+                    <div class="col-sm-3">
+                        <select name="enableFlag" ng-model="sysMenu.enableFlag" class="form-control m-b-xs" required>
+                            <option value="">---请选择---</option>
+                            <option ng-repeat="enableFlagObj in enableFlagList" value="{{enableFlagObj.codeValue}}">{{enableFlagObj.codeValueName}}</option>
+                        </select>
+                        <p>
+                            <span class="form-info" ng-show=" (form.enableFlag.$dirty && form.enableFlag.$error.required) || (form.enableFlag.$error.required && formValidate)">启用标识不能为空</span>
+                        </p>
+                    </div>
+
+
+            </div>
+
+
+            <div class=" row">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">菜单等级</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-3">
+
+                    <select name="menuLevel" ng-model="sysMenu.menuLevel" class="form-control m-b-xs" ng-change="resLevelChange()" required>
+                        <option value="">---请选择---</option>
+                        <option ng-repeat="menuLevel in menuLevels" value="{{menuLevel.codeValue}}">{{menuLevel.codeValueName}}</option>
+                    </select>
+                    <p>
+                        <span class="form-info" ng-show=" (form.menuLevel.$dirty && form.menuLevel.$error.required) || (form.menuLevel.$error.required && formValidate)">菜单等级不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class=" row">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">上级菜单</b>:</label>
+                <div class="col-sm-3">
+
+                    <select  ng-model="sysMenu.parMenuId" class="form-control m-b-xs">
+                        <option value="">{{parMenuInfoTmp}}</option>
+                        <option ng-repeat="sysResParent in sysResParents" value="{{sysResParent.menuId}}">{{sysResParent.menuName}}</option>
+                    </select>
+                    <p></p>
+                </div>
+            </div>
+
+            <div class=" row">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">菜单链接</b>:</label>
+                <div class="col-sm-3">
+                    <input type="text" name="menuLink" placeholder="请输入菜单链接" class="form-control m-b-xs" ng-model="sysMenu.menuLink"  >
+                <p></p>
+                </div>
+            </div>
+            <div class="row">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">排序</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-3">
+                    <input type="text" name="orderNo" placeholder="请输入排序" class="form-control m-b-xs" ng-model="sysMenu.orderNo"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.orderNo.$dirty && form.orderNo.$error.required) || (form.orderNo.$error.required && formValidate)">排序不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+        </div>
+            <div class="col-sm-15 m-b text-center">
+                <button class="btn btn-default" ng-click="goback()">返回</button>
+                <button type="submit" class="btn btn-success"  ng-disabled="submit" ng-click="save()">新增</button>
+            </div>
+    </form>
+    </div>
+    </div>

@@ -1,0 +1,130 @@
+<div ng-controller="fin_repay_sked_invoice_controller">
+    <div>
+        <toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+    </div>
+    <div class="panel panel-default">
+        <div class="row" style="margin: 0; padding: 10px; border: 1px solid #dddddd">
+            <div class="form-inline">
+                <div class="form-group">
+                    <h5 >开具发票</h5>
+                </div>
+                <div class="form-group pull-right">
+                    <div class="btn-group">
+                        <button type="submit" class="btn btn-success btn-sm fms-button-margin-bottom" ng-disabled="submit" ng-click="save()">确认开票</button>
+                        <!--<button type="submit" class="btn btn-success btn-sm fms-button-margin-bottom" ng-disabled="submit" ng-click="sendBack()">退回</button>-->
+                        <button class="btn btn-default btn-sm fms-button-margin-bottom" ng-click="goBack()">返回</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <form name="form" class="form-validation" novalidate>
+            <!--<table border="1" class="table table-striped m-b-none" id="equ_mor_detail_table" style="padding: 0px">-->
+            <!--</table>-->
+            <div class="panel-body">
+                <!--<div class="form-group row" >-->
+                    <!--<label class="col-sm-2 control-label text-right"><b class="form-text-black">差额合计(元)</b>:</label>-->
+                    <!--<div class="col-sm-2">-->
+                        <!--&lt;!&ndash;<input type="text" name="DifferenceCount"  class="form-control m-b-xs" ng-model="equMorDetail.differenceCount"  required disabled>&ndash;&gt;-->
+                        <!--<label class="col-sm-12 control-label text-left">{{equMorDetail.differenceCount}}</label>-->
+                    <!--</div>-->
+                <!--</div>-->
+                <!--<div class="form-group row">-->
+                    <!--<label class="col-sm-2 control-label text-right"><b class="form-text-black">进账信息</b>:</label>-->
+                    <!--<div class="btn-group pull-right">-->
+                        <!--<button ng-show="equMorDetailVoList.length != 0" class="btn btn-info m-b-xs m-l-sm btn-sm" ng-click="add()"><i class="fa fa-plus m-r-xs"></i>增加</button>-->
+                    <!--</div>-->
+                <!--</div>-->
+
+                <div class="row">
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            <label class="control-label col-lg-5"><b class="form-text-black">批量录入开票日期</b>:</label>
+                            <div class="col-lg-6"><input onchange="" placeholder="请录入开票日期" class="col-lg-3 form-control m-b-sm" ng-model="allInvoiceDate" type="text"  date-picker></div>
+                        </div>
+                    </div>
+                </div>
+                <div style="padding: 0 20px;">
+                    <div class="dataTables_wrapper form-inline dt-bootstrap no-footer">
+                        <table border="1" class="table table-striped m-b-none dataTable no-footer" width="100%">
+                            <thead>
+                            <tr>
+                                <th class="sorting_disabled center" rowspan="1" colspan="1" style="width: 0px;">归属公司</th>
+                                <th class="sorting_disabled center" rowspan="1" colspan="1" style="width: 0px;">客户名称</th>
+                                <th class="sorting_disabled center" rowspan="1" colspan="1" style="width: 0px;">车架号</th>
+                                <th class="sorting_disabled center" rowspan="1" colspan="1" style="width: 0px;">业务类型</th>
+                                <th class="sorting_disabled center" rowspan="1" colspan="1" style="width: 0px;">期数</th>
+                                <th class="sorting_disabled center" rowspan="1" colspan="1" style="width: 0px;">应还款日</th>
+                                <th class="sorting_disabled center" rowspan="1" colspan="1" style="width: 0px;">应收租金</th>
+                                <th class="sorting_disabled center" rowspan="1" colspan="1" style="width: 0px;">当期本金</th>
+                                <th class="sorting_disabled center" rowspan="1" colspan="1" style="width: 0px;">当期利息</th>
+                                <th class="sorting_disabled center" rowspan="1" colspan="1" style="width: 0px;">开票金额</th>
+                                <th class="sorting_disabled center" rowspan="1" colspan="1" style="width: 0px;">开票时间</th>
+                                <th class="sorting_disabled center" rowspan="1" colspan="1" style="width: 0px;">开票备注</th>
+                                <th class="sorting_disabled center" rowspan="1" colspan="1" style="width: 0px;">是否先开票</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr ng-show="finRepaySkeds.length == 0">
+                                <td colspan="8" class="dataTables_empty">表中暂无数据</a></td>
+                            </tr>
+                            <tr click-tr ng-show="finRepaySkeds.length != 0" ng-repeat="a in finRepaySkeds track by $index">
+                                <td class="text-center">{{a.groupDistrict}}</td>
+                                <td class="text-center">{{a.name}}</td>
+                                <td class="text-center">{{a.vinNo}}</td>
+                                <td class="text-center">{{a.licenseAttr | getName:'licenseAttr'}}</td>
+                                <td class="text-center">{{a.period}}</td>
+                                <td class="text-center">{{a.repayDate}}</td>
+                                <td class="text-center">{{a.rentActual}}</td>
+                                <td class="text-center">{{a.principal}}</td>
+                                <td class="text-center">{{a.interest}}</td>
+                                <!--<td>
+                                    <input type="text" title="{{a.receiptDate}}" name="receiptDate_{{$index}}" placeholder="请输入实际还款日" class="form-control m-b-xs" ng-model="a.receiptDate"
+                                           date-picker>
+                                </td>-->
+                                <td class="text-center">
+                                    <input type="number" title="{{a.invoiceAmount}}" name="invoiceAmount_{{$index}}" limit-number placeholder="请输入开票金额" class="form-control m-b-xs" ng-model="a.invoiceAmount" ng-change="sumAmount()">
+                                    <p>
+                                        <span class="form-info" ng-show=" (form.invoiceAmount_{{$index}}.$dirty && form.invoiceAmount_{{$index}}.$error.required) || (form.invoiceAmount_{{$index}}.$error.required && formValidate)">开票金额不能为空</span>
+                                    </p>
+                                </td>
+                                <td>
+                                    <input type="text" title="{{a.invoiceDate}}" name="invoiceDate_{{$index}}" placeholder="请输入开票时间" class="form-control m-b-xs" ng-model="a.invoiceDate"
+                                           date-picker>
+                                    <p>
+                                    <span class="form-info" ng-show=" (form.invoiceDate_{{$index}}.$dirty && form.invoiceDate_{{$index}}.$error.required) || (form.invoiceDate_{{$index}}.$error.required && formValidate)">开票时间不能为空</span>
+                                    </p>
+                                </td>
+                                <td>
+                                    <input type="text" title="{{a.invoiceMemo}}" name="invoiceMemo_{{$index}}" maxlength="200" placeholder="请输入开票备注" class="form-control m-b-xs" ng-model="a.invoiceMemo">
+                                </td>
+                                <td class="text-center">{{a.invoiceProp | getName:'yesNoFlag'}}</td>
+                            </tr>
+
+
+
+                            <tr click-tr ng-show="finRepaySkeds.length != 0">
+                                <td class="text-center">{{finRepaySked.groupDistrict}}</td>
+                                <td colspan="5"></td>
+                                <td class="text-center">{{finRepaySked.rentActual}}</td>
+                                <td class="text-center">{{finRepaySked.principal}}</td>
+                                <td class="text-center">{{finRepaySked.interest}}</td>
+                                <td class="text-center">{{finRepaySked.invoiceAmount}}</td>
+                                <td colspan="3"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <!--<div class="form-group row">-->
+                    <!--<label class="col-sm-2 control-label text-right"><b class="form-text-black">备注</b><b class="form-error">*</b>:</label>-->
+                    <!--<div class="col-sm-10">-->
+                        <!--<textarea cols="100" rows="5" maxlength="200" name="remark1" ng-model="equMorDetail.remark1" required></textarea>-->
+                        <!--&lt;!&ndash;<p>&ndash;&gt;-->
+                            <!--&lt;!&ndash;<span class="form-info" ng-show=" (form.remark1.$dirty && form.remark1.$error.required) || (form.remark1.$error.required && formValidate)">请输入备注</span>&ndash;&gt;-->
+                        <!--&lt;!&ndash;</p>&ndash;&gt;-->
+                    <!--</div>-->
+                <!--</div>-->
+            </div>
+        </form>
+    </div>
+</div>

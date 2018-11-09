@@ -1,0 +1,24 @@
+<div  ng-controller="invoice_auto_list_controller">
+    <div>
+        <toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-body wrapper-sm">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="row">
+                        <div class="form-group pull-right">
+                            <div class="btn-group">
+                                <button class="btn btn-default btn-sm m-b-xs fms-button-margin-bottom" ng-click="manualPrintinv()">发票打印</button>
+                                <button class="btn btn-default btn-sm m-b-xs fms-button-margin-bottom" ng-click="goBack()">返回</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <table border="1" class="table table-striped m-b-none" id="invoice_auto">
+        </table>
+    </div>
+</div>
+

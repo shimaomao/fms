@@ -1,0 +1,55 @@
+<div  ng-controller="cont_confirm_bef_controller">
+    <div>
+        <toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-body wrapper-sm">
+            <div class="row">
+                <div class="form-group pull-right">
+                    <div class="btn-group ">
+                        <button class="btn btn-success m-t-xs m-r-xs" ng-click="contConfirmBef()" ng-disabled="submit">提交</button>
+                        <button class="btn btn-default m-t-xs" ng-click="goBack()">返回</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <form name="form" class="form-validation" novalidate>
+            <div class="panel-body wrapper-sm">
+                <ul id="applyTab" class="nav nav-tabs">
+                    <li class="active"><a href="javascript:void(0);" data-toggle="tab" data-id="cont_confirm" onclick="switchPageTab(this, 'applyTab')">合同生成前确认</a></li>
+                    <li ng-if="applyType==1"><a href="javascript:void(0);" data-toggle="tab" data-id="customer" onclick="switchPageTab(this, 'applyTab')">客户基本信息</a></li>
+                    <li ng-if="applyType==2"><a href="javascript:void(0);" data-toggle="tab" data-id="compCustomer" onclick="switchPageTab(this, 'applyTab')">企业信息</a></li>
+                    <li><a href="javascript:void(0);" data-toggle="tab" data-id="vehicleFin" onclick="switchPageTab(this, 'applyTab')">车辆融资信息</a></li>
+                    <li><a href="javascript:void(0);" data-toggle="tab" data-id="guarantee" onclick="switchPageTab(this, 'applyTab')">担保人基本信息</a></li>
+                    <li><a href="javascript:void(0);" data-toggle="tab" data-id="applyFile" onclick="switchPageTab(this, 'applyTab')">附件信息</a></li>
+                </ul>
+                <div id="applyTabContent" class="tab-content">
+                    <!--合同生成前确认-->
+                    <div class="tab-pane fade in active" id="cont_confirm">
+                        <div ng-include="'tpl/prebiz/cont_confirm_bef/cont_confirm.html'" class="row m-xs"></div>
+                    </div>
+                    <!-- 客户基本信息 -->
+                    <div class="tab-pane fade" id="customer" ng-if="applyType==1">
+                        <div ng-include="'tpl/prebiz/apply_input/cstm_person_detail.html'" class="row m-xs"></div>
+                    </div>
+                    <!-- 企业信息 -->
+                    <div class="tab-pane fade" id="compCustomer" ng-if="applyType==2">
+                        <div ng-include="'tpl/prebiz/apply_input/cstm_company_detail.html'" class="row m-xs"></div>
+                    </div>
+                    <!-- 车辆融资信息 -->
+                    <div class="tab-pane fade" id="vehicleFin">
+                        <div ng-include="'tpl/prebiz/apply_input/apply_finance_vehicle_detail.html'" class="row m-xs"></div>
+                    </div>
+                    <!--担保人基本信息-->
+                    <div class="tab-pane fade " id="guarantee">
+                        <div ng-include="'tpl/prebiz/apply_input/guarantee_info_detail.html'" class="row m-xs"></div>
+                    </div>
+                    <!--附件信息-->
+                    <div class="tab-pane fade " id="applyFile">
+                        <div ng-include="'tpl/prebiz/apply_input/apply_input_file_detail.html'" class="row m-xs"></div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

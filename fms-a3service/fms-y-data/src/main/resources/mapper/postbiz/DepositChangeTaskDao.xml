@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.com.leadu.fms.data.postbiz.dao.DepositChangeTaskDao">
+
+    <select id="selectApplyInfoByContNo" resultType="cn.com.leadu.fms.pojo.postbiz.vo.depositchange.DepositChangeApplyVo">
+        select
+        <!-- 出租人 -->
+        sysGroup.group_name lessor ,
+        <!-- 承租人 客户姓名 -->
+        case when contract.apply_type = '1' then cstmPerson.name else cstmCompany.name end as lessee ,
+        <!-- 承租人 证件号 -->
+        case when contract.apply_type = '1' then cstmPerson.certif_no else cstmCompany.social_certif_no end as certifNo ,
+        <!-- 合同编号 -->
+        contract.cont_no,
+        <!-- 申请类型 -->
+        contract.apply_type,
+        <!-- 车架号 -->
+        contract.vin_no,
+        <!-- 车牌号 -->
+        contract.vehicle_license_no,
+        <!-- 融资期限 -->
+        contractFinance.fin_period_type ,
+        <!-- 融资金额 -->
+        contractFinance.fin_total,
+        <!-- 保证金 -->
+        contractFinance.deposit,
+        <!-- 区域 -->
+        sysGroup.group_district
+        from contract contract
+        <!-- 使用申请号和合同号关联合同融资信息表 -->
+        left join contract_finance contractFinance on contractFinance.del_flag = ${delete_exist}
+        and contractFinance.cont_no = contract.cont_no and contractFinance.apply_no = contract.apply_no
+        <!-- 使用出租人关联用户组表 -->
+        left join sys_group sysGroup on sysGroup.del_flag = ${delete_exist}
+        and sysGroup.group_code = contractFinance.belong_group
+        <!-- 使用申请号关联个人客户表 -->
+        left join cstm_person cstmPerson on cstmPerson.del_flag = ${delete_exist}
+        and cstmPerson.apply_no = contract.apply_no
+        <!-- 使用申请号关联企业客户表 -->
+        left join cstm_company cstmCompany on cstmCompany.del_flag = ${delete_exist}
+        and cstmCompany.apply_no = contract.apply_no
+        where contract.del_flag = ${delete_exist}
+        and contract.cont_no = #{contNo}
+    </select>
+
+    <select id="selectVehicleType" resultType="cn.com.leadu.fms.pojo.postbiz.vo.depositchange.DepositVehicleTypeVo">
+        select
+        vehicleBrand.vehicle_name brand,
+        vehicleCode.vehicle_name type
+        from contract_vehicle contractVehicle
+        LEFT JOIN bas_vehicle vehicleBrand ON contractVehicle.veh_brand_code=vehicleBrand.vehicle_code AND vehicleBrand.del_flag = ${delete_exist}
+        LEFT JOIN bas_vehicle vehicleCode ON contractVehicle.vehicle_code=vehicleCode.vehicle_code AND vehicleCode.del_flag = ${delete_exist}
+        where contractVehicle.del_flag = ${delete_exist}
+        and contractVehicle.cont_no = #{contNo}
+    </select>
+</mapper>

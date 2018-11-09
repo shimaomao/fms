@@ -1,0 +1,73 @@
+<div>
+    <toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+</div>
+<div  ng-controller="lawsuit_task_list_controller">
+    <div class="panel panel-default">
+        <div class="panel-body wrapper-sm">
+            <div class="row">
+                <div class="col-lg-12">
+                    <form class="form-inline" role="form">
+                        <div class="form-group">
+                            <label class="sr-only" >申请编号 </label>
+                            <input class="form-control m-b-xs" ng-model="params.applyNo" placeholder="申请编号">
+                        </div>
+                        <div class="form-group">
+                            <label class="sr-only" >合同编号 </label>
+                            <input class="form-control m-b-xs" ng-model="params.contNo" placeholder="合同编号">
+                        </div>
+                        <div class="form-group">
+                            <label class="sr-only" >车架号 </label>
+                            <input class="form-control m-b-xs" ng-model="params.vinNo" placeholder="车架号">
+                        </div>
+                        <div class="form-group">
+                            <label class="sr-only" >车牌号 </label>
+                            <input class="form-control m-b-xs" ng-model="params.vehicleLicenseNo" placeholder="车牌号">
+                        </div>
+                        <div class="form-group">
+                            <label class="sr-only" >承租人 </label>
+                            <input class="form-control m-b-xs" ng-model="params.cstmName" placeholder="承租人">
+                        </div>
+                        <div class="form-group">
+                            <label class="sr-only" >发起人 </label>
+                            <input class="form-control m-b-xs" ng-model="params.submitUser" placeholder="发起人">
+                        </div>
+                        <div class="form-group">
+                            <label class="sr-only" >诉讼任务状态 </label>
+                            <select ng-model="params.lawsuitTaskStatus" class="form-control m-b-xs">
+                                <option value="">---请选择诉讼任务状态---</option>
+                                <option value="{{bizStatusObj.codeValue}}" ng-if="bizStatusObj.codeValue.startsWith($root.bizTypes.lawsuit)" ng-repeat="bizStatusObj in bizStatusList" ng-selected="params.lawsuitTaskStatus == bizStatusObj.codeValue">{{bizStatusObj.codeValueName}}</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="sr-only" >派单类型 </label>
+                            <select name="dataSource" ng-model="params.dispatchType" class="form-control m-b-xs" ng-selected="params.dispatchType == a.codeValue" ng-options="a.codeValue as a.codeValueName for a in 'dispatchType' | getList">
+                                <option value="">---请选择派单类型---</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="sr-only" >登记人 </label>
+                            <input class="form-control m-b-xs" ng-model="params.registerUser" placeholder="登记人">
+                        </div>
+
+                        <div class="form-group m-b-sm">
+                            <div class="btn-group">
+                                <button class="btn btn-default m-b-xs btn-info" ng-click="searchLawsuitTask()" ><i class="fa fa-search"></i>查询</button>
+                                <button class="btn btn-default m-b-xs" ng-click="resetLawsuitTask()" ><i class="fa  icon-refresh"></i>重置</button>
+                            </div>
+                        </div>
+
+                        <div class="form-group pull-right">
+                            <div class="btn-group">
+                                <button class="btn btn-default m-b-xs" ng-click="originatingTask()"><i class="fa fa-plus"></i>发起任务</button>
+                                <button class="btn btn-default m-b-xs" ng-click="exportLawsuitTask()"><i class=""></i>导出Excel</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <table border="1" class="table table-striped m-b-none" id="lawsuit_task_table">
+        </table>
+    </div>
+</div>
+

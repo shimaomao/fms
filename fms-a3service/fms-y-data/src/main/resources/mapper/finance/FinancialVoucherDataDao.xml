@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.com.leadu.fms.data.finance.dao.FinancialVoucherDataDao">
+
+    <!--
+     /**
+     * @Title:
+     * @Description:   查询财务凭证数据详情list
+     * @param finVouData
+     * @return
+     * @throws
+     * @author qiaomengnan
+     * @date 2018/07/11 12:00:22
+     */
+     -->
+    <select id="selectFinancialVoucherDataVos" resultType="cn.com.leadu.fms.pojo.finance.vo.financialvoucherdata.FinancialVoucherDataVo">
+        select
+        <!-- 凭证号  -->
+        finVouData.voucher_no,
+        <!-- 业务号 -->
+        finVouData.voucher_biz_code,
+        <!-- 业务日期 -->
+        finVouData.voucher_biz_date,
+        <!-- 凭证类型 -->
+        finVouData.voucher_type,
+        <!-- 凭证类型名称 -->
+        finVou.voucher_name voucherTypeName
+        from financial_voucher_data finVouData
+        <!-- 关联凭证类型表 使用凭证类型关联 -->
+        left join financial_voucher finVou on finVou.del_flag = ${delete_exist}
+        and finVou.voucher_type = finVouData.voucher_type
+        <!-- 条件 -->
+        where finVouData.del_flag = ${delete_exist}
+        <!-- 凭证号查询 -->
+        <if test="finVouDataVo.voucherNo != null">
+            and finVouData.voucher_no like #{finVouDataVo.voucherNo}
+        </if>
+        <!-- 业务号查询 -->
+        <if test="finVouDataVo.voucherBizCode != null">
+            and finVouData.voucher_biz_code like #{finVouDataVo.voucherBizCode}
+        </if>
+        group by finVouData.voucher_no,finVouData.voucher_biz_code,finVouData.voucher_biz_date,finVouData.voucher_type,finVou.voucher_name
+        order by max(finVouData.update_time) desc
+    </select>
+
+    <!--
+     /**
+     * @Title:
+     * @Description: 根据凭证号查询对应的凭证数据
+     * @param:  voucherNo 凭证号
+     * @return
+     * @throws
+     * @author qiaomengnan
+     * @date 2018/7/16 0016 19:37
+     */
+     -->
+    <select id="selectFinVouDataVoDetails" resultType="cn.com.leadu.fms.pojo.finance.vo.financialvoucherdata.FinancialVoucherDataVo">
+        select
+        <!-- 财务凭证数据 -->
+        finVouData.* ,
+        <!-- 凭证类型名称 -->
+        finVou.voucher_name voucherTypeName,
+        <!-- 科目名称 -->
+        finSub.subject_name
+        from financial_voucher_data finVouData
+        <!-- 关联凭证类型表 使用凭证类型关联 -->
+        left join financial_voucher finVou on finVou.del_flag = ${delete_exist}
+        and finVou.voucher_type = finVouData.voucher_type
+        <!-- 关联科目表 使用科目代码关联 -->
+        left join financial_subject finSub on finSub.del_flag = ${delete_exist}
+        and finSub.subject_cd = finVouData.subject_cd
+        <!-- 条件 -->
+        where finVouData.del_flag = ${delete_exist}
+        <!-- 凭证号 -->
+        and finvoudata.voucher_no = #{voucherNo}
+        <!-- 使用分录号排序 -->
+        order by cast(finVouData.voucher_detail_no AS unsigned INT )
+    </select>
+
+</mapper>

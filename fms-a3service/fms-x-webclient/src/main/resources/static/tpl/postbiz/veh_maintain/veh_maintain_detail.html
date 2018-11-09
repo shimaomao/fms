@@ -1,0 +1,102 @@
+<div  ng-controller="veh_maintain_detail_controller">
+    <div>
+        <toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+    </div>
+    <div class="panel panel-default">
+
+        <div class="row" style="margin: 0; padding: 15px; border: 1px solid #dddddd">
+            <div class="form-group pull-left"><h1 class="m-n font-thin h4">维修记录详情</h1></div>
+
+            <div class="form-group pull-right">
+                <div class="btn-group">
+                    <button class="btn btn-default" ng-click="goBack()">返回</button>
+                </div>
+            </div>
+        </div>
+
+        <form name="form" class="form-validation" novalidate>
+            <div class="panel-body ">
+                <div class="panel-body wrapper-sm">
+                    <div class="panel-body ">
+                        <div class="keyUp">
+                            <div class="row">
+                                <label class="col-sm-1 control-label text-right"><b class="form-text-black">来源</b>:</label>
+                                <div class="col-sm-2">
+                                    <label class="col-sm-12 control-label text-left">{{vehMaintain.maintainFlagVal}}</label>
+                                </div>
+
+                                <label class="col-sm-1 control-label text-right"><b class="form-text-black">合同号</b>:</label>
+                                <div class="col-sm-2">
+                                    <label class="col-sm-12 control-label text-left">{{vehMaintain.vehContNo}}</label>
+                                </div>
+
+                                <label class="col-sm-1 control-label text-right"><b class="form-text-black">承租人</b>:</label>
+                                <div class="col-sm-2">
+                                    <label class="col-sm-12 control-label text-left">{{vehMaintain.vehTenant}}</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <label class="col-sm-1 control-label text-right"><b class="form-text-black">出租人</b>:</label>
+                                <div class="col-sm-2">
+                                    <label class="col-sm-12 control-label text-left">{{vehMaintain.vehLessor}}</label>
+                                </div>
+
+                                <label class="col-sm-1 control-label text-right"><b class="form-text-black">理赔号:</b></label>
+                                <div class="col-sm-2">
+                                    <label class="col-sm-12 control-label text-left">{{vehMaintain.contInsurClaimNo}}</label>
+                                </div>
+
+                                <label class="col-sm-1 control-label text-right"><b class="form-text-black">车架号:</b></label>
+                                <div class="col-sm-2">
+                                    <label class="col-sm-12 control-label text-left">{{vehMaintain.vinNo}}</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <label class="col-sm-1 control-label text-right"><b class="form-text-black">发动机号</b>:</label>
+                                <div class="col-sm-2">
+                                    <label class="col-sm-12 control-label text-left">{{vehMaintain.engineNo}}</label>
+                                </div>
+
+                                <label class="col-sm-1 control-label text-right"><b class="form-text-black">车牌号</b>:</label>
+                                <div class="col-sm-2">
+                                    <label class="col-sm-12 control-label text-left">{{vehMaintain.vehicleLicenseNo}}</label>
+                                </div>
+
+                                <label class="col-sm-1 control-label text-right"><b class="form-text-black">维修日期</b>:</label>
+                                <div class="col-sm-2">
+                                    <label class="col-sm-12 control-label text-left">{{vehMaintain.maintainDate}}</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <label class="col-sm-1 control-label text-right"><b class="form-text-black">维修地点</b>:</label>
+                                <div class="col-sm-2">
+                                    <label class="col-sm-12 control-label text-left">{{vehMaintain.maintainAddr}}</label>
+                                </div>
+
+                                <label class="col-sm-1 control-label text-right"><b class="form-text-black">维修金额</b>:</label>
+                                <div class="col-sm-2">
+                                    <label class="col-sm-12 control-label text-left">{{vehMaintain.maintainAmount}}</label>
+                                </div>
+                            </div>
+
+                            <div class=" row">
+                                <label class="col-sm-1 control-label text-right"><b class="form-text-black">维修备注</b>:</label>
+                                <div class="col-sm-8">
+                                    <label class="col-sm-12 control-label text-left">{{vehMaintain.maintainMemo}}</label>
+                                </div>
+                            </div>
+
+                            <div class=" row">
+                                <label class="col-sm-1 control-label text-right"><b class="form-text-black">附件上传</b>:</label>
+                                <div class="col-sm-9 control-label" ng-if="httpData">
+                                    <tree-file-directive detail-flag="$root.yesNoFlag.yes" file-type="$root.basFileTypes.vehMaintainFile" files="$parent.bizFilesList" not-upload="$parent.notUpload" not-upload-info="$parent.msgInfo"   not-file-type="$parent.notFileType" not-file-type-name="$parent.notFileTypeName">
+                                    </tree-file-directive>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

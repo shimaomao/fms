@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.leadu.fms.data.baseinfo.dao.RuleConsequenceDao">
+
+    <!--
+     /**
+     * @Title:
+     * @Description:   根据规则id查询规则结果列表
+     * @param roleId
+     * @return
+     * @throws
+     * @author qiaomengnan
+     * @date 2018/05/21 12:41:42
+     */
+     -->
+    <select id="selectRuleConsequenceVosByRuleId"  resultType="cn.com.leadu.fms.pojo.baseinfo.vo.ruleconsequence.RuleConsequenceVo">
+        select
+        ruleConsequence.rule_conseq_id,ruleConsequence.rule_id ,
+        ruleConsequence.rule_no,ruleConsequence.conseq_item_key,
+        ruleItem.rule_item_name conseqItemKeyName,
+        ruleConsequence.conseq_logic_type,
+        ruleConsequence.conseq_logic_value1,
+        ruleConsequence.conseq_logic_value2,
+        ruleConsequence.order_no,
+        ruleConsequence.priority
+        from rule_consequence ruleConsequence
+        left join rule rule on rule.rule_id = ruleConsequence.rule_id
+        left join rule_item ruleItem on  ruleItem.del_flag = ${delete_exist}
+        and ruleItem.rule_item_key = ruleConsequence.conseq_item_key
+        and ruleItem.rule_type = rule.rule_type
+        and ruleItem.item_type = #{ruleConsequenceVo.ruleItemType}
+        where ruleConsequence.del_flag = ${delete_exist}
+        and ruleConsequence.rule_id = #{ruleConsequenceVo.ruleId}
+        order by ruleConsequence.rule_no ,ruleConsequence.order_no asc
+    </select>
+
+    <!--
+     /**
+     * @Title:
+     * @Description:   查询规则结果列表
+     * @param ruleConsequenceVo
+     * @return
+     * @throws
+     * @author qiaomengnan
+     * @date 2018/05/21 12:41:42
+     */
+     -->
+    <select id="selectRuleConsequenceVos"  resultType="cn.com.leadu.fms.pojo.baseinfo.vo.ruleconsequence.RuleConsequenceVo">
+        select
+        ruleConsequence.rule_conseq_id,ruleConsequence.rule_id ,
+        ruleConsequence.rule_no,ruleConsequence.conseq_item_key,
+        ruleItem.rule_item_name conseqItemKeyName,
+        ruleConsequence.conseq_logic_type,
+        ruleConsequence.conseq_logic_value1,
+        ruleConsequence.conseq_logic_value2,
+        ruleConsequence.order_no,
+        ruleConsequence.priority,
+        sysCode.code_value_name conseqLogicTypeName
+        from rule_consequence ruleConsequence
+        left join rule_item ruleItem on  ruleItem.del_flag = ${delete_exist}
+        and ruleItem.rule_item_key = ruleConsequence.conseq_item_key
+        and ruleItem.rule_type = #{ruleConsequenceVo.ruleType}
+        and ruleItem.item_type = #{ruleConsequenceVo.ruleItemType}
+        left join sys_code sysCode on sysCode.del_flag = ${delete_exist}
+        and sysCode.code_type = #{ruleConsequenceVo.conseqLogicTypeKey}
+        and sysCode.code_value = ruleConsequence.conseq_logic_type
+        where ruleConsequence.del_flag = ${delete_exist}
+        <if test="ruleConsequenceVo.ruleId != null">
+            and ruleConsequence.rule_id = #{ruleConsequenceVo.ruleId}
+        </if>
+        order by ruleConsequence.rule_no ,ruleConsequence.order_no asc
+    </select>
+
+</mapper>

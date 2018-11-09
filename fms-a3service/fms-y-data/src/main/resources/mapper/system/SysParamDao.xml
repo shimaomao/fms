@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.com.leadu.fms.data.system.dao.SysParamDao">
+
+    <select id="selectSysParams" resultType="cn.com.leadu.fms.common.vo.CommonParamVo">
+      select
+        sysParam.param_key
+        ,sysParam.param_name
+        ,sysParam.param_value
+      from
+      sys_param sysParam
+      where sysParam.del_flag = ${delete_exist}
+    </select>
+
+</mapper>

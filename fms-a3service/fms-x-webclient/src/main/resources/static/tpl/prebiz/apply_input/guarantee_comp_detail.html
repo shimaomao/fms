@@ -1,0 +1,158 @@
+<style>
+    .modal-dialog{
+        width: 1150px;
+    }
+</style>
+<div class="modal-header">
+    <h4 class="modal-title">担保企业信息详情</h4>
+</div>
+<div class="modal-body">
+    <form name="form" class="form-validation" novalidate>
+        <div class="row" style="margin: 5px; padding-right: 50px;">
+            <div class="row line-lg" style="font-weight: bold;font-size: 14px;">担保企业信息</div>
+            <div class="form-group row">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">企业名称</b>:</label>
+                <div class="col-sm-2">
+                    <label class="col-sm-12 control-label text-left">{{guaranteeComp.name}}</label>
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">企业性质</b>:</label>
+                <div class="col-sm-2">
+                    <label class="col-sm-12 control-label text-left">{{guaranteeComp.compTypeName}}</label>
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">单位行业类别</b>:</label>
+                <div class="col-sm-2">
+                    {{guaranteeComp.industry | getName:'industryType'}}
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">统一社会信用代码</b>:</label>
+                <div class="col-sm-2">
+                    <label class="col-sm-12 control-label text-left">{{guaranteeComp.socialCertifNo}}</label>
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">成立日期</b>:</label>
+                <div class="col-sm-2">
+                    {{guaranteeComp.establDate}}
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">成立年限</b>:</label>
+                <div class="col-sm-2">
+                    {{guaranteeComp.establYear}}
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">法定代表人</b>:</label>
+                <div class="col-sm-2">
+                    <label class="col-sm-12 control-label text-left">{{guaranteeComp.compLegalRep}}</label>
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">法人证件类型</b>:</label>
+                <div class="col-sm-2">
+                    <label class="col-sm-12 control-label text-left">{{guaranteeComp.certifTypeName}}</label>
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">法人证件号码</b>:</label>
+                <div class="col-sm-2">
+                    <label class="col-sm-12 control-label text-left">{{guaranteeComp.certifNo}}</label>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">法人手机号码</b>:</label>
+                <div class="col-sm-2">
+                    <label class="col-sm-12 control-label text-left">{{guaranteeComp.mobileNo}}</label>
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">企业联系人</b>:</label>
+                <div class="col-sm-2">
+                    <label class="col-sm-12 control-label text-left">{{guaranteeComp.compContactPers}}</label>
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">联系人手机号码</b>:</label>
+                <div class="col-sm-2">
+                    <label class="col-sm-12 control-label text-left">{{guaranteeComp.contactMobno}}</label>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">企业联系电话</b>:</label>
+                <div class="col-sm-2">
+                    <label class="col-sm-12 control-label text-left">{{guaranteeComp.compTel}}</label>
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">注册省份</b>:</label>
+                <div class="col-sm-2">
+                    <label class="col-sm-12 control-label text-left">{{guaranteeComp.registerProv | getAreaName}}</label>
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">注册城市</b>:</label>
+                <div class="col-sm-2">
+                    <label class="col-sm-12 control-label text-left">{{guaranteeComp.registerCity | getAreaName}}</label>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">注册区县</b>:</label>
+                <div class="col-sm-2">
+                    <label class="col-sm-12 control-label text-left">{{guaranteeComp.registerCounty | getAreaName}}</label>
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">注册地址</b>:</label>
+                <div class="col-sm-6">
+                    <label class="col-sm-12 control-label text-left">{{guaranteeComp.registerAddr}}</label>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">经营省份</b>:</label>
+                <div class="col-sm-2">
+                    <label class="col-sm-12 control-label text-left">{{guaranteeComp.compProvName}}</label>
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">经营城市</b>:</label>
+                <div class="col-sm-2">
+                    <label class="col-sm-12 control-label text-left">{{guaranteeComp.compCityName}}</label>
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">经营区县</b>:</label>
+                <div class="col-sm-2">
+                    <label class="col-sm-12 control-label text-left">{{guaranteeComp.compCountyName}}</label>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">经营地址</b>:</label>
+                <div class="col-sm-6">
+                    <label class="col-sm-12 control-label text-left">{{guaranteeComp.compAddr}}</label>
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">经营地址类型</b>:</label>
+                <div class="col-sm-2">
+                    {{guaranteeComp.compAddrType | getName:'compAddrType'}}
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">承租人与担保人关系</b>:</label>
+                <div class="col-sm-2">
+                    <label class="col-sm-12 control-label text-left">{{guaranteeComp.relationName}}</label>
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">担保人与担保人关系</b>:</label>
+                <div class="col-sm-2">
+                    <label class="col-sm-12 control-label text-left">{{guaranteeComp.guaRelation | getName:'guaRelationComp'}}</label>
+                </div>
+            </div>
+            <div class="form-group row" ng-if="guaranteeComp.compAddrType==0">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">购买时间</b>:</label>
+                <div class="col-sm-2">
+                    {{guaranteeComp.buyTime}}
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">建筑面积</b>:</label>
+                <div class="col-sm-2">
+                    {{guaranteeComp.constructionArea}}
+                </div>
+            </div>
+            <div class="form-group row" ng-if="guaranteeComp.compAddrType==1">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">租赁时间</b>:</label>
+                <div class="col-sm-2">
+                    {{guaranteeComp.leaseTime}}
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">面积</b>:</label>
+                <div class="col-sm-2">
+                    {{guaranteeComp.leaseArea}}
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">租金(元/月)</b>:</label>
+                <div class="col-sm-2">
+                    {{guaranteeComp.rent}}
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="modal-footer ng-scope">
+    <div class="text-center">
+        <button class="btn btn-default" ng-click="close()">关闭</button>
+    </div>
+</div>

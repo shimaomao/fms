@@ -1,0 +1,109 @@
+<style>
+    #backinput_table_wrapper{margin: 0 15px;}
+    #backinput_table_detail tr td:nth-child(1),#backinput_table_detail tr td:nth-child(3){
+        text-align: center;
+        background-color: #f9f9f9;
+        font-weight: bold;
+    }
+    .panel h4{padding: 20px;
+        border-bottom: 1px solid #dedede;
+        color: black;
+        font-weight: 600;
+        margin: 0;
+        font-size: 14px;
+    }
+    .ng-scope .panel:not(:first-child){margin-top: 20px;}
+</style>
+<div  ng-controller="cont_backinput_controller" style="padding: 20px;">
+    <div class="panel panel-default">
+        <h4>一览项目</h4>
+        <div class="panel-body wrapper-sm">
+            <div class="form-group pull-right">
+                <div class="btn-group">
+                    <div class="row">
+                        <button class="btn btn-default m-b-xs btn-sm fms-button-margin-bottom" ng-click="goBack()">返回</button>
+                        <button ng-if="!isDetail && type != 'renewal'" class="btn btn-success m-b-xs btn-sm fms-button-margin-bottom" ng-click="save()">暂存</button>
+                        <button ng-if="!isDetail" class="btn btn-success m-b-xs btn-sm fms-button-margin-bottom" ng-click="saveInput()">确认回填</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-1 control-label text-right"><b class="form-text-black">承租人</b>:</label>
+            <div class="col-sm-2">
+                <input type="text" title="{{finBackData.name}}" name="name"  class="form-control m-b-xs" ng-model="finBackData.name"  disabled>
+            </div>
+            <label class="col-sm-1 control-label text-right"><b class="form-text-black">出租人</b>:</label>
+            <div class="col-sm-2">
+                <input type="text" title="{{finBackData.groupName}}" name="groupName"  class="form-control m-b-xs" ng-model="finBackData.groupName"  disabled>
+            </div>
+            <label class="col-sm-1 control-label text-right"><b class="form-text-black">合同号</b>:</label>
+            <div class="col-sm-2">
+                <input type="text" title="{{finBackData.contNo}}" name="contNo"  class="form-control m-b-xs" ng-model="finBackData.contNo"  disabled>
+            </div>
+            <label class="col-sm-1 control-label text-right"><b class="form-text-black">车架号</b>:</label>
+            <div class="col-sm-2">
+                <input type="text" title="{{finBackData.vinNo}}" name="vinNo"  class="form-control m-b-xs" ng-model="finBackData.vinNo"  disabled>
+            </div>
+        </div>
+        <table border="1" class="table table-striped m-b-none" id="backinput_table"></table>
+
+
+    </div>
+    <div class="panel panel-default">
+        <h4 class="">合同融资信息</h4>
+        <div id="backinput_table_detail" class="dataTables_scroll panel-body">
+            <div class="dataTables_scrollBody">
+                <table border="1" class="table table-striped m-b-none dataTable no-footer">
+                    <tr>
+                        <td>申请编号</td>
+                        <td>{{finBackData.applyNo}}</td>
+                        <td>合同编号</td>
+                        <td>{{finBackData.contNo}}</td>
+                    </tr>
+                    <tr>
+                        <td>申请姓名</td>
+                        <td>{{finBackData.name}}</td>
+                        <td>租赁属性</td>
+                        <td>{{finBackData.licenseAttrName}}</td>
+                    </tr>
+                    <tr>
+                        <td>融资期限</td>
+                        <td>{{finBackData.finPeriodType}}</td>
+                        <td>每期租金</td>
+                        <td>{{finBackData.rent}}<button type="button" class="btn btn-sm btn-default" ng-click="overdueSales(finBackData.contNo);">查看销售还款计划表</button></td>
+                    </tr>
+                    <tr>
+                        <td>销售投资总额</td>
+                        <td>{{finBackData.cstmInvestTotal}}</td>
+                        <td>财务实际投资额</td>
+                        <td>{{finBackData.investTotal}}</td>
+                    </tr>
+                    <tr>
+                        <td>销售融资金额</td>
+                        <td>{{finBackData.cstmFinTotal}}</td>
+                        <td>财务实际融资额</td>
+                        <td>{{finBackData.finTotal}}</td>
+                    </tr>
+                    <tr>
+                        <td>销售首付金额</td>
+                        <td>{{finBackData.cstmInitAmount}}</td>
+                        <td>财务首付金额</td>
+                        <td>{{finBackData.initAmount}}</td>
+                    </tr>
+                    <tr>
+                        <td>销售尾付金额</td>
+                        <td>{{finBackData.cstmFinalAmount}}</td>
+                        <td>财务尾付金额</td>
+                        <td>{{finBackData.finalAmount}}</td>
+                    </tr>
+                    <!--<tr>
+                        <td>财务收益利率</td>
+                        <td>{{finBackData.intrstRateYear}}<button type="button" class="btn btn-sm btn-default" ng-click="overdueFinance(finBackData.contNo);">查看财务还款计划表</button></td>
+                    </tr>-->
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+

@@ -1,0 +1,135 @@
+<style>
+    .transferSettle .sub-main{overflow: hidden;}
+    .transferSettle .sub-body{padding: 10px 40px 0 0;border: 1px solid #eaeeea;border-top: none;}
+    .transferSettle .sub-title{padding: 5px;font-size: 14px;cursor: pointer;background-color: #f5f5f5;border-bottom: 1px solid #eaeeea;}
+    .transferSettle .sub-title span:first-child{font-weight: bold;color: black;}
+    .transferSettle .sub-title span:last-child{display: inline-block;width: 20px;height: 20px;}
+</style>
+<div class="bg-light lter b-b wrapper-md">
+    <h1 class="m-n font-thin h4">过户费用结算</h1>
+</div>
+<div  ng-controller="transfer_settlement_controller" class="transferSettle" style="padding: 10px;">
+    <div>
+        <toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+    </div>
+    <div class="panel panel-default" >
+        <div class="panel-body">
+            <div class="row" style="padding-bottom: 10px">
+                <div class="form-group pull-right">
+                    <div class="btn-group ">
+                        <button class="btn btn-success m-t-xs m-r-xs" ng-click="saveInfo()" ng-disabled="submit">暂存</button>
+                        <button class="btn btn-success m-t-xs m-r-xs" ng-click="submitInfo()" ng-disabled="submit">提交</button>
+                        <button class="btn btn-default m-t-xs" ng-click="goback()">返回</button>
+                    </div>
+                </div>
+            </div>
+            <!-- 客户信息和过户申请信息 -->
+            <div ng-include="'tpl/postbiz/transfer_info/transfer_info_detail.html'"></div>
+            <!-- 费用信息 -->
+            <div class="sub-main">
+                <div class="sub-title clearfix" click-hide>
+                    <span class="pull-left">费用信息</span>
+                    <span class="pull-right"><i class="glyphicon glyphicon-chevron-down"></i></span>
+                </div>
+                <div class="sub-body">
+                    <form name="form" class="form-validation" novalidate>
+                        <div class="row">
+                        <div class="form-group row">
+                            <label class="col-sm-2 control-label text-right"><b class="form-text-black">过户手续费</b><b class="form-error">*</b>:</label>
+                            <div class="col-sm-2">
+                                <input type="number" name="transferCost" class="form-control m-b-xs" ng-model="transferInfoVo.transferCost" required/>
+                                <p>
+                                    <span class="form-info" ng-show=" (form.transferCost.$dirty && form.transferCost.$error.required) || (form.transferCost.$error.required && formValidate)">过户手续费不能为空</span>
+                                </p>
+                            </div>
+                            <label class="col-sm-2 control-label text-right"><b class="form-text-black">过户保证金</b><b class="form-error">*</b>:</label>
+                            <div class="col-sm-2">
+                                <input type="number" name="transferDeposit" class="form-control m-b-xs" ng-model="transferInfoVo.transferDeposit" disabled required/>
+                                <p>
+                                    <span class="form-info" ng-show=" (form.transferDeposit.$dirty && form.transferDeposit.$error.required) || (form.transferDeposit.$error.required && formValidate)">过户保证金不能为空</span>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 control-label text-right"><b class="form-text-black">保证金</b><b class="form-error">*</b>:</label>
+                            <div class="col-sm-2">
+                                <input type="number" name="deposit" class="form-control m-b-xs" ng-model="transferInfoVo.deposit" disabled required/>
+                                <p>
+                                    <span class="form-info" ng-show=" (form.deposit.$dirty && form.deposit.$error.required) || (form.deposit.$error.required && formValidate)">保证金不能为空</span>
+                                </p>
+                            </div>
+                            <label class="col-sm-2 control-label text-right"><b class="form-text-black">费用总额</b><b class="form-error">*</b>:</label>
+                            <div class="col-sm-2">
+                                <input type="number" name="totalCost" class="form-control m-b-xs" ng-model="transferInfoVo.totalCost" required/>
+                                <p>
+                                    <span class="form-info" ng-show=" (form.totalCost.$dirty && form.totalCost.$error.required) || (form.totalCost.$error.required && formValidate)">费用总额不能为空</span>
+                                </p>
+                            </div>
+                            <!--<label class="col-sm-1 control-label text-right"><b class="form-text-black">收款银行</b><b class="form-error">*</b>:</label>-->
+                            <!--<div class="col-sm-2">-->
+                                <!--<input type="text" name="recAccBank" class="form-control m-b-xs" ng-model="transferInfoVo.recAccBank" required/>-->
+                                <!--<p>-->
+                                    <!--<span class="form-info" ng-show=" (form.recAccBank.$dirty && form.recAccBank.$error.required) || (form.recAccBank.$error.required && formValidate)">收款银行不能为空</span>-->
+                                <!--</p>-->
+                            <!--</div>-->
+                        </div>
+                        <div class="form-group row" ng-show="transferInfoVo.totalCost > 0">
+                            <label class="col-sm-2 control-label text-right"><b class="form-text-black">收款银行分行</b><b class="form-error">*</b>:</label>
+                            <div class="col-sm-2">
+                                <input type="text" name="recAccBranch" class="form-control m-b-xs" ng-model="transferInfoVo.recAccBranch" ng-required="transferInfoVo.totalCost > 0" />
+                                <p>
+                                    <span class="form-info" ng-show=" (form.recAccBranch.$dirty && form.recAccBranch.$error.required) || (form.recAccBranch.$error.required && formValidate)">收款银行分行不能为空</span>
+                                </p>
+                            </div>
+
+                            <label class="col-sm-2 control-label text-right"><b class="form-text-black">收款账户名</b><b class="form-error">*</b>:</label>
+                            <div class="col-sm-2">
+                                <input type="text" name="recAccountName" class="form-control m-b-xs" ng-model="transferInfoVo.recAccountName" ng-required="transferInfoVo.totalCost > 0" />
+                                <p>
+                                    <span class="form-info" ng-show=" (form.recAccountName.$dirty && form.recAccountName.$error.required) || (form.recAccountName.$error.required && formValidate)">收款账户名不能为空</span>
+                                </p>
+                            </div>
+                            <label class="col-sm-1 control-label text-right"><b class="form-text-black">收款卡号</b><b class="form-error">*</b>:</label>
+                            <div class="col-sm-2">
+                                <input type="text" name="recAccountNo" class="form-control m-b-xs" ng-pattern="/^[0-9]+([.]{1}[0-9]+){0,1}$/"  ng-model="transferInfoVo.recAccountNo" ng-required="transferInfoVo.totalCost > 0" />
+                                <p>
+                                    <span class="form-info" ng-show=" (form.recAccountNo.$dirty && form.recAccountNo.$error.required) || (form.recAccountNo.$error.required && formValidate)">收款卡号不能为空</span>
+                                    <span class="form-info" ng-show=" (form.recAccountNo.$error.pattern && !form.recAccountNo.$error.required) || (form.recAccountNo.$error.pattern && formValidate && !form.recAccountNo.$error.required)">请输入数字账号</span>
+                                </p>
+                            </div>
+                        </div>
+                        <!-- 备注 -->
+                        <div class="form-group row">
+                            <label class="col-sm-2 control-label text-right"><b class="form-text-black">备注</b>
+                                <b class="form-error">*</b>:</label>
+                            <div class="col-sm-9">
+                                <textarea limit-word placeholder="请输入备注" class="form-control m-b-xs" ng-model="transferInfoVo.remark" ng-maxlength='1000' name="remark" required></textarea>
+                                <p>
+                                    <span class="form-info" ng-show=" (form.remark.$dirty && form.remark.$error.required) || (form.remark.$error.required && formValidate)">备注不能为空</span>
+                                    <span class="form-info" ng-show="(form.remark.$dirty && form.remark.$error.maxlength) || (form.remark.$error.maxlength && formValidate)">备注长度不超过1000</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!--附件信息-->
+        <div class="panel-body">
+            <div class="row" style="font-weight: bold;font-size: 16px;padding-left: 10px;">附件信息</div>
+            <tree-file-directive detail-flag="$root.yesNoFlag.no" file-type="$root.basFileTypes.transferFile" files="transferInfoVo.bizFilesList" not-upload="transferInfoVo.notUpload" not-upload-info="$parent.msgInfo"   not-file-type="$parent.notFileType" not-file-type-name="transferInfoVo.notFileTypeName">
+            </tree-file-directive>
+        </div>
+        <!--过户申请附件信息-->
+        <div class="panel-body">
+            <div class="row" style="font-weight: bold;font-size: 16px;padding-left: 10px;">过户申请附件信息</div>
+            <tree-file-directive detail-flag="$root.yesNoFlag.yes" file-type="$root.basFileTypes.transferApplyFile" files="transferInfoVo.applyBizFilesList" not-upload="$parent.notUpload" not-upload-info="$parent.msgInfo"   not-file-type="$parent.notFileType" not-file-type-name="$parent.notFileTypeName">
+            </tree-file-directive>
+        </div>
+        <!-- 流程日志 -->
+        <div class="panel-body">
+            <process-log-list-directive wf-log-type="$root.bizTypes.transfer" wf-log-no="transferNo" wf-log-sub-no="wfLogSubNo" > </process-log-list-directive>
+        </div>
+    </div>
+</div>

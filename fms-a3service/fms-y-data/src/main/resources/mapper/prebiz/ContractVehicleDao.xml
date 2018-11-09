@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.com.leadu.fms.data.prebiz.dao.ContractVehicleDao">
+    <!-- 根据订单编号 获取融资信息 -->
+    <select id="selectContractVehicleVoByContNo" parameterType="java.lang.String" resultType="cn.com.leadu.fms.pojo.prebiz.vo.contractvehicle.ContractVehicleVo">
+        select contractVehicle.*,
+        basVehicle.vehicle_name as vehicleName,
+        basVehicle.guide_price as guidePrice,
+        basSeries.vehicle_name as vehSeriesName,
+        basBrand.vehicle_name as vehBrandName,
+        basManu.vehicle_name as vehMakerName,
+        basSales.sales_name as saleGroupName,
+        basVehicle.vehicle_type1 as vehicleType1,
+        basVehicle.vehicle_type2 as vehicleType2,
+        basSales.within_group as withinGroup
+        from
+        contract_vehicle contractVehicle
+        left join bas_vehicle basVehicle on basVehicle.vehicle_code = contractVehicle.vehicle_code
+        and basVehicle.vehicle_level = '4'
+--         and basVehicle.del_flag = ${delete_exist}
+        left join bas_vehicle basSeries on basSeries.vehicle_code = contractVehicle.veh_series_code
+        and basSeries.vehicle_level = '3'
+--         and basSeries.del_flag = ${delete_exist}
+        left join bas_vehicle basBrand on basBrand.vehicle_code = contractVehicle.veh_brand_code
+        and basBrand.vehicle_level = '2'
+--         and basBrand.del_flag = ${delete_exist}
+        left join bas_vehicle basManu on basManu.vehicle_code = contractVehicle.veh_maker_code
+        and basManu.vehicle_level = '1'
+--         and basManu.del_flag = ${delete_exist}
+        left join bas_sales basSales on basSales.sales_code = contractVehicle.sale_group_code and basSales.del_flag = ${delete_exist}
+        where contractVehicle.del_flag = ${delete_exist}
+        <if test="contNo != null">
+            and contractVehicle.cont_no = #{contNo}
+        </if>
+        limit 0,1
+    </select>
+
+    <select id="selectContractVehicleFinanceVoByContNo"
+            parameterType="cn.com.leadu.fms.pojo.prebiz.vo.contractvehicle.ContractVehicleFinanceVo"
+            resultType="cn.com.leadu.fms.pojo.prebiz.vo.contractvehicle.ContractVehicleFinanceVo">
+        SELECT
+        contract.*,
+        sysGroup.group_name AS applyGroupName,
+        vehicle.vehicle_form,vehicle.veh_brand_code,vehicle.vehicle_code,vehicle.regist_date,
+        finance.license_attr,
+        person.name,
+        vehBrandCode.vehicle_name AS vehBrandCodeName,
+        vehicleCode.vehicle_name AS vehicleCodeName,
+        insurance.ins_comp_name,insurance.ins_policy_no
+        FROM
+        contract contract
+        LEFT JOIN
+        sys_group sysGroup ON contract.apply_group=sysGroup.group_code AND sysGroup.del_flag = ${delete_exist}
+        LEFT JOIN
+        contract_vehicle vehicle ON contract.cont_no=vehicle.cont_no AND vehicle.del_flag =  ${delete_exist}
+        LEFT JOIN
+        contract_finance finance ON contract.cont_no=finance.cont_no AND finance.del_flag = ${delete_exist}
+        LEFT JOIN
+        cstm_person person ON contract.apply_no=person.apply_no AND person.del_flag = ${delete_exist}
+        LEFT JOIN
+        bas_vehicle vehBrandCode ON vehicle.veh_brand_code=vehBrandCode.vehicle_code AND vehBrandCode.del_flag = ${delete_exist}
+        LEFT JOIN
+        bas_vehicle vehicleCode ON vehicle.vehicle_code=vehicleCode.vehicle_code AND vehicleCode.del_flag = ${delete_exist}
+        LEFT JOIN
+        (SELECT * from cont_insurance WHERE cont_no = #{contractVehicleFinanceVo.contNo} ORDER  BY valid_end_day DESC limit 0,1) insurance
+        ON contract.cont_no = insurance.cont_no AND insurance.del_flag = ${delete_exist}
+
+        WHERE contract.del_flag = ${delete_exist}
+        AND contract.apply_type = #{contractVehicleFinanceVo.personFlag}
+        AND contract.cont_no = #{contractVehicleFinanceVo.contNo}
+
+        UNION ALL
+
+        SELECT
+        contract.*,
+        sysGroup.group_name AS applyGroupName,
+        vehicle.vehicle_form,vehicle.veh_brand_code,vehicle.vehicle_code,vehicle.regist_date,
+        finance.license_attr,
+        person.name,
+        vehBrandCode.vehicle_name AS vehBrandCodeName,
+        vehicleCode.vehicle_name AS vehicleCodeName,
+        insurance.ins_comp_name,insurance.ins_policy_no
+        FROM
+        contract contract
+        LEFT JOIN
+        sys_group sysGroup ON contract.apply_group=sysGroup.group_code AND sysGroup.del_flag = ${delete_exist}
+        LEFT JOIN
+        contract_vehicle vehicle ON contract.cont_no=vehicle.cont_no AND vehicle.del_flag =  ${delete_exist}
+        LEFT JOIN
+        contract_finance finance ON contract.cont_no=finance.cont_no AND finance.del_flag = ${delete_exist}
+        LEFT JOIN
+        cstm_company person ON contract.apply_no=person.apply_no AND person.del_flag = ${delete_exist}
+        LEFT JOIN
+        bas_vehicle vehBrandCode ON vehicle.veh_brand_code=vehBrandCode.vehicle_code AND vehBrandCode.del_flag = ${delete_exist}
+        LEFT JOIN
+        bas_vehicle vehicleCode ON vehicle.vehicle_code=vehicleCode.vehicle_code AND vehicleCode.del_flag = ${delete_exist}
+         LEFT JOIN
+        (SELECT * from cont_insurance WHERE cont_no = #{contractVehicleFinanceVo.contNo} ORDER  BY valid_end_day DESC limit 0,1) insurance
+        ON contract.cont_no = insurance.cont_no AND insurance.del_flag = ${delete_exist}
+        WHERE contract.del_flag = ${delete_exist}
+        AND contract.apply_type = #{contractVehicleFinanceVo.companyFlag}
+        AND contract.cont_no = #{contractVehicleFinanceVo.contNo}
+    </select>
+</mapper>

@@ -1,0 +1,74 @@
+<div  class="panel panel-default wrapper-md" ng-controller="bas_area_save_controller">
+<div class="modal-header">
+    <h4 class="modal-title">省市县信息维护 </h4>
+</div>
+<div class="modal-body row">
+    <form name="form" class="form-validation" novalidate>
+
+        <div class="panel-body wrapper-sm">
+
+            <div class="form-group row">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">上级省市县代码</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <input type="text" name="parentAreaCode" placeholder="请输入上级省市县代码" class="form-control m-b-xs" ng-model="basArea.parentAreaCode"  disabled  required >
+                        <p>
+                            <span class="form-info" ng-show=" (form.parentAreaCode.$dirty && form.parentAreaCode.$error.required) || (form.parentAreaCode.$error.required && formValidate)">上级省市县代码不能为空</span>
+                        </p>
+                    </div>
+                    <button class="btn btn-sm btn-primary m-b-xs m-l-sm" ng-click="selectParAreaCode()"><i class="fa fa-pencil-square-o m-r-xs"></i>选择</button>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">上级省市县名称</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-2">
+                    <input type="text" name="parentAreaName" placeholder="请输入上级省市县名称" class="form-control m-b-xs" ng-model="basArea.parentAreaName" disabled required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.parentAreaName.$dirty && form.parentAreaName.$error.required) || (form.parentAreaName.$error.required && formValidate)">上级省市县名称不能为空</span>
+                    </p>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">省市县代码</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-3">
+                    <input type="text" name="areaCode" placeholder="请输入省市县代码" class="form-control m-b-xs" ng-model="basArea.areaCode"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.areaCode.$dirty && form.areaCode.$error.required) || (form.areaCode.$error.required && formValidate)">区域代码不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+         <!--   <div class="line line-dashed b-b line-xs pull-in"></div>-->
+
+            <div class="form-group row">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">省市县名称</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-3">
+                    <input type="text" name="areaName" placeholder="请输入省市县名称" class="form-control m-b-xs" ng-model="basArea.areaName"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.areaName.$dirty && form.areaName.$error.required) || (form.areaName.$error.required && formValidate)">区域名称不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+       <!--     <div class="line line-dashed b-b line-xs pull-in"></div>-->
+
+
+            <div class="form-group row">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">省市县级别</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-2">
+                    <select name="areaLevel" ng-model="basArea.areaLevel" class="form-control m-b-xs" required>
+                        <option value="">--请选择省市县级别--</option>
+                        <option value="{{areaLevelObj.codeValue}}" ng-repeat="areaLevelObj in areaLevelList">{{areaLevelObj.codeValueName}}</option>
+                    </select>
+                    <p>
+                        <span class="form-info" ng-show=" (form.areaLevel.$dirty && form.areaLevel.$error.required) || (form.areaLevel.$error.required && formValidate)">区域级别不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+        </div>
+        <div class="col-sm-15 m-b text-center">
+            <button class="btn btn-default" ng-click="goBack()">返回</button>
+            <button type="submit" class="btn btn-success ng-scope" ng-disabled="submit" ng-click="save()">新增</button>
+        </div>
+    </form>
+</div>
+</div>

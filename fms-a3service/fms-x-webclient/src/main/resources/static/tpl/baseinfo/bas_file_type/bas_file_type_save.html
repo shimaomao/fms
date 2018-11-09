@@ -1,0 +1,223 @@
+<div ng-controller="bas_file_type_save_controller">
+    <div>
+        <toaster-container
+                toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+    </div>
+    <div class="panel panel-default">
+        <div class="row" style="margin: 0; padding: 15px; border: 1px solid #dddddd">
+            <h4 class="m-n font-thin h4">{{frameTitle}}</h4>
+        </div>
+        <form name="form" class="form-validation" novalidate>
+            <div class="panel-body wrapper-sm">
+
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">附件类型代码</b><b
+                            class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <input type="text" name="fileType" placeholder="请输入附件类型代码" class="form-control m-b-xs"
+                               ng-model="basFileType.fileType" required>
+                        <p>
+                            <span class="form-info"
+                                  ng-show=" (form.fileType.$dirty && form.fileType.$error.required) || (form.fileType.$error.required && formValidate)">附件类型代码不能为空</span>
+                        </p>
+                    </div>
+
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">附件类型名称</b><b
+                            class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <input type="text" name="fileTypeName" placeholder="请输入附件类型名称" class="form-control m-b-xs"
+                               ng-model="basFileType.fileTypeName" required>
+                        <p>
+                            <span class="form-info"
+                                  ng-show=" (form.fileTypeName.$dirty && form.fileTypeName.$error.required) || (form.fileTypeName.$error.required && formValidate)">附件类型名称不能为空</span>
+                        </p>
+                    </div>
+                </div>
+
+
+                <!--<div class="form-group row">-->
+                    <!--<label class="col-sm-3 control-label text-right"><b class="form-text-black">附件类型名称</b><b-->
+                            <!--class="form-error">*</b>:</label>-->
+                    <!--<div class="col-sm-3">-->
+                        <!--<input type="text" name="fileTypeName" placeholder="请输入附件类型名称" class="form-control m-b-xs"-->
+                               <!--ng-model="basFileType.fileTypeName" required>-->
+                        <!--<p>-->
+                            <!--<span class="form-info"-->
+                                  <!--ng-show=" (form.fileTypeName.$dirty && form.fileTypeName.$error.required) || (form.fileTypeName.$error.required && formValidate)">附件类型名称不能为空</span>-->
+                        <!--</p>-->
+                    <!--</div>-->
+                <!--</div>-->
+
+
+                <!--<div class="form-group row">-->
+                    <!--<label class="col-sm-3 control-label text-right"><b class="form-text-black">上级附件类型代码</b><b-->
+                            <!--class="form-error"></b>:</label>-->
+                    <!--<div class="col-sm-3 &lt;!&ndash;form-inline&ndash;&gt;">-->
+                        <!--<input type="text" name="parentFileType" placeholder="请输入上级附件类型代码" class="form-control m-b-xs"-->
+                               <!--ng-model="basFileType.parentFileType" disabled>-->
+
+                        <!--<button class="btn btn-info m-b-xs m-l-sm" ng-click="selectParentFileType()"><i-->
+                                <!--class="fa fa-pencil-square-o m-r-xs"></i>选择-->
+                        <!--</button>-->
+                    <!--</div>-->
+                <!--</div>-->
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">下级附件类型</b><b class="form-error"></b>:</label>
+                    <!--可编辑-->
+                    <div class="col-sm-6">
+                        <table id="file_type_table" border="1" class="table table-striped m-b-none" width="100%">
+                        </table>
+                    </div>
+                    <button class="btn btn-sm btn-primary m-b-xs m-l-sm" ng-click="selectParentFileType()"><i class="fa fa-pencil-square-o m-r-xs"></i>选择</button>
+                </div>
+
+
+                <!--<div class="form-group row">-->
+                    <!--<label class="col-sm-3 control-label text-right"><b class="form-text-black">上级附件类型名称</b><b-->
+                            <!--class="form-error"></b>:</label>-->
+                    <!--<div class="col-sm-3">-->
+                        <!--<input type="text" name="parentFileTypeName" placeholder="上级附件类型名称"-->
+                               <!--class="form-control m-b-xs"-->
+                               <!--ng-model="basFileType.parentFileTypeName" disabled>-->
+                    <!--</div>-->
+                <!--</div>-->
+
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">附件类型别名</b><b
+                            class="form-error"></b>:</label>
+                    <div class="col-sm-2">
+                        <input type="text" name="fileTypeAlias" placeholder="请输入附件类型别名" class="form-control m-b-xs"
+                               ng-model="basFileType.fileTypeAlias">
+                    </div>
+
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">是否实际文件</b><b
+                            class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <select ng-model="basFileType.fileFlag" name="fileFlag" class="form-control m-b-xs" required>
+                            <option value="">---选择是否实际文件---</option>
+                            <option value="{{actualFileObj.codeValue}}" ng-repeat="actualFileObj in actualFileList">
+                                {{actualFileObj.codeValueName}}
+                            </option>
+                        </select>
+                        <p>
+                            <span class="form-info"
+                                  ng-show=" (form.fileFlag.$dirty && form.fileFlag.$error.required) || (form.fileFlag.$error.required && formValidate)">是否实际文件不能为空</span>
+                        </p>
+                    </div>
+                </div>
+
+                <!--<div class="form-group row">-->
+                    <!--<label class="col-sm-3 control-label text-right"><b class="form-text-black">是否实际文件</b><b-->
+                            <!--class="form-error">*</b>:</label>-->
+                    <!--<div class="col-sm-3">-->
+                        <!--<select ng-model="basFileType.fileFlag" name="fileFlag" class="form-control m-b-xs" required>-->
+                            <!--<option value="">-&#45;&#45;选择是否实际文件-&#45;&#45;</option>-->
+                            <!--<option value="{{actualFileObj.codeValue}}" ng-repeat="actualFileObj in actualFileList">-->
+                                <!--{{actualFileObj.codeValueName}}-->
+                            <!--</option>-->
+                        <!--</select>-->
+                        <!--<p>-->
+                            <!--<span class="form-info"-->
+                                  <!--ng-show=" (form.fileFlag.$dirty && form.fileFlag.$error.required) || (form.fileFlag.$error.required && formValidate)">是否实际文件不能为空</span>-->
+                        <!--</p>-->
+                    <!--</div>-->
+                <!--</div>-->
+
+
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">是否必填</b><b
+                            class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <select ng-model="basFileType.fileChkFlag" name="fileChkFlag" class="form-control m-b-xs" required>
+                            <option value="">---选择是否必填---</option>
+                            <option value="{{requiredStateObj.codeValue}}"
+                                    ng-repeat="requiredStateObj in requiredStateList">{{requiredStateObj.codeValueName}}
+                            </option>
+                        </select>
+                        <p>
+                            <span class="form-info"
+                                  ng-show=" (form.fileChkFlag.$dirty && form.fileChkFlag.$error.required) || (form.fileChkFlag.$error.required && formValidate)">是否必填不能为空</span>
+                        </p>
+                    </div>
+
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">业务条件表达式</b><b
+                            class="form-error"></b>:</label>
+                    <div class="col-sm-2">
+                        <input type="text" name="fileTypeExpr" placeholder="请输入业务条件表达式" class="form-control m-b-xs"
+                               ng-model="basFileType.fileTypeExpr">
+                    </div>
+                </div>
+
+                <!--<div class="form-group row">-->
+                    <!--<label class="col-sm-3 control-label text-right"><b class="form-text-black">业务条件表达式</b><b-->
+                            <!--class="form-error"></b>:</label>-->
+                    <!--<div class="col-sm-3">-->
+                        <!--<input type="text" name="fileTypeExpr" placeholder="请输入业务条件表达式" class="form-control m-b-xs"-->
+                               <!--ng-model="basFileType.fileTypeExpr">-->
+                    <!--</div>-->
+                <!--</div>-->
+
+
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">类型限制</b>:</label>
+                    <div class="col-sm-2">
+                        <input type="text" name="fileTypeSuff" placeholder="请输入类型限制" class="form-control m-b-xs" ng-model="basFileType.fileTypeSuff">
+                        <!--<p>-->
+                            <!--<span class="form-info"-->
+                                  <!--ng-show=" (form.fileTypeSuff.$dirty && form.fileTypeSuff.$error.required) || (form.fileTypeSuff.$error.required && formValidate)">类型限制不能为空</span>-->
+                        <!--</p>-->
+                    </div>
+
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">数量限制</b><b
+                            class="form-error"></b>:</label>
+                    <div class="col-sm-2">
+                        <input type="text" name="fileQtyLimit" placeholder="请输入数量限制" class="form-control m-b-xs"
+                               ng-model="basFileType.fileQtyLimit">
+                        <p>
+                            <span class="form-info"
+                                  ng-show=" (form.fileQtyLimit.$dirty && form.fileQtyLimit.$error.required) || (form.fileQtyLimit.$error.required && formValidate)">数量限制不能为空</span>
+                        </p>
+                    </div>
+                </div>
+
+
+                <!--<div class="form-group row">-->
+                    <!--<label class="col-sm-3 control-label text-right"><b class="form-text-black">数量限制</b><b-->
+                            <!--class="form-error"></b>:</label>-->
+                    <!--<div class="col-sm-3">-->
+                        <!--<input type="text" name="fileQtyLimit" placeholder="请输入数量限制" class="form-control m-b-xs"-->
+                               <!--ng-model="basFileType.fileQtyLimit">-->
+                        <!--<p>-->
+                            <!--<span class="form-info"-->
+                                  <!--ng-show=" (form.fileQtyLimit.$dirty && form.fileQtyLimit.$error.required) || (form.fileQtyLimit.$error.required && formValidate)">数量限制不能为空</span>-->
+                        <!--</p>-->
+                    <!--</div>-->
+                <!--</div>-->
+
+
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">排序</b><b
+                            class="form-error"></b>:</label>
+                    <div class="col-sm-2">
+                        <input type="text" name="orderNo" placeholder="请输入排序" class="form-control m-b-xs"
+                               ng-model="basFileType.orderNo">
+                        <p>
+                            <span class="form-info"
+                                  ng-show=" (form.orderNo.$dirty && form.orderNo.$error.required) || (form.orderNo.$error.required && formValidate)">排序不能为空</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer ng-scope text-center">
+                <button class="btn btn-default" ng-click="goback()">返回</button>
+                <button type="submit" class="btn btn-success" ng-show="showSave" ng-disabled="submit"
+                        ng-click="save()">新增
+                </button>
+                <button type="submit" class="btn btn-success" ng-show="showUpdate" ng-disabled="submit"
+                        ng-click="modify()">保存
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

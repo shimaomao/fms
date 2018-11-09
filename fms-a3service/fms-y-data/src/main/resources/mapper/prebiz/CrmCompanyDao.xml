@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.com.leadu.fms.data.prebiz.dao.CrmCompanyDao">
+
+    <select id="selectCrmCompanyVosByPage" resultType="cn.com.leadu.fms.pojo.prebiz.vo.crmcompany.CrmCompanyVo">
+        SELECT * FROM crm_company WHERE crm_company.del_flag = ${delete_exist}
+        <if test="crmCompanyVo.name != null">
+          AND crm_company.name LIKE #{crmCompanyVo.name}
+        </if>
+        <if test="crmCompanyVo.socialCertifNo != null">
+          AND crm_company.social_certif_no LIKE #{crmCompanyVo.socialCertifNo}
+        </if>
+        ORDER BY update_time
+    </select>
+
+    
+</mapper>

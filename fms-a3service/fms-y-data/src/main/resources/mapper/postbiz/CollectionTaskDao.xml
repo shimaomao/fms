@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.com.leadu.fms.data.postbiz.dao.CollectionTaskDao">
+
+    <select id="selectCollectionTasksByPage" resultType="cn.com.leadu.fms.pojo.postbiz.vo.collectiontask.CollectionTaskVo">
+        select
+            task.*,
+            overdueCstm.overdue_cstm_id,
+            overdueCstm.cstm_name,
+            overdueCstm.certif_type,
+            overdueCstm.certif_no,
+            u.user_name dispatchUserName,
+            u1.user_name registerUserName
+        from collection_task task
+        left join overdue_cstm overdueCstm on task.overdue_cstm_id = overdueCstm.overdue_cstm_id and overdueCstm.del_flag = ${delete_exist}
+        left join sys_user u on task.dispatch_user = u.user and u.del_flag = ${delete_exist}
+        left join sys_user u1 on task.register_user = u1.user and u1.del_flag = ${delete_exist}
+        where task.del_flag = ${delete_exist}
+        /*任务号*/
+        <if test="collectionTaskVo.collectionTaskNo != null">
+            and task.collection_task_no like #{collectionTaskVo.collectionTaskNo}
+        </if>
+        /*任务状态*/
+        <if test="collectionTaskVo.collectionTaskStatus != null">
+            and task.collection_task_status = #{collectionTaskVo.collectionTaskStatus}
+        </if>
+        /*承租人*/
+        <if test="collectionTaskVo.cstmName != null">
+            and overdueCstm.cstm_name like #{collectionTaskVo.cstmName}
+        </if>
+        /*数据来源*/
+        <if test="collectionTaskVo.dataSource != null">
+            and task.data_source = #{collectionTaskVo.dataSource}
+        </if>
+        /*催收任务状态*/
+        <if test="collectionTaskVo.collectionTaskStatus != null">
+            and task.collection_task_status = #{collectionTaskVo.collectionTaskStatus}
+        </if>
+        /*催收等级*/
+        <if test="collectionTaskVo.collectionLevel != null">
+            and task.collection_level = #{collectionTaskVo.collectionLevel}
+        </if>
+        /*催收人员*/
+        <if test="collectionTaskVo.applyUser != null">
+            and task.apply_user like #{collectionTaskVo.applyUser}
+        </if>
+        /*派单类型*/
+        <if test="collectionTaskVo.dispatchType != null">
+            and task.dispatch_type = #{collectionTaskVo.dispatchType}
+        </if>
+        /*登记人*/
+        <if test="collectionTaskVo.registerUser != null">
+            and u1.user_name like #{collectionTaskVo.registerUser}
+        </if>
+        order by task.update_time desc
+    </select>
+
+    <!--获取承租人列表信息-->
+    <select id="selectCstmInfosByPage" resultType="cn.com.leadu.fms.pojo.postbiz.vo.overduecstm.OverdueCstmVo">
+        select *
+        from overdue_cstm
+        where del_flag = ${delete_exist}
+        <if test="overdueCstmVo.overdueRisk != null">
+          and overdue_risk = #{overdueCstmVo.overdueRisk}
+        </if>
+        <if test="overdueCstmVo.certifNo != null">
+            and certif_no = #{overdueCstmVo.certifNo}
+        </if>
+        <if test="overdueCstmVo.cstmName != null">
+            and cstm_name like #{overdueCstmVo.cstmName}
+        </if>
+        <if test="overdueCstmVo.overdueFlag != null">
+            and overdue_flag = #{overdueCstmVo.overdueFlag}
+        </if>
+    </select>
+
+    <select id="selectCstmAddrPerInfosByOverdueCstmId" resultMap="collectionTaskVoMap">
+        select overdue_cstm_id overdueCstmId,cstm_name cstmName,certif_no certifNo
+        from overdue_cstm
+        where del_flag = ${delete_exist}
+        <if test="overdueCstmId != null">
+            and overdue_cstm_id = #{overdueCstmId}
+        </if>
+    </select>
+
+    <resultMap id="collectionTaskVoMap" type="cn.com.leadu.fms.pojo.postbiz.vo.collectiontask.CollectionTaskVo">
+        <id column="overdueCstmId" javaType="java.lang.String" property="overdueCstmId" />
+        <result column="cstmName" javaType="java.lang.String" property="cstmName" />
+        <result column="certifNo" javaType="java.lang.String" property="certifNo" />
+        <collection property="cstmAddrInfoVoList" ofType="cn.com.leadu.fms.pojo.postbiz.vo.collectiontask.CstmAddrInfoVo"
+                    javaType="java.util.ArrayList" select="getCstmAddrInfoVoList" column="certifNo">
+        </collection>
+    </resultMap>
+
+    <select id="getCstmAddrInfoVoList" resultType="cn.com.leadu.fms.pojo.postbiz.vo.collectiontask.CstmAddrInfoVo">
+        select DISTINCT
+            addr.apply_no,
+            addr.addr_type,
+            addr.relation_type,
+            tel.cstm_name name,
+            tel.tel_no mobileNo,
+            addr.address resideAddr
+        from overdue_cstm_addr addr
+        left join overdue_cstm_tel tel on addr.cstm_name = tel.cstm_name and tel.del_flag = ${delete_exist}
+        where addr.del_flag = ${delete_exist}
+        and addr.certif_no = #{certifNo}
+    </select>
+
+    <select id="selectCollectionTaskByCollectionTaskNo" resultType="cn.com.leadu.fms.pojo.postbiz.vo.collectiontask.CollectionTaskVo">
+        select
+            task.*,
+            u.user_name dispatchUserName,
+            u1.user_name registerUserName
+        from collection_task task
+        left join sys_user u on task.dispatch_user = u.user and u.del_flag = ${delete_exist}
+        left join sys_user u1 on task.register_user = u1.user and u1.del_flag = ${delete_exist}
+        where task.del_flag = ${delete_exist}
+        <if test="collectionTaskNo">
+            and task.collection_task_no = #{collectionTaskNo}
+        </if>
+    </select>
+
+    <!-- 取得上门催收任务表中全部的逾期客户ID -->
+    <select id="selectAllOverdueCstmIds" resultType="java.lang.String">
+        select DISTINCT task.overdue_cstm_id
+        from collection_task task
+        where task.del_flag = ${delete_exist} and task.overdue_cstm_id is not null
+    </select>
+
+    <!--获取合同List相关信息-->
+    <select id="selectContNoListByCollectionTaskNo" resultType="cn.com.leadu.fms.pojo.postbiz.vo.overduecstm.OverdueCstmPostVo">
+        select DISTINCT cont.cont_no,apply.apply_type
+        from collection_task task
+        left join overdue_cont cont on task.overdue_cstm_id = cont.overdue_cstm_id and cont.del_flag = ${delete_exist}
+        left join apply apply on cont.apply_no = apply.apply_no and apply.del_flag = ${delete_exist}
+        where task.del_flag = ${delete_exist}
+        <if test="collectionTaskNo">
+            and task.collection_task_no = #{collectionTaskNo}
+        </if>
+    </select>
+
+    <select id="selectProxyLetterInfo" resultType="cn.com.leadu.fms.pojo.postbiz.vo.overduecstm.CollectionLetterVo">
+        select DISTINCT
+            cstm.cstm_name,
+            cont.cont_no,
+            cont.vehicle_license_no,
+            sysGroup.group_name,
+            cont.vin_no
+        from overdue_cont cont
+        left join overdue_cstm cstm on cstm.overdue_cstm_id = cont.overdue_cstm_id and cstm.del_flag = ${delete_exist}
+        left join contract_finance contractFinance on contractFinance.del_flag = ${delete_exist}
+        and contractFinance.cont_no = cont.cont_no and contractFinance.apply_no = cont.apply_no
+        left join sys_group sysGroup on sysGroup.del_flag = ${delete_exist} and sysGroup.group_code = contractFinance.belong_group
+        where cont.del_flag = ${delete_exist}
+        and cont.cont_no in (
+            select DISTINCT cont.cont_no
+            from collection_task task
+            left join overdue_cont cont on task.overdue_cstm_id = cont.overdue_cstm_id and cont.del_flag = 0
+            where task.del_flag = ${delete_exist}
+            <if test="collectionTaskNo != null">
+                and task.collection_task_no = #{collectionTaskNo}
+            </if>
+        )
+    </select>
+
+    <select id="selectLawyerLetterVoList" resultMap="lawyerLetterVoListMap">
+        select DISTINCT
+            cstm.cstm_name,
+            cont.cont_no,
+            cont.vehicle_license_no,
+            vehicleCode.vehicle_name AS vehicleForm,
+            sysGroup.group_name,
+            contractFinance.belong_group,
+            finance.repay_day,
+            cont.apply_no,
+            cont.vin_no,
+            cont.rent,
+            cont.fin_period_type,
+            apply.apply_type
+        from overdue_cont cont
+        left join overdue_cstm cstm on cstm.overdue_cstm_id = cont.overdue_cstm_id and cstm.del_flag = ${delete_exist}
+        left join contract_finance contractFinance on contractFinance.del_flag = ${delete_exist}
+        and contractFinance.cont_no = cont.cont_no and contractFinance.apply_no = cont.apply_no
+        left join sys_group sysGroup on sysGroup.del_flag = ${delete_exist} and sysGroup.group_code = contractFinance.belong_group
+        left join contract_finance finance on cont.cont_no = finance.cont_no and finance.del_flag = ${delete_exist}
+        LEFT JOIN bas_vehicle vehicleCode ON cont.vehicle_code=vehicleCode.vehicle_code AND vehicleCode.del_flag = ${delete_exist}
+        left join apply apply on cont.apply_no = apply.apply_no and apply.del_flag = ${delete_exist}
+        where cont.del_flag = ${delete_exist}
+        <if test="collectionTaskNo != null">
+            and cont.overdue_cstm_id = (select DISTINCT overdue_cstm_id from collection_task where del_flag = ${delete_exist} and collection_task_no = #{collectionTaskNo})
+        </if>
+    </select>
+
+    <resultMap id="lawyerLetterVoListMap" type="cn.com.leadu.fms.pojo.postbiz.vo.overduecstm.LawyerLetterVo">
+        <id column="cont_no" javaType="java.lang.String" property="contNo" />
+        <id column="cstm_name" javaType="java.lang.String" property="cstmName" />
+        <id column="vehicle_license_no" javaType="java.lang.String" property="vehicleLicenseNo" />
+        <id column="vehicleForm" javaType="java.lang.String" property="vehicleForm" />
+        <id column="group_name" javaType="java.lang.String" property="groupName" />
+        <id column="repay_day" javaType="java.lang.String" property="repayDay" />
+        <id column="vin_no" javaType="java.lang.String" property="vinNo" />
+        <id column="belong_group" javaType="java.lang.String" property="belongGroup" />
+        <id column="fin_period_type" javaType="java.lang.String" property="finPeriodType" />
+        <id column="rent" javaType="java.math.BigDecimal" property="rent" />
+        <collection property="contRepaySkedVoList" ofType="cn.com.leadu.fms.pojo.finance.vo.contrepaysked.ContRepaySkedVo"
+          javaType="java.util.ArrayList" select="getContRepaySkedVoList" column="cont_no">
+        </collection>
+    </resultMap>
+
+    <!--获取逾期的还款计划表数据-->
+    <select id="getContRepaySkedVoList" resultType="cn.com.leadu.fms.pojo.finance.vo.contrepaysked.ContRepaySkedVo">
+        select repaySked.*,contOverdue.rest_overdue_amount
+        from cont_repay_sked repaySked
+        left join cont_overdue contOverdue on repaySked.cont_no = contOverdue.cont_no and repaySked.period = contOverdue.period
+        and contOverdue.del_flag = ${delete_exist}
+        where repaySked.del_flag = ${delete_exist}
+        and repaySked.cont_no = #{contNo}
+        /*还款日小于当日*/
+        and DATEDIFF(repaySked.repay_date, NOW()) &lt; 0
+        /*还款状态等于代扣款，扣款中或扣款时便*/
+        and repaySked.repay_status in ('0', '1', '3')
+        order by repaySked.period asc
+    </select>
+</mapper>

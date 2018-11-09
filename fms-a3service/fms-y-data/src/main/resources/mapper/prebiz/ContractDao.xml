@@ -1,0 +1,636 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.com.leadu.fms.data.prebiz.dao.ContractDao">
+    <!-- 根据合同号取得一条记录 -->
+    <select id="selectContCreateDetailByContNo" parameterType="java.lang.String" resultType="cn.com.leadu.fms.pojo.prebiz.vo.contcreate.ContCreateVo">
+        SELECT
+        contract.cont_no AS cont_no,
+        contract.color AS color,
+        contract.vin_no AS vin_no,
+        contract.engine_no AS engine_no,
+        contract.license_idx_no,
+        contract_finance.init_perc AS init_perc,
+        contract_finance.init_amount AS init_amount,
+        contract_finance.fin_total AS fin_total,
+        contract_finance.deposit_perc AS deposit_perc,
+        contract_finance.deposit AS deposit,
+        contract_finance.invest_total AS invest_total,
+        contract_finance.repay_day AS repay_day,
+        contract_finance.belong_group AS belon_group,
+        bas_partner.partner_name AS sale_group_name,
+        cont_repay_account.account_name AS account_name,
+        cont_repay_account.account_no AS account_no,
+        cont_repay_account.acc_bank AS acc_bank,
+        cont_repay_account.certif_no AS certif_no,
+        cont_repay_account.acc_mobile_no AS acc_mobile_no,
+        contract_vehicle.veh_deposit AS vehDeposit,
+        contract_vehicle.deductible_fees AS deductible_fees,
+        contract_vehicle.license_fee,
+        bas_bank_info.acc_bank AS rec_acc_bank,
+        bas_bank_info.acc_branch_bank AS rec_acc_branch_bank,
+        bas_bank_info.account_name AS rec_account_name,
+        bas_bank_info.account_no AS rec_account_no
+        FROM
+        contract contract
+        LEFT JOIN contract_finance contract_finance ON contract_finance.cont_no = contract.cont_no
+        LEFT JOIN contract_vehicle contract_vehicle ON contract_vehicle.cont_no = contract.cont_no
+        LEFT JOIN bas_partner bas_partner ON bas_partner.partner_code = contract_vehicle.sale_group_code
+        LEFT JOIN cont_repay_account cont_repay_account ON cont_repay_account.cont_no = contract.cont_no
+        LEFT JOIN bas_bank_info bas_bank_info ON bas_bank_info.group_code = contract.group_code
+        AND bas_bank_info.group_bank_no = contract.group_bank_no
+        where contract.del_flag = ${delete_exist}
+        <if test="contNo!= null">
+            and contract.cont_no= #{contNo}
+        </if>
+        limit 0,1
+    </select>
+
+    <!-- 查询合同一览信息 -->
+    <select id="selectContractListByPage" parameterType="cn.com.leadu.fms.pojo.prebiz.vo.contract.ContractListVo" resultType="cn.com.leadu.fms.pojo.prebiz.vo.contract.ContractListVo">
+        SELECT DISTINCT
+        contract.*,
+        vehicle.vehicle_form,vehicle.veh_maker_code,vehicle.veh_brand_code,vehicle.vehicle_code,vehicle.veh_series_code,vehicle.guide_price,
+        finance.product,finance.license_attr,finance.fin_period_type,finance.charge_pay_mode,finance.loan_interest,
+        finance.charge_rate,finance.charge,finance.init_perc,finance.init_amount,finance.invest_total,
+        finance.fin_total,finance.rent,finance.deposit,finance.final_amount,finance.annual_supply_amount,finance.irr,finance.repay_day,
+        IFNULL(cstm_person.name,cstm_company.name) name,
+        IFNULL(cstm_person.certif_no,cstm_company.social_certif_no) certifNo,
+        apply.apply_firsbt_date,apply.apply_submit_date,apply.company_type1,apply.company_type2,
+        sysGroup.group_name AS applyGroupName,
+        sysGroup1.group_name,
+        product.product_name,
+        vehMakerCode.vehicle_name AS vehMakerCodeName,
+        vehBrandCode.vehicle_name AS vehBrandCodeName,
+        vehicleCode.vehicle_name AS vehicleCodeName,vehicleCode.vehicle_type2,
+        vehSeriesCode.vehicle_name AS vehSeriesCodeName,
+        productCatg.product_catg_name,
+        basSales.sales_name,
+        sysUser1.user_name AS applyUserName,
+        GROUP_CONCAT(DISTINCT sysUser2.user_name) AS presentUserName,
+        <!--车款-->
+        contFinDetailFormat.carprice as carpriceFee,
+        <!-- 购置税 -->
+        contFinDetailFormat.purchasetax as purchasetaxFee,
+        <!-- 保险 -->
+        contFinDetailFormat.insurance as insuranceFee,
+        <!-- 精品/家装 -->
+        contFinDetailFormat.extra as extraFee,
+        <!-- 上牌 -->
+        contFinDetailFormat.license as licenseFee,
+        <!-- 延保 -->
+        contFinDetailFormat.extend as extendFee,
+        <!-- 其他费用-->
+        contFinDetailFormat.others as otherFee,
+        <!-- gps-->
+        contFinDetailFormat.gps as gpsFee
+        FROM
+        contract contract
+        LEFT JOIN
+        contract_vehicle vehicle ON contract.cont_no=vehicle.cont_no AND vehicle.del_flag =  ${delete_exist}
+        LEFT JOIN
+        contract_finance finance ON contract.cont_no=finance.cont_no AND finance.del_flag = ${delete_exist}
+        LEFT JOIN
+        sys_group sysGroup1 ON finance.belong_group = sysGroup1.group_code AND sysGroup1.del_flag =  ${delete_exist}
+        LEFT JOIN
+        apply apply ON contract.apply_no=apply.apply_no AND apply.del_flag = ${delete_exist}
+        LEFT JOIN
+        cstm_person  ON contract.apply_no=cstm_person.apply_no AND cstm_person.del_flag = ${delete_exist}
+        LEFT JOIN
+        cstm_company  ON contract.apply_no=cstm_company.apply_no AND cstm_company.del_flag = ${delete_exist}
+        LEFT JOIN
+        sys_group sysGroup ON contract.apply_group=sysGroup.group_code AND sysGroup.del_flag = ${delete_exist}
+        LEFT JOIN
+        sys_user sysUser1 ON contract.apply_user = sysUser1.user AND sysUser1.del_flag = ${delete_exist}
+        LEFT JOIN
+        sys_user sysUser2 ON FIND_IN_SET(sysUser2.user,contract.present_user) AND sysUser2.del_flag = ${delete_exist}
+        LEFT JOIN
+        product product ON finance.product=product.product AND product.del_flag = ${delete_exist}
+        LEFT JOIN
+        bas_vehicle vehMakerCode ON vehicle.veh_maker_code=vehMakerCode.vehicle_code AND vehMakerCode.del_flag = ${delete_exist}
+        LEFT JOIN
+        bas_vehicle vehBrandCode ON vehicle.veh_brand_code=vehBrandCode.vehicle_code AND vehBrandCode.del_flag = ${delete_exist}
+        LEFT JOIN
+        bas_vehicle vehicleCode ON vehicle.vehicle_code=vehicleCode.vehicle_code AND vehicleCode.del_flag = ${delete_exist}
+        LEFT JOIN
+        bas_vehicle vehSeriesCode ON vehicle.veh_series_code=vehSeriesCode.vehicle_code AND vehSeriesCode.del_flag = ${delete_exist}
+        LEFT JOIN guarantee_pers ON contract.apply_no = guarantee_pers.apply_no AND guarantee_pers.del_flag = ${delete_exist}
+        LEFT JOIN guarantee_comp ON contract.apply_no = guarantee_comp.apply_no AND guarantee_comp.del_flag = ${delete_exist}
+        <!-- 关联合同融资费用明细信息表取车款,购置税,保险,精品/家装,上牌,延保 -->
+        LEFT JOIN
+        (SELECT cont_no ,
+        MAX(CASE fin_item WHEN 'purchasetax' THEN fin_amount ELSE 0 END ) purchasetax,
+        sum(CASE fin_item WHEN 'insurance' THEN fin_amount ELSE 0 END ) insurance,
+        MAX(CASE fin_item WHEN 'carprice' THEN fin_amount ELSE 0 END ) carprice,
+        MAX(CASE fin_item WHEN 'extra' THEN fin_amount ELSE 0 END ) extra,
+        MAX(CASE fin_item WHEN 'license' THEN fin_amount ELSE 0 END ) license,
+        MAX(CASE fin_item WHEN 'extend' THEN fin_amount ELSE 0 END ) extend,
+        MAX(CASE fin_item WHEN 'gps' THEN fin_amount ELSE 0 END ) gps,
+        MAX(CASE fin_item WHEN 'others' THEN fin_amount ELSE 0 END ) others
+        FROM cont_fin_detail
+        where cont_fin_detail.del_flag = ${delete_exist}
+        GROUP BY cont_no) contFinDetailFormat
+        ON contFinDetailFormat.cont_no = contract.cont_no
+        LEFT JOIN product_catg productCatg ON finance.product_catg = productCatg.product_catg AND productCatg.del_flag = ${delete_exist}
+        LEFT JOIN bas_sales basSales ON basSales.sales_code = vehicle.sale_group_code
+        WHERE contract.del_flag = ${delete_exist}
+        /*当月新增放款车辆明细*/
+        <if test="contractListVo.censuMonth != null">
+            AND DATE_FORMAT(contract.contract_valid_date,'%Y-%m') = #{contractListVo.censuMonth}
+        </if>
+        <if test="contractListVo.applyNo != null" >
+            AND contract.apply_no LIKE #{contractListVo.applyNo}
+        </if>
+        <if test="contractListVo.contNo != null">
+            AND contract.cont_no LIKE #{contractListVo.contNo}
+        </if>
+        <if test="contractListVo.name != null">
+            AND (cstm_person.name LIKE #{contractListVo.name} OR cstm_company.name LIKE #{contractListVo.name})
+        </if>
+        <if test="contractListVo.companyType1 != null">
+            AND apply.company_type1 = #{contractListVo.companyType1}
+        </if>
+        <if test="contractListVo.bizStatus != null">
+            AND contract.biz_status = #{contractListVo.bizStatus}
+        </if>
+        <if test="contractListVo.groupDistrict != null" >
+            AND sysGroup1.group_district LIKE #{contractListVo.groupDistrict}
+        </if>
+        <if test="contractListVo.vinNo != null" >
+            AND contract.vin_no LIKE #{contractListVo.vinNo}
+        </if>
+        <if test="contractListVo.productName != null" >
+            AND product.product_name LIKE #{contractListVo.productName}
+        </if>
+        <!-- 车牌号-->
+        <if test="contractListVo.vehicleLicenseNo != null" >
+            AND contract.vehicle_license_no LIKE #{contractListVo.vehicleLicenseNo}
+        </if>
+        <!-- 合同生效日开始时间 -->
+        <if test="contractListVo.validStartTime != null">
+            AND contract.contract_valid_date &gt;= #{contractListVo.validStartTime}
+        </if>
+        <!-- 合同生效日结束时间 -->
+        <if test="contractListVo.validEndTime != null">
+            AND contract.contract_valid_date &lt;= #{contractListVo.validEndTime}
+        </if>
+        <!-- 合同生成日开始时间 -->
+        <if test="contractListVo.validStartTime2 != null">
+            AND contract.contract_date &gt;= #{contractListVo.validStartTime2}
+        </if>
+        <!-- 合同生成日结束时间 -->
+        <if test="contractListVo.validEndTime2 != null">
+            AND contract.contract_date &lt;= #{contractListVo.validEndTime2}
+        </if>
+        <if test="contractListVo.licenseAttr != null">
+            AND finance.license_attr = #{contractListVo.licenseAttr}
+        </if>
+        <if test="contractListVo.paymentSts != null">
+            AND contract.payment_sts = #{contractListVo.paymentSts}
+        </if>
+        <if test="contractListVo.sysUser != null">
+            AND contract.apply_user = #{contractListVo.sysUser}
+        </if>
+        <if test="contractListVo.sysUserGroup != null">
+            AND contract.apply_group IN
+            <foreach collection="contractListVo.sysUserGroup" item="item" index="index" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="contractListVo.guarantee != null">
+            AND (guarantee_pers.`name` LIKE #{contractListVo.guarantee} OR guarantee_comp.`name` LIKE #{contractListVo.guarantee})
+        </if>
+        <if test="contractListVo.repayDay != null">
+            AND finance.repay_day = #{contractListVo.repayDay}
+        </if>
+        <if test="contractListVo.leaseTermStartDate != null">
+            AND contract.lease_term_start_date = #{contractListVo.leaseTermStartDate}
+        </if>
+        <if test="contractListVo.leaseTermEndDate != null">
+            AND contract.lease_term_end_date = #{contractListVo.leaseTermEndDate}
+        </if>
+        <!-- 租赁期限结束日起始 -->
+        <if test="contractListVo.startTimeLeaseTermEnd != null">
+            AND  contract.lease_term_end_date &gt;= #{contractListVo.startTimeLeaseTermEnd}
+        </if>
+        <!-- 租赁期限结束日结束 -->
+        <if test="contractListVo.endTimeLeaseTermEnd != null">
+            AND  contract.lease_term_end_date &lt;= #{contractListVo.endTimeLeaseTermEnd}
+        </if>
+        <!-- 待请款 -->
+        <if test="contractListVo.fundStatus != null  and contractListVo.fundStatus == '08'.toString()">
+            and contract.biz_status != '0298'
+            and contract.contract_request_date is null
+        </if>
+        <!-- 待放款 -->
+        <if test="contractListVo.fundStatus != null  and contractListVo.fundStatus == '09'.toString()">
+            and contract.biz_status != '0298'
+            and contract.contract_request_date is not null
+            and contract.contract_valid_date is null
+        </if>
+        GROUP BY contract.contract_id
+        ORDER BY if(isnull(contract.contract_valid_date),0,1) asc,contract.contract_valid_date desc,contract.update_time desc
+    </select>
+
+
+    <!-- 查询合同一览选择页面信息 -->
+    <select id="selectContractSelectListByPage" parameterType="cn.com.leadu.fms.pojo.prebiz.vo.contract.ContractListVo" resultType="cn.com.leadu.fms.pojo.prebiz.vo.contract.ContractListVo">
+        SELECT DISTINCT
+        contract.*,
+        vehicle.vehicle_form,vehicle.veh_maker_code,vehicle.veh_brand_code,vehicle.vehicle_code,vehicle.veh_series_code,vehicle.guide_price,
+        finance.product,finance.license_attr,finance.fin_period_type,finance.charge_pay_mode,finance.loan_interest,
+        finance.charge_rate,finance.charge,finance.init_perc,finance.init_amount,finance.invest_total,
+        finance.fin_total,finance.rent,finance.deposit,finance.final_amount,finance.annual_supply_amount,finance.irr,finance.repay_day,
+        IFNULL(cstm_person.name,cstm_company.name) name,
+        IFNULL(cstm_person.certif_no,cstm_company.social_certif_no) certifNo,
+        apply.apply_firsbt_date,apply.apply_submit_date,apply.company_type1,apply.company_type2,
+        sysGroup.group_name AS applyGroupName,
+        sysGroup1.group_name,
+        product.product_name,
+        vehMakerCode.vehicle_name AS vehMakerCodeName,
+        vehBrandCode.vehicle_name AS vehBrandCodeName,
+        vehicleCode.vehicle_name AS vehicleCodeName,vehicleCode.vehicle_type2,
+        vehSeriesCode.vehicle_name AS vehSeriesCodeName,
+        contFinDetail.fin_amount,
+        productCatg.product_catg_name,
+        basSales.sales_name,
+        <!-- 剩余期数 -->
+        <include refid="surplusPeriod"/> ,
+        <!-- 剩余租金 -->
+        <include refid="surplusRent"/>
+        FROM
+        contract contract
+        LEFT JOIN
+        contract_vehicle vehicle ON contract.cont_no=vehicle.cont_no AND vehicle.del_flag =  ${delete_exist}
+        LEFT JOIN
+        contract_finance finance ON contract.cont_no=finance.cont_no AND finance.del_flag = ${delete_exist}
+        LEFT JOIN
+        sys_group sysGroup1 ON finance.belong_group = sysGroup1.group_code AND sysGroup1.del_flag =  ${delete_exist}
+        LEFT JOIN
+        apply apply ON contract.apply_no=apply.apply_no AND apply.del_flag = ${delete_exist}
+        LEFT JOIN
+        cstm_person  ON contract.apply_no=cstm_person.apply_no AND cstm_person.del_flag = ${delete_exist}
+        LEFT JOIN
+        cstm_company  ON contract.apply_no=cstm_company.apply_no AND cstm_company.del_flag = ${delete_exist}
+        LEFT JOIN
+        sys_group sysGroup ON contract.apply_group=sysGroup.group_code AND sysGroup.del_flag = ${delete_exist}
+        LEFT JOIN
+        product product ON finance.product=product.product AND product.del_flag = ${delete_exist}
+        LEFT JOIN
+        bas_vehicle vehMakerCode ON vehicle.veh_maker_code=vehMakerCode.vehicle_code AND vehMakerCode.del_flag = ${delete_exist}
+        LEFT JOIN
+        bas_vehicle vehBrandCode ON vehicle.veh_brand_code=vehBrandCode.vehicle_code AND vehBrandCode.del_flag = ${delete_exist}
+        LEFT JOIN
+        bas_vehicle vehicleCode ON vehicle.vehicle_code=vehicleCode.vehicle_code AND vehicleCode.del_flag = ${delete_exist}
+        LEFT JOIN
+        bas_vehicle vehSeriesCode ON vehicle.veh_series_code=vehSeriesCode.vehicle_code AND vehSeriesCode.del_flag = ${delete_exist}
+        LEFT JOIN guarantee_pers ON contract.apply_no = guarantee_pers.apply_no AND guarantee_pers.del_flag = ${delete_exist}
+        LEFT JOIN guarantee_comp ON contract.apply_no = guarantee_comp.apply_no AND guarantee_comp.del_flag = ${delete_exist}
+        LEFT JOIN cont_fin_detail contFinDetail on contFinDetail.del_flag = ${delete_exist}
+        AND contFinDetail.cont_no = contract.cont_no
+        AND contFinDetail.apply_no = contract.apply_no
+        AND contFinDetail.fin_item = #{contractListVo.finItem}
+        LEFT JOIN product_catg productCatg ON finance.product_catg = productCatg.product_catg AND productCatg.del_flag = ${delete_exist}
+        LEFT JOIN bas_sales basSales ON basSales.sales_code = vehicle.sale_group_code
+        WHERE contract.del_flag = ${delete_exist}
+        <if test="contractListVo.contNo != null">
+            AND contract.cont_no LIKE #{contractListVo.contNo}
+        </if>
+        <if test="contractListVo.name != null">
+            AND (cstm_person.name LIKE #{contractListVo.name} OR cstm_company.name LIKE #{contractListVo.name})
+        </if>
+        <if test="contractListVo.groupDistrict != null" >
+            AND sysGroup1.group_district LIKE #{contractListVo.groupDistrict}
+        </if>
+        <if test="contractListVo.vinNo != null" >
+            AND contract.vin_no LIKE #{contractListVo.vinNo}
+        </if>
+        <if test="contractListVo.licenseAttr != null">
+            AND finance.license_attr = #{contractListVo.licenseAttr}
+        </if>
+        /*合同已生效*/
+        <if test="contractListVo.bizStatus != null">
+            AND contract.biz_status = #{contractListVo.bizStatus}
+        </if>
+        ORDER BY if(isnull(contract.contract_valid_date),0,1) asc,contract.contract_valid_date desc,contract.update_time desc
+    </select>
+
+    <!-- 根据合同号取得一条记录 -->
+    <select id="selectContractVoByContractNo" parameterType="java.lang.String" resultType="cn.com.leadu.fms.pojo.prebiz.vo.contract.ContractVo">
+        SELECT
+        contract.*,
+        sysGroup.group_name
+        FROM
+        contract contract
+        LEFT JOIN
+        contract_finance finance ON contract.cont_no=finance.cont_no AND finance.del_flag = ${delete_exist}
+        LEFT JOIN
+        sys_group sysGroup ON finance.belong_group = sysGroup.group_code AND sysGroup.del_flag =  ${delete_exist}
+       where contract.del_flag = ${delete_exist}
+        <if test="contNo!= null">
+            and contract.cont_no= #{contNo}
+        </if>
+        limit 0,1
+    </select>
+
+    <!--
+     /**
+     * @Title:
+     * @Description: 根据申请编号,查询申请合同相关的财务核算代码
+     * @param:  applyTypePerson
+     * @param:  applyNo
+     * @param:  contNo
+     * @return
+     * @throws
+     * @author qiaomengnan
+     * @date 2018/6/30 0030 15:52
+     */
+     -->
+    <select id="selectContractVoFinassCodes" resultType="cn.com.leadu.fms.pojo.prebiz.vo.contract.ContractVo">
+        select
+        distinct
+        <!-- 申请人财务核算代码 -->
+        IF(apply.apply_type = #{contractVo.applyTypePerson},crmPerson.finass_cstm_code,crmCompany.finass_cstm_code) finassCstmCode,
+        <!-- 申请人姓名 -->
+        IF(apply.apply_type = #{contractVo.applyTypePerson},cstmPerson.name,cstmCompany.name) applyPersonName,
+        <!-- 出租人财务核算代码 -->
+        sysGroup.finass_group_code,
+        <!-- 实际销售方财务核算代码 -->
+        basSales.finass_sales_code,
+        <!-- 牌照属性 -->
+        contractFinance.license_attr,
+        <!-- 车架号 -->
+        contract.vin_no,
+        <!-- 凭证区域 -->
+        sysGroup.group_district
+        from apply apply
+        <!-- 使用申请编号关联个人申请表 -->
+        left join cstm_person cstmPerson
+        on apply.apply_no = cstmPerson.apply_no and cstmPerson.del_flag = ${delete_exist}
+        <!-- 使用个人申请表证件号码关联crm个人信息表 -->
+        left join crm_person crmPerson
+        on cstmPerson.certif_no = crmPerson.certif_no and crmPerson.del_flag = ${delete_exist}
+        <!-- 使用申请编号关联企业申请表 -->
+        left join cstm_company cstmCompany
+        on apply.apply_no = cstmCompany.apply_no and cstmCompany.del_flag = ${delete_exist}
+        <!-- 使用企业申请表统一社会信用代码关联crm企业信息表 -->
+        left join crm_company crmCompany
+        on cstmCompany.social_certif_no = crmCompany.social_certif_no and crmCompany.del_flag = ${delete_exist}
+        <!-- 使用申请编号关联合同表 -->
+        left join contract contract
+        on apply.apply_no = contract.apply_no and contract.del_flag = ${delete_exist}
+        <!-- 使用申请编号和合同号关联合同融资车辆信息表 -->
+        left join contract_vehicle contractVehicle
+        on apply.apply_no = contractVehicle.apply_no and contract.cont_no = contractVehicle.cont_no and contractVehicle.del_flag = ${delete_exist}
+        <!-- 使用合同融资车辆信息表实际销售方代码关联实际销售方表 -->
+        left join bas_sales basSales
+        on contractVehicle.sale_group_code = basSales.sales_code and basSales.del_flag = ${delete_exist}
+        <!-- 使用申请编号和合同号关联合同融资信息表 -->
+        left join contract_finance contractFinance
+        on apply.apply_no = contractFinance.apply_no and contract.cont_no = contractFinance.cont_no and contractFinance.del_flag = ${delete_exist}
+        <!-- 使用合同融资信息表出租人关联系统用户组 -->
+        left join sys_group sysGroup
+        on contractFinance.belong_group = sysGroup.group_code and sysGroup.del_flag = ${delete_exist}
+        where apply.del_flag = ${delete_exist}
+        and apply.apply_no = #{contractVo.applyNo}
+        and contract.cont_no = #{contractVo.contNo}
+    </select>
+
+
+    <update id="updateAutomaticClearing" parameterType="java.lang.String">
+        update contract set payment_sts = #{automaticClearing} where cont_no in(
+        select cont.cont_no from(
+        select contract.cont_no from contract  LEFT JOIN
+        (select count(*) sCount,cont_no from cont_repay_sked where repay_status != #{withdrawingSuccess} and del_flag =  ${delete_exist} group BY cont_no ) sked
+        on sked.cont_no = contract.cont_no
+        LEFT JOIN
+        (select count(*) oCount,cont_no from cont_overdue where repay_status != #{withdrawingSuccess} and del_flag =  ${delete_exist} group BY cont_no ) over
+        on over.cont_no = contract.cont_no
+        where contract.del_flag =  ${delete_exist} and payment_sts = #{uncleared} and biz_status = #{contractEffect} and sCount is null and oCount is null) cont);
+
+    </update>
+
+    <!-- 剩余期数 -->
+    <sql id="surplusPeriod">
+        ( select count(contRepaySked.repay_sked_id) surplusPeriod from cont_repay_sked contRepaySked
+        where contRepaySked.del_flag = ${delete_exist}
+        and contRepaySked.cont_no = contract.cont_no
+        and contRepaySked.repay_status = #{contractListVo.repayStatus}
+        and contRepaySked.repay_type = 0
+        and contRepaySked.repay_date > #{contractListVo.repayDateStr}
+        ) surplusPeriod
+    </sql>
+
+    <!-- 剩余租金 -->
+    <sql id="surplusRent">
+        ( select sum(contRepaySked.rent) surplusRent from cont_repay_sked contRepaySked
+        where contRepaySked.del_flag = ${delete_exist}
+        and contRepaySked.cont_no = contract.cont_no
+        and contRepaySked.repay_status = #{contractListVo.repayStatus}
+        and (contRepaySked.repay_type = 0 or contRepaySked.repay_type = 2)
+        and contRepaySked.repay_date > #{contractListVo.repayDateStr}
+        ) surplusRent
+    </sql>
+
+    <select id="selectReportStatisticsVo" parameterType="java.lang.String" resultType="cn.com.leadu.fms.pojo.postbiz.vo.licenseidx.ReportStatisticsVo">
+        select contract_finance.belong_group,sysGroup.group_district,date_format(contract.contract_valid_date, '%Y-%m') AS contractSerachDate,
+        sum(case when apply.company_type1='3' and (apply.company_type2='31' or apply.company_type2='34') then 1 else 0 end) driving_vehicle,
+        sum(case when apply.company_type1='3' and apply.company_type2='32' then 1 else 0 end) step_car,
+        sum(case when apply.company_type1='3' and apply.company_type2='33' then 1 else 0 end) employees_car,
+        sum(case when apply.company_type1='2' and contract_finance.license_attr!='2'
+        and contract_finance.vehicle_form='1' and (bas_vehicle.vehicle_type2 !='1' or bas_vehicle.vehicle_type2 is null) then 1 else 0 end) customer_enterprise,
+        sum(case when apply.company_type1='1' and contract_finance.license_attr!='2'
+        and contract_finance.vehicle_form='1' and (bas_vehicle.vehicle_type2 !='1' or bas_vehicle.vehicle_type2 is null) then 1 else 0 end) customer_person,
+        sum(case when apply.company_type1!='3' and contract_finance.license_attr='2'
+        and contract_finance.vehicle_form='1' and (bas_vehicle.vehicle_type2 !='1' or bas_vehicle.vehicle_type2 is null) then 1 else 0 end) customer_leaseback,
+        sum(case when apply.company_type1!='3' and contract_finance.vehicle_form='2' then 1 else 0 end) customers_handcar,
+        sum(case when apply.company_type1!='3' and bas_vehicle.vehicle_type2 ='1' then 1 else 0 end) customer_motorcycle,
+        sum(IFNULL(contract_finance.fin_total,0)) fin_total
+        from contract contract
+        left join contract_finance contract_finance on contract.cont_no=contract_finance.cont_no and contract_finance.del_flag=${delete_exist}
+        left join sys_group sysGroup on contract_finance.belong_group = sysGroup.group_code and sysGroup.del_flag=${delete_exist}
+        left join apply apply on contract.apply_no = apply.apply_no and apply.del_flag=${delete_exist}
+        left join contract_vehicle contract_vehicle on contract.cont_no = contract_vehicle.cont_no and contract_vehicle.del_flag=${delete_exist}
+        left join bas_vehicle bas_vehicle on contract_vehicle.vehicle_code = bas_vehicle.vehicle_code and bas_vehicle.del_flag=${delete_exist}
+        where contract.contract_valid_date is not null and contract_finance.belong_group is not null
+        and contract.del_flag=${delete_exist}
+        <if test="reportStatisticsVo.groupDistrict != null">
+            and sysGroup.group_district like #{reportStatisticsVo.groupDistrict}
+        </if>
+        <if test="reportStatisticsVo.contractSerachDate != null">
+            and date_format(contract.contract_valid_date, '%Y-%m')=#{reportStatisticsVo.contractSerachDate}
+        </if>
+        <if test="reportStatisticsVo.contractSerachDate == null">
+            and date_format(contract.contract_valid_date, '%Y-%m')=date_format(SYSDATE(),'%Y-%m')
+        </if>
+        group by contract_finance.belong_group
+    </select>
+
+    <select id="selectBusinessStatisticsVo" parameterType="java.lang.String" resultType="cn.com.leadu.fms.pojo.postbiz.vo.licenseidx.BusinessStatisticsVo">
+        select date_format(contract2.contract_valid_date, '%Y-%m') AS contractSerachDate,
+        date_format(contract2.contract_valid_date, '%m') AS effectivedateMonth,
+        count(contract2.cont_no) monthly_number,
+        sum(IFNULL(contract_finance.fin_total,0)) fin_total,
+        ROUND(sum(IFNULL(contract_finance.fin_total,0))/count(contract2.cont_no),2) averagefin_total,
+        ROUND(sum(IFNULL(contract_finance.irr,0))/count(contract2.cont_no),2) average_irr,
+        sum(case when apply.company_type1='3' then 1 else 0 end) distributors_vehicle,
+        sum(case when apply.company_type1='3' then IFNULL(contract_finance.fin_total,0) else 0 end) distributors_fintotal,
+        sum(case when apply.company_type1='2' then 1 else 0 end) enterprise_vehicle,
+        sum(case when apply.company_type1='2' then IFNULL(contract_finance.fin_total,0) else 0 end) enterprise_fintotal,
+        sum(case when apply.company_type1='1' then 1 else 0 end) personal_vehicle,
+        sum(case when apply.company_type1='1' then IFNULL(contract_finance.fin_total,0) else 0 end) personal_fintotal
+        from contract contract2
+        left join contract_finance contract_finance on contract2.cont_no=contract_finance.cont_no and contract_finance.del_flag=${delete_exist}
+        left join apply apply on contract2.apply_no = apply.apply_no and apply.del_flag=${delete_exist}
+        where contract2.contract_valid_date is not null
+        <if test="businessStatisticsVo.yearInquiries != null">
+            and date_format(contract2.contract_valid_date, '%Y') = #{businessStatisticsVo.yearInquiries}
+        </if>
+        <if test="businessStatisticsVo.yearInquiries == null">
+            and date_format(contract2.contract_valid_date, '%Y')=date_format(SYSDATE(),'%Y')
+        </if>
+        and contract2.del_flag=${delete_exist}
+        group by date_format(contract2.contract_valid_date, '%Y-%m')
+        order by contract2.contract_valid_date
+    </select>
+
+    <select id="selectReportStatisticsListVo" parameterType="java.lang.String" resultType="cn.com.leadu.fms.pojo.postbiz.vo.licenseidx.ReportStatisticsListVo">
+        select ifnull(cstm_person.name,cstm_company.name) cstm_name,
+        vehicleCode.vehicle_name,vehicle.guide_price,
+        contFinDetail.fin_amount,finance.invest_total,finance.init_amount,
+        finance.deposit,finance.fin_total,finance.final_amount,
+        vehicle.back_purchase,finance.annual_supply_amount,finance.fin_period_type,
+        date_format(contract.lease_term_start_date, '%Y-%m-%d') AS leaseTermStartDate,
+        date_format(contract.lease_term_end_date, '%Y-%m-%d') AS leaseTermEndDate,
+        product.product_name,sys_code.code_value_name AS company_type1,
+        finance.intrst_rate,finance.irr,
+        basSales.sales_name,sys_user.user_name AS apply_user,
+        date_format(apply.apply_firsbt_date, '%Y-%m-%d') AS applyFirsbtDate,
+        date_format(contract.contract_valid_date, '%Y-%m-%d') AS contractValidDate,
+        sysGroup.group_district,date_format(contract.contract_valid_date, '%Y-%m') AS contractSerachDate,
+        round(finance.loan_interest/finance.fin_total,2) AS staticrateofreturn
+        from contract contract
+        left join contract_vehicle vehicle ON contract.cont_no=vehicle.cont_no and vehicle.del_flag=${delete_exist}
+        left join contract_finance finance ON contract.cont_no=finance.cont_no and finance.del_flag=${delete_exist}
+        left join apply apply on contract.apply_no = apply.apply_no and apply.del_flag=${delete_exist}
+        left join cstm_person on contract.apply_no=cstm_person.apply_no and cstm_person.del_flag=${delete_exist}
+        left join cstm_company on contract.apply_no=cstm_company.apply_no and cstm_company.del_flag=${delete_exist}
+        left join product product on finance.product=product.product and product.del_flag=${delete_exist}
+        left join bas_vehicle vehicleCode on vehicle.vehicle_code=vehicleCode.vehicle_code and vehicleCode.del_flag=${delete_exist}
+        left join bas_sales basSales on basSales.sales_code = vehicle.sale_group_code and basSales.del_flag=${delete_exist}
+        left join sys_group sysGroup on finance.belong_group = sysGroup.group_code and sysGroup.del_flag=${delete_exist}
+        left join (select code_value,code_value_name from sys_code where code_type='companyType' and del_flag=${delete_exist})sys_code on apply.company_type1 = sys_code.code_value
+        left join sys_user sys_user on contract.apply_user = sys_user.user and sys_user.del_flag=${delete_exist}
+        left join cont_fin_detail contFinDetail on contFinDetail.del_flag = ${delete_exist}
+        and contFinDetail.cont_no = contract.cont_no
+        and contFinDetail.apply_no = contract.apply_no
+        and contFinDetail.fin_item = #{reportStatisticsListVo.finItem}
+        where contract.contract_valid_date is not null and finance.belong_group is not null
+        and contract.del_flag=${delete_exist}
+        <if test="reportStatisticsListVo.groupDistrict != null">
+            and sysGroup.group_district like #{reportStatisticsListVo.groupDistrict}
+        </if>
+        <if test="reportStatisticsListVo.contractSerachDate != null">
+            and date_format(contract.contract_valid_date, '%Y-%m')=#{reportStatisticsListVo.contractSerachDate}
+        </if>
+        <if test="reportStatisticsListVo.contractSerachDate == null">
+            and date_format(contract.contract_valid_date, '%Y-%m')=date_format(SYSDATE(),'%Y-%m')
+        </if>
+    </select>
+
+    <select id="selectRegionStatisticsListVo" parameterType="java.lang.String" resultType="cn.com.leadu.fms.pojo.postbiz.vo.licenseidx.RegionStatisticsVo">
+        select sysGroup.group_district,
+        date_format(contract.contract_valid_date, '%Y-%m') AS contractSerachDate,count(1) AS numberOftables,
+        date_format(contract.contract_valid_date, '%m') AS effectivedateMonth
+        from contract contract
+        left join contract_finance finance ON contract.cont_no=finance.cont_no and finance.del_flag=${delete_exist}
+        left join sys_group sysGroup on finance.belong_group = sysGroup.group_code and sysGroup.del_flag=${delete_exist}
+        where contract.contract_valid_date is not null and finance.belong_group is not null
+        and contract.del_flag=${delete_exist}
+        <if test="regionStatisticsVo.yearInquiries != null">
+            and date_format(contract.contract_valid_date, '%Y') = #{regionStatisticsVo.yearInquiries}
+        </if>
+        <if test="regionStatisticsVo.yearInquiries == null">
+            and date_format(contract.contract_valid_date, '%Y')=date_format(SYSDATE(),'%Y')
+        </if>
+        group by sysGroup.group_district,date_format(contract.contract_valid_date, '%Y-%m')
+        order by sysGroup.group_district,contract.contract_valid_date
+    </select>
+
+    <select id="selectBrandStatisticsListVo" parameterType="java.lang.String" resultType="cn.com.leadu.fms.pojo.postbiz.vo.licenseidx.BrandStatisticsVo">
+        select basBrand.vehicle_name,
+        date_format(contract.contract_valid_date, '%Y-%m') AS contractSerachDate,count(1) AS numberOftables,
+        date_format(contract.contract_valid_date, '%m') AS effectivedateMonth
+        from contract contract
+        left join contract_vehicle contractVehicle on contract.cont_no = contractVehicle.cont_no and contractVehicle.del_flag=${delete_exist}
+        left join bas_vehicle basBrand on basBrand.vehicle_code = contractVehicle.veh_brand_code and basBrand.vehicle_level = '2' and basBrand.del_flag=${delete_exist}
+        where contract.contract_valid_date is not null and basBrand.vehicle_code is not null
+        and contract.del_flag=${delete_exist}
+        <if test="brandStatisticsVo.yearInquiries != null">
+            and date_format(contract.contract_valid_date, '%Y') = #{brandStatisticsVo.yearInquiries}
+        </if>
+        <if test="brandStatisticsVo.yearInquiries == null">
+            and date_format(contract.contract_valid_date, '%Y')=date_format(SYSDATE(),'%Y')
+        </if>
+        group by contractVehicle.veh_brand_code,date_format(contract.contract_valid_date, '%Y-%m')
+        order by contractVehicle.veh_brand_code,contract.contract_valid_date
+    </select>
+
+    <!-- 查询待请款合同数量 -->
+    <select id="selectRequestCount" parameterType="cn.com.leadu.fms.pojo.system.vo.desk.DeskSearchVo" resultType="java.lang.Long">
+        select count(contract.cont_no)
+        from contract contract
+        where contract.del_flag = ${delete_exist}
+        and contract.biz_status != #{deskSearchVo.contractStatus}
+        and contract.contract_request_date is null
+        <if test="deskSearchVo.sysUser != null">
+            AND contract.apply_user = #{deskSearchVo.sysUser}
+        </if>
+        <if test="deskSearchVo.sysUserGroup != null">
+            AND contract.apply_group IN
+            <foreach collection="deskSearchVo.sysUserGroup" item="item" index="index" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+    </select>
+
+    <!-- 查询待放款合同数量 -->
+    <select id="selectLoanCount" parameterType="cn.com.leadu.fms.pojo.system.vo.desk.DeskSearchVo" resultType="java.lang.Long">
+        select count(contract.cont_no)
+        from contract contract
+        where contract.del_flag = ${delete_exist}
+        and contract.biz_status != #{deskSearchVo.contractStatus}
+        and contract.contract_request_date is not null
+        and contract.contract_valid_date is null
+        <if test="deskSearchVo.sysUser != null">
+            AND contract.apply_user = #{deskSearchVo.sysUser}
+        </if>
+        <if test="deskSearchVo.sysUserGroup != null">
+            AND contract.apply_group IN
+            <foreach collection="deskSearchVo.sysUserGroup" item="item" index="index" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+    </select>
+
+    <!-- 查询待归档合同数量 -->
+    <select id="selectOriginCount" parameterType="cn.com.leadu.fms.pojo.system.vo.desk.DeskSearchVo" resultType="java.lang.Long">
+        select count(contract.cont_no)
+        from contract contract
+        inner join orig_file origFile
+        on contract.cont_no = origFile.biz_code and origFile.del_flag = ${delete_exist}
+        where contract.del_flag = ${delete_exist}
+        and contract.biz_status = #{deskSearchVo.contractStatus}
+        and origFile.orig_file_status = #{deskSearchVo.origStatus}
+        <if test="deskSearchVo.sysUser != null">
+            AND contract.apply_user = #{deskSearchVo.sysUser}
+        </if>
+        <if test="deskSearchVo.sysUserGroup != null">
+            AND contract.apply_group IN
+            <foreach collection="deskSearchVo.sysUserGroup" item="item" index="index" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+    </select>
+</mapper>

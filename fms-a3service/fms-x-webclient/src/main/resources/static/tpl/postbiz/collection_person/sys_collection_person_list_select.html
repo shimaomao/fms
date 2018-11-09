@@ -1,0 +1,26 @@
+<div class="modal-header">
+    <h4 class="modal-title">选择催收人员 <button type="button" class="close" data-dismiss="modal" aria-hidden="true" ng-click="close()">&times;</button></h4>
+</div>
+
+<div ng-init="init()">
+    <div class="panel-body">
+        <div class="panel-body wrapper-sm">
+            <div class="row">
+                <div class="col-lg-12">
+
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-default" style="border: 0">
+            <table border="1" class="table table-striped m-b-none" id="collection_person_table"></table>
+        </div>
+    </div>
+</div>
+<div class="modal-footer ng-scope">
+    <div class="text-center">
+        <button class="btn btn-default" ng-click="close()">取消</button>
+        <button class="btn btn-success m-b-xs" ng-click="confirm('select')">确认</button>
+    </div>
+</div>
+</div>
+

@@ -1,0 +1,62 @@
+<div class="modal-header">
+    <h4 class="modal-title">添加postbiz <button type="button" class="close" data-dismiss="modal" aria-hidden="true" ng-click="close()">&times;</button></h4>
+</div>
+<div class="modal-body">
+    <form name="form" class="form-validation" novalidate>
+
+        <div class="panel-body">
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">合同编号</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="contNo" placeholder="请输入合同编号" class="form-control m-b-xs" ng-model="contPrepayDetail.contNo"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.contNo.$dirty && form.contNo.$error.required) || (form.contNo.$error.required && formValidate)">合同编号不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">提前还款明细类型</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="prepaymDetailItem" placeholder="请输入提前还款明细类型" class="form-control m-b-xs" ng-model="contPrepayDetail.prepaymDetailItem"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.prepaymDetailItem.$dirty && form.prepaymDetailItem.$error.required) || (form.prepaymDetailItem.$error.required && formValidate)">提前还款明细类型不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">提前还款明细参考金额</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="prepayTrialAmount" placeholder="请输入提前还款明细参考金额" class="form-control m-b-xs" ng-model="contPrepayDetail.prepayTrialAmount"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.prepayTrialAmount.$dirty && form.prepayTrialAmount.$error.required) || (form.prepayTrialAmount.$error.required && formValidate)">提前还款明细参考金额不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">提前还款明细实际金额</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="prepayActualAmount" placeholder="请输入提前还款明细实际金额" class="form-control m-b-xs" ng-model="contPrepayDetail.prepayActualAmount"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.prepayActualAmount.$dirty && form.prepayActualAmount.$error.required) || (form.prepayActualAmount.$error.required && formValidate)">提前还款明细实际金额不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+
+        </div>
+
+    </form>
+</div>
+<div class="modal-footer ng-scope">
+    <button class="btn btn-default" ng-click="close()">取消</button>
+    <button type="submit" class="btn btn-success" ng-disabled="submit" ng-click="save()">新增</button>
+</div>

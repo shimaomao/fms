@@ -1,0 +1,60 @@
+<div  ng-controller="bas_vehicle_list_controller">
+    <div>
+        <toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-body wrapper-sm">
+            <div class="row">
+                <div class="col-lg-12">
+                    <form class="form-inline" role="form">
+                      <!--  <div class="form-group">
+                            <label class="sr-only" >等级 </label>
+                            <input class="form-control m-b-xs" ng-model="vehicleLevel" placeholder="等级">
+                        </div>-->
+                        <div class="form-group">
+                            <select ng-model="params.vehicleLevel" class="form-control m-b-xs">
+                                <option value="">--选择车辆级别--</option>
+                                <option value="{{vehicleLevelObj.codeValue}}" ng-repeat="vehicleLevelObj in vehicleLevelList" ng-selected="params.vehicleLevel == vehicleLevelObj.codeValue">{{vehicleLevelObj.codeValueName}}</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="sr-only" >车型名称</label>
+                            <input class="form-control m-b-xs" ng-model="params.vehicleName" placeholder="请输入车型名称">
+                        </div>
+
+                        <div class="form-group m-b-sm">
+                            <div class="btn-group">
+                                <button class="btn btn-default m-b-xs btn-info" ng-click="searchBasVehicle()" ><i class="fa fa-search"></i>查询</button>
+                                <button class="btn btn-default m-b-xs" ng-click="resetBasVehicle()" ><i class="fa  icon-refresh"></i>重置</button>
+                            </div>
+                        </div>
+
+                        <div class="form-group pull-right">
+                            <div class="btn-group">
+                                <button class="btn btn-default m-b-xs" ng-click="exportExcel()">导出excel</button>
+                                <button class="btn btn-default m-b-xs" ng-click="saveBasVehicle(1)"><i class="fa fa-plus"></i>添加制造商</button>
+                                <button class="btn btn-default m-b-xs" ng-click="saveBasVehicle(2)"><i class="fa fa-plus"></i>添加品牌</button>
+                                <button class="btn btn-default m-b-xs" ng-click="saveBasVehicle(3)"><i class="fa fa-plus"></i>添加车系</button>
+                                <button class="btn btn-default m-b-xs" ng-click="saveBasVehicle(4)"><i class="fa fa-plus"></i>添加车型</button>
+                                <button class="btn btn-default m-b-xs" ng-click="modifyBasVehicle()"><i class="fa icon-pencil"></i>修改</button>
+                                <button class="btn btn-default m-b-xs" ng-click="deleteBasVehicle()"><i class="fa fa-trash-o"></i>删除</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <table border="1" class="table table-striped m-b-none" id="bas_vehicle_table">
+        </table>
+
+        <!-- <div class="col-lg-12 form-inline panel panel-default" style="padding: 0px">
+
+           <div class="col-lg-2 " style="padding-left: 0; padding-right: 0" >
+                 <div id="sys_group_tree" style="max-height: 400px;overflow-y:auto;white-space:nowrap;font-size: 6px"></div>
+             </div>
+         </div>-->
+
+    </div>
+</div>
+

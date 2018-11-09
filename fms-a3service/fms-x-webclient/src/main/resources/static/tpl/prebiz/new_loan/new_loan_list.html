@@ -1,0 +1,42 @@
+<div  ng-controller="new_loan_list_controller">
+    <div>
+        <toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-body wrapper-sm">
+            <div class="keyUp">
+            <div class="row">
+                <div class="col-lg-2">
+                    <div class="form-group">
+                            <div class="form-group">
+                                <label class="sr-only" >出租人区域 </label>
+                                <input class="form-control m-b-xs" ng-model="params.groupDistrict" placeholder="请输入出租人区域">
+                            </div>
+                     </div>
+                 </div>
+                        <div class="col-lg-2">
+                            <div class="form-group">
+                                <label class="sr-only">报表月份</label>
+                                <input id="censuMonth" type="text" name="censuMonth" placeholder="请输入报表月份"
+                                       class="form-control m-b-xs"  ng-model="params.censuMonth" date-picker="{{censuDate}}">
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <div class="form-group">
+                                <button class="btn btn-default btn-sm m-b-xs btn-info fms-button-margin-bottom" ng-click="searchContractList()" ><i class="fa fa-search"></i>查询</button>
+                                <button class="btn btn-default btn-sm m-b-xs fms-button-margin-bottom" ng-click="resetContractList()" ><i class="fa  icon-refresh"></i>重置</button>
+                            </div>
+                        </div>
+                        <div class="form-group pull-right">
+                            <div class="btn-group ">
+                                <button class="btn btn-default btn-sm m-b-xs fms-button-margin-bottom" ng-click="exportExcel()"><i class="fa"></i>excel导出</button>
+                            </div>
+                        </div>
+                </div>
+            </div>
+        </div>
+        <table border="1" class="table table-striped m-b-none" id="new_loan_table">
+        </table>
+    </div>
+</div>
+

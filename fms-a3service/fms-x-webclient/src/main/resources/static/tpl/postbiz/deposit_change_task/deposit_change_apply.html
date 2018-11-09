@@ -1,0 +1,131 @@
+<div class="panel panel-default" ng-controller="deposit_change_apply_controller">
+    <div>
+        <toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+    </div>
+    <form name="form" class="form-validation" novalidate>
+
+        <div class="row" style="margin: 0; padding: 15px; border: 1px solid #dddddd">
+            <div class="form-inline" role="form">
+                <div class="form-group">
+                    <h4 class="m-n font-thin h4">增加保证金申请</h4>
+                </div>
+                <div class="form-group pull-right">
+                    <button class="btn btn-default" ng-click="goBack()">返回</button>
+                    <button type="submit" class="btn btn-success" ng-disabled="submit" ng-click="save()">提交</button>
+                </div>
+
+            </div>
+        </div>
+
+
+        <ul type="none" style="padding-left: 20px;">
+            <div class="row line-lg" style="font-weight: bold;font-size: 14px;">变更前信息</div>
+            <div class="row" style="margin: 5px; padding-right: 50px;">
+                <div class="row">
+
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">承租人:</b></label>
+                    <div class="col-sm-2">
+                        <label class="col-sm-12 control-label text-left"> {{baseData.lessee}}</label>
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">出租人:</b></label>
+                    <div class="col-sm-2">
+                        <label class="col-sm-12 control-label text-left"> {{baseData.lessor}}</label>
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">车架号:</b></label>
+                    <div class="col-sm-2">
+                        <label class="col-sm-12 control-label text-left"> {{baseData.vinNo}}</label>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">合同编号:</b></label>
+                    <div class="col-sm-2">
+                        <label class="col-sm-12 control-label text-left"> {{baseData.contNo}}</label>
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">融资额:</b></label>
+                    <div class="col-sm-2">
+                        <label class="col-sm-12 control-label text-left"> {{baseData.finTotal}}</label>
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">融资期限:</b></label>
+                    <div class="col-sm-2">
+                        <label class="col-sm-12 control-label text-left"> {{baseData.finPeriodType}}</label>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">已还金额:</b></label>
+                    <div class="col-sm-2">
+                        <label class="col-sm-12 control-label text-left"> {{baseData.alreadyRepayAmount}}</label>
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">已还期数:</b></label>
+                    <div class="col-sm-2">
+                        <label class="col-sm-12 control-label text-left"> {{baseData.alreadyRepayNper}}</label>
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">剩余租金:</b></label>
+                    <div class="col-sm-2">
+                        <label class="col-sm-12 control-label text-left"> {{baseData.residueAmount}}</label>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">保证金:</b></label>
+                    <div class="col-sm-2">
+                        <label class="col-sm-12 control-label text-left"> {{baseData.deposit}}</label>
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">逾期详情</b>:</label>
+                    <div class="col-sm-2">
+                        <button type="button" class="btn btn-sm btn-success" ng-click="overdue()">逾期详情</button>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="row line-lg" style="font-weight: bold;font-size: 14px;">变更后信息</div>
+            <div class="row" style="margin: 5px; padding-right: 50px;">
+                <div class="row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">补充保证金</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <input type="number" oninput="CommonNumberUtils.numberLength(10,this)"   maxlength="10" name="supplementDeposit" placeholder="请输入补充保证金" class="form-control m-b-xs" ng-model="baseData.supplementDeposit"  required>
+                        <p>
+                            <span class="form-info" ng-show=" (form.supplementDeposit.$dirty && form.supplementDeposit.$error.required) || (form.supplementDeposit.$error.required && formValidate)">请输入补充保证金</span>
+                        </p>
+                    </div>
+                </div>
+                <div class="row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">备注</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-10">
+                        <textarea placeholder="请输入备注" class="form-control m-b-xs r-none" limit-word cols="100" rows="5" maxlength="200" name="applyRemark" ng-model="baseData.applyRemark" required></textarea>
+                        <p>
+                            <span class="form-info" ng-show=" (form.applyRemark.$dirty && form.applyRemark.$error.required) || (form.applyRemark.$error.required && formValidate)">请输入备注</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </ul>
+
+        <ul type="none" style="padding-left: 20px;">
+            <div class="row line-lg" style="font-weight: bold;font-size: 14px;">增加担保信息</div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <form class="form-inline" role="form">
+                        <div class="pull-right m-b-xs">
+                            <button type="button" class="btn btn-success btn-sm" ng-click="saveGuaranteePers()"><i class="fa fa-plus m-r-xs"></i>添加担保人</button>
+                            <button type="button" class="btn btn-success btn-sm" ng-click="saveGuaranteeComp()"><i class="fa fa-plus m-r-xs"></i>添加担保企业</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <table id="guarantee_info_table" border="1" class="table table-striped m-b-none" width="100%">
+            </table>
+        </ul>
+
+        <p style="font-weight: bold;font-size: 16px;padding-left: 10px;">附件信息</p>
+        <!--附件信息-->
+        <div class="panel-body wrapper-sm" ng-if="httpData">
+            <tree-file-directive detail-flag="$root.yesNoFlag.no" file-type="$root.basFileTypes.depositChangeFile" files="$parent.bizFilesList" not-upload="$parent.notUpload" not-upload-info="$parent.msgInfo"   not-file-type="$parent.notFileType" not-file-type-name="$parent.notFileTypeName">
+            </tree-file-directive>
+        </div>
+
+        <div ng-include="'tpl/common/process_log/process_log_list.html'"></div>
+    </form>
+</div>

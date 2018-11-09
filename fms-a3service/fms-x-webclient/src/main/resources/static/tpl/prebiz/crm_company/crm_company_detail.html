@@ -1,0 +1,142 @@
+<div ng-controller="crm_company_detail_controller">
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <form name="form" class="form-validation" novalidate>
+                <div class="row">
+                    <div class="form-group pull-right">
+                        <div class="btn-group ">
+                            <button class="btn btn-default m-t-xs" ng-click="goBack()">返回</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="row line-lg" style="font-weight: bold;font-size: 14px;"><div class="col-sm-12">企业基本信息</div></div>
+                <div class="row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">企业名称</b>:</label>
+                    <div class="col-sm-2 control-label">
+                        {{crmCompany.name}}
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">统一社会信用代码</b>:</label>
+                    <div class="col-sm-2 control-label">
+                        {{crmCompany.socialCertifNo}}
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">法定代表人</b>:</label>
+                    <div class="col-sm-2 control-label">
+                        {{crmCompany.compLegalRep}}
+                    </div>
+                </div>
+                <div class="row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">企业联系人</b>:</label>
+                    <div class="col-sm-2 control-label">
+                        {{crmCompany.contactName}}
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">联系人手机号码</b>:</label>
+                    <div class="col-sm-2 control-label">
+                        {{crmCompany.contactMobno}}
+                    </div>
+                </div>
+                <div class="row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">经营省份</b>:</label>
+                    <div class="col-sm-2 control-label">
+                        {{crmCompany.compProv | getAreaName}}
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">经营城市</b>:</label>
+                    <div class="col-sm-2 control-label">
+                        {{crmCompany.compCity | getAreaName}}
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">经营区县</b>:</label>
+                    <div class="col-sm-2 control-label">
+                        {{crmCompany.compCounty | getAreaName}}
+                    </div>
+                </div>
+                <div class="row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">法人证件类型</b>:</label>
+                    <div class="col-sm-2 control-label">
+                        {{crmCompany.certifType | getName:'certifType'}}
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">法人证件号码</b>:</label>
+                    <div class="col-sm-2 control-label">
+                        {{crmCompany.certifNo}}
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">法人手机号码</b>:</label>
+                    <div class="col-sm-2 control-label">
+                        {{crmCompany.mobileNo}}
+                    </div>
+                </div>
+                <div class="row " id="compAddr">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">经营地址</b>:</label>
+                    <div class="col-sm-10 control-label">
+                        {{crmCompany.compAddr}}
+                    </div>
+                </div>
+                <div class="row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">注册资金(万元)</b>:</label>
+                    <div class="col-sm-2 control-label">
+                        {{crmCompany.regCapital}}
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">企业联系电话</b>:</label>
+                    <div class="col-sm-2 control-label">
+                        {{crmCompany.compTel}}
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">企业性质</b>:</label>
+                    <div class="col-sm-2 control-label">
+                        {{crmCompany.compType | getName:'compType'}}
+                    </div>
+                </div>
+                <div class="row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">经营地址类型</b>:</label>
+                    <div class="col-sm-2 control-label">
+                        {{crmCompany.compAddrType | getName:'compAddrType'}}
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">成立年限</b>:</label>
+                    <div class="col-sm-2 control-label">
+                        {{crmCompany.establYear}}
+                    </div>
+                </div>
+                <div class="row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">注册省份</b>:</label>
+                    <div class="col-sm-2 control-label">
+                        {{crmCompany.registerProv | getAreaName}}
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">注册城市</b>:</label>
+                    <div class="col-sm-2 control-label">
+                        {{crmCompany.registerCity | getAreaName}}
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">注册区县</b>:</label>
+                    <div class="col-sm-2 control-label">
+                        {{crmCompany.registerCounty | getAreaName}}
+                    </div>
+                </div>
+                <div class="row ">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">注册地址</b>:</label>
+                    <div class="col-sm-10 control-label">
+                        {{crmCompany.registerAddr}}
+                    </div>
+                </div>
+                <div class="row" ng-if="crmCompany.compAddrType == 1">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">租赁时间</b>:</label>
+                    <div class="col-sm-2 control-label">
+                        {{crmCompany.leaseTime}}
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">租赁面积</b>:</label>
+                    <div class="col-sm-2 control-label">
+                        {{crmCompany.leaseArea}}
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">租金</b>:</label>
+                    <div class="col-sm-2 control-label">
+                        {{crmCompany.rent}}
+                    </div>
+                </div>
+                <div class="row" ng-if="crmCompany.compAddrType == 0">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">购买时间</b>:</label>
+                    <div class="col-sm-2 control-label">
+                        {{crmCompany.buyTime}}
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">建筑面积</b>:</label>
+                    <div class="col-sm-2 control-label">
+                        {{crmCompany.constructionArea}}
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

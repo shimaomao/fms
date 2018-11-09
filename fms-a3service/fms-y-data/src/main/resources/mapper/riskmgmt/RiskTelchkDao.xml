@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.com.leadu.fms.data.riskmgmt.dao.RiskTelchkDao">
+    <!-- 根据订单编号取得电话核实信息 -->
+    <select id="selectRiskTelchkByApplyNo" parameterType="java.lang.String" resultType="cn.com.leadu.fms.pojo.riskmgmt.vo.risktelchk.RiskTelchkVo">
+        SELECT riskTelchkItem.telchk_item, riskTelchkItem.telchk_item_name, riskTelchkItem.code_type,riskTelchk.memo, riskTelchk.risk_telchk_id, riskTelchk.telchk_result
+        FROM risk_telchk_item riskTelchkItem
+        left join risk_telchk riskTelchk ON riskTelchkItem.telchk_item = riskTelchk.telchk_item and riskTelchk.apply_no = #{applyNo} and riskTelchk.del_flag =  ${delete_exist}
+        where riskTelchkItem.del_flag =  ${delete_exist}
+        order by riskTelchkItem.order_no asc
+    </select>
+</mapper>

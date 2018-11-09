@@ -1,0 +1,59 @@
+<div >
+
+    <style>
+        #process_log_table_wrapper>.row{display: none;}
+        .col-lg-12.form-inline.panel.panel-default{border: none;box-shadow: none;}
+    </style>
+    <ul type="none" style="padding-left: 20px;"  class="clearfix">
+        <li style="font-weight: bold;font-size: 16px;">流程日志信息</li>
+        <div class="col-lg-12 form-inline panel panel-default" style="padding-left: 0px">
+            <div class="dataTables_wrapper form-inline dt-bootstrap no-footer">
+                <div class="dataTables_scroll">
+                    <div class="dataTables_scrollBody">
+                        <table border="1" class="table table-striped m-b-none dataTable no-footer">
+                            <thead>
+                            <tr>
+                               <!-- <th>提交人</th>
+                                <th>当前流程状态</th>
+                                <th>备注内容</th>
+                                <th>操作分类</th>
+                                <th>操作日期</th>-->
+                                <th>操作名称</th>
+                                <th>操作分类</th>
+                                <th>提交人</th>
+                                <th>当前流程状态</th>
+                                <th>备注内容</th>
+                                <th>操作日期</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-show="logData.length == 0">
+                                    <td colspan="6" class="dataTables_empty">暂无数据</td>
+                                </tr>
+                                <tr click-tr ng-repeat="a in logData">
+                                   <!-- <td>{{a.user}}</td>
+                                    <td>{{a.status | getName:'bizStatus'}}</td>
+                                    <td title="{{a.remark1}}">
+                                        <span style="display: inline-block;max-width: 200px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;">{{a.remark1}}</span>
+                                    </td>
+                                    <td>{{a.actType | getName:'actType'}}</td>
+                                    <td>{{a.createTime}}</td>-->
+                                    <td>{{a.actWidgetName}}</td>
+                                    <td>{{a.actType | getName:'actType'}}</td>
+                                    <td>{{a.userName}}</td>
+                                    <td>{{a.status | getName:'bizStatus'}}</td>
+                                    <td title="{{a.remark1}}">
+                                        <span style="display: inline-block;max-width: 200px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;">{{a.remark1}}</span>
+                                    </td>
+                                    <td>{{a.createTime}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ul>
+
+</div>
+

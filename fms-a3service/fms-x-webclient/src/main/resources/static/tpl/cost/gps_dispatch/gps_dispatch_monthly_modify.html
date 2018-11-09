@@ -1,0 +1,144 @@
+<style>
+    .panel>h4{padding: 15px;border-bottom: 1px solid #dedede;color: black;font-weight: 600;margin: 0;font-size: 14px;}
+    .table>thead>tr>th, .table>tbody>tr>th, .table>tfoot>tr>th, .table>thead>tr>td, .table>tbody>tr>td, .table>tfoot>tr>td{border: 1px solid #eaeff0!important;}
+</style>
+<div ng-controller="gps_dispatch_monthly_modify_controller" style="padding: 20px;">
+    <div>
+        <toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <form name="form" class="form-validation" novalidate>
+
+                <div class="row">
+                    <div class="col-sm-12"><h4>待月结数据</h4></div>
+                    <div class="col-sm-12">
+                        <div class="m-b-xs">
+                            <div class="dataTables_wrapper form-inline dt-bootstrap no-footer">
+                                <table class="table table-striped m-b-none dataTable no-footer ">
+                                    <thead>
+                                    <tr>
+                                        <th>出租人</th>
+                                        <th>承租人</th>
+                                        <th>车架号</th>
+                                        <th>派单费用合计</th>
+                                        <th>账单费用合计</th>
+                                        <th>账单月</th>
+                                        <th>账单设备费用</th>
+                                        <th>账单安装费用</th>
+                                        <th>账单拆改费</th>
+                                        <th>是否一致</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr click-tr ng-repeat="a in tableData">
+                                        <td>{{a.rentPerson}}</td>
+                                        <td>{{a.lessee}}</td>
+                                        <td>{{a.vinNo}}</td>
+                                        <td>{{a.totalCost}}</td>
+                                        <td>
+                                            <input type="number" class="form-control" ng-model="a.billTotalCost" disabled>
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control" ng-model="a.billMonth" disabled>
+                                        </td>
+
+                                        <td>
+                                            <input name="equipmentCost_{{$index}}" type="number" ng-change="changeValue(a);" class="form-control" ng-model="a.equipmentCost" required>
+                                            <span class="form-info" ng-show=" (form.equipmentCost_{{$index}}.$dirty && form.equipmentCost_{{$index}}.$error.required) || (form.equipmentCost_{{$index}}.$error.required && formValidate)">账单设备费用不能为空</span>
+                                        </td>
+                                        <td>
+                                            <input name="installationCost_{{$index}}" type="number" ng-change="changeValue(a);" class="form-control" ng-model="a.installationCost" required>
+                                            <span class="form-info" ng-show=" (form.installationCost_{{$index}}.$dirty && form.installationCost_{{$index}}.$error.required) || (form.installationCost_{{$index}}.$error.required && formValidate)">账单安装费用不能为空</span>
+                                        </td>
+                                        <td>
+                                            <input name="changeCost_{{$index}}" type="number" ng-change="changeValue(a);" class="form-control" ng-model="a.changeCost" required>
+                                            <span class="form-info" ng-show=" (form.changeCost_{{$index}}.$dirty && form.changeCost_{{$index}}.$error.required) || (form.changeCost_{{$index}}.$error.required && formValidate)">账单拆改费不能为空</span>
+                                        </td>
+
+                                        <td>
+                                            <span>{{a.consistent}}</span>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-sm-1"></div>
+                    <label class="col-sm-1 control-label text-right"><b class="form-text-black">月结金额</b><b
+                            class="form-error"></b>:</label>
+                    <div class="col-sm-3">
+                        <input type="text" name="totalCost" class="form-control m-b-xs" ng-model="monthlySettlementVo.totalCost" disabled>
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">收款银行分行</b><b
+                            class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <input type="text" title="{{monthlySettlementVo.recAccBranch}}" name="recAccBranch" class="form-control m-b-xs" ng-disabled="true"
+                               ng-model="monthlySettlementVo.recAccBranch" required>
+                        <p>
+                            <span class="form-info"
+                                  ng-show=" (form.recAccBranch.$dirty && form.recAccBranch.$error.required) || (form.recAccBranch.$error.required && formValidate)">请选择银行</span>
+                        </p>
+                    </div>
+
+                    <div class="col-sm-1 text-right">
+                        <button class="btn btn-default m-b-xs m-l-sm  btn-sm" style="margin-right: 0;" ng-click="selectBasBankInfo()"><i
+                                class="fa fa-pencil-square-o m-r-xs"></i>选择
+                        </button>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <!--<label class="col-sm-1 control-label text-right"><b class="form-text-black">收款银行</b><b
+                            class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <input type="text" name="recAccBank" class="form-control m-b-xs" ng-disabled="true"
+                               ng-model="monthlySettlementVo.recAccBank" required>
+                        <p>
+                            <span class="form-info"
+                                  ng-show=" (form.recAccBank.$dirty && form.recAccBank.$error.required) || (form.recAccBank.$error.required && formValidate)">请选择银行</span>
+                        </p>
+                    </div>-->
+                    <div class="col-sm-1"></div>
+
+                    <label class="col-sm-1 control-label text-right"><b class="form-text-black">账户</b><b
+                            class="form-error">*</b>:</label>
+                    <div class="col-sm-3">
+                        <input type="text" title="{{monthlySettlementVo.recAccountName}}" name="recAccountName" class="form-control m-b-xs" ng-disabled="true"
+                               ng-model="monthlySettlementVo.recAccountName">
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">卡号</b><b
+                            class="form-error">*</b>:</label>
+                    <div class="col-sm-3">
+                        <input type="text" title="{{monthlySettlementVo.recAccountNo}}" name="recAccountNo" class="form-control m-b-xs" ng-disabled="true"
+                               ng-model="monthlySettlementVo.recAccountNo">
+                    </div>
+                </div>
+                <li style="font-weight: bold;font-size: 16px;">附件信息</li>
+                <!--附件信息-->
+                <div class="panel-body wrapper-sm" ng-if="httpData">
+                    <tree-file-directive detail-flag="$root.yesNoFlag.no" file-type="$root.basFileTypes.gpsDispatchMonthlyFile" files="$parent.bizFilesList" not-upload="$parent.notUpload" not-upload-info="$parent.msgInfo"   not-file-type="$parent.notFileType" not-file-type-name="$parent.notFileTypeName">
+                    </tree-file-directive>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-12 text-center m-t-md">
+                        <button class="btn btn-default" ng-click="close()">取消</button>
+                        <button type="submit" class="btn btn-success" ng-disabled="submit" ng-click="save()">保存</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div class="row fms-div-content" ng-if="monthlySettlementNo != ''">
+            <process-log-list-directive wf-log-type="$root.bizTypes.gps" wf-log-no="monthlySettlementNo" > </process-log-list-directive>
+        </div>
+    </div>
+
+</div>

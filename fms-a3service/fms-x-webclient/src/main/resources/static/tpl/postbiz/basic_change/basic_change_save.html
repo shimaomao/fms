@@ -1,0 +1,62 @@
+<div  ng-controller="basic_change_save_controller">
+    <div>
+        <toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-body wrapper-sm" style="position: fixed;width: 100%;background-color: white;z-index: 10;margin-top: -1px;padding-bottom: 0;">
+            <div class="row">
+                <div class="form-group pull-right" style="margin-top: 4px;">
+                    <div class="btn-group ">
+                        <button type="button" class="btn btn-success m-t-xs m-r-xs btn-sm fms-button-margin-bottom" ng-click="save()" ng-disabled="submit">提交</button>
+
+                        <button type="button" class="btn btn-success m-t-xs m-r-xs btn-sm fms-button-margin-bottom" ng-click="modify()" ng-disabled="submit">暂存</button>
+
+                        <button type="button" class="btn btn-default m-t-xs btn-sm fms-button-margin-bottom" ng-click="goBack()">返回</button>
+                    </div>
+                </div>
+                <ul id="applyTab" class="nav nav-tabs">
+                    <li class="active"><a href="javascript:void(0);" data-toggle="tab" data-id="change" onclick="switchPageTab(this, 'applyTab')">变更申请</a></li>
+                    <li><a href="javascript:void(0);" data-toggle="tab" data-id="customer" onclick="switchPageTab(this, 'applyTab')">承租人变更</a></li>
+                    <li ng-if="applyType == 1"><a href="javascript:void(0);" data-toggle="tab" data-id="borrower" onclick="switchPageTab(this, 'applyTab')">共同借款人变更</a></li>
+                    <li><a href="javascript:void(0);" data-toggle="tab" data-id="guarantee" onclick="switchPageTab(this, 'applyTab')">担保人变更</a></li>
+                    <li><a href="javascript:void(0);" data-toggle="tab" data-id="applyFile" onclick="switchPageTab(this, 'applyTab')">附件变更</a></li>
+                </ul>
+            </div>
+        </div>
+        <form name="form" class="form-validation" novalidate style="margin-top: 70px;">
+            <div id="applyTabContent" class="tab-content">
+                <!-- 变更申请 -->
+                <div class="tab-pane fade in active" id="change">
+                    <div ng-include="'tpl/postbiz/basic_change/basic_change_apply_save.html'" class="row m-xs"></div>
+                </div>
+                <!-- 承租人变更 -->
+                <div class="tab-pane fade" id="customer">
+                    <div ng-if="applyType == 1" ng-include="'tpl/prebiz/apply_input/cstm_person_save.html'" class="row m-xs"></div>
+                    <div ng-if="applyType == 2" ng-include="'tpl/prebiz/apply_input/cstm_company_save.html'" class="row m-xs"></div>
+                </div>
+                <!--共同借款人变更-->
+                <div ng-if="applyType == 1" class="tab-pane fade " id="borrower">
+                    <div ng-include="'tpl/prebiz/apply_input/borrower_info.html'" class="row m-xs"></div>
+                </div>
+                <!--担保人变更-->
+                <div class="tab-pane fade " id="guarantee">
+                    <div ng-include="'tpl/prebiz/apply_input/guarantee_info.html'" class="row m-xs"></div>
+                </div>
+                <!--附件变更-->
+                <div class="tab-pane fade " id="applyFile">
+                    <div class="row m-xs" >
+                        <tree-file-directive
+                                detail-flag="$root.yesNoFlag.no"
+                                file-type="fileObj.fileType"
+                                files="fileObj.bizFilesList"
+                                not-upload="fileObj.notUpload"
+                                not-upload-info="fileObj.notUploadInfo"
+                                not-file-type="fileObj.notFileType"
+                                not-file-type-name="fileObj.notFileTypeName">
+                        </tree-file-directive>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

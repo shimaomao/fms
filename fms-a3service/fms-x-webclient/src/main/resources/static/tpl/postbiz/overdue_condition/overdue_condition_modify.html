@@ -1,0 +1,196 @@
+<div ng-controller="overdue_condition_modify_controller">
+    <div>
+        <toaster-container
+                toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+    </div>
+    <div class="panel panel-default">
+        <div class="row" style="margin: 0; padding: 15px; border: 1px solid #dddddd">
+            <h4 class="m-n font-thin h4">{{frameTitle}}</h4>
+        </div>
+        <form name="form" class="form-validation" novalidate>
+            <div class="panel-body wrapper-sm">
+
+
+                <div class="form-group row">
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">逾期状态代码</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-3">
+                        <input type="text" name="overdueCondCd" placeholder="请输入逾期状态代码" class="form-control m-b-xs" ng-model="overdueCondition.overdueCondCd"  required disabled>
+                        <p>
+                            <span class="form-info" ng-show=" (form.overdueCondCd.$dirty && form.overdueCondCd.$error.required) || (form.overdueCondCd.$error.required && formValidate)">逾期状态代码不能为空</span>
+                        </p>
+                    </div>
+                </div>
+
+
+                <div class="form-group row">
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">逾期状态名称</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-3">
+                        <input type="text" name="overdueCondName" placeholder="请输入逾期状态名称" class="form-control m-b-xs" ng-model="overdueCondition.overdueCondName"  required >
+                        <p>
+                            <span class="form-info" ng-show=" (form.overdueCondName.$dirty && form.overdueCondName.$error.required) || (form.overdueCondName.$error.required && formValidate)">逾期状态名称不能为空</span>
+                        </p>
+                    </div>
+                </div>
+
+
+                <div class="form-group row">
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">逾期风险等级</b><b
+                            class="form-error">*</b>:</label>
+                    <div class="col-sm-3">
+                        <select name="overdueRisk" ng-model="overdueCondition.overdueRisk" class="form-control m-b-xs"
+                                required>
+                            <option value="">--请选择逾期风险等级--</option>
+                            <option value="{{overdueRiskObj.codeValue}}" ng-repeat="overdueRiskObj in overdueRiskList">
+                                {{overdueRiskObj.codeValueName}}
+                            </option>
+                        </select>
+                        <p>
+                            <span class="form-info"
+                                  ng-show=" (form.overdueRisk.$dirty && form.overdueRisk.$error.required) || (form.overdueRisk.$error.required && formValidate)">请选择逾期风险等级</span>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">逾期状态详情代码</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-3">
+                        <input type="text" name="overdueDetailType" placeholder="请输入逾期状态详情代码" class="form-control m-b-xs" ng-model="overdueCondition.overdueDetailType"  required >
+                        <p>
+                            <span class="form-info" ng-show=" (form.overdueDetailType.$dirty && form.overdueDetailType.$error.required) || (form.overdueDetailType.$error.required && formValidate)">逾期状态详情代码不能为空</span>
+                        </p>
+                    </div>
+                </div>
+
+
+                <div class="form-group row">
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">是否启用</b><b
+                            class="form-error">*</b>:</label>
+                    <div class="col-sm-3">
+                        <select name="enableFlag" ng-model="overdueCondition.enableFlag" class="form-control m-b-xs"
+                                required>
+                            <option value="">--请选择启用状态--</option>
+                            <option value="{{enableFlagObj.codeValue}}" ng-repeat="enableFlagObj in enableFlagList">
+                                {{enableFlagObj.codeValueName}}
+                            </option>
+                        </select>
+                        <p>
+                            <span class="form-info"
+                                  ng-show=" (form.enableFlag.$dirty && form.enableFlag.$error.required) || (form.enableFlag.$error.required && formValidate)">请选择启用状态</span>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">逾期状态备注</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-3">
+                        <textarea limit-word type="text" name="overdueMeno" placeholder="请输入逾期状态备注" class="form-control m-b-xs" ng-model="overdueCondition.overdueMeno"  required ></textarea>
+                        <p>
+                            <span class="form-info" ng-show=" (form.overdueMeno.$dirty && form.overdueMeno.$error.required) || (form.overdueMeno.$error.required && formValidate)">逾期状态备注不能为空</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="modal-footer ng-scope text-center">
+                <button class="btn btn-default" ng-click="goback()">返回</button>
+                <button type="submit" class="btn btn-success" ng-show="showSave" ng-disabled="submit"
+                        ng-click="save()">新增
+                </button>
+                <button type="submit" class="btn btn-success" ng-show="showUpdate" ng-disabled="submit"
+                        ng-click="modify()">保存
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+
+<!--
+<div class="modal-header">
+    <h4 class="modal-title">编辑postbiz <button type="button" class="close" data-dismiss="modal" aria-hidden="true" ng-click="close()">&times;</button></h4>
+</div>
+<div class="modal-body">
+    <form name="form" class="form-validation" novalidate>
+
+        <div class="panel-body">
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">逾期状态代码</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="overdueCondCd" placeholder="请输入逾期状态代码" class="form-control m-b-xs" ng-model="overdueCondition.overdueCondCd"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.overdueCondCd.$dirty && form.overdueCondCd.$error.required) || (form.overdueCondCd.$error.required && formValidate)">逾期状态代码不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">逾期状态名称</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="overdueCondName" placeholder="请输入逾期状态名称" class="form-control m-b-xs" ng-model="overdueCondition.overdueCondName"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.overdueCondName.$dirty && form.overdueCondName.$error.required) || (form.overdueCondName.$error.required && formValidate)">逾期状态名称不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">逾期风险等级</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="overdueRisk" placeholder="请输入逾期风险等级" class="form-control m-b-xs" ng-model="overdueCondition.overdueRisk"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.overdueRisk.$dirty && form.overdueRisk.$error.required) || (form.overdueRisk.$error.required && formValidate)">逾期风险等级不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">逾期状态详情代码</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="overdueDetailType" placeholder="请输入逾期状态详情代码" class="form-control m-b-xs" ng-model="overdueCondition.overdueDetailType"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.overdueDetailType.$dirty && form.overdueDetailType.$error.required) || (form.overdueDetailType.$error.required && formValidate)">逾期状态详情代码不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">逾期状态备注</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="overdueMeno" placeholder="请输入逾期状态备注" class="form-control m-b-xs" ng-model="overdueCondition.overdueMeno"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.overdueMeno.$dirty && form.overdueMeno.$error.required) || (form.overdueMeno.$error.required && formValidate)">逾期状态备注不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">是否启用标示</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="enableFlag" placeholder="请输入是否启用标示" class="form-control m-b-xs" ng-model="overdueCondition.enableFlag"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.enableFlag.$dirty && form.enableFlag.$error.required) || (form.enableFlag.$error.required && formValidate)">是否启用标示不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+
+        </div>
+    </form>
+</div>
+<div class="modal-footer ng-scope">
+    <button class="btn btn-default" ng-click="close()">取消</button>
+    <button type="submit" class="btn btn-success" ng-disabled="submit" ng-click="modify()">保存</button>
+</div>-->

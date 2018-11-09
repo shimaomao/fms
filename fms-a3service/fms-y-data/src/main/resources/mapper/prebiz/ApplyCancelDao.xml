@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.leadu.fms.data.prebiz.dao.ApplyCancelDao">
+    <!--分页查询融资申请取消-->
+    <select id="selectApplyCancelByPage" parameterType="cn.com.leadu.fms.pojo.prebiz.vo.applycancel.ApplyCancelVo" resultType="cn.com.leadu.fms.pojo.prebiz.vo.applycancel.ApplyCancelVo">
+           SELECT
+           apply.apply_no,
+           apply.biz_status,
+           apply.apply_user,
+           apply.apply_group,
+           apply.apply_type,
+           apply.apply_user,
+           apply.present_user,
+           apply.apply_firsbt_date,
+           apply.apply_submit_date,
+           applyFinance.vehicle_form,
+           applyFinance.product,
+           applyFinance.init_amount,
+           applyFinance.fin_total,
+           applyFinance.license_attr,
+           applyFinance.fin_period_type,
+           applyFinance.charge_pay_mode,
+           applyFinance.charge_rate,
+           applyFinance.charge,
+           applyFinance.init_perc,
+           applyFinance.invest_total,
+           applyFinance.deposit,
+           applyFinance.rent,
+           cstmPerson.certif_no personCertifNo,
+           cstmPerson.name personName,
+           cstmCompany.certif_no companyCertifNo,
+           cstmCompany.name companyName,
+           basPartner.partner_name,
+           product.product_name,
+           sysGroup.group_name
+           FROM
+           apply apply
+           LEFT JOIN
+           apply_finance applyFinance ON apply.apply_no = applyFinance.apply_no AND applyFinance.del_flag =  ${delete_exist}
+           LEFT JOIN
+           sys_group sysGroup ON apply.apply_group = sysGroup.group_code AND sysGroup.del_flag =  ${delete_exist}
+           LEFT JOIN
+           cstm_person cstmPerson ON apply.apply_no = cstmPerson.apply_no AND cstmPerson.del_flag =  ${delete_exist}
+           LEFT JOIN
+           cstm_company cstmCompany ON apply.apply_no = cstmCompany.apply_no AND cstmCompany.del_flag =  ${delete_exist}
+		   LEFT JOIN
+		   bas_partner basPartner ON apply.apply_group = basPartner.partner_code AND basPartner.del_flag =  ${delete_exist}
+           LEFT JOIN
+           product product ON applyFinance.product = product.product AND product.del_flag =  ${delete_exist}
+           where apply.del_flag =  ${delete_exist}
+           <if test="applyCancelVo.applyNo != null " >
+               AND apply.apply_no = #{applyCancelVo.applyNo}
+           </if>
+           <if test="applyCancelVo.name != null">
+               AND ( cstmPerson.name LIKE #{applyCancelVo.name}
+               OR cstmCompany.name LIKE #{applyCancelVo.name} )
+           </if>
+            <if test="applyCancelVo.bizStatus != null " >
+                AND apply.biz_status = #{applyCancelVo.bizStatus}
+            </if>
+            <if test="applyCancelVo.loginUser != null">
+                AND FIND_IN_SET(#{applyCancelVo.loginUser},apply.present_user)
+            </if>
+            ORDER BY apply.update_time DESC
+         /* (SELECT
+          apply_finance.apply_no apply_no,product.product_name product_name
+          FROM
+          apply_finance
+          LEFT JOIN
+          product ON apply_finance.product = product.product) a ON a.apply_no = apply.apply_no*/
+    </select>
+
+
+    <!--根据applyNo获取融资申请取消-->
+    <select id="selectApplyCancelVoByApplyNo" parameterType="java.lang.String" resultType="cn.com.leadu.fms.pojo.prebiz.vo.applycancel.ApplyCancelVo">
+        SELECT
+        apply.apply_no,
+        apply.biz_status,
+        cstmPerson.name personName,
+        cstmCompany.name companyName
+        FROM
+        apply apply
+        LEFT JOIN
+        cstm_person cstmPerson ON apply.apply_no = cstmPerson.apply_no AND cstmPerson.del_flag =  ${delete_exist}
+        LEFT JOIN
+        cstm_company cstmCompany ON apply.apply_no = cstmCompany.apply_no AND cstmCompany.del_flag =  ${delete_exist}
+        where apply.del_flag =  ${delete_exist}
+        <if test="#{applyNo} != null " >
+            AND apply.apply_no = #{applyNo}
+        </if>
+    </select>
+
+</mapper>

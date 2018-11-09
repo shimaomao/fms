@@ -1,0 +1,62 @@
+<div  ng-controller="license_idx_list_controller">
+    <div>
+        <toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-body wrapper-sm">
+            <div class="row">
+                <div class="col-lg-12">
+                    <form class="form-inline" role="form">
+                        <div class="form-group">
+                            <label class="sr-only" >指标编号 </label>
+                            <input class="form-control m-b-xs" ng-model="params.licenseIdxNo" placeholder="指标编号">
+                        </div>
+                        <div class="form-group">
+                            <select ng-model="params.licenseIdxStatus" class="form-control m-b-xs" >
+                                <option value="">---选择指标状态---</option>
+                                <option value="{{licenseIdxStatusObj.codeValue}}" ng-selected = "licenseIdxStatusObj.codeValue == licenseIdxStatus" ng-repeat="licenseIdxStatusObj in licenseIdxStatusList">{{licenseIdxStatusObj.codeValueName}}</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="sr-only" >指标所属分公司 </label>
+                            <input class="form-control m-b-xs" ng-model="params.groupName" placeholder="指标所属分公司">
+                        </div>
+                        <div class="form-group">
+                            <label class="sr-only" >指标使用人 </label>
+                            <input class="form-control m-b-xs" ng-model="params.useCustomer" placeholder="指标使用人">
+                        </div>
+                        <div class="form-group">
+                            <label class="sr-only" >指标合同编号 </label>
+                            <input class="form-control m-b-xs" ng-model="params.useContNo" placeholder="指标合同编号">
+                        </div>
+                        <div class="form-group">
+                            <label class="sr-only" >指标车牌号 </label>
+                            <input class="form-control m-b-xs" ng-model="params.useLicenseNo" placeholder="指标车牌号">
+                        </div>
+                        <div class="form-group">
+                            <select ng-model="params.bizStatus" class="form-control m-b-xs">
+                                <option value="">---合同状态---</option>
+                                <option value="{{bizStatusObj.codeValue}}" ng-if="bizStatusObj.codeValue.startsWith($root.bizTypes.contract)" ng-repeat="bizStatusObj in bizStatusList" ng-selected="params.bizStatus == bizStatusObj.codeValue">{{bizStatusObj.codeValueName}}</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group pull-right">
+                            <div class="btn-group">
+                                <button class="btn btn-default m-b-xs btn-info" ng-click="searchLicenseIdx()" ><i class="fa fa-search"></i>查询</button>
+                                <button class="btn btn-default m-b-xs" ng-click="resetLicenseIdx()" ><i class="fa  icon-refresh"></i>重置</button>
+                                <button class="btn btn-default m-b-xs" ng-click="saveLicenseIdx()"><i class="fa fa-plus"></i>指标新增</button>
+                                <button class="btn btn-default m-b-xs" ng-click="modifyLicenseIdx()"><i class="fa icon-pencil"></i>变更有效期</button>
+                                <button class="btn btn-default m-b-xs" ng-click="renewLicenseIdx()"><i class="fa icon-pencil"></i>指标续约</button>
+                                <button class="btn btn-default m-b-xs" ng-click="retireLicenseIdx()"><i class="fa fa-trash-o"></i>指标退牌</button>
+                                <button class="btn btn-default m-b-xs" ng-click="cancelLicenseIdx()"><i class="fa fa-trash-o"></i>预约取消</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <table border="1" class="table table-striped m-b-none" id="license_idx_table">
+        </table>
+    </div>
+</div>
+

@@ -1,0 +1,59 @@
+
+<div  ng-controller="sec_hand_inventory_list_controller">
+    <div>
+        <toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-body wrapper-sm">
+            <div class="row">
+                <div class="col-lg-12">
+                    <form class="form-inline" role="form">
+                        <div class="form-group">
+                            <label class="sr-only" >车架号 </label>
+                            <input class="form-control m-b-xs" ng-model="params.vinNo" placeholder="车架号">
+                        </div>
+                        <div class="form-group">
+                            <label class="sr-only" >发动机号 </label>
+                            <input class="form-control m-b-xs" ng-model="params.engineNo" placeholder="发动机号">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="sr-only" >车型 </label>
+                            <input class="form-control m-b-xs" ng-model="params.vehicleName" placeholder="车型">
+                        </div>
+                        <div class="form-group">
+                            <label class="sr-only" >起始时间 </label>
+                            <input id="validStartDate" type="text" name="validStartDate" placeholder="请输入收车入库起始时间"
+                                   class="form-control m-b-xs" ng-model="params.startTime" date-picker="{{maxDate}}">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="sr-only" >结束时间 </label>
+                            <input id="validEndDate" type="text" name="validEndDate" placeholder="请输入收车入库结束时间"
+                                   class="form-control m-b-xs"  ng-model="params.endTime" date-picker="{{minDate}}">
+                        </div>
+                        <div class="form-group m-b-sm">
+                            <div class="btn-group">
+                                <button class="btn btn-default btn-sm fms-button-margin-bottom m-b-xs btn-info" ng-click="searchSecHandInventory()" ><i class="fa fa-search"></i>查询</button>
+                                <button class="btn btn-default btn-sm fms-button-margin-bottom m-b-xs" ng-click="resetSecHandInventory()" ><i class="fa  icon-refresh"></i>重置</button>
+
+
+                            </div>
+                        </div>
+
+                        <div class="form-group pull-right">
+                            <div class="btn-group">
+                                <button class="btn btn-default m-b-xs" ng-click="secExportExcel()"><i class="fa"></i>导出excel</button>
+                                <button class="btn btn-default m-b-xs" ng-click="saveSecHandInventory()"><i class="fa fa-plus"></i>添加</button>
+                                <button class="btn btn-default m-b-xs" ng-click="modifySecHandInventory()"><i class="fa icon-pencil"></i>修改</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <table border="1" class="table table-striped m-b-none" id="sec_hand_inventory_table">
+        </table>
+    </div>
+</div>
+

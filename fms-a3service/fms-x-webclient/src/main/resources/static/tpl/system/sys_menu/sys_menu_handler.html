@@ -1,0 +1,152 @@
+<div  ng-controller="sys_menu_handler_controller">
+    <div>
+        <toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+    </div>
+    <div class="panel panel-default">
+        <div class="row" style="margin: 0; padding: 15px; border: 1px solid #dddddd">
+            <h4 class="m-n font-thin h4">{{frameTitle}}</h4>
+        </div>
+
+    <form name="form" class="form-validation" novalidate >
+
+        <div class="panel-body wrapper-sm">
+
+            <!--角色id-->
+            <div class="form-group row" ng-show="itemWidgetMap['I000601'].showMod">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">菜单ID</b>:</label>
+
+                <!--项目不可编辑-->
+                <div class="col-sm-8" ng-show="!itemWidgetMap['I000601'].writeMod">
+                    <label class="col-sm-12 control-label text-left">{{sysMenu.menuId}}</label>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+        <div class="form-group " ng-show="itemWidgetMap['I000702'].showMod">
+            <label class="col-sm-3 control-label text-right"><b class="form-text-black">菜单名称</b><b class="form-error" ng-required="itemWidgetMap['I000702'].checkMod">*</b>:</label>
+            <!--项目可编辑-->
+            <div class="col-sm-9" ng-show="itemWidgetMap['I000702'].writeMod">
+                <input type="text" name="menuName" placeholder="请输入菜单名称" class="form-control m-b-xs" ng-model="sysMenu.menuName"  ng-required="itemWidgetMap['I000702'].checkMod" >
+                <p>
+                    <span class="form-info" ng-show=" (form.menuName.$dirty && form.menuName.$error.required) || (form.menuName.$error.required && formValidate)">菜单名称不能为空</span>
+                </p>
+            </div>
+
+            <!--项目不可编辑-->
+            <div class="col-sm-8" ng-show="!itemWidgetMap['I000702'].writeMod">
+                <label class="col-sm-12 control-label text-left">{{ sysMenu.menuName }}</label>
+            </div>
+        </div>
+
+        <div class="line line-dashed b-b line-lg pull-in"></div>
+
+        <div class="form-group row" ng-show="itemWidgetMap['I000703'].showMod">
+            <label class="col-sm-3 control-label text-right"><b class="form-text-black">启用标识</b><b class="form-error" ng-required="itemWidgetMap['I000703'].checkMod">*</b>:</label>
+            <!--项目可编辑-->
+            <div class="col-sm-9 " ng-show="itemWidgetMap['I000703'].writeMod">
+
+                <select ng-model="sysMenu.enableFlag" class="form-control m-b-xs" >
+                    <option ng-repeat="enableFlagObj in enableFlagList" value="{{enableFlagObj.codeValue}}">{{enableFlagObj.codeValueName}}</option>
+                </select>
+            </div>
+
+            <!--项目不可编辑-->
+            <div class="col-sm-8" ng-show="!itemWidgetMap['I000703'].writeMod">
+                <label class="col-sm-12 control-label text-left">{{sysMenu.enableFlag}}</label>
+            </div>
+        </div>
+
+        <div class="line line-dashed b-b line-lg pull-in"></div>
+
+
+
+            <div class="form-group" ng-show="itemWidgetMap['I000706'].showMod">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">菜单等级</b><b class="form-error" ng-required="itemWidgetMap['I000706'].checkMod">*</b>:</label>
+                <!--项目可编辑-->
+                <div class="col-sm-9" ng-show="itemWidgetMap['I000706'].writeMod">
+
+                    <select ng-model="sysMenu.menuLevel" class="form-control m-b-xs" ng-change="resLevelChange()">
+                        <option ng-repeat="menuLevel in menuLevels" value="{{menuLevel.codeValue}}">{{menuLevel.codeValueName}}</option>
+                    </select>
+                </div>
+                <!--项目不可编辑-->
+                <div class="col-sm-8" ng-show="!itemWidgetMap['I000706'].writeMod">
+                    <label class="col-sm-12 control-label text-left">{{sysMenu.menuLevel}}</label>
+                </div>
+            </div>
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group" ng-show="itemWidgetMap['I000705'].showMod">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">上级菜单</b><b class="form-error" ng-required="itemWidgetMap['I000705'].checkMod">*</b>:</label>
+                <!--项目可编辑-->
+                <div class="col-sm-9" ng-show="itemWidgetMap['I000705'].writeMod">
+
+                    <select ng-model="sysMenu.parMenuId" class="form-control m-b-xs" >
+                        <option value="0">---请选择父级菜单---</option>
+                        <option ng-repeat="sysResParent in sysResParents"  value="{{sysResParent.menuId}}">{{sysResParent.menuName}}</option>
+                    </select>
+                </div>
+                <!--项目不可编辑-->
+                <div class="col-sm-8" ng-show="!itemWidgetMap['I000705'].writeMod">
+                    <label class="col-sm-12 control-label text-left">{{sysMenu.parMenuName}}</label>
+                </div>
+
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group" ng-show="itemWidgetMap['I000707'].showMod">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">菜单链接</b><b class="form-error" ng-required="itemWidgetMap['I000707'].checkMod">*</b>:</label>
+                <!--项目可编辑-->
+                <div class="col-sm-9" ng-show="itemWidgetMap['I000707'].writeMod">
+                    <input type="text" name="menuLink" placeholder="请输入菜单链接" class="form-control m-b-xs" ng-model="sysMenu.menuLink"  ng-required="itemWidgetMap['I000707'].checkMod" >
+                    <p>
+                        <span class="form-info" ng-show=" (form.menuLink.$dirty && form.menuLink.$error.required) || (form.menuLink.$error.required && formValidate)">菜单链接不能为空</span>
+                    </p>
+                </div>
+                <!--项目不可编辑-->
+                <div class="col-sm-8" ng-show="!itemWidgetMap['I000707'].writeMod">
+                    <label class="col-sm-12 control-label text-left">{{sysMenu.menuLink}}</label>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+
+            <div class="form-group" ng-show="itemWidgetMap['I000708'].showMod">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">排序</b><b class="form-error" ng-required="itemWidgetMap['I000708'].checkMod">*</b>:</label>
+                <!--项目可编辑-->
+                <div class="col-sm-9" ng-show="itemWidgetMap['I000708'].writeMod">
+                    <input type="text" name="orderNo" placeholder="请输入排序" class="form-control m-b-xs" ng-model="sysMenu.orderNo"  ng-required="itemWidgetMap['I000708'].checkMod" >
+                    <p>
+                        <span class="form-info" ng-show=" (form.orderNo.$dirty && form.orderNo.$error.required) || (form.orderNo.$error.required && formValidate)">排序不能为空</span>
+                    </p>
+                </div>
+                <!--项目不可编辑-->
+                <div class="col-sm-8" ng-show="!itemWidgetMap['I000708'].writeMod">
+                    <label class="col-sm-12 control-label text-left">{{sysMenu.orderNo}}</label>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+
+       </div>
+
+        <div class="row" style="margin: 10px 0 0 0;">
+            <label class="col-sm-3 control-label text-right"></label>
+            <div class="col-sm-15 m-b">
+                <button class="btn btn-default" ng-click="goback()">返回</button>
+                <button type="submit" class="btn btn-success" ng-show="showSaveButton" ng-disabled="submit" ng-click="save()">新增</button>
+                <button type="submit" class="btn btn-success" ng-show="showModifySaveButton" ng-disabled="submit" ng-click="modify()">保存</button>
+            </div>
+        </div>
+    </form>
+</div>
+<!--<div class="modal-footer ng-scope">-->
+    <!--<button class="btn btn-default" ng-click="close()">关闭</button>-->
+    <!--<button type="submit" class="btn btn-success" ng-show="showSaveButton" ng-disabled="submit" ng-click="save()">新增</button>-->
+    <!--<button type="submit" class="btn btn-success" ng-show="showModifySaveButton" ng-disabled="submit" ng-click="modify()">保存</button>-->
+<!--</div>-->
+    </div>

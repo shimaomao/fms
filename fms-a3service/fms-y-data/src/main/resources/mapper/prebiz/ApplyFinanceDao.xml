@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.com.leadu.fms.data.prebiz.dao.ApplyFinanceDao">
+    <!-- 根据订单编号 获取融资信息 -->
+    <select id="selectApplyFinanceVoByApplyNo" parameterType="java.lang.String" resultType="cn.com.leadu.fms.pojo.prebiz.vo.applyfinance.ApplyFinanceVo">
+        select applyFinance.* ,prod.product_name as productName,prodCatg.product_catg_name as productCatgName, sysGroup.group_name as belongGroupName,sysGroup.group_district groupDistrict
+        from apply_finance applyFinance
+        left join product prod on prod.product = applyFinance.product and prod.del_flag = ${delete_exist}
+        left join product_catg prodCatg on prodCatg.product_catg = applyFinance.product_catg and prodCatg.del_flag =  ${delete_exist}
+        left join sys_group sysGroup on applyFinance.belong_group = sysGroup.group_code and sysGroup.del_flag =  ${delete_exist}
+        where applyFinance.del_flag = ${delete_exist}
+        <if test="applyNo != null">
+            and applyFinance.apply_no = #{applyNo}
+        </if>
+        order by applyFinance.update_time desc
+        limit 0,1
+    </select>
+</mapper>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.com.leadu.fms.data.baseinfo.dao.BasAreaDao">
+    <!-- 分页取得省市县信息 -->
+    <select id="selectBasAreaVosByPage" parameterType="java.lang.String" resultType="cn.com.leadu.fms.pojo.baseinfo.vo.basarea.BasAreaVo">
+        select child.area_id,child.area_code,child.area_name,child.area_level,child.parent_area_code, parent.area_name parentAreaName, child.update_time,child.updater FROM
+        bas_area child left join
+        bas_area parent on child.parent_area_code = parent.area_code and parent.del_flag = ${delete_exist}
+        where child.del_flag = ${delete_exist}
+        <if test="basAreaVo.areaCode != null">
+            and child.area_code like #{basAreaVo.areaCode}
+        </if>
+        <if test="basAreaVo.areaName != null">
+            and child.area_name like #{basAreaVo.areaName}
+        </if>
+        order by child.update_time desc
+    </select>
+    <select id="selectBasAreaVosByAreaId" parameterType="java.lang.String" resultType="cn.com.leadu.fms.pojo.baseinfo.vo.basarea.BasAreaVo">
+        select child.area_id,child.area_code,child.area_name,child.area_level,child.parent_area_code, parent.area_name parentAreaName, child.update_time,child.updater FROM
+        bas_area child left join
+        bas_area parent on child.parent_area_code = parent.area_code and parent.del_flag = ${delete_exist}
+        where child.del_flag = ${delete_exist}
+        <if test="areaId != null">
+            and child.area_id = #{areaId}
+        </if>
+        order by child.update_time desc
+        limit 0,1
+    </select>
+
+</mapper>

@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en" data-ng-app="app">
+<head>
+  <meta charset="utf-8" />
+  <title>{{app.name}}</title>
+  <meta name="description" content="汽车金融SAAS平台" />
+  <meta name="viewport" content="width=device-width, initial-scale=0.5, maximum-scale=1" />
+
+  <link rel="icon" href="img/favicon.ico" type="image/x-icon"/>
+  <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css"/>
+  <link rel="stylesheet" href="css/animate.css" type="text/css" />
+  <link rel="stylesheet" href="css/font-awesome.min.css" type="text/css" />
+  <link rel="stylesheet" href="css/simple-line-icons.css" type="text/css" />
+  <link rel="stylesheet" href="css/font.css" type="text/css" />
+  <link rel="stylesheet" href="css/app.css" type="text/css" />
+  <link rel="stylesheet" href="css/common.css" type="text/css"/>
+  <!--<script src="js/bundle.js"></script>-->
+  <style>
+
+    html, body
+    {
+      /*此部分支持chrome，应该也支持firefox*/
+      background: rgb(246,248,249);
+      /*background: no-repeat center fixed;*/
+      background-size: 100% 100%;
+
+      /*以下是IE部分，使用滤镜*/
+      background-repeat: no-repeat;
+      background-position: 100%, 100%;
+    }
+  </style>
+</head>
+<body ng-controller="AppCtrl">
+  <!--loading-->
+  <div id="loading-bar-spinner" style="position: fixed; width: 100%; height: 100%; left: 0;top: 0; background: rgba(0, 0, 0, .7);z-index: 9999;display: none;">
+    <div class="item" style="position: relative; top: 50%; left: 50%;margin-left: -109px;margin-top: -90px;">
+      <div class="item-inner">
+        <div class="item-loader-container">
+          <div class="la-ball-climbing-dot la-2x">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--loading-->
+  <div class="app" id="app"
+       ng-class="{
+       'app-header-fixed':app.settings.headerFixed,
+       'app-aside-fixed':!app.settings.asideFixed,
+       'app-aside-folded':!app.settings.asideFolded,
+       'app-aside-dock':app.settings.asideDock,
+       'container':app.settings.container}" ui-view ></div>
+
+
+  <!-- jQuery -->
+  <script src="vendor/jquery/jquery.min.js"></script>
+  <script src="vendor/jquery/jquery.cookie.js"></script>
+  <script src="js/common_util.js"></script>
+  <script src="js/common_constant.js"></script>
+  <!--<script src="js/common_widget.js"></script>-->
+  <script src="js/common_area.js"></script>
+  <!-- Angular -->
+  <script src="vendor/angular/angular.min.js"></script>
+
+  <script src="vendor/angular/angular-animate/angular-animate.min.js"></script>
+  <script src="vendor/angular/angular-cookies/angular-cookies.js"></script>
+  <script src="vendor/angular/angular-resource/angular-resource.js"></script>
+  <script src="vendor/angular/angular-sanitize/angular-sanitize.js"></script>
+  <script src="vendor/angular/angular-touch/angular-touch.js"></script>
+
+  <!-- Vendor -->
+  <script src="vendor/angular/angular-ui-router/angular-ui-router.min.js"></script>
+  <script src="vendor/angular/ngstorage/ngStorage.js"></script>
+
+  <script src="vendor/angular/angular-ivh-treeview-master/ivh-treeview.min.js"></script>
+  <link rel="stylesheet" href="vendor/angular/angular-ivh-treeview-master/ivh-treeview.css" type="text/css" />
+  <link rel="stylesheet" href="vendor/angular/angular-ivh-treeview-master/ivh-treeview-theme-basic.css" type="text/css" />
+
+  <!-- bootstrap -->
+  <script src="vendor/angular/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
+  <!-- lazyload -->
+  <script src="vendor/angular/oclazyload/ocLazyLoad.min.js"></script>
+  <!-- translate -->
+  <script src="vendor/angular/angular-translate/angular-translate.min.js"></script>
+  <script src="vendor/angular/angular-translate/loader-static-files.js"></script>
+  <script src="vendor/angular/angular-translate/storage-cookie.js"></script>
+  <script src="vendor/angular/angular-translate/storage-local.js"></script>
+
+  <!-- App -->
+  <script src="js/app.js"></script>
+  <script src="js/config.js"></script>
+  <script src="js/config.lazyload.js"></script>
+
+
+  <script language="javascript" type="text/javascript">
+      document.write('<script language="javascript" src="js/config.router.js?datetime='+getTimestamp()+'"><\/script>');
+      document.write('<script language="javascript" src="js/main.js?datetime='+getTimestamp()+'"><\/script>');
+  </script>
+
+  <script src="js/services/ui-load.js"></script>
+  <script src="js/filters/fromNow.js"></script>
+  <!--自定义指令-->
+  <script src="js/directives/directive.js"></script>
+  <!--<script src="js/directives/setnganimate.js"></script>-->
+  <!--<script src="js/directives/ui-butterbar.js"></script>-->
+  <!--<script src="js/directives/ui-focus.js"></script>-->
+  <!--<script src="js/directives/ui-fullscreen.js"></script>-->
+  <script src="js/directives/ui-jq.js"></script>
+  <!--<script src="js/directives/ui-module.js"></script>-->
+  <!--<script src="js/directives/ui-nav.js"></script>-->
+  <!--<script src="js/directives/ui-scroll.js"></script>-->
+  <!--<script src="js/directives/ui-shift.js"></script>-->
+  <!--<script src="js/directives/ui-toggleclass.js"></script>-->
+  <script src="js/directives/ui-validate.js"></script>
+  <script src="js/controllers/bootstrap.js"></script>
+  <script src="js/common_data_table.js"></script>
+  <script src="js/common_response.js"></script>
+  <script src="vendor/jquery/datatables/jquery.dataTables.min.js"></script>
+  <script src="vendor/jquery/datatables/dataTables.bootstrap.js"></script>
+  <link rel="stylesheet" href="vendor/jquery/datatables/dataTables.bootstrap.css" type="text/css" />
+  <script language="javascript" type="text/javascript" src="vendor/jquery/My97DatePicker/WdatePicker.js"></script>
+  <script language="javascript" type="text/javascript" src="vendor/jquery/bootstrap-treeview/bootstrap-treeview.min.js"></script>
+  <link rel="stylesheet" href="vendor/jquery/bootstrap-treeview/bootstrap-treeview.min.css" type="text/css" />
+  <!-- Lazy loading -->
+
+  <link rel="stylesheet" href="css/bootstrapStyle.css" type="text/css">
+  <script language="JavaScript" type="text/javascript" src="js/z-tree/jquery.ztree.core.js"></script>
+  <script language="JavaScript" type="text/javascript" src="js/z-tree/jquery.ztree.excheck.js"></script>
+  <script language="JavaScript" type="text/javascript" src="js/z-tree/jquery.ztree.exedit.js"></script>
+  <script language="JavaScript" type="text/javascript" src="js/z-tree/dataTables.checkboxes.min.js"></script>
+  <link rel="stylesheet" href="css/dataTables.checkboxes.css" type="text/css">
+</body>
+</html>

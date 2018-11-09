@@ -1,0 +1,199 @@
+<style>
+    .btn-default, .btn-default:hover, .btn-default:focus, .btn-default:active, .btn-default.active, .open .dropdown-toggle.btn-default{margin-bottom: 5px}
+    .col-sm-12.title-left {font-size: 16px;margin: 10px 0;font-weight: bold;  }
+    .receiptList .sub-main{overflow: hidden;}
+    .receiptList .sub-body{border: 1px solid #eaeeea;border-top: none}
+    .receiptList .sub-title{padding: 5px;font-size: 14px;cursor: pointer;background-color: #f5f5f5;border-bottom: 1px solid #eaeeea;}
+    .receiptList .sub-title span:first-child{font-weight: bold;color: black;}
+    .receiptList .sub-title span:last-child{display: inline-block;width: 20px;height: 20px;}
+</style>
+<div ng-controller="cont_receipt_list_controller" class="panel panel-default receiptList">
+    <div>
+        <toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+    </div>
+    <div class="panel-body wrapper-sm">
+        <div class="keyUp">
+            <div class="row">
+                <div class="col-lg-2">
+                    <div class="form-group">
+                        <label class="sr-only" >客户姓名 </label>
+                        <input class="form-control m-b-xs" ng-model="params.name" placeholder="请输入客户姓名">
+                    </div>
+                </div>
+                <div class="col-lg-2">
+                    <div class="form-group">
+                        <label class="sr-only" >车架号</label>
+                        <input class="form-control m-b-xs" ng-model="params.vinNo" placeholder="请输入车架号">
+                    </div>
+                </div>
+
+                <div class="col-lg-2">
+                    <div class="form-group">
+                        <label class="sr-only" >还款开始日期 </label>
+                        <input id="validStartDate" type="text" name="validStartDate" placeholder="请输入还款开始日期"
+                               class="form-control m-b-xs" ng-model="params.repayDateSearchStart" date-picker="{{maxDate}}">
+                    </div>
+                </div>
+                <div class="col-lg-2">
+                    <div class="form-group">
+                        <label class="sr-only" >还款结束日期 </label>
+                        <input id="validEndDate" type="text" name="validEndDate" placeholder="请输入还款结束日期"
+                               class="form-control m-b-xs"  ng-model="params.repayDateSearchEnd" date-picker="{{minDate}}">
+                    </div>
+                </div>
+                <div class="col-lg-2">
+                    <div class="form-group m-b-sm">
+                        <div class="btn-group">
+                            <button class="btn btn-default m-b-xs btn-info btn-sm fms-button-margin-bottom" ng-click="searchContReceipt()" press-enter><i class="fa fa-search"></i>查询</button>
+                            <button class="btn btn-default m-b-xs btn-sm fms-button-margin-bottom" ng-click="resetContReceipt()" ><i class="fa  icon-refresh"></i>重置</button>
+                            <!--<button class="btn btn-default m-b-xs btn-sm fms-button-margin-bottom" ng-click="manualReceipt()"><i class="glyphicon glyphicon-euro"></i>手动勾稽</button>-->
+                            <!--<button class="btn btn-default m-b-xs btn-sm fms-button-margin-bottom" ng-click="receipt()"><i class="glyphicon glyphicon-check"></i>勾稽</button>-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-2">
+                    <div class="form-group">
+                        <label class="sr-only" >实际还款日 </label>
+                        <input class="form-control m-b-xs" ng-model="params.receiptDateSearch" placeholder="请输入实际还款日" date-picker  onchange="">
+                    </div>
+                </div>
+                <div class="col-lg-2">
+                    <div class="form-group">
+                        <label class="sr-only" >应收租金 </label>
+                        <input class="form-control m-b-xs" ng-model="params.rentActual" placeholder="请输入应收租金">
+                    </div>
+                </div>
+                <div class="col-lg-2">
+                    <div class="form-group">
+                        <label class="sr-only" >付款备注</label>
+                        <input class="form-control m-b-xs" ng-model="params.memo" placeholder="请输入付款备注">
+                    </div>
+                </div>
+                <div class="col-lg-2">
+                    <div class="form-group">
+                        <select name="receiptBizType" ng-model="params.receiptBizType" class="form-control m-b-xs" ng-options="a.codeValue as a.codeValueName for a in 'receiptBizType' | getList">
+                            <option value="">-请选择款项类型-</option>
+                        </select>
+                    </div>
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="col-lg-2">
+                    <div class="form-group">
+                        <label class="sr-only" >区域 </label>
+                        <input class="form-control m-b-xs" ng-model="params.groupDistrict" placeholder="请输入区域">
+                    </div>
+                </div>
+
+
+
+                <div class="col-lg-2">
+                    <div class="form-group">
+                        <label class="sr-only" >合同号</label>
+                        <input class="form-control m-b-xs" ng-model="params.contNo" placeholder="请输入合同号">
+                    </div>
+                </div>
+
+                <div class="col-lg-2">
+                    <div class="form-group">
+                        <select name="companyType1" ng-model="params.companyType1" ng-change="changeCompanyType();" class="form-control m-b-xs">
+                            <option value="">--请选择申请类型--</option>
+                            <option ng-repeat="a in companyTypeList"  value="{{a.codeValue}}"  ng-selected="params.companyType1==a.codeValue">{{a.codeValueName}}</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="col-lg-2" ng-if="params.companyType1!=1&&params.companyType1!=2&&params.companyType1!=3">
+                    <div class="form-group">
+                        <select name="companyType2" ng-model="params.companyType2" class="form-control m-b-xs">
+                            <option value="">--请选择类别--</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-lg-2" ng-if="params.companyType1==1">
+                    <div class="form-group">
+                        <select name="companyType2" ng-model="params.companyType2" class="form-control m-b-xs">
+                            <option value="">--请选择类别--</option>
+                            <option  value="1" >个人</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-lg-2" ng-if="params.companyType1==2">
+                    <div class="form-group">
+                        <select name="companyType2" ng-model="params.companyType2" class="form-control m-b-xs">
+                            <option value="">--请选择类别--</option>
+                            <option ng-repeat="a in companyTypeCompList" value="{{a.codeValue}}" ng-selected="params.companyType2==a.codeValue">{{a.codeValueName}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-lg-2" ng-if="params.companyType1==3">
+                    <div class="form-group">
+                        <select name="companyType2" ng-model="params.companyType2" class="form-control m-b-xs">
+                            <option value="">--请选择类别--</option>
+                            <option ng-repeat="a in companyTypeSaleList" value="{{a.codeValue}}" ng-selected="params.companyType2==a.codeValue">{{a.codeValueName}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group pull-right">
+                    <div class="btn-group">
+                        <!--<button class="btn btn-default m-b-xs btn-info btn-sm fms-button-margin-bottom" ng-click="searchContReceipt()" ><i class="fa fa-search"></i>查询</button>-->
+                        <!--<button class="btn btn-default m-b-xs btn-sm fms-button-margin-bottom" ng-click="resetContReceipt()" ><i class="fa  icon-refresh"></i>重置</button>-->
+                        <button class="btn btn-default m-b-xs btn-sm fms-button-margin-bottom" ng-click="manualReceipt()"><i class="glyphicon glyphicon-euro"></i>手动勾稽</button>
+                        <button class="btn btn-default m-b-xs btn-sm fms-button-margin-bottom" ng-click="receipt()"><i class="glyphicon glyphicon-check"></i>勾稽</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+        <div class="sub-main">
+            <div class="sub-title clearfix" click-hide>
+                <span class="pull-left">收款明细一览</span>
+                <span class="pull-right"><i class="glyphicon glyphicon-chevron-down"></i></span>
+            </div>
+            <div class="sub-body">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <form class="form-inline" role="form">
+                            <div class="form-group pull-right m-t-xs">
+                                <div class="btn-group">
+                                    <button class="btn btn-default m-b-xs btn-sm fms-button-margin-bottom" ng-click="exportContReceiptExcel()">导出excel</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <table border="1" class="table table-striped m-b-none" id="cont_receipt_table">
+                </table>
+            </div>
+        </div>
+
+        <div class="sub-main">
+            <div class="sub-title clearfix" click-hide>
+                <span class="pull-left">待勾稽租金一览</span>
+                <span class="pull-right"><i class="glyphicon glyphicon-chevron-down"></i></span>
+            </div>
+            <div class="sub-body">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <form class="form-inline" role="form">
+                            <div class="form-group pull-right m-t-xs">
+                                <div class="btn-group">
+                                    <button class="btn btn-default m-b-xs btn-sm fms-button-margin-bottom" ng-click="exportContRepaySkedExcel()">导出excel</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <table border="1" class="table table-striped m-b-none" id="cont_repay_sked_table">
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+

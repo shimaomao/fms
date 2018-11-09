@@ -1,0 +1,325 @@
+<div ng-controller="bas_bank_info_handler_controller">
+    <div>
+        <toaster-container
+                toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+    </div>
+    <div class="panel panel-default">
+        <div class="row" style="margin: 0; padding: 15px; border: 1px solid #dddddd">
+            <h4 class="m-n font-thin h4">{{frameTitle}}</h4>
+        </div>
+        <form name="form" class="form-validation" novalidate>
+            <div class="panel-body wrapper-sm">
+
+                <div class="form-group row">
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">银行账号类型</b><b
+                            class="form-error">*</b>:</label>
+                    <div class="col-sm-3">
+                        <select name="organizationType" ng-model="basBankInfo.organizationType" class="form-control m-b-xs"
+                                ng-change="changeOrganizationType(basBankInfo.organizationId)" required>
+                            <option value="">--请选择银行账号类型--</option>
+                            <option value="{{organizationTypeObj.codeValue}}" ng-repeat="organizationTypeObj in organizationTypeList">
+                                {{organizationTypeObj.codeValueName}}
+                            </option>
+                        </select>
+                        <p>
+                            <span class="form-info"
+                                  ng-show=" (form.organizationType.$dirty && form.organizationType.$error.required) || (form.organizationType.$error.required && formValidate)">请选择银行账号类型</span>
+                        </p>
+                    </div>
+                </div>
+
+
+                <div class="form-group row" ng-if="basBankInfo.organizationType==0||basBankInfo.organizationType==1||basBankInfo.organizationType==2||basBankInfo.organizationType==3">
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">机构信息</b><b
+                            class="form-error">*</b>:</label>
+                    <!-- 项目可编辑 -->
+                    <div class="col-sm-3 form-inline">
+                        <input type="text" title="{{basBankInfo.organizationId}}" name="organizationId" placeholder="请选择机构信息" class="form-control m-b-xs"
+                               ng-model="basBankInfo.organizationId" required disabled>
+                        <button class="btn btn-primary btn-sm m-b-xs" ng-click="selectOrganizationId(basBankInfo.organizationType)"><i
+                                class="fa fa-pencil-square-o m-r-xs"></i>选择
+                        </button>
+                        <p>
+                            <span class="form-info"
+                                  ng-show=" (form.organizationId.$dirty && form.organizationId.$error.required) || (form.organizationId.$error.required && formValidate)">机构信息不能为空</span>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="form-group row" ng-if="basBankInfo.organizationType==4">
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">机构信息</b><b
+                            class="form-error">*</b>:</label>
+                    <div class="col-sm-3">
+                        <select name="gpsAccType" ng-model="basBankInfo.organizationId" ng-options="a.codeValue as a.codeValueName for a in gpsAccTypeList" class="form-control m-b-xs"
+                                required>
+                            <option value="">--请选择gps厂商--</option>
+                            <!--<option value="{{gpsAccTypeObj.codeValue}}" ng-repeat="gpsAccTypeObj in gpsAccTypeList">-->
+                                <!--{{gpsAccTypeObj.codeValueName}}-->
+                            <!--</option>-->
+                        </select>
+                        <p>
+                            <span class="form-info"
+                                  ng-show=" (form.gpsAccType.$dirty && form.gpsAccType.$error.required) || (form.gpsAccType.$error.required && formValidate)">请选择gps厂商</span>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="form-group row" ng-if="basBankInfo.organizationType==5">
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">机构信息</b><b
+                            class="form-error">*</b>:</label>
+                    <div class="col-sm-3">
+                        <select name="mortgageAccType" ng-model="basBankInfo.organizationId" ng-options="a.codeValue as a.codeValueName for a in mortgageAccTypeList" class="form-control m-b-xs"
+                                required>
+                            <option value="">--请选择抵押资方--</option>
+                            <!--<option value="{{mortgageAccTypeObj.codeValue}}" ng-repeat="mortgageAccTypeObj in mortgageAccTypeList">-->
+                                <!--{{mortgageAccTypeObj.codeValueName}}-->
+                            <!--</option>-->
+                        </select>
+                        <p>
+                            <span class="form-info"
+                                  ng-show=" (form.mortgageAccType.$dirty && form.mortgageAccType.$error.required) || (form.mortgageAccType.$error.required && formValidate)">请选择抵押资方</span>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="form-group row" ng-if="basBankInfo.organizationType==6">
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">机构信息</b><b
+                            class="form-error">*</b>:</label>
+                    <div class="col-sm-3">
+                        <select name="insuranceAccType" ng-model="basBankInfo.organizationId" ng-options="a.codeValue as a.codeValueName for a in insuranceAccTypeList" class="form-control m-b-xs"
+                                required>
+                            <option value="">--请选择保险公司--</option>
+                            <!--<option value="{{insuranceAccTypeObj.codeValue}}" ng-repeat="insuranceAccTypeObj in insuranceAccTypeList">-->
+                                <!--{{insuranceAccTypeObj.codeValueName}}-->
+                            <!--</option>-->
+                        </select>
+                        <p>
+                            <span class="form-info"
+                                  ng-show=" (form.insuranceAccType.$dirty && form.insuranceAccType.$error.required) || (form.insuranceAccType.$error.required && formValidate)">请选择保险公司</span>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="form-group row" ng-if="basBankInfo.organizationType==7">
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">机构信息</b><b
+                            class="form-error">*</b>:</label>
+                    <div class="col-sm-3">
+                        <input type="text" name="organizationId" placeholder="请输入个人账户" class="form-control m-b-xs"
+                               ng-model="basBankInfo.organizationId" required>
+                        <p>
+                            <span class="form-info"
+                                  ng-show=" (form.organizationId.$dirty && form.organizationId.$error.required) || (form.organizationId.$error.required && formValidate)">个人账户不能为空</span>
+                        </p>
+                    </div>
+
+                    <!--<label class="col-sm-3 control-label text-right"><b class="form-text-black">机构信息</b><b
+                            class="form-error">*</b>:</label>
+                    <div class="col-sm-3">
+                        <select name="personAccType" ng-model="basBankInfo.organizationId" ng-options="a.codeValue as a.codeValueName for a in personAccTypeList" class="form-control m-b-xs"
+                                required>
+                            <option value="">&#45;&#45;请选择个人账户&#45;&#45;</option>
+                            &lt;!&ndash;<option value="{{personAccTypeObj.codeValue}}" ng-repeat="personAccTypeObj in personAccTypeList" ng-selected="personAccTypeObj.codeValue==basBankInfo.personAccType">
+                                {{personAccTypeObj.codeValueName}}
+                            </option>&ndash;&gt;
+                        </select>
+                        <p>
+                            <span class="form-info"
+                                  ng-show=" (form.personAccType.$dirty && form.personAccType.$error.required) || (form.personAccType.$error.required && formValidate)">请选择个人账户</span>
+                        </p>
+                    </div>-->
+                </div>
+
+
+
+
+
+
+                <div class="form-group row">
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">开户名</b><b
+                            class="form-error">*</b>:</label>
+                    <!-- 项目可编辑 -->
+                    <div class="col-sm-3">
+                        <input type="text" title="{{basBankInfo.accountName}}" name="accountName" placeholder="请输入开户名" class="form-control m-b-xs"
+                               ng-model="basBankInfo.accountName" required>
+                        <p>
+                            <span class="form-info"
+                                  ng-show=" (form.accountName.$dirty && form.accountName.$error.required) || (form.accountName.$error.required && formValidate)">开户名不能为空</span>
+                        </p>
+                    </div>
+                </div>
+
+
+                <div class="form-group row">
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">开户行</b><b
+                            class="form-error">*</b>:</label>
+                    <div class="col-sm-3">
+                        <select ng-model="basBankInfo.accBank" name="accBank" class="form-control m-b-xs"
+                                required>
+                            <option value="">--请选择开户行--</option>
+                            <option value="{{openingBankObj.codeValue}}" ng-repeat="openingBankObj in openingBankList">
+                                {{openingBankObj.codeValueName}}
+                            </option>
+                        </select>
+                        <p>
+                            <span class="form-info"
+                                  ng-show=" (form.accBank.$dirty && form.accBank.$error.required) || (form.accBank.$error.required && formValidate)">开户行不能为空</span>
+                        </p>
+                    </div>
+                </div>
+
+
+                <div class="form-group row">
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">分行名称</b><b
+                            class="form-error">*</b>:</label>
+                    <!-- 项目可编辑 -->
+                    <div class="col-sm-3">
+                        <input type="text" title="{{basBankInfo.accBranchBank}}" name="accBranchBank" placeholder="请输入分行名称" class="form-control m-b-xs"
+                               ng-model="basBankInfo.accBranchBank" required>
+                        <p>
+                            <span class="form-info"
+                                  ng-show=" (form.accBranchBank.$dirty && form.accBranchBank.$error.required) || (form.accBranchBank.$error.required && formValidate)">分行名称不能为空</span>
+                        </p>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">银行账号</b><b
+                            class="form-error">*</b>:</label>
+                    <!-- 项目可编辑 -->
+                    <div class="col-sm-3">
+                        <input type="text" name="accountNo" placeholder="请输入银行账号" class="form-control m-b-xs"
+                               ng-model="basBankInfo.accountNo" required>
+                        <p>
+                            <span class="form-info"
+                                  ng-show=" (form.accountNo.$dirty && form.accountNo.$error.required) || (form.accountNo.$error.required && formValidate)">银行账号不能为空</span>
+                        </p>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">开户行省份</b><b
+                            class="form-error">*</b>:</label>
+                    <div class="col-sm-3">
+                        <select name="accOpBankProv" ng-model="basBankInfo.accOpBankProv" class="form-control m-b-xs"
+                                ng-change="changeCountry()" required>
+                            <option value="">--请选择省份--</option>
+                            <option value="{{provinceObj.areaCode}}" ng-repeat="provinceObj in provinceList">
+                                {{provinceObj.areaName}}
+                            </option>
+                        </select>
+                        <p>
+                            <span class="form-info"
+                                  ng-show=" (form.accOpBankProv.$dirty && form.accOpBankProv.$error.required) || (form.accOpBankProv.$error.required && formValidate)">开户行省份不能为空</span>
+                        </p>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">开户行城市</b><b
+                            class="form-error">*</b>:</label>
+                    <div class="col-sm-3">
+                        <select name="accOpBankCity" ng-model="basBankInfo.accOpBankCity" class="form-control m-b-xs"
+                                required>
+                            <option value="">--请选择城市--</option>
+                            <option value="{{cityObj.areaCode}}"
+                                    ng-selected="cityObj.areaCode==basBankInfo.accOpBankCity?1:0"
+                                    ng-repeat="cityObj in cityList">{{cityObj.areaName}}
+                            </option>
+                        </select>
+                        <p>
+                            <span class="form-info"
+                                  ng-show=" (form.accOpBankCity.$dirty && form.accOpBankCity.$error.required) || (form.accOpBankCity.$error.required && formValidate)">开户行城市不能为空</span>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">电子银联号</b>:</label>
+                    <div class="col-sm-3">
+                        <input type="text" name="eleAccountNo" placeholder="请输入电子银联号" class="form-control m-b-xs"
+                               ng-model="basBankInfo.eleAccountNo">
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">供应商辅助核算代码</b>:</label>
+                    <div class="col-sm-3">
+                        <input type="text" name="assisFinassSupplyCd" placeholder="请输入供应商辅助核算代码" class="form-control m-b-xs"
+                               ng-model="basBankInfo.assisFinassSupplyCd">
+                    </div>
+                </div>
+
+                <div class="form-group row" ng-if="basBankInfo.organizationType==0">
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">财务科目代码</b><b
+                            class="form-error">*</b>:</label>
+                    <div class="col-sm-3">
+                        <input type="text" name="finassSubjectCd" placeholder="请输入财务科目代码" class="form-control m-b-xs"
+                               ng-model="basBankInfo.finassSubjectCd" required>
+                        <p>
+                            <span class="form-info"
+                                  ng-show=" (form.finassSubjectCd.$dirty && form.finassSubjectCd.$error.required) || (form.finassSubjectCd.$error.required && formValidate)">财务科目代码不能为空</span>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">是否默认账号</b><b
+                            class="form-error">*</b>:</label>
+                    <div class="col-sm-3">
+                        <select name="accDefault" ng-model="basBankInfo.accDefault" class="form-control m-b-xs"
+                                required>
+                            <option value="">--请选择是否默认账号--</option>
+                            <option value="{{accDefaultObj.codeValue}}" ng-repeat="accDefaultObj in accDefaultList">
+                                {{accDefaultObj.codeValueName}}
+                            </option>
+                        </select>
+                        <p>
+                            <span class="form-info"
+                                  ng-show=" (form.accDefault.$dirty && form.accDefault.$error.required) || (form.accDefault.$error.required && formValidate)">请选择是否默认账号</span>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">是否启用</b><b
+                            class="form-error">*</b>:</label>
+                    <div class="col-sm-3">
+                        <select name="enableFlag" ng-model="basBankInfo.enableFlag" class="form-control m-b-xs"
+                                required>
+                            <option value="">--请选择启用状态--</option>
+                            <option value="{{enableFlagObj.codeValue}}" ng-repeat="enableFlagObj in enableFlagList">
+                                {{enableFlagObj.codeValueName}}
+                            </option>
+                        </select>
+                        <p>
+                            <span class="form-info"
+                                  ng-show=" (form.enableFlag.$dirty && form.enableFlag.$error.required) || (form.enableFlag.$error.required && formValidate)">请选择启用状态</span>
+                        </p>
+                    </div>
+                </div>
+                
+            </div>
+
+
+            <!--附件信息-->
+            <div class="panel-body wrapper-sm" ng-if="httpData">
+                <tree-file-directive detail-flag="$root.yesNoFlag.no" file-type="$root.basFileTypes.basBankInfoFile" files="$parent.bizFilesList" not-upload="$parent.notUpload" not-upload-info="$parent.msgInfo"   not-file-type="$parent.notFileType" not-file-type-name="$parent.notFileTypeName">
+                </tree-file-directive>
+            </div>
+
+
+            <div class="col-sm-15 m-b text-center">
+                <button class="btn btn-default" ng-click="goback()">返回</button>
+                <button type="submit" class="btn btn-success ng-scope" ng-show="showSave" ng-disabled="submit"
+                        ng-click="save()">新增
+                </button>
+                <button type="submit" class="btn btn-success ng-scope" ng-show="showUpdate" ng-disabled="submit"
+                        ng-click="modify()">保存
+                </button>
+                <button type="submit" class="btn btn-success ng-scope" ng-show="serviceIdStatus" ng-disabled="submit"
+                        ng-click="modify()">保存
+                </button>
+            </div>
+        </form>
+        <div ng-show="serviceId!=null&&serviceId!=Undefined">
+            <div ng-include="'tpl/common/process_log/process_log_list.html'"></div>
+        </div>
+    </div>
+</div>

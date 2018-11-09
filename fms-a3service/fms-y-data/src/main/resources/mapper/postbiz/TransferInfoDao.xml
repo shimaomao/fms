@@ -1,0 +1,348 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.com.leadu.fms.data.postbiz.dao.TransferInfoDao">
+    <!-- 分页取得过户一览信息数据 -->
+    <select id="selectTransferInfosByPage" resultType="cn.com.leadu.fms.pojo.postbiz.vo.transferinfo.TransferInfoVo">
+        SELECT
+        <!-- 合同编号， 车架号，发动机号，车牌号，合同生效日期，合同结清状态 -->
+        cont.cont_no,cont.vin_no,cont.engine_no,cont.vehicle_license_no,cont.contract_valid_date,cont.payment_sts
+        <!-- 融资额， 融资期限，出租人，地区 -->
+        ,conFin.fin_total,conFin.fin_period_type,sysGroup.group_name as belongGroup,sysGroup.group_district
+        <!-- 承租人， 抵押状态，资方 -->
+        ,ifnull(cstmCompany.name, cstmPerson.name) cstmName,ifnull(equDetail.mortgage_status, '5') as mortgageStatus,equTask.management
+        <!-- 过户状态， 过户处理状态，当前节点用户，过户ID，过户任务号 -->
+        ,ifnull(transfer.transfer_sts,'0') as transferSts,transfer.transfer_handle_sts,transfer.present_user,transfer.transfer_id,transfer.transfer_no
+        <!-- 文件状态 -->
+        ,ifnull(orgFileDetail.orig_file_detail_status, '3') as origFileDetailStatus
+        <!-- 资料归档业务类型,归档附件大类, 归档编号, 归档任务状态-->
+        ,orgFile.biz_code_type,orgFile.orig_file_type,orgFile.file_record_no,orgFile.orig_file_task_status
+        <!-- （借阅）邮寄日期 -->
+        ,borrowTask.post_date as postDate
+        from contract cont
+        left join contract_finance conFin on cont.cont_no = conFin.cont_no and conFin.del_flag = ${delete_exist}
+        left join equ_mor_detail equDetail on equDetail.main_cont_no = cont.cont_no and equDetail.del_flag = ${delete_exist} and equDetail.mortgage_status != #{transferInfoVo.cancelMortgageStatus} and equDetail.mortgage_status != #{transferInfoVo.invalidMortgageStatus}
+        left join equ_mor_task equTask on equTask.equ_mor_task_no = equDetail.equ_mor_task_no and equTask.del_flag = ${delete_exist}
+        left join cstm_company cstmCompany ON cstmCompany.apply_no = cont.apply_no and cstmCompany.del_flag = ${delete_exist}
+        left join cstm_person cstmPerson on cstmPerson.apply_no = cont.apply_no and cstmPerson.del_flag = ${delete_exist}
+        left join transfer_info transfer on transfer.cont_no = cont.cont_no and transfer.del_flag = ${delete_exist}
+        left join sys_group sysGroup on sysGroup.group_code = conFin.belong_group and sysGroup.del_flag = ${delete_exist}
+        left join orig_file orgFile on orgFile.biz_code = cont.cont_no and orgFile.del_flag = ${delete_exist}
+        left join orig_file_detail orgFileDetail on orgFileDetail.biz_code = orgFile.biz_code and orgFile.biz_code_type = orgFileDetail.biz_code_type and orgFileDetail.del_flag = ${delete_exist}
+        <!-- 车辆登记证 -->
+        <if test="transferInfoVo.fileTypes != null and transferInfoVo.fileTypes.size > 0 ">
+            AND orgFileDetail.file_type IN
+            <foreach collection="transferInfoVo.fileTypes" item="item" index="index" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <!-- 借阅任务表 -->
+        left join borrow_task borrowTask on borrowTask.borrow_task_no = orgFileDetail.borrow_task_no and borrowTask.del_flag = ${delete_exist}
+        where cont.del_flag = ${delete_exist}
+        <!-- 合同结清状态不等于“0：未结清” -->
+        and cont.payment_sts != 0
+        <!-- 承租人 -->
+        <if test="transferInfoVo.cstmName != null">
+            AND (cstmCompany.name like #{transferInfoVo.cstmName} or cstmPerson.name like #{transferInfoVo.cstmName})
+        </if>
+        <!-- 出租人 -->
+        <if test="transferInfoVo.belongGroup != null">
+            AND sysGroup.group_name like #{transferInfoVo.belongGroup}
+        </if>
+        <!-- 车架号 -->
+        <if test="transferInfoVo.vinNo != null">
+            AND cont.vin_no like #{transferInfoVo.vinNo}
+        </if>
+        <!-- 合同编号 -->
+        <if test="transferInfoVo.contNo != null">
+            AND cont.cont_no like #{transferInfoVo.contNo}
+        </if>
+        <!-- 过户状态 -->
+        <if test='transferInfoVo.transferSts != null and transferInfoVo.transferSts == "0" '>
+            AND (transfer.transfer_sts = #{transferInfoVo.transferSts} or transfer.transfer_sts is null)
+        </if>
+        <if test='transferInfoVo.transferSts != null and transferInfoVo.transferSts == "1" '>
+            AND transfer.transfer_sts = #{transferInfoVo.transferSts}
+        </if>
+        <!-- 抵押状态 -->
+        <if test='transferInfoVo.mortgageStatus != null and transferInfoVo.mortgageStatus=="5"'>
+            and (equDetail.mortgage_status  = #{transferInfoVo.mortgageStatus} OR equDetail.mortgage_status IS NULL )
+        </if>
+        <if test='transferInfoVo.mortgageStatus != null and transferInfoVo.mortgageStatus!="5"'>
+            and (equDetail.mortgage_status  = #{transferInfoVo.mortgageStatus})
+        </if>
+        <!-- 根据过户状态，过户未发起或任务未结束的数据放在前面，过户完成的数据放在后面，再根据过户任务更新时间倒序排列，最后根据合同的更新时间倒序排列， -->
+        order by if(transfer.transfer_handle_sts = '3508',1,0) asc,transfer.update_time desc,cont.update_time desc
+    </select>
+
+    <!-- 根据合同编号 获取过户处理明细信息 -->
+    <select id="selectTransferDetailByContNo" resultType="cn.com.leadu.fms.pojo.postbiz.vo.transferinfo.TransferInfoVo">
+        SELECT
+        <!-- 合同编号， 车架号，发动机号，车牌号，合同生效日期，合同结清状态 -->
+        cont.cont_no,cont.vin_no,cont.engine_no,cont.vehicle_license_no,cont.contract_valid_date,cont.payment_sts
+        <!-- 融资额， 融资期限，出租人 -->
+        ,cont.vehicle_driving_license_register_date,conFin.fin_total,conFin.fin_period_type,sysGroup.group_name as belongGroup
+        <!-- 承租人， 抵押状态，资方 -->
+        ,ifnull(cstmCompany.name, cstmPerson.name) cstmName,ifnull(equDetail.mortgage_status, '5') as mortgageStatus,equTask.management
+        <!-- 资料归档业务类型,归档附件大类, 归档编号, 归档任务状态-->
+        ,orgFile.biz_code_type,orgFile.orig_file_type,orgFile.file_record_no,orgFile.orig_file_task_status
+        from contract cont
+        left join contract_finance conFin on cont.cont_no = conFin.cont_no and conFin.del_flag = 0
+        left join equ_mor_detail equDetail on equDetail.main_cont_no = cont.cont_no and equDetail.del_flag = 0 and equDetail.mortgage_status != #{cancelMortgageStatus} and equDetail.mortgage_status != #{invalidMortgageStatus}
+        left join equ_mor_task equTask on equTask.equ_mor_task_no = equDetail.equ_mor_task_no and equTask.del_flag = 0
+        left join cstm_company cstmCompany ON cstmCompany.apply_no = cont.apply_no and cstmCompany.del_flag = 0
+        left join cstm_person cstmPerson on cstmPerson.apply_no = cont.apply_no and cstmPerson.del_flag = 0
+        left join sys_group sysGroup on sysGroup.group_code = conFin.belong_group and sysGroup.del_flag = 0
+        left join orig_file orgFile on orgFile.biz_code = cont.cont_no and orgFile.del_flag = ${delete_exist}
+        where cont.del_flag = 0 and cont.payment_sts != 0
+        and cont.cont_no = #{contNo}
+    </select>
+
+    <!-- 根据合同编号 获取过户处理明细信息 -->
+    <select id="selectTransferInfoVoByTransferNo" resultType="cn.com.leadu.fms.pojo.postbiz.vo.transferinfo.TransferInfoVo">
+        SELECT
+        <!-- 合同编号， 车架号，发动机号，车牌号，合同生效日期，合同结清状态 -->
+        cont.cont_no,cont.vin_no,cont.engine_no,cont.vehicle_license_no,cont.contract_valid_date,cont.payment_sts
+        <!-- 融资额， 融资期限，出租人 -->
+        ,cont.vehicle_driving_license_register_date,conFin.fin_total,conFin.fin_period_type,sysGroup.group_name as belongGroup
+        <!-- 承租人， 抵押状态，资方 -->
+        ,ifnull(cstmCompany.name, cstmPerson.name) cstmName,ifnull(equDetail.mortgage_status, '5') as mortgageStatus,equTask.management
+        <!-- 过户ID，过户任务号，所有权转移人，证件号码，过户申请日期，过户状态 -->
+        ,transfer.transfer_id,transfer.transfer_no,transfer.ownership_person,transfer.certif_no,transfer.transfer_apply_date,transfer.transfer_sts
+        <!-- 保险处置方式，退保金额，过户手续费 -->
+        ,transfer.insuranc_deal_type,ifnull(transfer.retreats_amount, 0 ) as retreatsAmount,ifnull(transfer.transfer_cost,0) as transferCost
+        <!-- 保证金，过户保证金，费用总额 -->
+        ,transfer.deposit,ifnull(transfer.transfer_deposit, contPreDetail.prepay_actual_amount) as transferDeposit,transfer.total_cost
+        <!-- 资料归档业务类型,归档附件大类, 归档编号, 归档任务状态-->
+        ,orgFile.biz_code_type,orgFile.orig_file_type,orgFile.file_record_no,orgFile.orig_file_task_status,orgFile.orig_file_status
+        <!-- 联系电话，联系地址 -->
+        ,transfer.contact_mobile,transfer.contact_addr
+        from contract cont
+        left join contract_finance conFin on cont.cont_no = conFin.cont_no and conFin.del_flag = 0
+        left join equ_mor_detail equDetail on equDetail.main_cont_no = cont.cont_no and equDetail.del_flag = 0 and equDetail.mortgage_status != #{cancelMortgageStatus} and equDetail.mortgage_status != #{invalidMortgageStatus}
+        left join equ_mor_task equTask on equTask.equ_mor_task_no = equDetail.equ_mor_task_no and equTask.del_flag = 0
+        left join cstm_company cstmCompany ON cstmCompany.apply_no = cont.apply_no and cstmCompany.del_flag = 0
+        left join cstm_person cstmPerson on cstmPerson.apply_no = cont.apply_no and cstmPerson.del_flag = 0
+        inner join transfer_info transfer on transfer.cont_no = cont.cont_no and transfer.del_flag = 0
+        left join sys_group sysGroup on sysGroup.group_code = conFin.belong_group and sysGroup.del_flag = 0
+        left join orig_file orgFile on orgFile.biz_code = cont.cont_no and orgFile.del_flag = ${delete_exist}
+        left join cont_prepay_detail contPreDetail on contPreDetail.cont_no = cont.cont_no and contPreDetail.prepaym_detail_item = 'transferDeposit' and  contPreDetail.del_flag = ${delete_exist}
+        where cont.del_flag = 0 and cont.payment_sts != 0
+        and transfer.transfer_no = #{transferNo}
+    </select>
+
+    <!-- 根据合同编号 获取确认书过户处理明细信息 -->
+    <select id="selectTransferInfoLetterVo" resultType="cn.com.leadu.fms.pojo.postbiz.vo.transferinfo.TransferInfoLetterVo">
+        SELECT
+        <!-- 品牌，车型，车牌号，车架号,所有权转移人，证件号码，电话号码 -->
+        vehBrandCode.vehicle_name AS vehBrandCodeName,
+        vehicleCode.vehicle_name AS vehicleCodeName,
+        contract.cont_no AS contNo,
+        contract.vehicle_license_no AS vehicleLicenseNo,
+        contract.vin_no AS vinNo,
+        transferInfo.ownership_person AS ownershipPerson,
+        transferInfo.certif_no AS certifNo,
+        transferInfo.contact_mobile AS contactMobile
+        FROM
+        contract
+        LEFT JOIN contract_vehicle vehicle ON contract.cont_no = vehicle.cont_no AND vehicle.del_flag = ${delete_exist}
+        LEFT JOIN bas_vehicle vehBrandCode ON vehicle.veh_brand_code = vehBrandCode.vehicle_code AND vehBrandCode.del_flag = ${delete_exist}
+        LEFT JOIN bas_vehicle vehicleCode ON vehicle.vehicle_code = vehicleCode.vehicle_code AND vehicleCode.del_flag = ${delete_exist}
+        LEFT JOIN transfer_info transferInfo ON contract.cont_no = transferInfo.cont_no AND transferInfo.del_flag = ${delete_exist}
+        WHERE
+        contract.del_flag = ${delete_exist} AND
+        contract.cont_no = #{contNo}
+    </select>
+
+    <!--分页查询过户退保一览-->
+    <select id="selectTransferInfoRetreatsVosByPage" resultType="cn.com.leadu.fms.pojo.postbiz.vo.transferinfo.TransferInfoRetreatsVo">
+        SELECT
+        <!-- 合同编号， 车架号，发动机号，车牌号，合同生效日期，合同结清状态 -->
+        contract.cont_no,contract.vin_no,contract.engine_no,contract.vehicle_license_no,contract.contract_valid_date,contract.payment_sts,
+        <!-- 出租人， 承租人-->
+        sysGroup.group_name as belongGroup,ifnull(cstmCompany.name, cstmPerson.name) cstmName,
+        <!-- 保险公司名称，商业险保单号，投保生效日，投保失效日，保单实际金额 保险类型-->
+        b.ins_comp_name,b.ins_policy_no,b.valid_start_day,b.valid_end_day,b.ins_fee,b.insurance_type,b.insurance_select_info,
+        <!-- 过户状态， 保险处置方式-->
+        transferInfo.transfer_sts,transferInfo.insuranc_deal_type,
+        <!-- 保单费用信息-->
+        transferInfo.retreats_amount,transferInfo.transfer_cost,transferInfo.deposit,transferInfo.transfer_deposit,transferInfo.total_cost,
+        transferInfo.retreats_handle_sts,transferInfo.retreats_present_user,transferInfo.retreats_no
+        FROM
+        transfer_info transferInfo
+        LEFT JOIN contract contract ON transferInfo.cont_no = contract.cont_no AND contract.del_flag = ${delete_exist}
+        LEFT JOIN contract_finance contractFinance ON contract.cont_no = contractFinance.cont_no AND contractFinance.del_flag = ${delete_exist}
+        LEFT JOIN sys_group sysGroup ON sysGroup.group_code = contractFinance.belong_group AND sysGroup.del_flag = ${delete_exist}
+        LEFT JOIN cstm_company cstmCompany ON cstmCompany.apply_no = contract.apply_no AND cstmCompany.del_flag = ${delete_exist}
+        LEFT JOIN cstm_person cstmPerson ON cstmPerson.apply_no = contract.apply_no AND cstmPerson.del_flag = ${delete_exist}
+        <!-- 根据合同号关联合同车辆保险信息表,取同一条合同中投保失效日最大的相对应的保险信息-->
+        LEFT JOIN
+        (SELECT
+        contInsurance2.ins_comp_name,
+        contInsurance2.ins_policy_no,
+        contInsurance2.valid_start_day,
+        contInsurance2.valid_end_day,
+        contInsurance2.ins_fee,
+        contInsurance2.cont_no,
+        contInsurance2.insurance_type,
+        contInsurance2.insurance_select_info
+        from
+        (SELECT
+        MAX(valid_end_day) AS validEndDayMax,
+        contInsurance.cont_no
+        FROM
+        cont_insurance contInsurance
+        WHERE contInsurance.del_flag = ${delete_exist}
+        GROUP BY contInsurance.cont_no) AS a
+        LEFT JOIN
+        cont_insurance contInsurance2 ON contInsurance2.cont_no = a.cont_no
+        AND contInsurance2.valid_end_day = a.validEndDayMax AND contInsurance2.del_flag = ${delete_exist}) AS b
+        ON contract.cont_no = b.cont_no
+        WHERE
+        transferInfo.del_flag = ${delete_exist}
+        <!-- 过户状态为已过户 -->
+        <if test="transferInfoRetreatsVo.transferSts != null">
+            AND transferInfo.transfer_sts = #{transferInfoRetreatsVo.transferSts}
+        </if>
+        <!-- 保险处置方式为退保 -->
+        <if test="transferInfoRetreatsVo.insurancDealType != null">
+            AND transferInfo.insuranc_deal_type = #{transferInfoRetreatsVo.insurancDealType}
+        </if>
+        <!-- 承租人 -->
+        <if test="transferInfoRetreatsVo.cstmName != null">
+            AND (cstmCompany.name like #{transferInfoRetreatsVo.cstmName} or cstmPerson.name like #{transferInfoRetreatsVo.cstmName})
+        </if>
+        <!-- 出租人 -->
+        <if test="transferInfoRetreatsVo.belongGroup != null">
+            AND sysGroup.group_name like #{transferInfoRetreatsVo.belongGroup}
+        </if>
+        <!-- 车架号 -->
+        <if test="transferInfoRetreatsVo.vinNo != null">
+            AND contract.vin_no like #{transferInfoRetreatsVo.vinNo}
+        </if>
+        <!-- 合同编号 -->
+        <if test="transferInfoRetreatsVo.contNo != null">
+            AND contract.cont_no like #{transferInfoRetreatsVo.contNo}
+        </if>
+        ORDER BY transferInfo.update_time DESC
+    </select>
+
+    <!--根据退保任务号查询过户退保信息-->
+    <select id="selectTransferInfoRetreatVoByRetreatsNo" resultType="cn.com.leadu.fms.pojo.postbiz.vo.transferinfo.TransferInfoRetreatsVo">
+        SELECT
+        <!-- 合同编号， 车架号，发动机号，车牌号，合同生效日期，合同结清状态 -->
+        contract.cont_no,contract.vin_no,contract.engine_no,contract.vehicle_license_no,contract.contract_valid_date,contract.payment_sts,
+        <!-- 出租人， 承租人-->
+        sysGroup.group_name as belongGroup,ifnull(cstmCompany.name, cstmPerson.name) cstmName,
+        <!-- 保险公司名称，商业险保单号，投保生效日，投保失效日，保单实际金额 保险类型-->
+        b.ins_comp_name,b.ins_policy_no,b.valid_start_day,b.valid_end_day,b.ins_fee,b.insurance_type,b.insurance_select_info,
+        <!-- 过户状态， 保险处置方式-->
+        transferInfo.transfer_sts,transferInfo.insuranc_deal_type,
+        <!-- 保单费用信息-->
+        transferInfo.retreats_amount,transferInfo.transfer_cost,transferInfo.deposit,transferInfo.transfer_deposit,transferInfo.total_cost,
+        transferInfo.retreats_handle_sts,transferInfo.retreats_present_user,transferInfo.retreats_no
+        FROM
+        transfer_info transferInfo
+        LEFT JOIN contract contract ON transferInfo.cont_no = contract.cont_no AND contract.del_flag = ${delete_exist}
+        LEFT JOIN contract_finance contractFinance ON contract.cont_no = contractFinance.cont_no AND contractFinance.del_flag = ${delete_exist}
+        LEFT JOIN sys_group sysGroup ON sysGroup.group_code = contractFinance.belong_group AND sysGroup.del_flag = ${delete_exist}
+        LEFT JOIN cstm_company cstmCompany ON cstmCompany.apply_no = contract.apply_no AND cstmCompany.del_flag = ${delete_exist}
+        LEFT JOIN cstm_person cstmPerson ON cstmPerson.apply_no = contract.apply_no AND cstmPerson.del_flag = ${delete_exist}
+        <!-- 根据合同号关联合同车辆保险信息表,取同一条合同中投保失效日最大的相对应的保险信息-->
+        LEFT JOIN
+        (SELECT
+        contInsurance2.ins_comp_name,
+        contInsurance2.ins_policy_no,
+        contInsurance2.valid_start_day,
+        contInsurance2.valid_end_day,
+        contInsurance2.ins_fee,
+        contInsurance2.cont_no,
+        contInsurance2.insurance_type,
+        contInsurance2.insurance_select_info
+        from
+        (SELECT
+        MAX(valid_end_day) AS validEndDayMax,
+        contInsurance.cont_no
+        FROM
+        cont_insurance contInsurance
+        WHERE contInsurance.del_flag = ${delete_exist}
+        GROUP BY contInsurance.cont_no) AS a
+        LEFT JOIN
+        cont_insurance contInsurance2 ON contInsurance2.cont_no = a.cont_no
+        AND contInsurance2.valid_end_day = a.validEndDayMax AND contInsurance2.del_flag = ${delete_exist}) AS b
+        ON contract.cont_no = b.cont_no
+        WHERE
+        transferInfo.del_flag = ${delete_exist}
+        <!-- 退保任务号 -->
+        <if test="retreatsNo != null">
+            AND transferInfo.retreats_no = #{retreatsNo}
+        </if>
+    </select>
+
+    <!--根据合同号查询过户退保信息-->
+    <select id="selectTransferInfoRetreatVoByContNo" resultType="cn.com.leadu.fms.pojo.postbiz.vo.transferinfo.TransferInfoRetreatsVo">
+        SELECT
+        <!-- 合同编号， 车架号，发动机号，车牌号，合同生效日期，合同结清状态 -->
+        contract.cont_no,contract.vin_no,contract.engine_no,contract.vehicle_license_no,contract.contract_valid_date,contract.payment_sts,
+        <!-- 出租人， 承租人-->
+        sysGroup.group_name as belongGroup,ifnull(cstmCompany.name, cstmPerson.name) cstmName,
+        <!-- 保险公司名称，商业险保单号，投保生效日，投保失效日，保单实际金额 保险类型-->
+        b.ins_comp_name,b.ins_policy_no,b.valid_start_day,b.valid_end_day,b.ins_fee,b.insurance_type,b.insurance_select_info,
+        <!-- 过户状态， 保险处置方式-->
+        transferInfo.transfer_sts,transferInfo.insuranc_deal_type,
+        <!-- 保单费用信息-->
+        transferInfo.retreats_amount,transferInfo.transfer_cost,transferInfo.deposit,transferInfo.transfer_deposit,transferInfo.total_cost,
+        transferInfo.retreats_handle_sts,transferInfo.retreats_present_user,transferInfo.retreats_no
+        FROM
+        transfer_info transferInfo
+        LEFT JOIN contract contract ON transferInfo.cont_no = contract.cont_no AND contract.del_flag = ${delete_exist}
+        LEFT JOIN contract_finance contractFinance ON contract.cont_no = contractFinance.cont_no AND contractFinance.del_flag = ${delete_exist}
+        LEFT JOIN sys_group sysGroup ON sysGroup.group_code = contractFinance.belong_group AND sysGroup.del_flag = ${delete_exist}
+        LEFT JOIN cstm_company cstmCompany ON cstmCompany.apply_no = contract.apply_no AND cstmCompany.del_flag = ${delete_exist}
+        LEFT JOIN cstm_person cstmPerson ON cstmPerson.apply_no = contract.apply_no AND cstmPerson.del_flag = ${delete_exist}
+        <!-- 根据合同号关联合同车辆保险信息表,取同一条合同中投保失效日最大的相对应的保险信息-->
+        LEFT JOIN
+        (SELECT
+        contInsurance2.ins_comp_name,
+        contInsurance2.ins_policy_no,
+        contInsurance2.valid_start_day,
+        contInsurance2.valid_end_day,
+        contInsurance2.ins_fee,
+        contInsurance2.cont_no,
+        contInsurance2.insurance_type,
+        contInsurance2.insurance_select_info
+        from
+        (SELECT
+        MAX(valid_end_day) AS validEndDayMax,
+        contInsurance.cont_no
+        FROM
+        cont_insurance contInsurance
+        WHERE contInsurance.del_flag = ${delete_exist}
+        GROUP BY contInsurance.cont_no) AS a
+        LEFT JOIN
+        cont_insurance contInsurance2 ON contInsurance2.cont_no = a.cont_no
+        AND contInsurance2.valid_end_day = a.validEndDayMax AND contInsurance2.del_flag = ${delete_exist}) AS b
+        ON contract.cont_no = b.cont_no
+        WHERE
+        transferInfo.del_flag = ${delete_exist}
+        <!-- 退保任务号 -->
+        <if test="contNo != null">
+            AND transferInfo.cont_no = #{contNo}
+        </if>
+    </select>
+    <!--根据退保任务号和业务类型查询财务付款表-->
+    <select id="selectContPayByRetreatsNo" parameterType="java.lang.String" resultType="cn.com.leadu.fms.pojo.prebiz.entity.ContPay">
+        SELECT
+        *
+        FROM
+        cont_pay contPay
+        WHERE contPay.del_flag = ${delete_exist}
+        <if test="#{bizCode} != null" >
+            AND contPay.biz_code = #{bizCode}
+        </if>
+        <if test="#{paymentType} != null" >
+            AND contPay.payment_type = #{paymentType}
+        </if>
+    </select>
+</mapper>

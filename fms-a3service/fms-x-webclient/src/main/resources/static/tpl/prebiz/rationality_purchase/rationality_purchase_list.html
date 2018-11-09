@@ -1,0 +1,44 @@
+<div class="bg-light lter b-b wrapper-md">
+    <h1 class="m-n font-thin h4">prebiz管理</h1>
+</div>
+<div  ng-controller="rationality_purchase_list_controller">
+    <div>
+        <toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-body wrapper-sm">
+            <div class="row">
+                <div class="col-lg-12">
+                    <form class="form-inline" role="form">
+                        <div class="form-group">
+                            <label class="sr-only" >申请编号 </label>
+                            <input class="form-control m-b-xs" ng-model="applyNo" placeholder="申请编号">
+                        </div>
+                        <div class="form-group">
+                            <label class="sr-only" >客户来源 </label>
+                            <input class="form-control m-b-xs" ng-model="customerSource" placeholder="客户来源">
+                        </div>
+
+                        <div class="form-group m-b-sm">
+                            <div class="btn-group">
+                                <button class="btn btn-default m-b-xs btn-info" ng-click="searchRationalityPurchase()" ><i class="fa fa-search"></i>查询</button>
+                                <button class="btn btn-default m-b-xs" ng-click="resetRationalityPurchase()" ><i class="fa  icon-refresh"></i>重置</button>
+                            </div>
+                        </div>
+
+                        <div class="form-group pull-right">
+                            <div class="btn-group">
+                                <button class="btn btn-default m-b-xs" ng-click="saveRationalityPurchase()"><i class="fa fa-plus"></i>添加</button>
+                                <button class="btn btn-default m-b-xs" ng-click="modifyRationalityPurchase()"><i class="fa icon-pencil"></i>修改</button>
+                                <button class="btn btn-default m-b-xs" ng-click="deleteRationalityPurchase()"><i class="fa fa-trash-o"></i>删除</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <table border="1" class="table table-striped m-b-none" id="rationality_purchase_table">
+        </table>
+    </div>
+</div>
+

@@ -1,0 +1,510 @@
+<div ng-controller="overdue_cont_modify_controller">
+    <div>
+        <toaster-container
+                toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+    </div>
+    <div class="panel panel-default">
+        <div class="row" style="margin: 0; padding: 15px; border: 1px solid #dddddd">
+            <h4 class="m-n font-thin h4">{{frameTitle}}</h4>
+        </div>
+        <form name="form" class="form-validation" novalidate>
+            <div class="panel-body wrapper-sm">
+                
+                <div class="form-group row">
+                    <div class="col-sm-6">
+                        <div class="row">
+                            <label class="col-sm-4 control-label text-right"><b class="form-text-black">承租人</b><b
+                                    class="form-error">*</b>:</label>
+                            <div class="col-sm-4">
+                                <input type="text" name="cstmName" placeholder="请输入承租人" class="form-control m-b-xs" ng-model="overdueCont.cstmName"  required disabled>
+                                <p>
+                                    <span class="form-info" ng-show=" (form.cstmName.$dirty && form.cstmName.$error.required) || (form.cstmName.$error.required && formValidate)">承租人不能为空</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="row">
+                            <label class="col-sm-4 control-label text-right"><b class="form-text-black">申请编号</b><b
+                                    class="form-error">*</b>:</label>
+                            <div class="col-sm-4">
+                                <input type="text" name="applyNo" placeholder="请输入申请编号" class="form-control m-b-xs" ng-model="overdueCont.applyNo"  required disabled>
+                                <p>
+                                    <span class="form-info" ng-show=" (form.applyNo.$dirty && form.applyNo.$error.required) || (form.applyNo.$error.required && formValidate)">申请编号不能为空</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-sm-6">
+                        <div class="row">
+                            <label class="col-sm-4 control-label text-right"><b class="form-text-black">合同编号</b><b
+                                    class="form-error">*</b>:</label>
+                            <div class="col-sm-4">
+                                <input type="text" name="contNo" placeholder="请输入合同编号" class="form-control m-b-xs" ng-model="overdueCont.contNo"  required disabled>
+                                <p>
+                                    <span class="form-info" ng-show=" (form.contNo.$dirty && form.contNo.$error.required) || (form.contNo.$error.required && formValidate)">合同编号不能为空</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="row">
+                            <label class="col-sm-4 control-label text-right"><b class="form-text-black">车架号</b><b
+                                    class="form-error">*</b>:</label>
+                            <div class="col-sm-4">
+                                <input type="text" name="vinNo" placeholder="请输入车架号" class="form-control m-b-xs" ng-model="overdueCont.vinNo"  required disabled>
+                                <p>
+                                    <span class="form-info" ng-show=" (form.vinNo.$dirty && form.vinNo.$error.required) || (form.vinNo.$error.required && formValidate)">车架号不能为空</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel-body wrapper-sm" style="margin: 0; padding: 15px; border: 1px solid #dddddd">
+
+                    <div class="form-group row">
+                        <div class="col-sm-12">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <table border="1" class="table table-striped m-b-none" id="overdueCont_table"></table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+
+            <div class="modal-footer ng-scope text-center">
+                <button class="btn btn-default" ng-click="goback()">返回</button>
+                <button type="submit" class="btn btn-success"  ng-disabled="submit"
+                        ng-click="modify()">提交
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+<!--
+<div class="modal-header">
+    <h4 class="modal-title">编辑postbiz <button type="button" class="close" data-dismiss="modal" aria-hidden="true" ng-click="close()">&times;</button></h4>
+</div>
+<div class="modal-body">
+    <form name="form" class="form-validation" novalidate>
+
+        <div class="panel-body">
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">逾期客户ID</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="overdueCstmId" placeholder="请输入逾期客户ID" class="form-control m-b-xs" ng-model="overdueCont.overdueCstmId"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.overdueCstmId.$dirty && form.overdueCstmId.$error.required) || (form.overdueCstmId.$error.required && formValidate)">逾期客户ID不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">申请编号</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="applyNo" placeholder="请输入申请编号" class="form-control m-b-xs" ng-model="overdueCont.applyNo"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.applyNo.$dirty && form.applyNo.$error.required) || (form.applyNo.$error.required && formValidate)">申请编号不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">合同编号</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="contNo" placeholder="请输入合同编号" class="form-control m-b-xs" ng-model="overdueCont.contNo"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.contNo.$dirty && form.contNo.$error.required) || (form.contNo.$error.required && formValidate)">合同编号不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">车辆类型</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="vehicleForm" placeholder="请输入车辆类型" class="form-control m-b-xs" ng-model="overdueCont.vehicleForm"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.vehicleForm.$dirty && form.vehicleForm.$error.required) || (form.vehicleForm.$error.required && formValidate)">车辆类型不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">合同生成日期</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="contractDate" placeholder="请输入合同生成日期" class="form-control m-b-xs" ng-model="overdueCont.contractDate"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.contractDate.$dirty && form.contractDate.$error.required) || (form.contractDate.$error.required && formValidate)">合同生成日期不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">合同生效日期</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="contractValidDate" placeholder="请输入合同生效日期" class="form-control m-b-xs" ng-model="overdueCont.contractValidDate"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.contractValidDate.$dirty && form.contractValidDate.$error.required) || (form.contractValidDate.$error.required && formValidate)">合同生效日期不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">订单提出机构代码</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="applyGroup" placeholder="请输入订单提出机构代码" class="form-control m-b-xs" ng-model="overdueCont.applyGroup"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.applyGroup.$dirty && form.applyGroup.$error.required) || (form.applyGroup.$error.required && formValidate)">订单提出机构代码不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">初登日期</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="firstOverdueDate" placeholder="请输入初登日期" class="form-control m-b-xs" ng-model="overdueCont.firstOverdueDate"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.firstOverdueDate.$dirty && form.firstOverdueDate.$error.required) || (form.firstOverdueDate.$error.required && formValidate)">初登日期不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">首期租金</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="rent" placeholder="请输入首期租金" class="form-control m-b-xs" ng-model="overdueCont.rent"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.rent.$dirty && form.rent.$error.required) || (form.rent.$error.required && formValidate)">首期租金不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">车架号</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="vinNo" placeholder="请输入车架号" class="form-control m-b-xs" ng-model="overdueCont.vinNo"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.vinNo.$dirty && form.vinNo.$error.required) || (form.vinNo.$error.required && formValidate)">车架号不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">发动机号</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="engineNo" placeholder="请输入发动机号" class="form-control m-b-xs" ng-model="overdueCont.engineNo"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.engineNo.$dirty && form.engineNo.$error.required) || (form.engineNo.$error.required && formValidate)">发动机号不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">车牌号</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="vehicleLicenseNo" placeholder="请输入车牌号" class="form-control m-b-xs" ng-model="overdueCont.vehicleLicenseNo"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.vehicleLicenseNo.$dirty && form.vehicleLicenseNo.$error.required) || (form.vehicleLicenseNo.$error.required && formValidate)">车牌号不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">品牌</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="vehBrandCode" placeholder="请输入品牌" class="form-control m-b-xs" ng-model="overdueCont.vehBrandCode"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.vehBrandCode.$dirty && form.vehBrandCode.$error.required) || (form.vehBrandCode.$error.required && formValidate)">品牌不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">车型</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="vehicleCode" placeholder="请输入车型" class="form-control m-b-xs" ng-model="overdueCont.vehicleCode"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.vehicleCode.$dirty && form.vehicleCode.$error.required) || (form.vehicleCode.$error.required && formValidate)">车型不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">车辆配置描述</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="vehicleComment" placeholder="请输入车辆配置描述" class="form-control m-b-xs" ng-model="overdueCont.vehicleComment"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.vehicleComment.$dirty && form.vehicleComment.$error.required) || (form.vehicleComment.$error.required && formValidate)">车辆配置描述不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">颜色</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="color" placeholder="请输入颜色" class="form-control m-b-xs" ng-model="overdueCont.color"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.color.$dirty && form.color.$error.required) || (form.color.$error.required && formValidate)">颜色不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">归档状态</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="origFileStatus" placeholder="请输入归档状态" class="form-control m-b-xs" ng-model="overdueCont.origFileStatus"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.origFileStatus.$dirty && form.origFileStatus.$error.required) || (form.origFileStatus.$error.required && formValidate)">归档状态不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">归档期限</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="origDeadline" placeholder="请输入归档期限" class="form-control m-b-xs" ng-model="overdueCont.origDeadline"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.origDeadline.$dirty && form.origDeadline.$error.required) || (form.origDeadline.$error.required && formValidate)">归档期限不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">当前逾期天数</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="overdueDays" placeholder="请输入当前逾期天数" class="form-control m-b-xs" ng-model="overdueCont.overdueDays"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.overdueDays.$dirty && form.overdueDays.$error.required) || (form.overdueDays.$error.required && formValidate)">当前逾期天数不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">当前逾期期数</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="overduePeriods" placeholder="请输入当前逾期期数" class="form-control m-b-xs" ng-model="overdueCont.overduePeriods"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.overduePeriods.$dirty && form.overduePeriods.$error.required) || (form.overduePeriods.$error.required && formValidate)">当前逾期期数不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">当前逾期本金</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="overduePrincipal" placeholder="请输入当前逾期本金" class="form-control m-b-xs" ng-model="overdueCont.overduePrincipal"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.overduePrincipal.$dirty && form.overduePrincipal.$error.required) || (form.overduePrincipal.$error.required && formValidate)">当前逾期本金不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">当前逾期租金</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="overdueRent" placeholder="请输入当前逾期租金" class="form-control m-b-xs" ng-model="overdueCont.overdueRent"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.overdueRent.$dirty && form.overdueRent.$error.required) || (form.overdueRent.$error.required && formValidate)">当前逾期租金不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">当前逾期罚息</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="overdueAmount" placeholder="请输入当前逾期罚息" class="form-control m-b-xs" ng-model="overdueCont.overdueAmount"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.overdueAmount.$dirty && form.overdueAmount.$error.required) || (form.overdueAmount.$error.required && formValidate)">当前逾期罚息不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">当前逾期总额</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="overdueSum" placeholder="请输入当前逾期总额" class="form-control m-b-xs" ng-model="overdueCont.overdueSum"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.overdueSum.$dirty && form.overdueSum.$error.required) || (form.overdueSum.$error.required && formValidate)">当前逾期总额不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">当前销售未还剩余本金</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="restPrincipal" placeholder="请输入当前销售未还剩余本金" class="form-control m-b-xs" ng-model="overdueCont.restPrincipal"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.restPrincipal.$dirty && form.restPrincipal.$error.required) || (form.restPrincipal.$error.required && formValidate)">当前销售未还剩余本金不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">当前财务未还剩余本金</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="finRestPrincipal" placeholder="请输入当前财务未还剩余本金" class="form-control m-b-xs" ng-model="overdueCont.finRestPrincipal"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.finRestPrincipal.$dirty && form.finRestPrincipal.$error.required) || (form.finRestPrincipal.$error.required && formValidate)">当前财务未还剩余本金不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">融资期限</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="finPeriodType" placeholder="请输入融资期限" class="form-control m-b-xs" ng-model="overdueCont.finPeriodType"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.finPeriodType.$dirty && form.finPeriodType.$error.required) || (form.finPeriodType.$error.required && formValidate)">融资期限不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">已还期数</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="repayPeriods" placeholder="请输入已还期数" class="form-control m-b-xs" ng-model="overdueCont.repayPeriods"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.repayPeriods.$dirty && form.repayPeriods.$error.required) || (form.repayPeriods.$error.required && formValidate)">已还期数不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">历史最高逾期天数</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="overdueDaysHis" placeholder="请输入历史最高逾期天数" class="form-control m-b-xs" ng-model="overdueCont.overdueDaysHis"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.overdueDaysHis.$dirty && form.overdueDaysHis.$error.required) || (form.overdueDaysHis.$error.required && formValidate)">历史最高逾期天数不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">逾期次数</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="overdueTimes" placeholder="请输入逾期次数" class="form-control m-b-xs" ng-model="overdueCont.overdueTimes"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.overdueTimes.$dirty && form.overdueTimes.$error.required) || (form.overdueTimes.$error.required && formValidate)">逾期次数不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">当前是否逾期</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="overdueFlag" placeholder="请输入当前是否逾期" class="form-control m-b-xs" ng-model="overdueCont.overdueFlag"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.overdueFlag.$dirty && form.overdueFlag.$error.required) || (form.overdueFlag.$error.required && formValidate)">当前是否逾期不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">车辆处置评估金额</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="evaluatePrice" placeholder="请输入车辆处置评估金额" class="form-control m-b-xs" ng-model="overdueCont.evaluatePrice"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.evaluatePrice.$dirty && form.evaluatePrice.$error.required) || (form.evaluatePrice.$error.required && formValidate)">车辆处置评估金额不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">车辆处置金额</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="disposePrice" placeholder="请输入车辆处置金额" class="form-control m-b-xs" ng-model="overdueCont.disposePrice"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.disposePrice.$dirty && form.disposePrice.$error.required) || (form.disposePrice.$error.required && formValidate)">车辆处置金额不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+
+        </div>
+    </form>
+</div>
+<div class="modal-footer ng-scope">
+    <button class="btn btn-default" ng-click="close()">取消</button>
+    <button type="submit" class="btn btn-success" ng-disabled="submit" ng-click="modify()">保存</button>
+</div>-->

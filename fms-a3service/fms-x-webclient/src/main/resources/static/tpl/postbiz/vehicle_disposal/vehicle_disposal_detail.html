@@ -1,0 +1,126 @@
+<div class="panel panel-default" ng-controller="vehicle_disposal_detail_controller">
+    <!-- 返回按钮-->
+    <div class="panel-body" ng-show="detailShow" style="border-bottom: 1px solid #dedede;">
+        <div class="row">
+            <div class="lter wrapper-xs pull-left">
+                <h1 class="m-n font-thin h4">车辆处置详情</h1>
+            </div>
+            <div class="form-group pull-right">
+                <div class="btn-group ">
+                    <button class="btn btn-default m-b-xs" ng-click="backUp()"><i class=""></i>返回</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="panel-body" style="padding-bottom: 0;">
+        <!-- 客户基本信息 -->
+        <div class="row line-lg m-l-xs" style="font-weight: bold;font-size: 14px;">客户基本信息</div>
+        <div class="row" style="margin: 5px; padding-right: 50px;">
+            <div class="form-group row">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">承租人</b>:</label>
+                <div class="col-sm-3">
+                    <label class="col-sm-12 control-label text-left"> {{vehicleDisposalVo.cstmName}}</label>
+                </div>
+                <label class="col-sm-1 control-label text-right"><b class="form-text-black">出租人</b>:</label>
+                <div class="col-sm-3">
+                    <label class="col-sm-12 control-label text-left"> {{vehicleDisposalVo.rentPerson}}</label>
+                </div>
+                <label class="col-sm-1 control-label text-right"><b class="form-text-black">合同编号</b>:</label>
+                <div class="col-sm-2">
+                    <label class="col-sm-12 control-label text-left"> {{vehicleDisposalVo.contNo}}</label>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">车架号</b>:</label>
+                <div class="col-sm-2">
+                    <label class="col-sm-12 control-label text-left"> {{vehicleDisposalVo.vinNo}}</label>
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">融资额</b>:</label>
+                <div class="col-sm-2">
+                    <label class="col-sm-12 control-label text-left"> {{vehicleDisposalVo.finTotal}}</label>
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">融资期限</b>:</label>
+                <div class="col-sm-2 form-inline">
+                    <label class="col-sm-4 control-label text-left"> {{vehicleDisposalVo.finPeriodType}}</label>
+                    <button type="button" class="btn btn-sm btn-success" ng-click="overdueDetail()">逾期详情</button>
+                </div>
+            </div>
+        </div>
+        <!-- 车辆信息 -->
+        <div class="row line-lg m-l-xs" style="font-weight: bold;font-size: 14px;">车辆信息</div>
+        <div class="row" style="margin: 5px; padding-right: 50px;">
+            <div class="form-group row">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">收车费用</b>:</label>
+                <div class="col-sm-2">
+                    <label class="col-sm-12 control-label text-left"> {{vehicleDisposalVo.recoveryAmount}}</label>
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">入库时间</b>:</label>
+                <div class="col-sm-2">
+                    <label class="col-sm-12 control-label text-left"> {{vehicleDisposalVo.storageDate}}</label>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">入库地点</b>:</label>
+                <div class="col-sm-6">
+                    <label class="col-sm-12 control-label text-left"> {{vehicleDisposalVo.storageAddr}}</label>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">入库登记车架号</b>:</label>
+                <div class="col-sm-2">
+                    <label class="col-sm-12 control-label text-left"> {{vehicleDisposalVo.registerVinNo}}</label>
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">入库登记行驶公里数</b>:</label>
+                <div class="col-sm-2">
+                    <label class="col-sm-12 control-label text-left"> {{vehicleDisposalVo.registerMileAge}}</label>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">登记日期</b>:</label>
+                <div class="col-sm-2">
+                    <label class="col-sm-12 control-label text-left"> {{vehicleDisposalVo.vehicleDrivingLicenseRegisterDate}}</label>
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">入库登记车辆状态描述</b>:</label>
+                <div class="col-sm-6">
+                    <label class="col-sm-12 control-label text-left"> {{vehicleDisposalVo.carStatusDes}}</label>
+                </div>
+            </div>
+        </div>
+        <!-- 车辆信息 -->
+        <div class="row line-lg m-l-xs" style="font-weight: bold;font-size: 14px;" ng-show="vehicleDisposalVo.disposalStatus != null">处置信息</div>
+        <div class="row" ng-show="vehicleDisposalVo.disposalStatus != null" style="margin: 5px; padding-right: 50px;">
+            <div class="form-group row">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">处置方式</b>:</label>
+                <div class="col-sm-2">
+                    <label class="col-sm-12 control-label text-left">{{vehicleDisposalVo.disposalStatusName}}</label>
+                </div>
+                <div class="col-sm-4" ng-show="vehicleDisposalVo.disposalStatus == '2'">
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">车辆残值</b>:</label>
+                    <div class="col-sm-5">
+                        <label class="col-sm-12 control-label text-left">{{vehicleDisposalVo.residualValue}}</label>
+                    </div>
+
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">说明:</b></label>
+                <div class="col-sm-9">
+                    <textarea limit-word class="form-control m-b-xs" ng-model="vehicleDisposalVo.remark" ng-maxlength=200 name="remark" disabled></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--转固定资产附件信息-->
+    <div class="panel-body" ng-if="httpData">
+        <div class="row m-l-xs" style="font-weight: bold;font-size: 14px;">附件信息</div>
+        <tree-file-directive detail-flag="$root.yesNoFlag.yes" file-type="$root.basFileTypes.capitalAssetsFile" files="vehicleDisposalVo.bizFilesList" not-upload="$parent.notUpload" not-upload-info="$parent.msgInfo"   not-file-type="$parent.notFileType" not-file-type-name="$parent.notFileTypeName">
+        </tree-file-directive>
+    </div>
+    <!--车辆赎回附件信息-->
+    <div class="panel-body" ng-if="vehicleDisposalVo.disposalStatus == '1' && detailShow">
+        <div class="row m-l-xs" style="font-weight: bold;font-size: 14px;">附件信息</div>
+        <tree-file-directive detail-flag="$root.yesNoFlag.yes" file-type="$root.basFileTypes.vehicleRedeemFile" files="vehicleDisposalVo.bizFilesList" not-upload="$parent.notUpload" not-upload-info="$parent.msgInfo"   not-file-type="$parent.notFileType" not-file-type-name="$parent.notFileTypeName">
+        </tree-file-directive>
+    </div>
+</div>

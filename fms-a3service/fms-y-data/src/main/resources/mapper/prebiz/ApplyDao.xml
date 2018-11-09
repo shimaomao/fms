@@ -1,0 +1,544 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.com.leadu.fms.data.prebiz.dao.ApplyDao">
+
+    <!--//根据订单提出账号(apply_user)获取申请信息-->
+    <select id="selectApplyVoByApplyUser" parameterType="java.lang.String" resultType="cn.com.leadu.fms.pojo.prebiz.vo.apply.ApplyVo">
+        SELECT * FROM apply
+        <where>
+            <!--<if test="applyUser != null and applyUser!=''">-->
+            apply.apply_user = #{applyUser}
+            <!--</if>-->
+            AND apply.del_flag = ${delete_exist}
+        </where>
+    </select>
+
+    <select id="selectApplyListByPage" parameterType="cn.com.leadu.fms.pojo.prebiz.vo.apply.ApplyListVo" resultType="cn.com.leadu.fms.pojo.prebiz.vo.apply.ApplyListVo">
+        SELECT DISTINCT
+        apply.*,
+        finance.product,finance.license_attr,finance.fin_period_type,finance.charge_pay_mode,
+        finance.charge_rate,finance.charge,finance.init_perc,finance.init_amount,finance.invest_total,
+        finance.fin_total,finance.rent,finance.deposit,finance.vehicle_form,
+        IFNULL(person.name,company.name) name,
+        IFNULL(person.certif_no,company.social_certif_no) certifNo,
+        sysGroup.group_name AS applyGroupName,
+        sysGroup1.group_name,
+        product.product_name,
+        GROUP_CONCAT(DISTINCT bas_vehicle.vehicle_name) AS vehicleName,
+        sysUser1.user_name AS applyUserName,
+        GROUP_CONCAT(DISTINCT sysUser2.user_name) AS presentUserName
+        FROM
+        apply apply
+        LEFT JOIN
+        apply_finance finance ON apply.apply_no=finance.apply_no AND finance.del_flag = ${delete_exist}
+        LEFT JOIN
+        cstm_person person ON apply.apply_no=person.apply_no AND person.del_flag = ${delete_exist}
+        LEFT JOIN
+        cstm_company company ON apply.apply_no=company.apply_no AND company.del_flag = ${delete_exist}
+        LEFT JOIN
+        sys_group sysGroup ON apply.apply_group=sysGroup.group_code AND sysGroup.del_flag = ${delete_exist}
+        LEFT JOIN
+        sys_group sysGroup1 ON finance.belong_group = sysGroup1.group_code AND sysGroup1.del_flag =  ${delete_exist}
+        LEFT JOIN
+        sys_user sysUser1 ON apply.apply_user = sysUser1.user AND sysUser1.del_flag = ${delete_exist}
+        LEFT JOIN
+        sys_user sysUser2 ON FIND_IN_SET(sysUser2.user,apply.present_user) AND sysUser2.del_flag = ${delete_exist}
+        LEFT JOIN
+        product product ON finance.product=product.product AND product.del_flag = ${delete_exist}
+        LEFT JOIN apply_vehicle ON apply.apply_no = apply_vehicle.apply_no
+        AND apply_vehicle.del_flag = ${delete_exist}
+        LEFT JOIN bas_vehicle ON apply_vehicle.vehicle_code = bas_vehicle.vehicle_code
+        AND bas_vehicle.del_flag = ${delete_exist}
+        LEFT JOIN guarantee_pers ON apply.apply_no = guarantee_pers.apply_no AND guarantee_pers.del_flag = ${delete_exist}
+        LEFT JOIN guarantee_comp ON apply.apply_no = guarantee_comp.apply_no AND guarantee_comp.del_flag = ${delete_exist}
+        WHERE apply.del_flag = ${delete_exist}
+        <if test="applyListVo.applyNo != null" >
+            AND apply.apply_no LIKE #{applyListVo.applyNo}
+        </if>
+        <if test="applyListVo.name != null">
+            AND (person.name LIKE #{applyListVo.name} OR company.name LIKE #{applyListVo.name})
+        </if>
+        <if test="applyListVo.applyType != null">
+            AND apply.apply_type = #{applyListVo.applyType}
+        </if>
+        <if test="applyListVo.bizStatus != null">
+            AND apply.biz_status = #{applyListVo.bizStatus}
+        </if>
+        <if test="applyListVo.groupDistrict != null" >
+            AND sysGroup1.group_district LIKE #{applyListVo.groupDistrict}
+        </if>
+        <if test="applyListVo.licenseAttr != null">
+            AND finance.license_attr = #{applyListVo.licenseAttr}
+        </if>
+        <!-- 审核人员 -->
+        <if test="applyListVo.approveUser != null">
+            AND apply.approve_user LIKE #{applyListVo.approveUser}
+        </if>
+        <if test="applyListVo.sysUser != null">
+            AND apply.apply_user = #{applyListVo.sysUser}
+        </if>
+        <if test="applyListVo.windcontrApprovalStatus != null">
+            AND apply.windcontr_approval_status = #{applyListVo.windcontrApprovalStatus}
+        </if>
+        <if test="applyListVo.finalApprovalStatus != null">
+            AND apply.Final_approval_status = #{applyListVo.finalApprovalStatus}
+        </if>
+        <if test="applyListVo.sysUserGroup != null">
+            AND apply.apply_group IN
+            <foreach collection="applyListVo.sysUserGroup" item="item" index="index" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="applyListVo.guarantee != null">
+            AND (guarantee_pers.`name` LIKE #{applyListVo.guarantee} OR guarantee_comp.`name` LIKE #{applyListVo.guarantee})
+        </if>
+        <!-- 订单提出日期间 -->
+        <if test="applyListVo.submitStartTime != null">
+            AND apply.apply_firsbt_date &gt;= #{applyListVo.submitStartTime}
+        </if>
+        <!-- 订单提出日期间 -->
+        <if test="applyListVo.submitEndTime != null">
+            AND apply.apply_firsbt_date &lt;= #{applyListVo.submitEndTime}
+        </if>
+        <!-- 订单审批通过日期间 -->
+        <if test="applyListVo.approveStartTime != null">
+            AND apply.apply_pass_date &gt;= #{applyListVo.approveStartTime}
+        </if>
+        <!-- 订单审批通过日期间 -->
+        <if test="applyListVo.approveEndTime != null">
+            AND apply.apply_pass_date &lt;= #{applyListVo.approveEndTime}
+        </if>
+        <if test="applyListVo.statusList != null and applyListVo.statusList.size!=0">
+            AND apply.biz_status IN
+            <foreach collection="applyListVo.statusList" item="item" index="index" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="applyListVo.applyStatus != null  and applyListVo.applyStatus == '05'.toString()">
+            AND apply.approve_flag = '1'
+        </if>
+        GROUP BY apply.apply_id
+        ORDER BY apply.update_time desc,apply.apply_firsbt_date DESC,apply.apply_submit_date desc
+    </select>
+
+    <!--
+        /**
+         * @Title:
+         * @Description: 查询待风控初审订单
+         * @param applyVo
+         * @return
+         * @throws
+         * @author qiaomengnan
+         * @date 2018/06/22 11:34:51
+         */
+     -->
+    <select id="selectDispatchApplyVosByPage" resultType="cn.com.leadu.fms.pojo.prebiz.vo.apply.ApplyVo">
+        select
+        apply.apply_id,
+        <!-- 订单编号 -->
+        apply.apply_no,
+        <!-- 订单提出人 -->
+        apply.apply_user,
+        <!-- 提出机构 -->
+        apply.apply_group,
+        <!-- 风控初审派单指派处理人 -->
+        apply.approve_user,
+        <!-- 订单状态 -->
+        apply.biz_status,
+        <!-- 订单首次提交日期 -->
+        apply.apply_firsbt_date,
+        <!-- 承租人 客户姓名 -->
+        IF(apply.apply_type = #{applyVo.applyTypePerson},cstmPerson.name,cstmCompany.name) lessee,
+        apply.update_time
+        from apply apply
+        left join cstm_person cstmPerson
+        on apply.apply_no = cstmPerson.apply_no and cstmPerson.del_flag = ${delete_exist}
+        left join cstm_company cstmCompany
+        on apply.apply_no = cstmCompany.apply_no and cstmCompany.del_flag = ${delete_exist}
+        where apply.del_flag = ${delete_exist}
+        and (apply.biz_status = #{applyVo.bizStatus} OR apply.approve_user IS NOT NULL)
+        <if test="applyVo.lessee != null">
+           and  ( cstmPerson.name like #{applyVo.lessee} or  cstmCompany.name like #{applyVo.lessee} )
+        </if>
+        <if test="applyVo.applyNo != null">
+            and apply.apply_no like #{applyVo.applyNo}
+        </if>
+        <if test='applyVo.applyDispatchStatus == "1"'>
+            and apply.approve_user IS NOT NULL
+        </if>
+        <if test='applyVo.applyDispatchStatus == "0"'>
+            and apply.approve_user IS NULL
+        </if>
+        order by apply.update_time desc
+    </select>
+
+    <!--
+     /**
+     * @Title:
+     * @Description: 根据申请编号,查询申请订单相关的财务核算代码
+     * @param:  applyNo
+     * @return
+     * @throws
+     * @author qiaomengnan
+     * @date 2018/6/30 0030 15:52
+     */
+     -->
+    <select id="selectApplyVoFinassCodesByApplyNo" resultType="cn.com.leadu.fms.pojo.prebiz.vo.apply.ApplyVo">
+        select
+        distinct
+        <!-- 申请人财务核算代码 -->
+        IF(apply.apply_type = #{applyVo.applyTypePerson},crmPerson.finass_cstm_code,crmCompany.finass_cstm_code) finassCstmCode,
+        <!-- 出租人财务核算代码 -->
+        sysGroup.finass_group_code,
+        <!-- 实际销售方财务核算代码 -->
+        basSales.finass_sales_code
+        from apply apply
+        <!-- 使用申请编号关联个人申请表 -->
+        left join cstm_person cstmPerson
+        on apply.apply_no = cstmPerson.apply_no and cstmPerson.del_flag = ${delete_exist}
+        <!-- 使用个人申请表证件号码关联crm个人信息表 -->
+        left join crm_person crmPerson
+        on cstmPerson.certif_no = crmPerson.certif_no and crmPerson.del_flag = ${delete_exist}
+        <!-- 使用申请编号关联企业申请表 -->
+        left join cstm_company cstmCompany
+        on apply.apply_no = cstmCompany.apply_no and cstmCompany.del_flag = ${delete_exist}
+        <!-- 使用企业申请表证件号码关联crm企业信息表 -->
+        left join crm_company crmCompany
+        on cstmCompany.social_certif_no = crmCompany.social_certif_no and crmCompany.del_flag = ${delete_exist}
+        <!-- 使用申请编号申请融资车辆信息表 -->
+        left join apply_vehicle applyVehicle
+        on apply.apply_no = applyVehicle.apply_no and applyVehicle.del_flag = ${delete_exist}
+        <!-- 使用合同融资车辆信息表实际销售方代码关联实际销售方表 -->
+        left join bas_sales basSales
+        on applyVehicle.sale_group_code = basSales.sales_code and basSales.del_flag = ${delete_exist}
+        <!-- 使用申请编号关联申请融资信息表 -->
+        left join apply_finance applyFinance
+        on apply.apply_no = applyFinance.apply_no applyFinance.del_flag = ${delete_exist}
+        <!-- 使用合同融资信息表出租人关联系统用户组 -->
+        left join sys_group sysGroup
+        on applyFinance.belong_group = sysGroup.group_code and sysGroup.del_flag = ${delete_exist}
+        where apply.del_flag = ${delete_exist}
+        and apply.apply_no = #{applyVo.applyNo}
+    </select>
+
+    <!-- 根据客户证件号，获取客户最新订单的风控初审人员 -->
+    <select id="selectApproveUserByCertifNo" resultType="java.lang.String">
+        <!-- 订单风控初审人员 -->
+        select apply.approve_user
+        from apply
+        left join cstm_person cstmPerson on cstmPerson.apply_no = apply.apply_no and cstmPerson.del_flag = ${delete_exist}
+        left join cstm_company cstmCom on cstmCom.apply_no = apply.apply_no and cstmCom.del_flag = ${delete_exist}
+        where apply.del_flag = ${delete_exist}
+        AND (cstmPerson.certif_no = #{certifNo} or cstmCom.social_certif_no = #{certifNo})
+        order by apply.apply_no desc
+        limit 1
+    </select>
+
+    <!-- 根据区域年月分组统计首次提交通过台数 -->
+    <select id="selectAdoptApprovalStatisticsVo" parameterType="java.lang.String" resultType="cn.com.leadu.fms.pojo.postbiz.vo.licenseidx.ApprovalStatisticsVo">
+        select sysGroup.group_district,
+        date_format(apply.apply_firsbt_date, '%Y-%m') AS applytSerachDate,count(1) AS numberOftables,
+        date_format(apply.apply_firsbt_date, '%m') AS effectivedateMonth
+        from apply apply
+        left join apply_finance finance ON apply.apply_no=finance.apply_no and finance.del_flag=${delete_exist}
+        left join sys_group sysGroup on finance.belong_group = sysGroup.group_code and sysGroup.del_flag=${delete_exist}
+        where apply.apply_firsbt_date is not null and finance.belong_group is not null
+        and apply.biz_status='0199' and apply.del_flag=${delete_exist}
+        <if test="approvalStatisticsVo.yearInquiries != null">
+            and date_format(apply.apply_firsbt_date, '%Y') = #{approvalStatisticsVo.yearInquiries}
+        </if>
+        <if test="approvalStatisticsVo.yearInquiries == null">
+            and date_format(apply.apply_firsbt_date, '%Y')=date_format(SYSDATE(),'%Y')
+        </if>
+        group by sysGroup.group_district,date_format(apply.apply_firsbt_date, '%Y-%m')
+        order by sysGroup.group_district,apply.apply_firsbt_date
+    </select>
+
+    <!-- 根据区域年月分组统计首次提交拒绝台数 -->
+    <select id="selectRefuseApprovalStatisticsVo" parameterType="java.lang.String" resultType="cn.com.leadu.fms.pojo.postbiz.vo.licenseidx.ApprovalStatisticsVo">
+        select sysGroup.group_district,
+        date_format(apply.apply_firsbt_date, '%Y-%m') AS applytSerachDate,count(1) AS numberOftables,
+        date_format(apply.apply_firsbt_date, '%m') AS effectivedateMonth
+        from apply apply
+        left join apply_finance finance ON apply.apply_no=finance.apply_no and finance.del_flag=${delete_exist}
+        left join sys_group sysGroup on finance.belong_group = sysGroup.group_code and sysGroup.del_flag=${delete_exist}
+        where apply.apply_firsbt_date is not null and finance.belong_group is not null
+        and apply.biz_status='0120' and apply.del_flag=${delete_exist}
+        <if test="approvalStatisticsVo.yearInquiries != null">
+            and date_format(apply.apply_firsbt_date, '%Y') = #{approvalStatisticsVo.yearInquiries}
+        </if>
+        <if test="approvalStatisticsVo.yearInquiries == null">
+            and date_format(apply.apply_firsbt_date, '%Y')=date_format(SYSDATE(),'%Y')
+        </if>
+        group by sysGroup.group_district,date_format(apply.apply_firsbt_date, '%Y-%m')
+        order by sysGroup.group_district,apply.apply_firsbt_date
+    </select>
+
+    <!-- 根据区域年月分组统计首次提交取消台数 -->
+    <select id="selectCancelApprovalStatisticsVo" parameterType="java.lang.String" resultType="cn.com.leadu.fms.pojo.postbiz.vo.licenseidx.ApprovalStatisticsVo">
+        select sysGroup.group_district,
+        date_format(apply.apply_firsbt_date, '%Y-%m') AS applytSerachDate,count(1) AS numberOftables,
+        date_format(apply.apply_firsbt_date, '%m') AS effectivedateMonth
+        from apply apply
+        left join apply_finance finance ON apply.apply_no=finance.apply_no and finance.del_flag=${delete_exist}
+        left join sys_group sysGroup on finance.belong_group = sysGroup.group_code and sysGroup.del_flag=${delete_exist}
+        where apply.apply_firsbt_date is not null and finance.belong_group is not null
+        and apply.biz_status='0198' and apply.del_flag=${delete_exist}
+        <if test="approvalStatisticsVo.yearInquiries != null">
+            and date_format(apply.apply_firsbt_date, '%Y') = #{approvalStatisticsVo.yearInquiries}
+        </if>
+        <if test="approvalStatisticsVo.yearInquiries == null">
+            and date_format(apply.apply_firsbt_date, '%Y')=date_format(SYSDATE(),'%Y')
+        </if>
+        group by sysGroup.group_district,date_format(apply.apply_firsbt_date, '%Y-%m')
+        order by sysGroup.group_district,apply.apply_firsbt_date
+    </select>
+
+    <!-- 根据区域年月分组统计首次提交通过，拒绝和取消台数 -->
+    <select id="selectAllApprovalStatisticsVo" parameterType="java.lang.String" resultType="cn.com.leadu.fms.pojo.postbiz.vo.licenseidx.ApprovalStatisticsVo">
+        select sysGroup.group_district,
+        date_format(apply.apply_firsbt_date, '%Y-%m') AS applytSerachDate,count(1) AS numberOftables,
+        date_format(apply.apply_firsbt_date, '%m') AS effectivedateMonth
+        from apply apply
+        left join apply_finance finance ON apply.apply_no=finance.apply_no and finance.del_flag=${delete_exist}
+        left join sys_group sysGroup on finance.belong_group = sysGroup.group_code and sysGroup.del_flag=${delete_exist}
+        where apply.apply_firsbt_date is not null and finance.belong_group is not null
+        and apply.biz_status in ('0198','0199','0120') and apply.del_flag=${delete_exist}
+        <if test="approvalStatisticsVo.yearInquiries != null">
+            and date_format(apply.apply_firsbt_date, '%Y') = #{approvalStatisticsVo.yearInquiries}
+        </if>
+        <if test="approvalStatisticsVo.yearInquiries == null">
+            and date_format(apply.apply_firsbt_date, '%Y')=date_format(SYSDATE(),'%Y')
+        </if>
+        group by sysGroup.group_district,date_format(apply.apply_firsbt_date, '%Y-%m')
+        order by sysGroup.group_district,apply.apply_firsbt_date
+    </select>
+
+    <!-- 根据区域年月分组统计首次提交通过率  -->
+    <select id="selectRateOfPassingStatisticsVo" parameterType="java.lang.String" resultType="cn.com.leadu.fms.pojo.postbiz.vo.licenseidx.RateOfPassingStatisticsVo">
+        select sysGroup.group_district,
+        date_format(apply.apply_firsbt_date, '%Y-%m') AS applytSerachDate,count(1) AS numberOftables,
+        sum(case when apply.biz_status='0199' then 1 else 0 end) AS adoptnumberOftables,
+        ROUND(sum(case when apply.biz_status='0199' then 1 else 0 end)/count(1),2)*100 AS rateOfPassing,
+        date_format(apply.apply_firsbt_date, '%m') AS effectivedateMonth
+        from apply apply
+        left join apply_finance finance ON apply.apply_no=finance.apply_no and finance.del_flag=${delete_exist}
+        left join sys_group sysGroup on finance.belong_group = sysGroup.group_code and sysGroup.del_flag=${delete_exist}
+        where apply.apply_firsbt_date is not null and finance.belong_group is not null
+        and apply.biz_status in ('0198','0199','0120') and apply.del_flag=${delete_exist}
+        <if test="rateOfPassingStatisticsVo.yearInquiries != null">
+            and date_format(apply.apply_firsbt_date, '%Y') = #{rateOfPassingStatisticsVo.yearInquiries}
+        </if>
+        <if test="rateOfPassingStatisticsVo.yearInquiries == null">
+            and date_format(apply.apply_firsbt_date, '%Y')=date_format(SYSDATE(),'%Y')
+        </if>
+        group by sysGroup.group_district,date_format(apply.apply_firsbt_date, '%Y-%m')
+        order by sysGroup.group_district,apply.apply_firsbt_date
+    </select>
+
+    <!-- 根据单位行业类别年月分组统计首次提交通过台数 -->
+    <select id="selectAdoptIndustryStatisticsVo" parameterType="java.lang.String" resultType="cn.com.leadu.fms.pojo.postbiz.vo.licenseidx.IndustryStatisticsVo">
+        select sys_code.code_value_name AS industry,
+        date_format(apply.apply_firsbt_date, '%Y-%m') AS applytSerachDate,count(1) AS numberOftables,
+        date_format(apply.apply_firsbt_date, '%m') AS effectivedateMonth
+        from apply apply
+        left join cstm_pers_job cstmpersjob ON apply.apply_no=cstmpersjob.apply_no and cstmpersjob.del_flag=${delete_exist}
+        left join cstm_company cstmcompany on apply.apply_no=cstmcompany.apply_no and cstmcompany.del_flag=${delete_exist}
+        left join (select code_value,code_value_name from sys_code where code_type='industryType' and del_flag=${delete_exist})sys_code
+        on (cstmpersjob.industry = sys_code.code_value or cstmcompany.industry = sys_code.code_value)
+        where apply.apply_firsbt_date is not null and sys_code.code_value_name is not null
+        and apply.biz_status='0199' and apply.del_flag=${delete_exist}
+        <if test="industryStatisticsVo.yearInquiries != null">
+            and date_format(apply.apply_firsbt_date, '%Y') = #{industryStatisticsVo.yearInquiries}
+        </if>
+        <if test="industryStatisticsVo.yearInquiries == null">
+            and date_format(apply.apply_firsbt_date, '%Y')=date_format(SYSDATE(),'%Y')
+        </if>
+        group by sys_code.code_value_name,date_format(apply.apply_firsbt_date, '%Y-%m')
+        order by sys_code.code_value_name,apply.apply_firsbt_date
+    </select>
+
+    <!-- 根据单位行业类别年月分组统计首次提交拒绝台数 -->
+    <select id="selectRefuseIndustryStatisticsVo" parameterType="java.lang.String" resultType="cn.com.leadu.fms.pojo.postbiz.vo.licenseidx.IndustryStatisticsVo">
+        select sys_code.code_value_name AS industry,
+        date_format(apply.apply_firsbt_date, '%Y-%m') AS applytSerachDate,count(1) AS numberOftables,
+        date_format(apply.apply_firsbt_date, '%m') AS effectivedateMonth
+        from apply apply
+        left join cstm_pers_job cstmpersjob ON apply.apply_no=cstmpersjob.apply_no and cstmpersjob.del_flag=${delete_exist}
+        left join cstm_company cstmcompany on apply.apply_no=cstmcompany.apply_no and cstmcompany.del_flag=${delete_exist}
+        left join (select code_value,code_value_name from sys_code where code_type='industryType' and del_flag=${delete_exist})sys_code
+        on (cstmpersjob.industry = sys_code.code_value or cstmcompany.industry = sys_code.code_value)
+        where apply.apply_firsbt_date is not null and sys_code.code_value_name is not null
+        and apply.biz_status='0120' and apply.del_flag=${delete_exist}
+        <if test="industryStatisticsVo.yearInquiries != null">
+            and date_format(apply.apply_firsbt_date, '%Y') = #{industryStatisticsVo.yearInquiries}
+        </if>
+        <if test="industryStatisticsVo.yearInquiries == null">
+            and date_format(apply.apply_firsbt_date, '%Y')=date_format(SYSDATE(),'%Y')
+        </if>
+        group by sys_code.code_value_name,date_format(apply.apply_firsbt_date, '%Y-%m')
+        order by sys_code.code_value_name,apply.apply_firsbt_date
+    </select>
+
+    <!-- 根据单位行业类别年月分组统计首次提交取消台数 -->
+    <select id="selectCancelIndustryStatisticsVo" parameterType="java.lang.String" resultType="cn.com.leadu.fms.pojo.postbiz.vo.licenseidx.IndustryStatisticsVo">
+        select sys_code.code_value_name AS industry,
+        date_format(apply.apply_firsbt_date, '%Y-%m') AS applytSerachDate,count(1) AS numberOftables,
+        date_format(apply.apply_firsbt_date, '%m') AS effectivedateMonth
+        from apply apply
+        left join cstm_pers_job cstmpersjob ON apply.apply_no=cstmpersjob.apply_no and cstmpersjob.del_flag=${delete_exist}
+        left join cstm_company cstmcompany on apply.apply_no=cstmcompany.apply_no and cstmcompany.del_flag=${delete_exist}
+        left join (select code_value,code_value_name from sys_code where code_type='industryType' and del_flag=${delete_exist})sys_code
+        on (cstmpersjob.industry = sys_code.code_value or cstmcompany.industry = sys_code.code_value)
+        where apply.apply_firsbt_date is not null and sys_code.code_value_name is not null
+        and apply.biz_status='0198' and apply.del_flag=${delete_exist}
+        <if test="industryStatisticsVo.yearInquiries != null">
+            and date_format(apply.apply_firsbt_date, '%Y') = #{industryStatisticsVo.yearInquiries}
+        </if>
+        <if test="industryStatisticsVo.yearInquiries == null">
+            and date_format(apply.apply_firsbt_date, '%Y')=date_format(SYSDATE(),'%Y')
+        </if>
+        group by sys_code.code_value_name,date_format(apply.apply_firsbt_date, '%Y-%m')
+        order by sys_code.code_value_name,apply.apply_firsbt_date
+    </select>
+
+    <!-- 根据单位行业类别年月分组统计首次提交通过拒绝和取消台数 -->
+    <select id="selectAllIndustryStatisticsVo" parameterType="java.lang.String" resultType="cn.com.leadu.fms.pojo.postbiz.vo.licenseidx.IndustryStatisticsVo">
+        select sys_code.code_value_name AS industry,
+        date_format(apply.apply_firsbt_date, '%Y-%m') AS applytSerachDate,count(1) AS numberOftables,
+        date_format(apply.apply_firsbt_date, '%m') AS effectivedateMonth
+        from apply apply
+        left join cstm_pers_job cstmpersjob ON apply.apply_no=cstmpersjob.apply_no and cstmpersjob.del_flag=${delete_exist}
+        left join cstm_company cstmcompany on apply.apply_no=cstmcompany.apply_no and cstmcompany.del_flag=${delete_exist}
+        left join (select code_value,code_value_name from sys_code where code_type='industryType' and del_flag=${delete_exist})sys_code
+        on (cstmpersjob.industry = sys_code.code_value or cstmcompany.industry = sys_code.code_value)
+        where apply.apply_firsbt_date is not null and sys_code.code_value_name is not null
+        and apply.biz_status in ('0198','0199','0120') and apply.del_flag=${delete_exist}
+        <if test="industryStatisticsVo.yearInquiries != null">
+            and date_format(apply.apply_firsbt_date, '%Y') = #{industryStatisticsVo.yearInquiries}
+        </if>
+        <if test="industryStatisticsVo.yearInquiries == null">
+            and date_format(apply.apply_firsbt_date, '%Y')=date_format(SYSDATE(),'%Y')
+        </if>
+        group by sys_code.code_value_name,date_format(apply.apply_firsbt_date, '%Y-%m')
+        order by sys_code.code_value_name,apply.apply_firsbt_date
+    </select>
+
+    <!-- 根据单位行业类别年月分组统计首次提交通过率 -->
+    <select id="selectRateOfPassingIndustryStatisticsVo" parameterType="java.lang.String" resultType="cn.com.leadu.fms.pojo.postbiz.vo.licenseidx.RateOfPassingIndustryStatisticsVo">
+        select sys_code.code_value_name AS industry,
+        date_format(apply.apply_firsbt_date, '%Y-%m') AS applytSerachDate,count(1) AS numberOftables,
+        sum(case when apply.biz_status='0199' then 1 else 0 end) AS adoptnumberOftables,
+        ROUND(sum(case when apply.biz_status='0199' then 1 else 0 end)/count(1),2)*100 AS rateOfPassing,
+        date_format(apply.apply_firsbt_date, '%m') AS effectivedateMonth
+        from apply apply
+        left join cstm_pers_job cstmpersjob ON apply.apply_no=cstmpersjob.apply_no and cstmpersjob.del_flag=${delete_exist}
+        left join cstm_company cstmcompany on apply.apply_no=cstmcompany.apply_no and cstmcompany.del_flag=${delete_exist}
+        left join (select code_value,code_value_name from sys_code where code_type='industryType' and del_flag=${delete_exist})sys_code
+        on (cstmpersjob.industry = sys_code.code_value or cstmcompany.industry = sys_code.code_value)
+        where apply.apply_firsbt_date is not null and sys_code.code_value_name is not null
+        and apply.biz_status in ('0198','0199','0120') and apply.del_flag=${delete_exist}
+        <if test="rateOfPassingIndustryStatisticsVo.yearInquiries != null">
+            and date_format(apply.apply_firsbt_date, '%Y') = #{rateOfPassingIndustryStatisticsVo.yearInquiries}
+        </if>
+        <if test="rateOfPassingIndustryStatisticsVo.yearInquiries == null">
+            and date_format(apply.apply_firsbt_date, '%Y')=date_format(SYSDATE(),'%Y')
+        </if>
+        group by sys_code.code_value_name,date_format(apply.apply_firsbt_date, '%Y-%m')
+        order by sys_code.code_value_name,apply.apply_firsbt_date
+    </select>
+
+    <!-- 查询当月额融资额 -->
+    <select id="selectFinTotal" parameterType="cn.com.leadu.fms.pojo.system.vo.desk.DeskSearchVo" resultType="java.math.BigDecimal">
+        select sum(contractFinance.fin_total)
+        from contract contract
+        left join contract_finance contractFinance
+        on contract.cont_no = contractFinance.cont_no and contractFinance.del_flag = ${delete_exist}
+        where contract.del_flag = ${delete_exist}
+        <if test="deskSearchVo.searchType != null and deskSearchVo.searchType == '1'.toString()">
+          and to_days(contract.contract_valid_date) <![CDATA[ >= ]]> to_days(date_sub(now(), INTERVAL 30 DAY))
+        </if>
+        <if test="deskSearchVo.searchType != null and deskSearchVo.searchType == '2'.toString()">
+            and date_format(contract.contract_valid_date, '%Y-%m') = date_format(now(), '%Y-%m')
+        </if>
+        <if test="deskSearchVo.searchType != null and deskSearchVo.searchType == '3'.toString()">
+            and date_format(contract.contract_valid_date, '%Y-%m-%d') = date_format(now(), '%Y-%m-%d')
+        </if>
+        <if test="deskSearchVo.sysUser != null">
+            AND contract.apply_user = #{deskSearchVo.sysUser}
+        </if>
+        <if test="deskSearchVo.sysUserGroup != null">
+            AND contract.apply_group IN
+            <foreach collection="deskSearchVo.sysUserGroup" item="item" index="index" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+    </select>
+
+    <!-- 查询当月放款数 -->
+    <select id="selectLoanCount" parameterType="cn.com.leadu.fms.pojo.system.vo.desk.DeskSearchVo" resultType="java.lang.Long">
+        select count(contract.cont_no)
+        from contract contract
+        where contract.del_flag = ${delete_exist}
+        <if test="deskSearchVo.searchType != null and deskSearchVo.searchType == '1'.toString()">
+            and to_days(contract.contract_valid_date) <![CDATA[ >= ]]> to_days(date_sub(now(), INTERVAL 30 DAY))
+        </if>
+        <if test="deskSearchVo.searchType != null and deskSearchVo.searchType == '2'.toString()">
+            and date_format(contract.contract_valid_date, '%Y-%m') = date_format(now(), '%Y-%m')
+        </if>
+        <if test="deskSearchVo.searchType != null and deskSearchVo.searchType == '3'.toString()">
+            and date_format(contract.contract_valid_date, '%Y-%m-%d') = date_format(now(), '%Y-%m-%d')
+        </if>
+        <if test="deskSearchVo.sysUser != null">
+            AND contract.apply_user = #{deskSearchVo.sysUser}
+        </if>
+        <if test="deskSearchVo.sysUserGroup != null">
+            AND contract.apply_group IN
+            <foreach collection="deskSearchVo.sysUserGroup" item="item" index="index" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+    </select>
+
+    <!-- 查询当月申请订单数总量 -->
+    <select id="selectApplyCount" parameterType="cn.com.leadu.fms.pojo.system.vo.desk.DeskSearchVo" resultType="cn.com.leadu.fms.pojo.prebiz.entity.Apply">
+        select *
+        from apply
+        where del_flag = ${delete_exist}
+        <if test="deskSearchVo.searchType != null and deskSearchVo.searchType == '1'.toString()">
+            and to_days(apply_firsbt_date) <![CDATA[ >= ]]> to_days(date_sub(now(), INTERVAL 30 DAY))
+        </if>
+        <if test="deskSearchVo.searchType != null and deskSearchVo.searchType == '2'.toString()">
+            and date_format(apply_firsbt_date, '%Y-%m') = date_format(now(), '%Y-%m')
+        </if>
+        <if test="deskSearchVo.searchType != null and deskSearchVo.searchType == '3'.toString()">
+            and date_format(apply_firsbt_date, '%Y-%m-%d') = date_format(now(), '%Y-%m-%d')
+        </if>
+        <if test="deskSearchVo.sysUser != null">
+            AND apply_user = #{deskSearchVo.sysUser}
+        </if>
+        <if test="deskSearchVo.sysUserGroup != null">
+            AND apply_group IN
+            <foreach collection="deskSearchVo.sysUserGroup" item="item" index="index" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+    </select>
+
+    <!-- 查询当月申请车辆数 -->
+    <select id="selectVehicleCount" parameterType="cn.com.leadu.fms.pojo.system.vo.desk.DeskSearchVo" resultType="java.lang.Long">
+        select sum(vehicle_count)
+        from apply_vehicle
+        where del_flag = ${delete_exist}
+        <if test="deskSearchVo.applyNoList != null">
+            AND apply_no IN
+            <foreach collection="deskSearchVo.applyNoList" item="item" index="index" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+    </select>
+
+
+</mapper>

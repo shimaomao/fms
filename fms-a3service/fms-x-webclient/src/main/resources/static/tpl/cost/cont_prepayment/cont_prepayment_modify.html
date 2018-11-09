@@ -1,0 +1,265 @@
+<style>
+    .text-title{
+        max-width: 70px;
+        display: inline-block;
+        overflow: hidden;
+        vertical-align: middle;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
+</style>
+<div ng-controller="cont_prepayment_modify_controller" style="padding: 20px;">
+    <div class="panel panel-default">
+        <form name="form" class="form-validation" novalidate>
+            <div class="panel-body wrapper-sm">
+                <!--
+                <div class="col-lg-12" style="padding: 0px 20px" ng-if="receiptFlag">
+                    <div class="row" ng-if="detail">
+                        <div class="btn-group pull-right">
+                            <div class="btn-group ">
+                                <button class="btn btn-info m-b-xs m-r-sm btn-sm" ng-click="selectBasBankInfo()"><i class="fa fa-plus m-r-xs"></i>请选择收款银行</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="dataTables_wrapper form-inline dt-bootstrap no-footer">
+                        <table border="1" class="table m-b-none dataTable no-footer">
+                            <thead>
+                            <tr>
+                                <th class="sorting_disabled text-center" rowspan="1" colspan="1" style="width: 0px;">收款银行分行</th>
+                                <th class="sorting_disabled text-center" rowspan="1" colspan="1" style="width: 0px;">收款户名</th>
+                                <th class="sorting_disabled text-center" rowspan="1" colspan="1" style="width: 0px;">收款账号</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr click-tr>
+                                <td class="text-center">{{contPrepayment.recAccBranch}}</td>
+                                <td class="text-center">{{contPrepayment.recAccountName}}</td>
+                                <td class="text-center">{{contPrepayment.recAccountNo}}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                -->
+                <div class="row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">出租人</b><b class="form-error"></b>:</label>
+                    <div class="col-sm-4">
+                        <input type="text" title="{{contPrepayment.rentPerson}}" class="form-control m-b-xs" ng-model="contPrepayment.rentPerson"  disabled >
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">承租人</b><b class="form-error"></b>:</label>
+                    <div class="col-sm-4">
+                        <input type="text" title="{{contPrepayment.name}}" class="form-control m-b-xs" ng-model="contPrepayment.name"  disabled >
+                    </div>
+
+                </div>
+                <div class="row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">合同编号</b><b class="form-error"></b>:</label>
+                    <div class="col-sm-2">
+                        <input type="text" title="{{contPrepayment.contNo}}" class="form-control m-b-xs" ng-model="contPrepayment.contNo"  disabled >
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">已还金额(元)</b><b class="form-error"></b>:</label>
+                    <div class="col-sm-2">
+                        <input type="number" title="{{contPrepayment.alreadyRepayAmount}}" class="form-control m-b-xs" ng-model="contPrepayment.alreadyRepayAmount"  disabled >
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">剩余未还租金(元)</b><b class="form-error"></b>:</label>
+                    <div class="col-sm-2">
+                        <input type="number" title="{{contPrepayment.residueAmount}}" class="form-control m-b-xs" ng-model="contPrepayment.residueAmount"  disabled >
+                    </div>
+                </div>
+                <div class="row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">品牌</b><b class="form-error"></b>:</label>
+                    <div class="col-sm-2">
+                        <input type="text" title="{{contPrepayment.vehBrandCodeName}}" class="form-control m-b-xs" ng-model="contPrepayment.vehBrandCodeName"  disabled >
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">车型</b><b class="form-error"></b>:</label>
+                    <div class="col-sm-2">
+                        <input type="text" title="{{contPrepayment.vehicleCodeName}}" class="form-control m-b-xs" ng-model="contPrepayment.vehicleCodeName"  disabled >
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">合同生效日</b><b class="form-error"></b>:</label>
+                    <div class="col-sm-2">
+                        <input type="text" title="{{contPrepayment.contractValidDate}}" class="form-control m-b-xs" ng-model="contPrepayment.contractValidDate"  disabled >
+                    </div>
+                </div>
+
+                <div class="row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">车架号</b><b class="form-error"></b>:</label>
+                    <div class="col-sm-2">
+                        <input type="text" title="{{contPrepayment.vinNo}}" class="form-control m-b-xs" ng-model="contPrepayment.vinNo"  disabled >
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">车牌号</b><b class="form-error"></b>:</label>
+                    <div class="col-sm-2">
+                        <input type="text" title="{{contPrepayment.vehicleLicenseNo}}" class="form-control m-b-xs" ng-model="contPrepayment.vehicleLicenseNo"  disabled >
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black" >融资额(元)</b><b class="form-error"></b>:</label>
+                    <div class="col-sm-2">
+                        <input type="number" title="{{contPrepayment.finTotal}}" class="form-control m-b-xs" ng-model="contPrepayment.finTotal"  disabled >
+                    </div>
+                </div>
+
+                <div class="row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">期限</b><b class="form-error"></b>:</label>
+                    <div class="col-sm-2">
+                        <input type="text" title="{{contPrepayment.finPeriodType}}" class="form-control m-b-xs" ng-model="contPrepayment.finPeriodType"  disabled >
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">月租金(元)</b><b class="form-error"></b>:</label>
+                    <div class="col-sm-3">
+                        <div class="row">
+                            <div class="col-sm-7">
+                                <input type="text" title="{{contPrepayment.rent}}" class="form-control m-b-xs" ng-model="contPrepayment.rent" disabled >
+                            </div>
+                            <div class="col-sm-5">
+                                <button type="button" class="btn btn-sm btn-success" ng-click="overdueSales()">查看还款计划表</button>
+                            </div>
+                        </div>
+                    </div>
+                    <label class="col-sm-1 control-label text-right"><b class="form-text-black" >已还期数</b><b class="form-error"></b>:</label>
+                    <div class="col-sm-2">
+                        <input type="text" title="{{contPrepayment.alreadyRepayNper}}" class="form-control m-b-xs" ng-model="contPrepayment.alreadyRepayNper"  disabled >
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-12">
+                        <table border="1" class="table table-striped m-b-none" id="prepayment_table"></table>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">提前还款类型</b><b class="form-error" ng-show="approveSave || applySave" >*</b>:</label>
+                    <div class="col-sm-2">
+                        <select ng-if="approveSave || applySave" name="prepaymentType" ng-model="contPrepayment.prepaymentType" class="form-control m-b-xs" required>
+                            <option ng-selected="!contPrepayment.prepaymentType" value="">请选择</option>
+                            <option ng-repeat="a in prepaymentTypeList" ng-selected="contPrepayment.prepaymentType == a.codeValue" value="{{a.codeValue}}">{{a.codeValueName}}</option>
+                        </select>
+                        <select ng-if="show || approveShow" name="prepaymentType" ng-model="contPrepayment.prepaymentType" disabled class="form-control m-b-xs" required>
+                            <option ng-selected="!contPrepayment.prepaymentType" value="">请选择</option>
+                            <option ng-repeat="a in prepaymentTypeList" ng-selected="contPrepayment.prepaymentType == a.codeValue" value="{{a.codeValue}}">{{a.codeValueName}}</option>
+                        </select>
+                        <p>
+                            <span class="form-info" ng-show=" (form.prepaymentType.$dirty && !contPrepayment.prepaymentType) || (!contPrepayment.prepaymentType && formValidate)">提前还款类型不能为空</span>
+                        </p>
+                    </div>
+                    <div class="col-sm-1">
+                        <button ng-show="contPrepayment.prepaymentType == '1'" type="button" class="btn btn-sm btn-success" ng-click="overdueDetail()">逾期详情</button>
+                    </div>
+                    <label class="col-sm-1 control-label text-right" style="padding-left: 0;"><b class="form-text-black">提前还款日期</b><b class="form-error" ng-show="approveSave || applySave" >*</b>:</label>
+                    <div class="col-sm-2">
+                        <input type="text" name="prepaymentDate" placeholder="提前还款日期" class="form-control m-b-xs" ng-model="contPrepayment.prepaymentDate"  disabled >
+                    </div>
+
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">有效期</b><b class="form-error" ng-show="approveSave || applySave" >*</b>:</label>
+                    <div class="col-sm-2">
+                        <input type="text" name="validityDate" placeholder="有效期" class="form-control m-b-xs" ng-model="contPrepayment.validityDate"  disabled
+                               date-picker ng-required="approveSave || applySave">
+                        <p>
+                            <span class="form-info" ng-show=" (form.validityDate.$dirty && !contPrepayment.validityDate) || (!contPrepayment.validityDate  && formValidate)">提前还款有效期不能为空</span>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">试算总金额</b><b class="form-error">(元)</b>:</label>
+                    <div class="col-sm-2">
+                        <input type="text" name="prepayTrialAmount" placeholder="试算总金额" class="form-control m-b-xs" ng-model="contPrepayment.prepayTrialAmount"  disabled >
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">实际总金额</b><b class="form-error">(元)</b>:</label>
+                    <div class="col-sm-2">
+                        <input type="text" name="prepayActualAmount" placeholder="实际总金额" class="form-control m-b-xs" ng-model="contPrepayment.prepayActualAmount"  disabled >
+                        <p></p>
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">差额</b><b class="form-error">(元)</b>:</label>
+                    <div class="col-sm-2">
+                        <input type="text" name="difference" placeholder="试算总金额" class="form-control m-b-xs" ng-model="contPrepayment.difference"  disabled >
+                    </div>
+                </div>
+                <!-- 过户信息 -->
+                <div class="row" ng-if="(show || approveShow) && receiptFlag">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">过户状态</b>:</label>
+                    <div class="col-sm-2">
+                        <input type="text" name="transferHandleStsName" placeholder="过户状态" class="form-control m-b-xs" ng-model="contPrepayment.transferHandleStsName"  disabled >
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">过户总额</b><b class="form-error">(元)</b>:</label>
+                    <div class="col-sm-2">
+                        <input type="text" name="transferTotalCost" placeholder="过户费用总额" class="form-control m-b-xs" ng-model="contPrepayment.transferTotalCost"  disabled >
+                    </div>
+                </div>
+                <div class="row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">应收金额</b><b class="form-error">(元)</b>:</label>
+                    <div class="col-sm-2">
+                        <input type="text" name="receiveAmount" placeholder="应收金额" class="form-control m-b-xs" ng-model="contPrepayment.receiveAmount"  disabled >
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">应付金额</b><b class="form-error">(元)</b>:</label>
+                    <div class="col-sm-2">
+                        <input type="text" name="payMentAmount" placeholder="应付金额" class="form-control m-b-xs" ng-model="contPrepayment.payMentAmount"  disabled >
+                    </div>
+                    <label class="col-sm-2 control-label text-right" ng-show="receiptFlag"><b class="form-text-black">收款银行</b><b class="form-error" ng-show="detail">*</b>:</label>
+                    <div class="col-sm-2" ng-show="receiptFlag">
+                        <input type="text"  name="recAccBank" class="form-control m-b-xs" ng-model="contPrepayment.recAccBank" ng-show="detail" ng-required="receiptFlag && detail"/>
+                        <input type="text" title="{{contPrepayment.recAccBank}}" name="recAccBank" class="form-control m-b-xs" ng-model="contPrepayment.recAccBank" ng-show="!detail" disabled/>
+                        <p>
+                            <span class="form-info" ng-show=" (form.recAccBank.$dirty && !contPrepayment.recAccBank) || (!contPrepayment.recAccBank && formValidate)">收款银行 不能为空</span>
+                        </p>
+                    </div>
+                </div>
+                <div class="row" ng-if="receiptFlag">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">收款银行分行</b><b class="form-error" ng-show="detail">*</b>:</label>
+                    <div class="col-sm-2">
+                        <input type="text" name="recAccBranch" class="form-control m-b-xs" ng-model="contPrepayment.recAccBranch" ng-show="detail" ng-required="receiptFlag && detail" />
+                        <input type="text" title="{{contPrepayment.recAccBranch}}" name="recAccBranch" class="form-control m-b-xs" ng-model="contPrepayment.recAccBranch" ng-show="!detail" disabled />
+                        <p>
+                            <span class="form-info" ng-show=" (form.recAccBranch.$dirty && !contPrepayment.recAccBranch) || (!contPrepayment.recAccBranch && formValidate)">收款银行分行不能为空</span>
+                        </p>
+                    </div>
+
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">收款账户名</b><b class="form-error" ng-show="detail">*</b>:</label>
+                    <div class="col-sm-2">
+                        <input type="text" name="recAccountName" class="form-control m-b-xs" ng-model="contPrepayment.recAccountName" ng-show="detail" ng-required="receiptFlag && detail" />
+                        <input type="text" title="{{contPrepayment.recAccountName}}" name="recAccountName"  class="form-control m-b-xs" ng-model="contPrepayment.recAccountName" ng-show="!detail" disabled />
+                        <p>
+                            <span class="form-info" ng-show=" (form.recAccountName.$dirty && !contPrepayment.recAccountName) || (!contPrepayment.recAccountName && formValidate)">收款账户名不能为空</span>
+                        </p>
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">收款卡号</b><b class="form-error" ng-show="detail">*</b>:</label>
+                    <div class="col-sm-2">
+                        <input type="text" name="recAccountNo" class="form-control m-b-xs" ng-model="contPrepayment.recAccountNo" ng-pattern="/^[0-9]+([.]{1}[0-9]+){0,1}$/"  ng-show="detail" ng-required="receiptFlag && detail" />
+                        <input type="text" title="{{contPrepayment.recAccountNo}}" name="recAccountNo" class="form-control m-b-xs" ng-model="contPrepayment.recAccountNo" ng-show="!detail" disabled />
+                        <p>
+                            <span class="form-info" ng-show=" (form.recAccountNo.$dirty && !contPrepayment.recAccountNo) || (!contPrepayment.recAccountNo && formValidate)">收款卡号不能为空</span>
+                            <span class="form-info" ng-show=" (form.recAccountNo.$error.pattern && !form.recAccountNo.$error.required) || (form.recAccountNo.$error.pattern && formValidate && !form.recAccountNo.$error.required)">请输入数字账号</span>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="row" ng-if="show && receiptFlag ">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">付款银行分行</b>:</label>
+                    <div class="col-sm-2">
+                        <input type="text" title="{{contPrepayment.payAccBranch}}" name="payAccBranch" class="form-control m-b-xs" ng-model="contPrepayment.payAccBranch" disabled />
+                    </div>
+
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">付款账户名</b>:</label>
+                    <div class="col-sm-2">
+                        <input type="text" title="{{contPrepayment.payAccountName}}" name="payAccountName"  class="form-control m-b-xs" ng-model="contPrepayment.payAccountName" disabled />
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">付款卡号</b>:</label>
+                    <div class="col-sm-2">
+                        <input type="text" title="{{contPrepayment.payAccountNo}}" name="payAccountNo" class="form-control m-b-xs" ng-model="contPrepayment.payAccountNo" disabled />
+                    </div>
+                </div>
+                <div class="form-group text-center">
+                    <div class="btn-group">
+                        <button class="btn btn-default" ng-click="goback()" ng-show="applySave || show || approveSave">返回</button>
+                        <button type="submit" class="btn btn-success ng-scope" ng-show="approveSave || applySave " ng-disabled="submit" ng-click="save()">保存</button>
+                        <button type="submit" class="btn btn-success ng-scope" ng-show="approveSave || applySave " ng-disabled="submit" ng-click="print()">打印</button>
+                    </div>
+                </div>
+
+                <div ng-if="approveSave || approveShow || show" >
+                    <process-log-list-directive wf-log-type="$root.bizTypes.contPrepayment" wf-log-no="$parent.contPrepaymentNo" wf-log-sub-no="$parent.wfLogSubNo" > </process-log-list-directive>
+                </div>
+            </div>
+        </form>
+    </div>
+
+
+</div>

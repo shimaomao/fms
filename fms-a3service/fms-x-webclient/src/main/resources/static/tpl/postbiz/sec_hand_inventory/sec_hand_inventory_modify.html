@@ -1,0 +1,148 @@
+<div  ng-controller="sec_hand_inventory_modify_controller">
+    <div>
+        <toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+    </div>
+    <div class="panel panel-default">
+
+        <div class="row" style="margin: 0; padding: 15px; border: 1px solid #dddddd">
+            <h4 class="m-n font-thin h4">修改车辆信息</h4>
+        </div>
+        <form name="form" class="form-validation" novalidate>
+
+            <div class="panel-body">
+
+                <div class="form-group row">
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">车架号</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-3">
+                        <input limit-word="20" type="text" name="vinNo" readonly placeholder="请输入车架号" class="form-control m-b-xs" ng-model="secHandInventory.vinNo" disabled required >
+                        <p>
+                            <span class="form-info" ng-show=" (form.vinNo.$dirty && form.vinNo.$error.required) || (form.vinNo.$error.required && formValidate)">车架号不能为空</span>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">发动机号</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-3">
+                        <input limit-word="20" type="text" name="engineNo" placeholder="请输入发动机号" class="form-control m-b-xs" ng-model="secHandInventory.engineNo"  disabled required >
+                        <p>
+                            <span class="form-info" ng-show=" (form.engineNo.$dirty && form.engineNo.$error.required) || (form.engineNo.$error.required && formValidate)">发动机号不能为空</span>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">颜色</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-3">
+                        <input limit-word="10" type="text" name="color" placeholder="请输入颜色" class="form-control m-b-xs" ng-model="secHandInventory.color" disabled required >
+                        <p>
+                            <span class="form-info" ng-show=" (form.color.$dirty && form.color.$error.required) || (form.color.$error.required && formValidate)">颜色不能为空</span>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">车型</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-3">
+                        <input type="text" name="vehicleCode" placeholder="请输入车型" class="form-control m-b-xs" ng-model="secHandInventory.vehicleName" disabled  required >
+                        <p>
+                            <span class="form-info" ng-show=" (form.vehicleCode.$dirty && form.vehicleCode.$error.required) || (form.vehicleCode.$error.required && formValidate)">车型不能为空</span>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">行驶公里数</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-3">
+                        <input limit-word="10" type="text" name="miles" placeholder="请输入行驶公里数" class="form-control m-b-xs" ng-model="secHandInventory.miles" ng-pattern="/^[0-9.]+$/" required >
+                        <p>
+                            <span class="form-info" ng-show=" (form.miles.$dirty && form.miles.$error.required) || (form.miles.$error.required && formValidate)">行驶公里数不能为空</span>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">登记日期</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-3">
+                        <input type="text" name="registDate" placeholder="请输入登记日期" class="form-control m-b-xs" ng-model="secHandInventory.registDate"  required date-picker >
+                        <p>
+                            <span class="form-info" ng-show=" (form.registDate.$dirty && form.registDate.$error.required) || (form.registDate.$error.required && formValidate)">登记日期不能为空</span>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">车龄</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-3">
+                        <input limit-word="5" type="text" name="vehAgeMonths" placeholder="请输入车龄" class="form-control m-b-xs" ng-model="secHandInventory.vehAgeMonths" ng-pattern="/^[0-9.]+$/" required >
+                        <p>
+                            <span class="form-info" ng-show=" (form.vehAgeMonths.$dirty && form.vehAgeMonths.$error.required) || (form.vehAgeMonths.$error.required && formValidate)">车龄不能为空</span>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">出厂日期</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-3">
+                        <input type="text" name="produceDate" placeholder="请输入出厂日期" class="form-control m-b-xs" ng-model="secHandInventory.produceDate"  required  date-picker>
+                        <p>
+                            <span class="form-info" ng-show=" (form.produceDate.$dirty && form.produceDate.$error.required) || (form.produceDate.$error.required && formValidate)">出厂日期不能为空</span>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">车辆评估价</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-3">
+                        <input limit-word="10" type="text" name="evaluationPrice" placeholder="请输入车辆评估价" class="form-control m-b-xs" ng-model="secHandInventory.evaluationPrice" ng-pattern="/^[0-9.]+$/" required >
+                        <p>
+                            <span class="form-info" ng-show=" (form.evaluationPrice.$dirty && form.evaluationPrice.$error.required) || (form.evaluationPrice.$error.required && formValidate)">车辆评估价不能为空</span>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">状态</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-3">
+                        <select name="status" ng-model="secHandInventory.status" class="form-control m-b-xs" required>
+                            <option value="">---请选择状态---</option>
+                            <option ng-repeat="enableFlagObj in statusList" value="{{enableFlagObj.codeValue}}">{{enableFlagObj.codeValueName}}</option>
+                        </select>
+                        <p>
+                            <span class="form-info" ng-show=" (form.status.$dirty && form.status.$error.required) || (form.status.$error.required && formValidate)">状态不能为空</span>
+                        </p>
+                    </div>
+                </div>
+
+
+                <div class="form-group row">
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">二手车来源</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-3">
+                        <input type="text" name="carSource" placeholder="请输入二手车来源" class="form-control m-b-xs" ng-model="secHandInventory.carSourceVal" disabled required >
+                        <p>
+                            <span class="form-info" ng-show=" (form.carSourceVal.$dirty && form.carSourceVal.$error.required) || (form.carSourceVal.$error.required && formValidate)">二手车来源不能为空</span>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="form-group row" ng-show="secHandInventory.carSource == '1' ">
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">收车任务号</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-3">
+                        <input type="text" name="recoveryTaskNo" placeholder="请输入收车任务号" class="form-control m-b-xs" ng-model="secHandInventory.recoveryTaskNo" disabled>
+                        <p>
+                            <span class="form-info" ng-show=" (form.recoveryTaskNo.$dirty && form.recoveryTaskNo.$error.required) || (form.recoveryTaskNo.$error.required && formValidate)">收车任务号不能为空</span>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="text-center">
+                    <div class="col-sm-15 m-b">
+                        <button class="btn btn-default" ng-click="goBack()">返回</button>
+                        <button type="submit" class="btn btn-success" ng-disabled="submit" ng-click="modify()">保存</button>
+                    </div>
+                </div>
+
+            </div>
+        </form>
+    </div>
+</div>

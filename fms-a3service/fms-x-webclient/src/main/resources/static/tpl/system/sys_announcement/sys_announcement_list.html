@@ -1,0 +1,48 @@
+<div class="panel panel-default" ng-controller="sys_announcement_list_controller">
+    <div>
+        <toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-body wrapper-sm">
+            <div class="row">
+                <div class="col-lg-12">
+                    <form class="form-inline" role="form">
+                        <div class="form-group">
+                            <label class="sr-only" >公告标题 </label>
+                            <input class="form-control m-b-xs" ng-model="announceTitle" placeholder="公告标题">
+                        </div>
+                        <div class="form-group">
+                            <label class="sr-only" >公告内容 </label>
+                            <input class="form-control m-b-xs" ng-model="announceCotent" placeholder="公告内容">
+                        </div>
+                        <div class="form-group">
+                            <label class="sr-only" >公告日期 </label>
+                            <input class="form-control m-b-xs" ng-model="announceDateSearch" placeholder="公告日期" date-picker>
+                        </div>
+
+                        <div class="form-group m-b-sm">
+                            <div class="btn-group">
+                                <button class="btn btn-default m-b-xs btn-info" ng-click="searchSysAnnouncement()" ><i class="fa fa-search"></i>查询</button>
+                                <button class="btn btn-default m-b-xs" ng-click="resetSysAnnouncement()" ><i class="fa  icon-refresh"></i>重置</button>
+                            </div>
+                        </div>
+
+                        <div class="form-group pull-right">
+                            <div class="btn-group">
+                                <!--<button class="btn btn-default m-b-xs" ng-click="testInterface()">测试接口</button>-->
+                                <button class="btn btn-default m-b-xs" ng-click="exportExcel()">导出excel</button>
+                                <button ng-show="status == 'home' || status == 'fromHome'" class="btn btn-default m-b-xs" ng-click="backHome()">返回</button>
+                                <button ng-show="status != 'home' && status != 'fromHome'" class="btn btn-default m-b-xs" ng-click="saveSysAnnouncement()"><i class="fa fa-plus"></i>添加</button>
+                                <button ng-show="status != 'home' && status != 'fromHome'" class="btn btn-default m-b-xs" ng-click="modifySysAnnouncement()"><i class="fa icon-pencil"></i>修改</button>
+                                <button ng-show="status != 'home' && status != 'fromHome'" class="btn btn-default m-b-xs" ng-click="deleteSysAnnouncement()"><i class="fa fa-trash-o"></i>删除</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <table border="1" class="table table-striped m-b-none" id="sys_announcement_table">
+        </table>
+    </div>
+</div>
+

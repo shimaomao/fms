@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.com.leadu.fms.data.postbiz.dao.ContCostDao">
+    <!-- 根据合同编号，获取剩余保证金 -->
+    <select id="selectSumCostAmountByContNo" resultType="java.math.BigDecimal">
+        select SUM(contCost.cost_amount) as totalAmount
+        from cont_cost contCost
+        where contCost.del_flag = ${delete_exist}
+        and contCost.cont_no = #{contNo}
+        and contCost.cost_item = #{costItem}
+    </select>
+
+</mapper>

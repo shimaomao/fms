@@ -1,0 +1,121 @@
+<!--
+
+<div ng-controller="sys_log_detail_controller">
+<div class="modal-header">
+    <div class="form-group">
+        <h4 class="modal-title">日志管理一览详情 <button type="button" class="close" data-dismiss="modal" aria-hidden="true" ng-click="close()">&times;</button></h4>
+    </div>
+</div>
+
+
+
+<div class="modal-body">
+    <form name="form" class="form-validation" novalidate>
+
+            <div class="form-group row">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">操作识别ID</b><b class="form-error"></b>:</label>
+                <div class="col-sm-8">
+                    <label class="col-sm-12 control-label text-left">{{sysLog.actWidgetId}}</label>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group row">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">操作人员</b><b class="form-error"></b>:</label>
+                <div class="col-sm-8">
+                    <label class="col-sm-12 control-label text-left">{{sysLog.user}}</label>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group row">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">操作开始时间</b><b class="form-error"></b>:</label>
+                <div class="col-sm-8">
+                    <label class="col-sm-12 control-label text-left">{{sysLog.startTime}}</label>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group row">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">操作结束时间</b><b class="form-error"></b>:</label>
+                <div class="col-sm-8">
+                    <label class="col-sm-12 control-label text-left">{{sysLog.endTime}}</label>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group row">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">参数信息</b><b class="form-error"></b>:</label>
+                <div class="col-sm-8">
+                    <label class="col-sm-12 control-label text-left">{{sysLog.actParamInfo}}</label>
+                </div>
+            </div>
+
+    </form>
+</div>
+<div class="modal-footer ng-scope text-center">
+    &lt;!&ndash;<button class="btn btn-default" ng-click="close()">关闭</button>&ndash;&gt;
+    <button class="btn btn-default btn-sm" ng-click="goback()">返回</button>
+</div>
+</div>
+-->
+
+
+<div  ng-controller="sys_log_detail_controller">
+    <div>
+        <toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+    </div>
+    <div class="panel panel-default">
+        <div class="row" style="margin: 0; padding: 15px; border: 1px solid #dddddd">
+            <h4 class="m-n font-thin h4">日志管理一览详情</h4>
+        </div>
+        <form name="form" class="form-validation" novalidate>
+            <div class="panel-body wrapper-sm">
+                
+                <div class="form-group row no-gutte">
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">操作识别ID</b>:</label>
+                    <div class="col-sm-8">
+                        <label class="col-sm-12 control-label text-left">{{sysLog.actWidgetId}}</label>
+                    </div>
+                </div>
+
+                <div class="form-group row no-gutte">
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">操作人员</b>:</label>
+                    <div class="col-sm-8">
+                        <label class="col-sm-12 control-label text-left">{{sysLog.user}}</label>
+                    </div>
+                </div>
+
+                <div class="form-group row no-gutte">
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">操作开始时间</b>:</label>
+                    <div class="col-sm-8">
+                        <label class="col-sm-12 control-label text-left">{{sysLog.startTime}}</label>
+                    </div>
+                </div>
+
+                <div class="form-group row no-gutte">
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">操作结束时间</b>:</label>
+                    <div class="col-sm-8">
+                        <label class="col-sm-12 control-label text-left">{{sysLog.endTime}}</label>
+                    </div>
+                </div>
+
+                <div class="form-group row no-gutte">
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">参数信息</b>:</label>
+                    <div class="col-sm-8">
+                        <label class="col-sm-12 control-label text-left">{{sysLog.actParamInfo}}</label>
+                    </div>
+                </div>
+            </div>
+            <div class="row" style="margin: 10px 0 0 15px;">
+                <div class="col-sm-15 m-b text-center">
+                    <button class="btn btn-default m-r-xs" ng-click="goback()">返回</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

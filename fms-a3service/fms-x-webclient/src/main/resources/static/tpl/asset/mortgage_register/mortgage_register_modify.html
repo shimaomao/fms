@@ -1,0 +1,181 @@
+<div ng-controller="mortgage_register_modify_controller">
+    <div>
+        <toaster-container
+                toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-body wrapper-sm">
+            <div class="row">
+                <div class="form-group pull-right">
+                    <div class="btn-group">
+                        <button class="btn btn-success m-t-xs m-r-xs" ng-click="save()" ng-disabled="submit">保存</button>
+                        <button class="btn btn-default m-t-xs" ng-click="goBack()">返回</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="row" style="margin:0 5px 5px 5px; padding-right: 50px;padding-left:20px">
+
+            <div class="row line-lg" style="font-weight: bold;font-size: 14px;">车辆融资申请信息</div>
+            <div class="form-group row">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">申请编号</b><b
+                        class="form-error"></b>:</label>
+                <div class="col-sm-2">
+                    <input type="text" class="form-control m-b-xs" ng-disabled="true" ng-model="contVehicleFinance.applyNo">
+                </div>
+
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">合同编号</b><b
+                        class="form-error"></b>:</label>
+                <div class="col-sm-2">
+                    <input type="text" class="form-control m-b-xs" ng-disabled="true" ng-model="contVehicleFinance.contNo">
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">客户姓名</b><b
+                        class="form-error"></b>:</label>
+                <div class="col-sm-2">
+                    <input type="text" class="form-control m-b-xs" ng-disabled="true" ng-model="contVehicleFinance.name">
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">店面</b><b
+                        class="form-error"></b>:</label>
+                <div class="col-sm-2">
+                    <input type="text" class="form-control m-b-xs" ng-disabled="true" ng-model="contVehicleFinance.applyGroupName">
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">结清日期</b><b
+                        class="form-error"></b>:</label>
+                <div class="col-sm-2">
+                    <input type="text" class="form-control m-b-xs" ng-disabled="true" ng-model="contVehicleFinance.deposit">
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">合同状态</b><b
+                        class="form-error"></b>:</label>
+                <div class="col-sm-2">
+                    <input type="text" class="form-control m-b-xs" ng-disabled="true" ng-model="bizStatus">
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">合同签订日期</b><b
+                        class="form-error"></b>:</label>
+                <div class="col-sm-2">
+                    <input type="text" class="form-control m-b-xs" ng-disabled="true" ng-model="contVehicleFinance.contractDate">
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">合同生效日期</b><b
+                        class="form-error"></b>:</label>
+                <div class="col-sm-2">
+                    <input type="text" class="form-control m-b-xs" ng-disabled="true" ng-model="contVehicleFinance.contractValidDate">
+                </div>
+
+            </div>
+            <!--第二个表单-->
+            <div>
+                <div class="row line-lg" style="font-weight: bold;font-size: 14px;">车辆基本信息</div>
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">车牌号</b><b
+                            class="form-error"></b>:</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control m-b-xs" ng-disabled="true" ng-model="contVehicleFinance.vehicleLicenseNo">
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">牌照属性</b><b
+                            class="form-error"></b>:</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control m-b-xs" ng-disabled="true" ng-model="licenseAttr">
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">品牌</b><b
+                            class="form-error"></b>:</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control m-b-xs" ng-disabled="true" ng-model="contVehicleFinance.vehBrandCodeName">
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">车型</b><b
+                            class="form-error"></b>:</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control m-b-xs" ng-disabled="true" ng-model="contVehicleFinance.vehicleCodeName">
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">车辆类型</b><b
+                            class="form-error"></b>:</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control m-b-xs" ng-disabled="true" ng-model="vehicleForm">
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">车架号</b><b
+                            class="form-error"></b>:</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control m-b-xs" ng-disabled="true" ng-model="contVehicleFinance.vinNo">
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">发动机号</b><b
+                            class="form-error"></b>:</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control m-b-xs" ng-disabled="true" ng-model="contVehicleFinance.engineNo">
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">车辆登记日期</b><b
+                            class="form-error"></b>:</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control m-b-xs" ng-disabled="true" ng-model="contVehicleFinance.deposit">
+                    </div>
+
+                </div>
+
+                <div>
+                    <form name="form" class="form-validation" novalidate>
+                        <div class="row line-lg" style="font-weight: bold;font-size: 14px;">解除抵押信息</div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 control-label text-right"><b class="form-text-black">保险公司</b><b
+                                    class="form-error">*</b>:</label>
+                            <div class="col-sm-2">
+                                <input title="{{mortgageRegister.insCompName}}" type="text" name="insCompName" placeholder="请输入保险公司" class="form-control m-b-xs"
+                                       ng-model="mortgageRegister.insCompName" required>
+                                <p>
+                            <span class="form-info"
+                                  ng-show=" (form.insCompName.$dirty && form.insCompName.$error.required) || (form.insCompName.$error.required && formValidate)">保险公司不能为空</span>
+                                </p>
+                            </div>
+                            <label class="col-sm-2 control-label text-right"><b class="form-text-black">商业保单号</b><b
+                                    class="form-error">*</b>:</label>
+                            <div class="col-sm-2">
+                                <input type="text" name="insPolicyNo" placeholder="请输入商业保单号" class="form-control m-b-xs"
+                                       ng-model="mortgageRegister.insPolicyNo" required>
+                                <p>
+                            <span class="form-info"
+                                  ng-show=" (form.insPolicyNo.$dirty && form.insPolicyNo.$error.required) || (form.insPolicyNo.$error.required && formValidate)">商业保单号不能为空</span>
+                                </p>
+                            </div>
+
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 control-label text-right"><b class="form-text-black">抵押日期</b><b
+                                    class="form-error">*</b>:</label>
+                            <div class="col-sm-2">
+                                <input type="text" name="mortgageDate" placeholder="请输入抵押日期" class="form-control m-b-xs"
+                                       date-picker onchange="" ng-model="mortgageRegister.mortgageDate" required>
+                                <p>
+                                    <span class="form-info"
+                                          ng-show=" (form.mortgageDate.$dirty && form.mortgageDate.$error.required) || (form.mortgageDate.$error.required && formValidate)">抵押日期不能为空</span>
+                                </p>
+                            </div>
+                            <label class="col-sm-2 control-label text-right"><b class="form-text-black">车管所</b><b
+                                    class="form-error">*</b>:</label>
+                            <div class="col-sm-2">
+                                <input type="text" name="dmvName" placeholder="请输入车管所" class="form-control m-b-xs"
+                                       ng-model="mortgageRegister.dmvName" required>
+                                <p>
+                            <span class="form-info"
+                                  ng-show=" (form.dmvName.$dirty && form.dmvName.$error.required) || (form.dmvName.$error.required && formValidate)">车管所不能为空</span>
+                                </p>
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</div>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.com.leadu.fms.data.postbiz.dao.MonthlyOverdueDao">
+    <select id="selectMonthlyOverduesListByPage" resultType="cn.com.leadu.fms.pojo.postbiz.vo.monthlyoverdue.MonthlyOverduesVo">
+                SELECT
+            monthlyOverdue.census_month,
+            GROUP_CONCAT(
+                monthlyOverdue.total_overdue
+                ORDER BY
+            overdue_type) orderTotalOverdue,
+            GROUP_CONCAT(
+                monthlyOverdue.total_amount
+                ORDER BY
+            overdue_type) orderTotalAmount,
+            GROUP_CONCAT(
+                monthlyOverdue.retail_overdue
+                ORDER BY
+            overdue_type) orderRetailOverdue,
+            GROUP_CONCAT(
+                monthlyOverdue.retail_amount
+                ORDER BY
+            overdue_type) orderRetailAmount,
+            GROUP_CONCAT(
+                monthlyOverdue.par_overdue
+                ORDER BY
+            overdue_type) orderParOverdue,
+            GROUP_CONCAT(
+                monthlyOverdue.par_amount
+                ORDER BY
+            overdue_type) orderParAmount
+        FROM
+            monthly_overdue monthlyOverdue
+        WHERE
+            monthlyOverdue.del_flag = ${delete_exist} AND monthlyOverdue.census_month is not null
+        <if test="monthlyOverduesVo.beginMonthlyOverdueDate != null">
+            AND monthlyOverdue.census_month &gt;= #{monthlyOverduesVo.beginMonthlyOverdueDate}
+        </if>
+        <if test="monthlyOverduesVo.endMonthlyOverdueDate != null">
+            AND monthlyOverdue.census_month &lt;= #{monthlyOverduesVo.endMonthlyOverdueDate}
+        </if>
+        GROUP BY
+            census_month
+
+    </select>
+</mapper>

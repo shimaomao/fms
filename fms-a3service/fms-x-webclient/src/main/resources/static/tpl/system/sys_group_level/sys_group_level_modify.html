@@ -1,0 +1,51 @@
+<div  ng-controller="sys_group_level_modify_controller">
+    <div>
+        <toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+    </div>
+    <div class="panel panel-default">
+        <div class="row" style="margin: 0; padding: 15px; border: 1px solid #dddddd">
+            <h4 class="m-n font-thin h4">编辑用户组层级</h4>
+        </div>
+        <form name="form" class="form-validation" novalidate>
+            <div class="panel-body wrapper-sm">
+                <div class="form-group row" >
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">层级代码</b><b class="form-error" >*</b>:</label>
+                    <div class="col-sm-4" >
+                        <input type="text" name="groupLev" placeholder="请输入层级代码" class="form-control m-b-xs" ng-model="sysGroupLevel.groupLev" disabled required >
+                        <p>
+                            <span class="form-info" ng-show=" (form.groupLev.$dirty && form.groupLev.$error.required) || (form.groupLev.$error.required && formValidate)">层级代码不能为空</span>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="form-group row" >
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">层级名称</b><b class="form-error" >*</b>:</label>
+                    <div class="col-sm-4" >
+                        <input type="text" name="groupLevName" placeholder="请输入层级名称" class="form-control m-b-xs" ng-model="sysGroupLevel.groupLevName" required>
+                        <p>
+                            <span class="form-info" ng-show=" (form.groupLevName.$dirty && form.groupLevName.$error.required) || (form.groupLevName.$error.required && formValidate)">层级名称不能为空</span>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">启用标识</b><b class="form-error" >*</b>:</label>
+                    <div class="col-sm-4">
+                        <select ng-model="sysGroupLevel.enableFlag" class="form-control m-b-xs" style="width: 130px;" >
+                            <option value="{{enableFlagObj.codeValue}}" ng-repeat="enableFlagObj in enableFlagList">{{enableFlagObj.codeValueName}}</option>
+                        </select>
+                        <p>
+                            <span class="form-info" ng-show=" (form.enableFlag.$dirty && form.enableFlag.$error.required) || (form.enableFlag.$error.required && formValidate)">启用标志不能为空</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="row" style="margin: 10px 0 0 0;">
+                <div class="col-sm-15 m-b text-center">
+                    <button class="btn btn-default" ng-click="goback()">返回</button>
+                    <button type="submit" class="btn btn-success" ng-disabled="submit" ng-click="modify()">保存</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

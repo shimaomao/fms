@@ -1,0 +1,405 @@
+<div ng-controller="bas_sales_modify_controller">
+    <div>
+        <toaster-container
+                toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+    </div>
+    <div class="panel panel-default">
+
+        <div class="row">
+            <div class="btn-group m-r-lg pull-left" style="margin-left: 25px">
+                <h4>{{frameTitle}}</h4>
+            </div>
+            <div class="btn-group m-r-lg pull-right" style="margin: 15px 30px 0px 0px">
+                <button type="submit" class="btn btn-success" ng-disabled="submit"
+                        ng-click="modify()">保存
+                </button>
+                <button class="btn btn-default m-t-xs" ng-click="goback()">返回</button>
+            </div>
+        </div>
+
+        <form name="form" class="form-validation" novalidate>
+
+            <div class="panel-body wrapper-sm">
+                <ul id="applyTab" class="nav nav-tabs">
+                    <li class="active"><a href="javascript:void(0);" data-toggle="tab" data-id="message"
+                                          onclick="switchPageTab(this, 'applyTab')">实际销售方修改</a></li>
+                    <li><a href="javascript:void(0);" data-toggle="tab" data-id="fjmessage"
+                           onclick="switchPageTab(this, 'applyTab')">附件信息</a></li>
+                </ul>
+                <div class="tab-content" style="margin-top: 25px">
+                    <div class="tab-pane fade in active" id="message">
+
+                        <div class="form-group row">
+                            <div class="col-sm-6">
+                                <div class="row">
+                                    <label class="col-sm-4 control-label text-right"><b
+                                            class="form-text-black">实际销售方代码</b><b
+                                            class="form-error">*</b>:</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" title="{{basSales.salesCode}}" name="salesCode" placeholder="请输入实际销售方代码"
+                                               class="form-control m-b-xs" ng-model="basSales.salesCode" required
+                                               disabled>
+                                        <p>
+                                            <span class="form-info"
+                                                  ng-show=" (form.salesCode.$dirty && form.salesCode.$error.required) || (form.salesCode.$error.required && formValidate)">实际销售方代码不能为空</span>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="row">
+                                    <label class="col-sm-4 control-label text-right"><b
+                                            class="form-text-black">实际销售方全称</b><b
+                                            class="form-error">*</b>:</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" title="{{basSales.salesName}}" name="salesName" placeholder="请输入实际销售方全称"
+                                               class="form-control m-b-xs" ng-model="basSales.salesName" required>
+                                        <p>
+                                            <span class="form-info"
+                                                  ng-show=" (form.salesName.$dirty && form.salesName.$error.required) || (form.salesName.$error.required && formValidate)">实际销售方全称不能为空</span>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="form-group row">
+                            <div class="col-sm-6">
+                                <div class="row">
+                                    <label class="col-sm-4 control-label text-right"><b class="form-text-black">店面属性</b><b
+                                            class="form-error">*</b>:</label>
+                                    <div class="col-sm-4">
+                                        <select name="salesType" ng-model="basSales.salesType"
+                                                class="form-control m-b-xs"
+                                                required>
+                                            <option value="">--请选择店面属性--</option>
+                                            <option value="{{salesTypeObj.codeValue}}"
+                                                    ng-repeat="salesTypeObj in salesTypeList">
+                                                {{salesTypeObj.codeValueName}}
+                                            </option>
+                                        </select>
+                                        <!--<input type="text" name="salesType" placeholder="请输入店面属性" class="form-control m-b-xs" ng-model="basSales.salesType"  required >-->
+                                        <p>
+                                            <span class="form-info"
+                                                  ng-show=" (form.salesType.$dirty && form.salesType.$error.required) || (form.salesType.$error.required && formValidate)">店面属性不能为空</span>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="row">
+                                    <label class="col-sm-4 control-label text-right"><b class="form-text-black">所在省份</b>:</label>
+                                    <div class="col-sm-4">
+                                        <select name="addrProv" ng-model="basSales.addrProv" class="form-control m-b-xs"
+                                                ng-change="changeProvince()">
+                                            <option value="">--请选择省份--</option>
+                                            <option value="{{provinceObj.areaCode}}"
+                                                    ng-repeat="provinceObj in provinceList">{{provinceObj.areaName}}
+                                            </option>
+                                        </select>
+
+                                        <!-- <input type="text" name="addrProv" placeholder="请输入所在省份" class="form-control m-b-xs" ng-model="basSales.addrProv"  required >-->
+                                        <!--<p>-->
+                                            <!--<span class="form-info"-->
+                                                  <!--ng-show=" (form.addrProv.$dirty && form.addrProv.$error.required) || (form.addrProv.$error.required && formValidate)">所在省份不能为空</span>-->
+                                        <!--</p>-->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="form-group row">
+                            <div class="col-sm-6">
+                                <div class="row">
+                                    <label class="col-sm-4 control-label text-right"><b class="form-text-black">所在城市</b>:</label>
+                                    <div class="col-sm-4">
+                                        <select name="addrCity" ng-model="basSales.addrCity" class="form-control m-b-xs"
+                                                ng-change="changeCity()">
+                                            <option value="">--请选择城市--</option>
+                                            <option value="{{cityObj.areaCode}}"
+                                                    ng-selected="cityObj.areaCode==basSales.addrCity?1:0"
+                                                    ng-repeat="cityObj in cityList">{{cityObj.areaName}}
+                                            </option>
+                                        </select>
+
+                                        <!--<input type="text" name="addrCity" placeholder="请输入所在城市" class="form-control m-b-xs" ng-model="basSales.addrCity"  required >-->
+                                        <!--<p>-->
+                                            <!--<span class="form-info"-->
+                                                  <!--ng-show=" (form.addrCity.$dirty && form.addrCity.$error.required) || (form.addrCity.$error.required && formValidate)">所在城市不能为空</span>-->
+                                        <!--</p>-->
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="row">
+                                    <label class="col-sm-4 control-label text-right"><b class="form-text-black">所在区县</b>:</label>
+                                    <div class="col-sm-4">
+                                        <select name="addrCounty" ng-model="basSales.addrCounty"
+                                                class="form-control m-b-xs">
+                                            <option value="">--请选择区县--</option>
+                                            <option value="{{areaObj.areaCode}}"
+                                                    ng-selected="areaObj.areaCode==basSales.addrCounty?1:0"
+                                                    ng-repeat="areaObj in areaList">{{areaObj.areaName}}
+                                            </option>
+                                        </select>
+
+                                        <!--<input type="text" name="addrCounty" placeholder="请输入所在区县" class="form-control m-b-xs" ng-model="basSales.addrCounty"  required >-->
+                                        <!--<p>-->
+                                            <!--<span class="form-info"-->
+                                                  <!--ng-show=" (form.addrCounty.$dirty && form.addrCounty.$error.required) || (form.addrCounty.$error.required && formValidate)">所在区县不能为空</span>-->
+                                        <!--</p>-->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="form-group row">
+                            <div class="col-sm-6">
+                                <div class="row">
+                                    <label class="col-sm-4 control-label text-right"><b class="form-text-black">所在地址</b>:</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" name="address" placeholder="请输入所在地址"
+                                               class="form-control m-b-xs" ng-model="basSales.address">
+                                        <!--<p>-->
+                                            <!--<span class="form-info"-->
+                                                  <!--ng-show=" (form.address.$dirty && form.address.$error.required) || (form.address.$error.required && formValidate)">所在地址不能为空</span>-->
+                                        <!--</p>-->
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="row">
+                                    <label class="col-sm-4 control-label text-right"><b class="form-text-black">联系人员</b>:</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" name="contact" placeholder="请输入联系人员"
+                                               class="form-control m-b-xs" ng-model="basSales.contact">
+                                        <!--<p>-->
+                                            <!--<span class="form-info"-->
+                                                  <!--ng-show=" (form.contact.$dirty && form.contact.$error.required) || (form.contact.$error.required && formValidate)">联系人员不能为空</span>-->
+                                        <!--</p>-->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="form-group row">
+                            <div class="col-sm-6">
+                                <div class="row">
+                                    <label class="col-sm-4 control-label text-right"><b class="form-text-black">联系电话</b>:</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" name="contactTel1" placeholder="请输入联系电话"
+                                               class="form-control m-b-xs" ng-model="basSales.contactTel1">
+                                        <!--<p>-->
+                                            <!--<span class="form-info"-->
+                                                  <!--ng-show=" (form.contactTel1.$dirty && form.contactTel1.$error.required) || (form.contactTel1.$error.required && formValidate)">联系电话不能为空</span>-->
+                                        <!--</p>-->
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="row">
+                                    <label class="col-sm-4 control-label text-right"><b class="form-text-black">所属集团</b><b
+                                            class="form-error"></b>:</label>
+                                    <div class="col-sm-4">
+                                        <select name="withinGroup" ng-model="basSales.withinGroup"
+                                                class="form-control m-b-xs">
+                                            <option value="">--请选择所属集团--</option>
+                                            <option value="{{withinGroupObj.codeValue}}"
+                                                    ng-repeat="withinGroupObj in withinGroupList">
+                                                {{withinGroupObj.codeValueName}}
+                                            </option>
+                                        </select>
+                                        <!--<input type="text" name="withinGroup" placeholder="请输入所属集团" class="form-control m-b-xs" ng-model="basSales.withinGroup"  required >-->
+                                       <!-- <p>
+                                            <span class="form-info"
+                                                  ng-show=" (form.withinGroup.$dirty && form.withinGroup.$error.required) || (form.withinGroup.$error.required && formValidate)">所属集团不能为空</span>
+                                        </p>-->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-sm-6">
+                                <div class="row">
+                                    <label class="col-sm-4 control-label text-right"><b class="form-text-black">注册省份</b><b
+                                            class="form-error">*</b>:</label>
+                                    <div class="col-sm-4">
+                                        <select name="registerProv" ng-model="basSales.registerProv"
+                                                class="form-control m-b-xs" ng-change="changeRegisterProv()" required>
+                                            <option value="">--请选择注册省份--</option>
+                                            <option value="{{provinceObj.areaCode}}"
+                                                    ng-repeat="provinceObj in provinceList">{{provinceObj.areaName}}
+                                            </option>
+                                        </select>
+                                        <!-- <input type="text" name="registerProv" placeholder="请输入注册省份" class="form-control m-b-xs" ng-model="basSales.registerProv"  required >-->
+                                        <p>
+                                            <span class="form-info"
+                                                  ng-show=" (form.registerProv.$dirty && form.registerProv.$error.required) || (form.registerProv.$error.required && formValidate)">注册省份不能为空</span>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="row">
+                                    <label class="col-sm-4 control-label text-right"><b class="form-text-black">注册城市</b><b
+                                            class="form-error">*</b>:</label>
+                                    <div class="col-sm-4">
+                                        <select name="registerCity" ng-model="basSales.registerCity"
+                                                class="form-control m-b-xs" ng-change="changeRegisterCity()" required>
+                                            <option value="">--请选择注册城市--</option>
+                                            <option value="{{cityObj.areaCode}}"
+                                                    ng-selected="cityObj.areaCode==basSales.registerCity?1:0"
+                                                    ng-repeat="cityObj in registerCityList">{{cityObj.areaName}}
+                                            </option>
+                                        </select>
+                                        <!-- <input type="text" name="registerCity" placeholder="请输入注册城市" class="form-control m-b-xs" ng-model="basSales.registerCity"  required >-->
+                                        <p>
+                                            <span class="form-info"
+                                                  ng-show=" (form.registerCity.$dirty && form.registerCity.$error.required) || (form.registerCity.$error.required && formValidate)">注册城市不能为空</span>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-sm-6">
+                                <div class="row">
+                                    <label class="col-sm-4 control-label text-right"><b class="form-text-black">注册区县</b><b
+                                            class="form-error">*</b>:</label>
+                                    <div class="col-sm-4">
+                                        <select name="registerCounty" ng-model="basSales.registerCounty"
+                                                class="form-control m-b-xs" required>
+                                            <option value="">--请选择注册区县--</option>
+                                            <option value="{{areaObj.areaCode}}"
+                                                    ng-selected="areaObj.areaCode==basSales.registerCounty?1:0"
+                                                    ng-repeat="areaObj in registerAreaList">{{areaObj.areaName}}
+                                            </option>
+                                        </select>
+                                        <!--<input type="text" name="registerCounty" placeholder="请输入注册区县" class="form-control m-b-xs" ng-model="basSales.registerCounty"  required >-->
+                                        <p>
+                                            <span class="form-info"
+                                                  ng-show=" (form.registerCounty.$dirty && form.registerCounty.$error.required) || (form.registerCounty.$error.required && formValidate)">注册区县不能为空</span>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="row">
+                                    <label class="col-sm-4 control-label text-right"><b class="form-text-black">注册地址</b><b
+                                            class="form-error">*</b>:</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" name="registerAddress" placeholder="请输入注册地址"
+                                               class="form-control m-b-xs" ng-model="basSales.registerAddress" required>
+                                        <p>
+                                            <span class="form-info"
+                                                  ng-show=" (form.registerAddress.$dirty && form.registerAddress.$error.required) || (form.registerAddress.$error.required && formValidate)">注册地址不能为空</span>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="form-group row">
+                            <div class="col-sm-6">
+                                <div class="row">
+                                    <label class="col-sm-4 control-label text-right"><b class="form-text-black">担保期限</b><b
+                                            class="form-error">*</b>:</label>
+                                    <div class="col-sm-4">
+                                        <input id="guaranteePeriod" type="text" name="guaranteePeriod"
+                                               placeholder="请输入担保期限"
+                                               class="form-control m-b-xs" ng-model="basSales.guaranteePeriod"
+                                               date-picker
+                                               required> <!--onClick="WdatePicker()"-->
+                                        <p>
+                                    <span class="form-info"
+                                          ng-show=" (form.guaranteePeriod.$dirty && form.guaranteePeriod.$error.required) || (form.guaranteePeriod.$error.required && formValidate)">担保期限不能为空</span>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="row">
+                                    <label class="col-sm-4 control-label text-right"><b class="form-text-black">车辆类型</b><b
+                                            class="form-error">*</b>:</label>
+                                    <div class="col-sm-4">
+                                        <div class="checkbox" ng-repeat="vehicleFormObj in vehicleFormList">
+                                            <label><input type="checkbox" name="vehicleForm"
+                                                          ng-checked="basSales.vehicleForm.indexOf(vehicleFormObj.codeValue)!=-1?'checked':''"
+                                                          ng-true-value="{{vehicleFormObj.codeValue}}">{{vehicleFormObj.codeValueName}}</label>
+                                        </div>
+                                        <p>
+                                            <span class="form-info"
+                                                  ng-show="basSales.vehicleForm==''&&formValidate">请选择车辆类型</span>
+                                        </p>
+                                    </div>
+                                    <!--<label class="col-sm-4 control-label text-right"><b class="form-text-black">车辆类型</b><b class="form-error">*</b>:</label>
+                                    <div class="col-sm-4">
+                                        <div class="checkbox" ng-repeat="a in vehicleFormList">
+                                            <label>
+                                                <input type="checkbox" name="vehicleForm" value="{{a.codeValue}}" ng-model="a.checked" ng-click="checkboxValue(a.codeType,a.codeValue);" ng-checked="basSales.vehicleForm.indexOf(a.codeValue) != -1">{{a.codeValueName}}
+                                            </label>
+                                        </div>
+                                        <p>
+                                            <span class="form-info" ng-show="(form.vehicleForm.$dirty && basSales.vehicleForm.length<1) || (basSales.vehicleForm.length<1 && formValidate)">车辆类型不能为空</span>
+                                        </p>
+                                    </div>-->
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-sm-6">
+                                <div class="row">
+                                    <label class="col-sm-4 control-label text-right"><b
+                                            class="form-text-black">财务辅助核算代码</b><b
+                                            class="form-error">*</b>:</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" name="finassSalesCode" placeholder="请输入财务辅助核算代码"
+                                               class="form-control m-b-xs" ng-model="basSales.finassSalesCode" required>
+                                        <p>
+                                            <span class="form-info"
+                                                  ng-show=" (form.finassSalesCode.$dirty && form.finassSalesCode.$error.required) || (form.finassSalesCode.$error.required && formValidate)">财务辅助核算代码不能为空</span>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <!--附件信息-->
+                    <div class="tab-pane fade" id="fjmessage">
+                        <ul type="none" style="padding-left: 20px;">
+                            <div class="panel-body wrapper-sm" ng-if="httpData">
+                                <tree-file-directive detail-flag="$root.yesNoFlag.no" file-type="$root.basFileTypes.salesFile" files="$parent.bizFilesList" not-upload="$parent.notUpload" not-upload-info="$parent.msgInfo"   not-file-type="$parent.notFileType" not-file-type-name="$parent.notFileTypeName">
+                                </tree-file-directive>
+                            </div>
+                        </ul>
+                    </div>
+
+                    <!--附件信息-->
+                   <!-- <div class="panel-body wrapper-sm" ng-if="httpData">
+                        <tree-file-directive detail-flag="$root.yesNoFlag.no" file-type="$root.basFileTypes.salesFile" files="$parent.bizFilesList" not-upload="$parent.notUpload" not-upload-info="$parent.msgInfo"   not-file-type="$parent.notFileType" not-file-type-name="$parent.notFileTypeName">
+                        </tree-file-directive>
+                    </div>-->
+                </div>
+            </div>
+        </form>
+        <div ng-show="serviceId!=null&&serviceId!=Undefined">
+            <div ng-include="'tpl/common/process_log/process_log_list.html'"></div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+

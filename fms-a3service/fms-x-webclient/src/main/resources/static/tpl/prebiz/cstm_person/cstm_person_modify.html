@@ -1,0 +1,242 @@
+<div class="modal-header">
+    <h4 class="modal-title">编辑prebiz <button type="button" class="close" data-dismiss="modal" aria-hidden="true" ng-click="close()">&times;</button></h4>
+</div>
+<div class="modal-body">
+    <form name="form" class="form-validation" novalidate>
+
+        <div class="panel-body">
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">applyNo</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="applyNo" placeholder="请输入applyNo" class="form-control m-b-xs" ng-model="cstmPerson.applyNo"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.applyNo.$dirty && form.applyNo.$error.required) || (form.applyNo.$error.required && formValidate)">applyNo不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">name</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="name" placeholder="请输入name" class="form-control m-b-xs" ng-model="cstmPerson.name"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.name.$dirty && form.name.$error.required) || (form.name.$error.required && formValidate)">name不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">certifType</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="certifType" placeholder="请输入certifType" class="form-control m-b-xs" ng-model="cstmPerson.certifType"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.certifType.$dirty && form.certifType.$error.required) || (form.certifType.$error.required && formValidate)">certifType不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">certifNo</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="certifNo" placeholder="请输入certifNo" class="form-control m-b-xs" ng-model="cstmPerson.certifNo"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.certifNo.$dirty && form.certifNo.$error.required) || (form.certifNo.$error.required && formValidate)">certifNo不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">sex</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="sex" placeholder="请输入sex" class="form-control m-b-xs" ng-model="cstmPerson.sex"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.sex.$dirty && form.sex.$error.required) || (form.sex.$error.required && formValidate)">sex不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">marriageStatus</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="marriageStatus" placeholder="请输入marriageStatus" class="form-control m-b-xs" ng-model="cstmPerson.marriageStatus"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.marriageStatus.$dirty && form.marriageStatus.$error.required) || (form.marriageStatus.$error.required && formValidate)">marriageStatus不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">censusType</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="censusType" placeholder="请输入censusType" class="form-control m-b-xs" ng-model="cstmPerson.censusType"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.censusType.$dirty && form.censusType.$error.required) || (form.censusType.$error.required && formValidate)">censusType不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">birthDate</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="birthDate" placeholder="请输入birthDate" class="form-control m-b-xs" ng-model="cstmPerson.birthDate"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.birthDate.$dirty && form.birthDate.$error.required) || (form.birthDate.$error.required && formValidate)">birthDate不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">eduBgType</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="eduBgType" placeholder="请输入eduBgType" class="form-control m-b-xs" ng-model="cstmPerson.eduBgType"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.eduBgType.$dirty && form.eduBgType.$error.required) || (form.eduBgType.$error.required && formValidate)">eduBgType不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">age</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="age" placeholder="请输入age" class="form-control m-b-xs" ng-model="cstmPerson.age"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.age.$dirty && form.age.$error.required) || (form.age.$error.required && formValidate)">age不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">mobileNo</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="mobileNo" placeholder="请输入mobileNo" class="form-control m-b-xs" ng-model="cstmPerson.mobileNo"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.mobileNo.$dirty && form.mobileNo.$error.required) || (form.mobileNo.$error.required && formValidate)">mobileNo不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">telNo</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="telNo" placeholder="请输入telNo" class="form-control m-b-xs" ng-model="cstmPerson.telNo"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.telNo.$dirty && form.telNo.$error.required) || (form.telNo.$error.required && formValidate)">telNo不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">qqNo</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="qqNo" placeholder="请输入qqNo" class="form-control m-b-xs" ng-model="cstmPerson.qqNo"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.qqNo.$dirty && form.qqNo.$error.required) || (form.qqNo.$error.required && formValidate)">qqNo不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">wechatNo</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="wechatNo" placeholder="请输入wechatNo" class="form-control m-b-xs" ng-model="cstmPerson.wechatNo"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.wechatNo.$dirty && form.wechatNo.$error.required) || (form.wechatNo.$error.required && formValidate)">wechatNo不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">mail</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="mail" placeholder="请输入mail" class="form-control m-b-xs" ng-model="cstmPerson.mail"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.mail.$dirty && form.mail.$error.required) || (form.mail.$error.required && formValidate)">mail不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">ethnicType</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="ethnicType" placeholder="请输入ethnicType" class="form-control m-b-xs" ng-model="cstmPerson.ethnicType"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.ethnicType.$dirty && form.ethnicType.$error.required) || (form.ethnicType.$error.required && formValidate)">ethnicType不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">licenseNo</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="licenseNo" placeholder="请输入licenseNo" class="form-control m-b-xs" ng-model="cstmPerson.licenseNo"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.licenseNo.$dirty && form.licenseNo.$error.required) || (form.licenseNo.$error.required && formValidate)">licenseNo不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">driver</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="driver" placeholder="请输入driver" class="form-control m-b-xs" ng-model="cstmPerson.driver"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.driver.$dirty && form.driver.$error.required) || (form.driver.$error.required && formValidate)">driver不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">driverMobno</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="driverMobno" placeholder="请输入driverMobno" class="form-control m-b-xs" ng-model="cstmPerson.driverMobno"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.driverMobno.$dirty && form.driverMobno.$error.required) || (form.driverMobno.$error.required && formValidate)">driverMobno不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+
+        </div>
+    </form>
+</div>
+<div class="modal-footer ng-scope">
+    <button class="btn btn-default" ng-click="close()">取消</button>
+    <button type="submit" class="btn btn-success" ng-disabled="submit" ng-click="modify()">保存</button>
+</div>

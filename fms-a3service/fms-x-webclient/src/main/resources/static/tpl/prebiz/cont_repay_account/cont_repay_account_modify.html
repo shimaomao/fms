@@ -1,0 +1,89 @@
+<div ng-controller="contRepayAccount_modify_controller">
+    <div>
+        <toaster-container
+                toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+    </div>
+    <div class="panel panel-default">
+        <div class="row" style="margin: 0; padding: 15px; border: 1px solid #dddddd">
+            <h4 class="m-n font-thin h4">修改还款卡信息</h4>
+        </div>
+        <form name="form" class="form-validation" novalidate>
+            <div class="panel-body wrapper-sm">
+                <div class="form-group row">
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">还款借记卡户名</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-3">
+                        <input type="text" name="accountName" placeholder="请输入还款借记卡户名" class="form-control m-b-xs" ng-model="contRepayAccount.accountName" required >
+                        <p>
+                            <span class="form-info"
+                                  ng-show=" (form.accountName.$dirty && form.accountName.$error.required) || (form.accountName.$error.required && formValidate)">还款借记卡户名不能为空</span>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">还款借记卡开户证件号</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-3">
+                        <input type="text" name="certifNo" placeholder="请输入还款借记卡开户证件号" class="form-control m-b-xs" ng-model="contRepayAccount.certifNo" required >
+                        <p>
+                            <span class="form-info"
+                                  ng-show=" (form.certifNo.$dirty && form.certifNo.$error.required) || (form.certifNo.$error.required && formValidate)">还款借记卡开户证件号不能为空</span>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">还款卡绑定手机号</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-3">
+                        <input type="text" name="accMobileNo" placeholder="请输入还款卡绑定手机号" class="form-control m-b-xs"
+                               ng-model="contRepayAccount.accMobileNo" ng-pattern="/^1[345789]\d{9}$/" required >
+                        <p>
+                            <span class="form-info"
+                                  ng-show=" (form.accMobileNo.$dirty && form.accMobileNo.$error.required) || (form.accMobileNo.$error.required && formValidate)">还款卡绑定手机号不能为空</span>
+                            <span class="form-info" ng-show=" (form.accMobileNo.$error.pattern && !form.accMobileNo.$error.required)">请输入正确的手机号</span>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">还款借记卡开户行</b><b
+                            class="form-error">*</b>:</label>
+                    <div class="col-sm-3">
+                        <select ng-model="contRepayAccount.accBank" name="accBank" class="form-control m-b-xs" required>
+                            <option value="">--请选择开户行--</option>
+                            <option value="{{accBankObj.codeValue}}" ng-repeat="accBankObj in accBankList">
+                                {{accBankObj.codeValueName}}
+                            </option>
+                        </select>
+                        <p>
+                            <span class="form-info"
+                                  ng-show=" (form.accBank.$dirty && form.accBank.$error.required) || (form.accBank.$error.required && formValidate)">还款借记卡开户行不能为空</span>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">还款借记卡账号</b><b
+                            class="form-error">*</b>:</label>
+                    <div class="col-sm-3">
+                        <input type="text" name="accountNo" placeholder="请输入还款借记卡账号" class="form-control m-b-xs"
+                               ng-model="contRepayAccount.accountNo" required >
+                        <p>
+                            <span class="form-info"
+                                  ng-show=" (form.accountNo.$dirty && form.accountNo.$error.required) || (form.accountNo.$error.required && formValidate)">还款借记卡账号不能为空</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <div class="col-sm-15 m-b text-center">
+                <button class="btn btn-default" ng-click="goback()">返回</button>
+
+                <button type="submit" class="btn btn-success ng-scope"  ng-disabled="submit"
+                        ng-click="modify()">保存
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

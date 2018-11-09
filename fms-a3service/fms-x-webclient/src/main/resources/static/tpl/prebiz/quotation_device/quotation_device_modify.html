@@ -1,0 +1,253 @@
+<div class="bg-light lter b-b wrapper-md">
+    <h1 class="m-n font-thin h4">报价器信息修改</h1>
+</div>
+<div  ng-controller="quotation_device_modify_controller">
+    <div>
+        <toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-body wrapper-sm">
+            <div class="row">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">客户姓名</b>:</label>
+                <div class="col-sm-2">
+                    <input type="text" name="name" placeholder="客户姓名" class="form-control m-b-xs" ng-model="quotationDeviceVo.name">
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">申请类型</b>:</label>
+                <div class="col-sm-2">
+                    <select name="applyType"  ng-model="quotationDeviceVo.applyType" class="form-control m-b-xs">
+                        <option value="">---请选择---</option>
+                        <option ng-repeat="applyTypeObj in applyTypeList" value="{{applyTypeObj.codeValue}}">{{applyTypeObj.codeValueName}}</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">报价类型</b>:</label>
+                <div class="col-sm-2">
+                    <select name="quotationType"  ng-model="quotationDeviceVo.quotationType" class="form-control m-b-xs">
+                        <option value="">---请选择---</option>
+                        <option ng-repeat="quotationTypeObj in quotationTypeList" value="{{quotationTypeObj.codeValue}}" ng-model="quotationDeviceVo.quotationTypeMode">{{quotationTypeObj.codeValueName}}</option>
+                    </select>
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">客户利率</b>:</label>
+                <div class="col-sm-2">
+                    <input type="number" name="customerInterestRate" placeholder="客户利率" class="form-control m-b-xs" ng-model="quotationDeviceVo.customerInterestRate">
+                </div>
+            </div>
+            <div class="row">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">车型</b>:</label>
+                <div class="col-sm-2">
+                    <div class="row">
+                        <div class="col-sm-7">
+                            <input title="{{quotationDeviceVo.vehicleName}}" type="text" name="vehicleName" placeholder="请选择车型" class="form-control m-b-xs" ng-model="quotationDeviceVo.vehicleName" disabled required>
+                            <input type="text" name="vehicleCode" ng-model="quotationDeviceVo.vehicleCode" class="hidden" disabled/>
+                        </div>
+                        <div class="col-sm-5">
+                            <button class="btn btn-primary btn-sm m-b-xs" ng-click="selectBasVehicle()"><i class="fa fa-pencil-square-o m-r-xs"></i>选择</button>
+                        </div>
+                    </div>
+
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">车辆标签价</b>:</label>
+                <div class="col-sm-2">
+                    <input type="number" name="cehicleLabelPrice" placeholder="车辆标签价" class="form-control m-b-xs" ng-model="quotationDeviceVo.cehicleLabelPrice">
+                </div>
+            </div>
+            <div class="row">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">车辆成交价</b>:</label>
+                <div class="col-sm-2">
+                    <input type="number" name="cehicleTransactionPrice" placeholder="车辆成交价" class="form-control m-b-xs" ng-model="quotationDeviceVo.cehicleTransactionPrice">
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">车辆采购价</b>:</label>
+                <div class="col-sm-2">
+                    <input type="number" name="cehiclePurchasingPrice" placeholder="车辆采购价" class="form-control m-b-xs" ng-model="quotationDeviceVo.cehiclePurchasingPrice">
+                </div>
+            </div>
+            <div class="row">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">购置税</b>:</label>
+                <div class="col-sm-2">
+                    <input type="number" name="purchaseTax" placeholder="购置税" class="form-control m-b-xs" ng-model="quotationDeviceVo.purchaseTax" disabled>
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">商业保险</b>:</label>
+                <div class="col-sm-2">
+                    <input type="number" name="commercialInsurance" placeholder="商业保险" class="form-control m-b-xs" ng-model="quotationDeviceVo.commercialInsurance" disabled>
+                </div>
+            </div>
+            <div class="row">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">上牌综合服务</b>:</label>
+                <div class="col-sm-2">
+                    <input type="number" name="boardServiceCharge" placeholder="上牌综合服务" class="form-control m-b-xs" ng-model="quotationDeviceVo.boardServiceCharge">
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">交强险车船税</b>:</label>
+                <div class="col-sm-2">
+                    <input type="number" name="highRiskVehicleTax" placeholder="交强险车船税" class="form-control m-b-xs" ng-model="quotationDeviceVo.highRiskVehicleTax">
+                </div>
+            </div>
+            <div class="row">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">精品/选装</b>:</label>
+                <div class="col-sm-2">
+                    <input type="number" name="fineQuality" placeholder="精品/选装" class="form-control m-b-xs" ng-model="quotationDeviceVo.fineQuality">
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">申请金额</b>:</label>
+                <div class="col-sm-2">
+                    <input type="number" name="applicationAmount" placeholder="申请金额" class="form-control m-b-xs" ng-model="quotationDeviceVo.applicationAmount" disabled>
+                </div>
+            </div>
+            <div class="row">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">手续费</b>:</label>
+                <div class="col-sm-2">
+                    <input type="number" name="serviceCharge" placeholder="手续费" class="form-control m-b-xs" ng-model="quotationDeviceVo.serviceCharge">
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">融资额（计息）</b>:</label>
+                <div class="col-sm-2">
+                    <input type="number" name="financingAmount" placeholder="融资额（计息）" class="form-control m-b-xs" ng-model="quotationDeviceVo.financingAmount" disabled>
+                </div>
+            </div>
+            <div class="row">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">返还经销商手续费</b>:</label>
+                <div class="col-sm-2">
+                    <input type="number" name="restitutionFee" placeholder="返还经销商手续费" class="form-control m-b-xs" ng-model="quotationDeviceVo.restitutionFee">
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">续保押金</b>:</label>
+                <div class="col-sm-2">
+                    <input type="number" name="renewDeposit" placeholder="续保押金" class="form-control m-b-xs" ng-model="quotationDeviceVo.renewDeposit">
+                </div>
+            </div>
+            <div class="row">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">渠道佣金</b>:</label>
+                <div class="col-sm-2">
+                    <input type="number" name="channelCommission" placeholder="渠道佣金" class="form-control m-b-xs" ng-model="quotationDeviceVo.channelCommission">
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">现金奖励</b>:</label>
+                <div class="col-sm-2">
+                    <input type="number" name="cashReward" placeholder="现金奖励" class="form-control m-b-xs" ng-model="quotationDeviceVo.cashReward">
+                </div>
+            </div>
+            <div class="row">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">内部提成</b>:</label>
+                <div class="col-sm-2">
+                    <input type="number" name="internalFormation" placeholder="内部提成" class="form-control m-b-xs" ng-model="quotationDeviceVo.internalFormation">
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">贷款期限</b>:</label>
+                <div class="col-sm-2">
+                    <input type="number" name="loanTerm" placeholder="贷款期限" class="form-control m-b-xs" ng-model="quotationDeviceVo.loanTerm">
+                </div>
+            </div>
+            <div class="row">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">大客户补贴比例</b>:</label>
+                <div class="col-sm-2">
+                    <input type="number" name="customerSubsidyRatio" placeholder="大客户补贴比例" class="form-control m-b-xs" ng-model="quotationDeviceVo.customerSubsidyRatio">
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">大客户补贴金额</b>:</label>
+                <div class="col-sm-2">
+                    <input type="number" name="customerSubsidyAmount" placeholder="大客户补贴金额" class="form-control m-b-xs" ng-model="quotationDeviceVo.customerSubsidyAmount" disabled>
+                </div>
+            </div>
+            <div class="row">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">首付款比例</b>:</label>
+                <div class="col-sm-2">
+                    <input type="number" name="downPaymentRatio" placeholder="首付款比例" class="form-control m-b-xs" ng-model="quotationDeviceVo.downPaymentRatio">
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">首付款</b>:</label>
+                <div class="col-sm-2">
+                    <input type="number" name="firstPayment" placeholder="首付款" class="form-control m-b-xs" ng-model="quotationDeviceVo.firstPayment" ng-blur="firstPaymentChange()">
+                </div>
+            </div>
+            <div class="row">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">保证金比例</b>:</label>
+                <div class="col-sm-2">
+                    <input type="number" name="marginLevel" placeholder="保证金比例" class="form-control m-b-xs" ng-model="quotationDeviceVo.marginLevel">
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">保证金</b>:</label>
+                <div class="col-sm-2">
+                    <input type="number" name="bond" placeholder="保证金" class="form-control m-b-xs" ng-model="quotationDeviceVo.bond" disabled>
+                </div>
+            </div>
+            <div class="row" ng-if="quotationDeviceVo.quotationType != 3">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">尾款比例</b>:</label>
+                <div class="col-sm-2">
+                    <input type="number" name="tailProportion" placeholder="尾款比例" class="form-control m-b-xs" ng-model="quotationDeviceVo.tailProportion">
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">尾款金额</b>:</label>
+                <div class="col-sm-2">
+                    <input type="number" name="tailMoney" placeholder="尾款金额" class="form-control m-b-xs" ng-model="quotationDeviceVo.tailMoney" ng-blur="tailMoneyChange()">
+                </div>
+            </div>
+            <div class="row" ng-if="quotationDeviceVo.quotationType == 3">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">年供比例</b>:</label>
+                <div class="col-sm-2">
+                    <input type="number" name="annualSupplyRate" placeholder="年供比例" class="form-control m-b-xs" ng-model="quotationDeviceVo.annualSupplyRate">
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">年供金额</b>:</label>
+                <div class="col-sm-2">
+                    <input type="number" name="annualSupplyAmount" placeholder="年供金额" class="form-control m-b-xs" ng-model="quotationDeviceVo.annualSupplyAmount" disabled>
+                </div>
+            </div>
+            <div class="row">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">备注</b>:</label>
+                <div class="col-sm-6">
+                    <textarea limit-word type="text" name="remarks" placeholder="备注" class="form-control m-b-xs" ng-model="quotationDeviceVo.remarks"></textarea>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel-body wrapper-sm">
+            <div class="row">
+                <div class="col-sm-6 text-center">
+                    <button type="submit" class="btn btn-success" ng-disabled="submit" ng-click="calculate()">计算</button>
+                    <button class="btn btn-success" ng-click="calculate()">生成pdf</button>
+                    <button class="btn btn-success" ng-click="calculate()">跳转</button>
+                    <button class="btn btn-success" ng-click="backUp()">返回</button>
+                </div>
+            </div>
+        </div>
+        <div class="panel-body wrapper-sm">
+            <div class="row">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">贸易收入</b>:</label>
+                <div class="col-sm-2">
+                    <input type="text" name="tradeIncome" placeholder="贸易收入" class="form-control m-b-xs" ng-model="quotationDeviceVo.tradeIncome" disabled>
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">项目粗利</b>:</label>
+                <div class="col-sm-2">
+                    <input type="text" name="projectCoarseProfit" placeholder="项目粗利" class="form-control m-b-xs" ng-model="quotationDeviceVo.projectCoarseProfit" disabled>
+                </div>
+            </div>
+            <div class="row">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">贷款利息</b>:</label>
+                <div class="col-sm-2">
+                    <input type="text" name="loanInterest" placeholder="贷款利息" class="form-control m-b-xs" ng-model="quotationDeviceVo.loanInterest" disabled>
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">静态收益率</b>:</label>
+                <div class="col-sm-2">
+                    <input type="text" name="staticRateOfReturn" placeholder="静态收益率" class="form-control m-b-xs" ng-model="quotationDeviceVo.staticRateOfReturn" disabled>
+                </div>
+            </div>
+            <div class="row">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">增值税节税</b>:</label>
+                <div class="col-sm-2">
+                    <input type="text" name="vatTaxSaving" placeholder="增值税节税" class="form-control m-b-xs" ng-model="quotationDeviceVo.vatTaxSaving" disabled>
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">所得税节税</b>:</label>
+                <div class="col-sm-2">
+                    <input type="text" name="incomeTaxSaving" placeholder="所得税节税" class="form-control m-b-xs" ng-model="quotationDeviceVo.incomeTaxSaving" disabled>
+                </div>
+            </div>
+            <div class="row">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">需动用资金</b>:</label>
+                <div class="col-sm-2">
+                    <input type="text" name="needToUseFunds" placeholder="需动用资金" class="form-control m-b-xs" ng-model="quotationDeviceVo.needToUseFunds" disabled>
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">IRR</b>:</label>
+                <div class="col-sm-2">
+                    <input type="text" name="irr" placeholder="IRR" class="form-control m-b-xs" ng-model="quotationDeviceVo.irr" disabled>
+                </div>
+            </div>
+            <div class="row">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">月供</b>:</label>
+                <div class="col-sm-2">
+                    <input type="text" name="monthlySupply" placeholder="月供" class="form-control m-b-xs" ng-model="quotationDeviceVo.monthlySupply" disabled>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

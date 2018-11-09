@@ -1,0 +1,348 @@
+<style>
+    .applyInput .sub-main{overflow: hidden;}
+    .applyInput .sub-body{padding: 10px 40px 0 0;border: 1px solid #eaeeea;border-top: none;}
+    .applyInput .sub-title{padding: 5px;font-size: 14px;cursor: pointer;background-color: #f5f5f5;border-bottom: 1px solid #eaeeea;}
+    .applyInput .sub-title span:first-child{font-weight: bold;color: black;}
+    .applyInput .sub-title span:last-child{display: inline-block;width: 20px;height: 20px;}
+</style>
+<div ng-controller="cstm_company_detail_controller" class="applyInput">
+    <div class="sub-main">
+        <div class="sub-title clearfix" click-hide>
+            <span class="pull-left">企业基本信息</span>
+            <span class="pull-right"><i class="glyphicon glyphicon-chevron-down"></i></span>
+        </div>
+        <div class="sub-body">
+            <div class="form-group row">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">承租人</b>:</label>
+                <div class="col-sm-2">
+                    <label class="control-label text-left">{{cstmCompany.name}}</label>
+                    <button type="button" class="btn btn-sm btn-success" ng-click="basicHistory()"
+                            ng-if="historyBtn == null || historyBtn == undefined">基本信息变更历史</button>
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">企业类型</b>:</label>
+                <div class="col-sm-2">
+                    <label class="control-label text-left">{{companyType1 | getName:'companyType'}}</label>
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">类别</b>:</label>
+                <div class="col-sm-2">
+                    <label class="control-label text-left">{{companyType2}}</label>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">统一社会信用代码</b>:</label>
+                <div class="col-sm-2">
+                    <label class="control-label text-left">{{cstmCompany.socialCertifNo}}</label>
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">企业性质</b>:</label>
+                <div class="col-sm-2">
+                    <label class="control-label text-left">{{cstmCompany.compTypeName}}</label>
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">单位行业类别</b>:</label>
+                <div class="col-sm-2">
+                    {{cstmCompany.industry | getName:'industryType'}}
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">成立日期</b>:</label>
+                <div class="col-sm-2">
+                    {{cstmCompany.establDate}}
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">成立年限</b>:</label>
+                <div class="col-sm-2">
+                    {{cstmCompany.establYear}}
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">注册资金(万元)</b>:</label>
+                <div class="col-sm-2">
+                    <label class="control-label text-left">{{cstmCompany.regCapital}}</label>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">企业联系电话</b>:</label>
+                <div class="col-sm-2">
+                    <label class="control-label text-left">{{cstmCompany.compTel}}</label>
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">法定代表人</b>:</label>
+                <div class="col-sm-2">
+                    <label class="control-label text-left">{{cstmCompany.compLegalRep}}</label>
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">法人证件类型</b>:</label>
+                <div class="col-sm-2">
+                    <label class="control-label text-left">{{cstmCompany.certifTypeName}}</label>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">法人证件号码</b>:</label>
+                <div class="col-sm-2">
+                    <label class="control-label text-left">{{cstmCompany.certifNo}}</label>
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">法人手机号码</b>:</label>
+                <div class="col-sm-2">
+                    <label class="control-label text-left">{{cstmCompany.mobileNo}}</label>
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">企业联系人姓名</b>:</label>
+                <div class="col-sm-2">
+                    <label class="control-label text-left">{{cstmCompany.contactName}}</label>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">企业联系人手机号码</b>:</label>
+                <div class="col-sm-2">
+                    <label class="control-label text-left">{{cstmCompany.contactMobno}}</label>
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">注册省份</b>:</label>
+                <div class="col-sm-2">
+                    <label class="control-label text-left">{{cstmCompany.registerProv | getAreaName}}</label>
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">注册城市</b>:</label>
+                <div class="col-sm-2">
+                    <label class="control-label text-left">{{cstmCompany.registerCity | getAreaName}}</label>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">注册区县</b>:</label>
+                <div class="col-sm-2">
+                    <label class="control-label text-left">{{cstmCompany.registerCounty | getAreaName}}</label>
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">注册地址</b>:</label>
+                <div class="col-sm-6">
+                    <label class="control-label text-left">{{cstmCompany.registerAddr}}</label>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">经营省份</b>:</label>
+                <div class="col-sm-2">
+                    <label class="control-label text-left">{{cstmCompany.compProvName}}</label>
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">经营城市</b>:</label>
+                <div class="col-sm-2">
+                    <label class="control-label text-left">{{cstmCompany.compCityName}}</label>
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">经营区县</b>:</label>
+                <div class="col-sm-2">
+                    <label class="control-label text-left">{{cstmCompany.compCountyName}}</label>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">经营地址</b>:</label>
+                <div class="col-sm-6">
+                    <label class="control-label text-left">{{cstmCompany.compAddr}}</label>
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">经营地址类型</b>:</label>
+                <div class="col-sm-2">
+                    {{cstmCompany.compAddrType | getName:'compAddrType'}}
+                </div>
+            </div>
+            <div class="form-group row" ng-if="cstmCompany.compAddrType==0">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">购买时间</b>:</label>
+                <div class="col-sm-2">
+                    {{cstmCompany.buyTime}}
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">建筑面积（㎡）</b>:</label>
+                <div class="col-sm-2">
+                    {{cstmCompany.constructionArea}}
+                </div>
+            </div>
+            <div class="form-group row" ng-if="cstmCompany.compAddrType==1">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">租赁时间</b>:</label>
+                <div class="col-sm-2">
+                    {{cstmCompany.leaseTime}}
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">面积</b>:</label>
+                <div class="col-sm-2">
+                    {{cstmCompany.leaseArea}}
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">租金(元/月)</b>:</label>
+                <div class="col-sm-2">
+                    {{cstmCompany.rent}}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="sub-main">
+        <div class="sub-title clearfix" click-hide>
+            <span class="pull-left">实际用车人信息</span>
+            <span class="pull-right"><i class="glyphicon glyphicon-chevron-down"></i></span>
+        </div>
+        <div class="sub-body">
+            <div class="form-group row">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">实际用车人</b>:</label>
+                <div class="col-sm-2">
+                    <label class="control-label text-left">{{cstmCompany.driver}}</label>
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">实际用车人手机号码</b>:</label>
+                <div class="col-sm-2">
+                    <label class="control-label text-left">{{cstmCompany.driverMobno}}</label>
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">实际用车人驾驶证档案编号</b>:</label>
+                <div class="col-sm-2">
+                    <label class="control-label text-left">{{cstmCompany.driverLicenseNo}}</label>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">准驾车型</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-2">
+                    <div class="checkbox" ng-repeat="a in quasiDriveModelList">
+                        <label>
+                            <input type="checkbox" name="quasiDriveModel" value="{{a.codeValue}}" ng-model="a.checked" ng-click="checkboxValue('quasiDriveModel',a.codeValue);" ng-checked="cstmCompany.quasiDriveModel.split(',').indexOf(a.codeValue) != -1" disabled>{{a.codeValueName}}
+                        </label>
+                    </div>
+                    <p>
+                        <span class="form-info" ng-show=" (form.quasiDriveModel.$dirty && !cstmCompany.quasiDriveModel) || (!cstmCompany.quasiDriveModel && formValidate)">准驾车型不能为空</span>
+                    </p>
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">初次领证日期</b>:</label>
+                <div class="col-sm-2">
+                    <label class="control-label text-left">{{cstmCompany.firstIssueDate}}</label>
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">驾龄(年)</b>:</label>
+                <div class="col-sm-2">
+                    <label class="control-label text-left">{{cstmCompany.drivingAge}}</label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="sub-main">
+        <div class="sub-title clearfix" click-hide>
+            <span class="pull-left">企业发票信息</span>
+            <span class="pull-right"><i class="glyphicon glyphicon-chevron-down"></i></span>
+        </div>
+        <div class="sub-body">
+            <div class="form-group row">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">发票类型</b>:</label>
+                <div class="col-sm-2">
+                    <label class="control-label text-left">{{cstmCompany.invoiceType | getName:'invoiceType'}}</label>
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">开票名</b>:</label>
+                <div class="col-sm-2">
+                    <label class="control-label text-left">{{cstmCompany.ticketOpening}}</label>
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">税号</b>:</label>
+                <div class="col-sm-2">
+                    <label class="control-label text-left">{{cstmCompany.dutyParagraph}}</label>
+                    <button type="button" class="btn btn-sm btn-success" ng-click="invoiceHistory()"
+                            ng-if="historyBtn == null || historyBtn == undefined">开票信息变更历史</button>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">地址、电话</b>:</label>
+                <div class="col-sm-6">
+                    <label class="control-label text-left">{{cstmCompany.invoiceAddr}}</label>
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">联系人</b>:</label>
+                <div class="col-sm-2">
+                    <label class="control-label text-left">{{cstmCompany.invoiceContactPer}}</label>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">账号</b>:</label>
+                <div class="col-sm-2">
+                    <label class="control-label text-left">{{cstmCompany.accountNumber}}</label>
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">开户行</b>:</label>
+                <div class="col-sm-2">
+                    <label class="control-label text-left">{{cstmCompany.bankName}}</label>
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">联系人电话</b>:</label>
+                <div class="col-sm-2">
+                    <label class="control-label text-left">{{cstmCompany.invoiceContactNo}}</label>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">发票邮寄地址</b>:</label>
+                <div class="col-sm-10">
+                    <label class="control-label text-left">{{cstmCompany.invoiceMailAddr}}</label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="sub-main">
+        <div class="sub-title clearfix" click-hide>
+            <span class="pull-left">购车合理性</span>
+            <span class="pull-right"><i class="glyphicon glyphicon-chevron-down"></i></span>
+        </div>
+        <div class="sub-body">
+            <div class="form-group row">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">客户来源</b>:</label>
+                <div class="col-sm-2">
+                    <label class="control-label text-left">{{rationalityPurchase.customerSource | getName:'customerSource'}}</label>
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">购车目的</b>:</label>
+                <div class="col-sm-2">
+                    <label class="control-label text-left">{{rationalityPurchase.purposePurchase | getName:'purposePurchase'}}</label>
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">选择万量原因</b>:</label>
+                <div class="col-sm-2">
+                    <label class="control-label text-left">{{rationalityPurchase.chooseReason | getName:'chooseReason'}}</label>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">原有车辆</b>:</label>
+                <div class="col-sm-2">
+                    <label class="control-label text-left">{{rationalityPurchase.originalVehicle}}</label>
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">购买时间</b>:</label>
+                <div class="col-sm-2">
+                    <label class="control-label text-left">{{rationalityPurchase.purchaseTime}}</label>
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">购买价格</b>:</label>
+                <div class="col-sm-2">
+                    <label class="control-label text-left">{{rationalityPurchase.price}}</label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="sub-main">
+        <div class="sub-title clearfix" click-hide>
+            <span class="pull-left">股东</span>
+            <span class="pull-right"><i class="glyphicon glyphicon-chevron-down"></i></span>
+        </div>
+        <div class="sub-body" style="margin-right: -40px;padding-left: 5px;padding-bottom: 10px;">
+            <div class="dataTables_wrapper form-inline dt-bootstrap no-footer">
+                <table border="1" class="table table-striped m-b-none dataTable no-footer" width="100%">
+                    <thead>
+                    <tr>
+                        <th class="sorting_disabled center" rowspan="1" colspan="1" style="width: 0px;">股东名称</th>
+                        <th class="sorting_disabled center" rowspan="1" colspan="1" style="width: 0px;">股份比例(%)</th>
+                        <th class="sorting_disabled center" rowspan="1" colspan="1" style="width: 0px;">出资额(万元)</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-show="stockAssetsList.length == 0">
+                        <td colspan="4" class="dataTables_empty">暂无数据</td>
+                    </tr>
+                    <tr click-tr ng-show="stockAssetsList.length != 0" ng-repeat="a in stockAssetsList track by $index">
+                        <td>{{a.shareholderName}}</td>
+                        <td>{{a.shareRatio}}</td>
+                        <td>{{a.contribution}}</td>
+                    </tr>
+                    <tr click-tr ng-show="stockAssetsList.length != 0">
+                        <th>合计</th>
+                        <td>{{shareRatioSum}}</td>
+                        <td>{{contributionSum}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="sub-main">
+        <div class="sub-title clearfix" click-hide>
+            <span class="pull-left">联系人信息</span>
+            <span class="pull-right"><i class="glyphicon glyphicon-chevron-down"></i></span>
+        </div>
+        <div class="sub-body" style="margin-right: -40px;padding-left: 5px;padding-bottom: 10px;">
+            <div class="row">
+                <div class="col-lg-12">
+                    <form class="form-inline" role="form">
+                    </form>
+                </div>
+            </div>
+            <table id="contact_table" border="1" class="table table-striped m-b-none" width="100%"></table>
+        </div>
+    </div>
+</div>

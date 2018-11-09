@@ -1,0 +1,63 @@
+<div class="modal-header">
+    <h4 class="modal-title">添加工作流模型 <button type="button" class="close" data-dismiss="modal" aria-hidden="true" ng-click="close()">&times;</button></h4>
+</div>
+<div class="modal-body">
+    <form name="form" class="form-validation" novalidate>
+
+        <div class="panel-body">
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">流程分类</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="category" placeholder="请输入流程分类" class="form-control m-b-xs" ng-model="actReModel.category"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.category.$dirty && form.category.$error.required) || (form.category.$error.required && formValidate)">流程分类不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">模块名称</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="name" placeholder="请输入模块名称" class="form-control m-b-xs" ng-model="actReModel.name" required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.name.$dirty && form.name.$error.required) || (form.name.$error.required && formValidate)">模块名称不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">模块标识</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="key" placeholder="请输入模块标识" class="form-control m-b-xs" ng-model="actReModel.key" required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.key.$dirty && form.key.$error.required) || (form.key.$error.required && formValidate)">模块标识不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">模块描述</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="description" placeholder="请输入模块描述" class="form-control m-b-xs" ng-model="actReModel.description" required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.description.$dirty && form.description.$error.required) || (form.description.$error.required && formValidate)">模块描述不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+
+
+
+        </div>
+    </form>
+</div>
+<div class="modal-footer ng-scope">
+    <button class="btn btn-default" ng-click="close()">取消</button>
+    <button type="submit" class="btn btn-success" ng-disabled="submit" ng-click="save()">新增</button>
+</div>

@@ -1,0 +1,111 @@
+
+<div  ng-controller="apply_list_select_controller">
+    <div>
+        <toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-body wrapper-sm">
+            <div class="keyUp">
+                <div class="row">
+                    <div class="col-lg-2">
+                        <input class="form-control m-b-xs" ng-model="params.applyNo" placeholder="请输入申请编号">
+                    </div>
+                    <div class="col-lg-2">
+                        <input class="form-control m-b-xs" ng-model="params.groupDistrict" placeholder="请输入出租人区域">
+                    </div>
+                    <div class="col-lg-2">
+                        <input class="form-control m-b-xs" ng-model="params.name" placeholder="请输入承租人">
+                    </div>
+                    <div class="col-lg-2">
+                        <select ng-model="params.applyType" class="form-control m-b-xs">
+                            <option value="">---选择申请类型---</option>
+                            <option value="{{applyTypeObj.codeValue}}" ng-repeat="applyTypeObj in applyTypeList" ng-selected="params.applyType == applyTypeObj.codeValue">{{applyTypeObj.codeValueName}}</option>
+                        </select>
+                    </div>
+                    <div class="col-lg-2">
+                        <select ng-model="params.licenseAttr" class="form-control m-b-xs">
+                            <option value="">---选择业务类型---</option>
+                            <option value="{{licenseAttrObj.codeValue}}" ng-repeat="licenseAttrObj in licenseAttrList" ng-selected="params.licenseAttr == licenseAttrObj.codeValue">{{licenseAttrObj.codeValueName}}</option>
+                        </select>
+                    </div>
+                    <div class="col-lg-2">
+                        <select ng-model="params.bizStatus" class="form-control m-b-xs">
+                            <option value="">---选择申请状态---</option>
+                            <option value="{{bizStatusObj.codeValue}}" ng-if="bizStatusObj.codeValue.startsWith($root.bizTypes.apply)" ng-repeat="bizStatusObj in bizStatusList" ng-selected="params.bizStatus == bizStatusObj.codeValue">{{bizStatusObj.codeValueName}}</option>
+                        </select>
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="col-lg-2">
+                        <input class="form-control m-b-xs" ng-model="params.guarantee" placeholder="请输入担保人">
+                    </div>
+                    <div class="col-lg-2">
+                        <div class="form-group">
+                            <label class="sr-only" >提出起始时间 </label>
+                            <input id="submitStartDate" type="text" name="submitStartDate" placeholder="请输入订单提出起始日"
+                                   class="form-control m-b-xs" ng-model="params.submitStartTime" date-picker="{{submitMaxDate}}">
+                        </div>
+                    </div>
+                    <div class="col-lg-2">
+                        <div class="form-group">
+                            <label class="sr-only" >提出结束时间 </label>
+                            <input id="submitEndDate" type="text" name="submitEndDate" placeholder="请输入订单提出结束日"
+                                   class="form-control m-b-xs" ng-model="params.submitEndTime" date-picker="{{submitMinDate}}">
+                        </div>
+                    </div>
+                    <div class="col-lg-2">
+                        <div class="form-group">
+                            <label class="sr-only" >审批起始时间 </label>
+                            <input id="approveStartDate" type="text" name="approveStartDate" placeholder="请输入审批通过起始日"
+                                   class="form-control m-b-xs" ng-model="params.approveStartTime" date-picker="{{approveMaxDate}}">
+                        </div>
+                    </div>
+                    <div class="col-lg-2">
+                        <div class="form-group">
+                            <label class="sr-only" >审批结束时间 </label>
+                            <input id="approveEndDate" type="text" name="approveEndDate" placeholder="请输入审批通过结束日"
+                                   class="form-control m-b-xs" ng-model="params.approveEndTime" date-picker="{{approveMinDate}}">
+                        </div>
+                    </div>
+                    <div class="col-lg-2">
+                        <select ng-model="params.windcontrApprovalStatus" class="form-control m-b-xs">
+                            <option value="">---选择风控审批结果---</option>
+                            <option value="{{windcontrApprovalStatusObj.codeValue}}" ng-repeat="windcontrApprovalStatusObj in windcontrApprovalStatusList" ng-selected="params.windcontrApprovalStatus == windcontrApprovalStatusObj.codeValue">{{windcontrApprovalStatusObj.codeValueName}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-2">
+                        <select ng-model="params.finalApprovalStatus" class="form-control m-b-xs">
+                            <option value="">---选择终审审批结果---</option>
+                            <option value="{{finalApprovalStatusObj.codeValue}}" ng-repeat="finalApprovalStatusObj in finalApprovalStatusList" ng-selected="params.finalApprovalStatus == finalApprovalStatusObj.codeValue">{{finalApprovalStatusObj.codeValueName}}</option>
+                        </select>
+                    </div>
+                    <div class="col-lg-2">
+                        <select ng-model="params.applyStatus" class="form-control m-b-xs">
+                            <option value="">---选择订单状态---</option>
+                            <option value="{{applyStatusObj.codeValue}}" ng-repeat="applyStatusObj in applyStatusList" ng-selected="params.applyStatus == applyStatusObj.codeValue">{{applyStatusObj.codeValueName}}</option>
+                        </select>
+                    </div>
+
+                    <div class="col-lg-2" ng-if="hasApproveUser">
+                        <select ng-model="params.approveUser" class="form-control m-b-xs">
+                            <option value="">---选择审核人员---</option>
+                            <option value="{{sysUserObj.user}}" ng-repeat="sysUserObj in sysUserList" ng-selected="params.assignUser == sysUserObj.user">{{sysUserObj.userName}}</option>
+                        </select>
+                    </div>
+
+                    <div class="col-lg-2">
+                        <div class="btn-group">
+                            <button class="btn btn-default m-b-xs btn-info btn-sm fms-button-margin-bottom" ng-click="searchApplyList()" press-enter><i class="fa fa-search"></i>查询</button>
+                            <button class="btn btn-default m-b-xs btn-sm fms-button-margin-bottom" ng-click="resetApplyList()" ><i class="fa  icon-refresh"></i>重置</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <table border="1" class="table table-striped m-b-none" id="apply_table">
+        </table>
+    </div>
+</div>

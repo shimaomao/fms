@@ -1,0 +1,57 @@
+<div class="modal-header">
+    <h4 class="modal-title">选择车型 <button type="button" class="close" data-dismiss="modal" aria-hidden="true" ng-click="close()">&times;</button></h4>
+</div>
+<div ng-init="init()">
+    <div class="panel-body">
+        <div class="panel panel-default" style="border: none;">
+            <div class="row">
+                <div class="col-lg-12">
+                    <form class="form-inline" role="form">
+                        <div class="m-b-sm">
+                            <div class="form-group">
+                                <label class="sr-only" >车型名称 </label>
+                                <input class="form-control m-b-xs" ng-model="vehicleName" placeholder="车型名称">
+                            </div>
+                            <div class="form-group">
+                                <label class="sr-only" >车系名称 </label>
+                                <input class="form-control m-b-xs" ng-model="vehSeriesName" placeholder="车系名称">
+                            </div>
+                            <div class="form-group">
+                                <label class="sr-only" >品牌名称 </label>
+                                <input class="form-control m-b-xs" ng-model="vehBrandName" placeholder="品牌名称">
+                            </div>
+
+                            <div class="btn-group pull-right" style="margin-top: -3px;margin-right: 19%;">
+                                <button class="btn btn-default m-b-xs btn-info" ng-click="searchBasVehicle()" ><i class="fa fa-search"></i>查询</button>
+                                <button class="btn btn-default m-b-xs" ng-click="resetBasVehicle()" ><i class="fa  icon-refresh"></i>重置</button>
+                                <button class="btn btn-default m-b-xs" ng-click="exportExcel()" style="margin-right: 0;">导出excel</button>
+                            </div>
+                        </div>
+
+                        <div class="m-b-sm">
+                            <div class="form-group">
+                                <label class="sr-only" >制造商名称 </label>
+                                <input class="form-control m-b-xs" ng-model="vehMakerName" placeholder="制造商名称">
+                            </div>
+
+
+                            <div class="form-group">
+                                <label class="sr-only" >指导价格 </label>
+                                <input class="form-control m-b-xs" ng-model="guidePrice" placeholder="指导价格">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-default" style="border: none;">
+            <table border="1" class="table table-striped m-b-none" id="bas_vehicle_list_select_table"></table>
+        </div>
+    </div>
+</div>
+<div class="modal-footer ng-scope">
+    <div class="text-center">
+        <button class="btn btn-default m-r-xs" ng-click="close()">取消</button>
+        <button class="btn btn-success m-r-xs" ng-click="confirm()">确认</button>
+    </div>
+</div>

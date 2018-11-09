@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.com.leadu.fms.data.prebiz.dao.QuotationDeviceDao">
+    
+    <select id="selectQuotationDevicesByPage" resultType="cn.com.leadu.fms.pojo.prebiz.vo.quotationdevice.QuotationDeviceVo">
+        SELECT
+        quotationDevice.*,
+        sysUser.user_name AS applyUserName,
+        sysGroup.group_name AS applyGroupName
+        FROM
+            quotation_device quotationDevice
+        LEFT JOIN
+        sys_user sysUser ON quotationDevice.apply_user = sysUser.user AND sysUser.del_flag = ${delete_exist}
+        LEFT JOIN
+        sys_group sysGroup ON quotationDevice.apply_group=sysGroup.group_code AND sysGroup.del_flag = ${delete_exist}
+        WHERE
+        quotationDevice.del_flag = ${delete_exist}
+        <if test="quotationDeviceVo.name != null">
+            AND quotationDevice.name LIKE #{quotationDeviceVo.name}
+        </if>
+        <if test="quotationDeviceVo.applyType != null">
+            AND quotationDevice.apply_type = #{quotationDeviceVo.applyType}
+        </if>
+        <if test="quotationDeviceVo.quotationEntryDistinction != null">
+            AND quotationDevice.quotation_entry_distinction = #{quotationDeviceVo.quotationEntryDistinction}
+        </if>
+        <if test="quotationDeviceVo.sysUser != null">
+            AND quotationDevice.apply_user = #{quotationDeviceVo.sysUser}
+        </if>
+        <if test="quotationDeviceVo.sysUserGroup != null">
+            AND quotationDevice.apply_group IN
+            <foreach collection="quotationDeviceVo.sysUserGroup" item="item" index="index" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        ORDER BY quotationDevice.update_time desc
+    </select>
+
+    <select id="selectQuotationDeviceByQuotationDeviceId" resultType="cn.com.leadu.fms.pojo.prebiz.vo.quotationdevice.QuotationDeviceVo">
+        SELECT
+            qd.*, bv.vehicle_name
+        FROM
+            quotation_device qd
+        LEFT JOIN bas_vehicle bv ON qd.vehicle_code = bv.vehicle_code
+        AND bv.del_flag = ${delete_exist}
+        WHERE
+            qd.del_flag = ${delete_exist}
+        AND qd.quotation_device_id = #{quotationDeviceId}
+    </select>
+
+</mapper>

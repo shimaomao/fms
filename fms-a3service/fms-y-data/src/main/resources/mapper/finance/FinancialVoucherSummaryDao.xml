@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.com.leadu.fms.data.finance.dao.FinancialVoucherSummaryDao">
+
+
+    <!--
+     /**
+     * @Title:
+     * @Description:   查询财务凭证管理列表
+     * @param finVouSummaryVo
+     * @return
+     * @throws
+     * @author qiaomengnan
+     * @date 2018/07/23 02:51:32
+     */
+     -->
+    <select id="selectFinancialVoucherSummaryVosByPage" resultType="cn.com.leadu.fms.pojo.finance.vo.financialvouchersummary.FinancialVoucherSummaryVo">
+        select
+        <!-- 凭证管理id -->
+        finVouSummary.voucher_summary_id,
+        <!-- 凭证号  -->
+        finVouSummary.voucher_no,
+        <!-- 业务号 -->
+        finVouSummary.voucher_biz_code,
+        <!-- 业务日期 -->
+        finVouSummary.voucher_biz_date,
+        <!-- 凭证类型 -->
+        finVouSummary.voucher_type,
+        <!-- 凭证类型名称 -->
+        finVou.voucher_name voucherTypeName,
+        <!-- 最后一次发送状态 -->
+        finVouSummary.send_status,
+        <!-- 最后一次发送批次号 -->
+        finVouSummary.send_batch_no,
+        <!-- 出租人 -->
+        sysGroup.group_name,
+        <!--承租人 -->
+        IFNULL(cstm_person.name,cstm_company.name) name,
+        <!-- 凭证区域  -->
+        finVouSummary.voucher_group
+        from financial_voucher_summary finVouSummary
+        <!-- 关联凭证类型表 使用凭证类型关联 -->
+        left join financial_voucher finVou on finVou.del_flag = ${delete_exist}
+        and finVou.voucher_type = finVouSummary.voucher_type
+        LEFT JOIN contract contract ON contract.cont_no = finVouSummary.voucher_biz_code AND contract.del_flag = ${delete_exist}
+        LEFT JOIN
+        contract_finance finance ON contract.cont_no=finance.cont_no AND finance.del_flag = ${delete_exist}
+        LEFT JOIN
+        sys_group sysGroup ON finance.belong_group = sysGroup.group_code AND sysGroup.del_flag =  ${delete_exist}
+        LEFT JOIN
+        cstm_person  ON contract.apply_no=cstm_person.apply_no AND cstm_person.del_flag = ${delete_exist}
+        LEFT JOIN
+        cstm_company  ON contract.apply_no=cstm_company.apply_no AND cstm_company.del_flag = ${delete_exist}
+        <!-- 条件 -->
+        where finVouSummary.del_flag = ${delete_exist}
+        <!-- 凭证号查询 -->
+        <if test="finVouSummaryVo.voucherNo != null">
+            and finVouSummary.voucher_no like #{finVouSummaryVo.voucherNo}
+        </if>
+        <!-- 业务号查询 -->
+        <if test="finVouSummaryVo.voucherBizCode != null">
+            and finVouSummary.voucher_biz_code like #{finVouSummaryVo.voucherBizCode}
+        </if>
+        <!-- 承租人 -->
+        <if test="finVouSummaryVo.name != null">
+            AND (cstm_person.name LIKE #{finVouSummaryVo.name} OR cstm_company.name LIKE #{finVouSummaryVo.name})
+        </if>
+        <!-- 凭证类型 -->
+        <if test="finVouSummaryVo.voucherTypeName != null">
+            and finVou.voucher_name like #{finVouSummaryVo.voucherTypeName}
+        </if>
+        <!-- 凭证区域 -->
+        <if test="finVouSummaryVo.voucherGroup != null">
+            and finVouSummary.voucher_group like #{finVouSummaryVo.voucherGroup}
+        </if>
+        <!-- 发送状态 -->
+        <if test="finVouSummaryVo.sendStatus != null">
+            and finVouSummary.send_status = #{finVouSummaryVo.sendStatus}
+        </if>
+        <!-- 业务日期开始日期 -->
+        <if test="finVouSummaryVo.startTime != null">
+            AND  finVouSummary.voucher_biz_date &gt;= #{finVouSummaryVo.startTime}
+        </if>
+        <!-- 业务日期结束日期 -->
+        <if test="finVouSummaryVo.endTime != null">
+            AND  finVouSummary.voucher_biz_date &lt;= #{finVouSummaryVo.endTime}
+        </if>
+        order by finVouSummary.update_time desc
+    </select>
+</mapper>

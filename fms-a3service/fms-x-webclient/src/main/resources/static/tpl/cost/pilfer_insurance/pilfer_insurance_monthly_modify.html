@@ -1,0 +1,127 @@
+<style>
+    .panel>h4{padding: 15px;border-bottom: 1px solid #dedede;color: black;font-weight: 600;margin: 0;font-size: 14px;}
+    .table>thead>tr>th, .table>tbody>tr>th, .table>tfoot>tr>th, .table>thead>tr>td, .table>tbody>tr>td, .table>tfoot>tr>td{border: 1px solid #eaeff0!important;}
+</style>
+<div ng-controller="pilfer_insurance_monthly_modify_controller" style="padding: 20px;">
+    <div>
+        <toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <form name="form" class="form-validation" novalidate>
+
+                <div class="row">
+                    <div class="col-sm-12"><h4>待月结数据</h4></div>
+                    <div class="col-sm-12">
+                        <div class="dataTables_wrapper form-inline dt-bootstrap no-footer">
+                            <table border="1" class="table table-striped m-b-none dataTable no-footer">
+                                <thead>
+                                <tr>
+                                    <th>出租人</th>
+                                    <th>承租人</th>
+                                    <th>车架号</th>
+                                    <th>融资期限</th>
+                                    <th>投保期限</th>
+                                    <th>账单月</th>
+                                    <th>盗抢险费用</th>
+                                    <th>账单费用</th>
+                                    <th>是否一致</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr click-tr ng-repeat="a in tableData">
+                                    <td>{{a.rentPerson}}</td>
+                                    <td>{{a.lessee}}</td>
+                                    <td>{{a.vinNo}}</td>
+                                    <td>{{a.finPeriodType}}</td>
+                                    <td>{{a.timeLimit}}</td>
+                                    <td>{{a.billMonth}}</td>
+                                    <td>{{a.pilferInsuranceCost}}</td>
+
+                                    <td>
+                                        <input name="billPilferInsuranceCost_{{$index}}" type="number" ng-change="changeValue(a);" class="form-control" ng-model="a.billPilferInsuranceCost" required>
+                                        <span class="form-info" ng-show=" (form.billPilferInsuranceCost_{{$index}}.$dirty && form.billPilferInsuranceCost_{{$index}}.$error.required) || (form.billPilferInsuranceCost_{{$index}}.$error.required && formValidate)">账单费用不能为空</span>
+                                    </td>
+                                    <td>
+                                        <span>{{a.consistent}}</span>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-1 control-label text-right"><b class="form-text-black">月结金额</b><b
+                            class="form-error"></b>:</label>
+                    <div class="col-sm-2">
+                        <input type="text" name="totalCost" class="form-control m-b-xs" ng-model="monthlyPilferInsuranceVo.totalCost" disabled>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <!--<label class="col-sm-1 control-label text-right"><b class="form-text-black">收款银行</b><b
+                            class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <input type="text" name="recAccBank" class="form-control m-b-xs" ng-disabled="true"
+                               ng-model="monthlyPilferInsuranceVo.recAccBank" required>
+                        <p>
+                            <span class="form-info"
+                                  ng-show=" (form.recAccBank.$dirty && form.recAccBank.$error.required) || (form.recAccBank.$error.required && formValidate)">请选择银行</span>
+                        </p>
+                    </div>-->
+
+                    <label class="col-sm-1 control-label text-right"><b class="form-text-black">收款银行分行</b><b
+                            class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <input type="text" title="{{monthlyPilferInsuranceVo.recAccBranch}}" name="recAccBranch" class="form-control m-b-xs" ng-disabled="true"
+                               ng-model="monthlyPilferInsuranceVo.recAccBranch" required>
+                        <p>
+                            <span class="form-info"
+                                  ng-show=" (form.recAccBranch.$dirty && form.recAccBranch.$error.required) || (form.recAccBranch.$error.required && formValidate)">请选择银行</span>
+                        </p>
+                    </div>
+
+                    <div class="col-sm-1">
+                        <button class="btn btn-info m-b-xs m-l-sm  btn-sm" ng-click="selectBasBankInfo()"><i
+                                class="fa fa-pencil-square-o m-r-xs"></i>选择
+                        </button>
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">账户</b><b
+                            class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <input type="text" title="{{monthlyPilferInsuranceVo.recAccountName}}" name="recAccountName" class="form-control m-b-xs" ng-disabled="true"
+                               ng-model="monthlyPilferInsuranceVo.recAccountName">
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">卡号</b><b
+                            class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <input type="text" title="{{monthlyPilferInsuranceVo.recAccountNo}}" name="recAccountNo" class="form-control m-b-xs" ng-disabled="true"
+                               ng-model="monthlyPilferInsuranceVo.recAccountNo">
+                    </div>
+                </div>
+
+                <li style="font-weight: bold;font-size: 16px;">附件信息</li>
+                <!--附件信息-->
+                <div class="panel-body wrapper-sm" ng-if="httpData">
+                    <tree-file-directive detail-flag="$root.yesNoFlag.no" file-type="$root.basFileTypes.pilferInsuranceMonthlyFile" files="$parent.bizFilesList" not-upload="$parent.notUpload" not-upload-info="$parent.msgInfo"   not-file-type="$parent.notFileType" not-file-type-name="$parent.notFileTypeName">
+                    </tree-file-directive>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-12 text-center m-t-md">
+                        <button class="btn btn-default" ng-click="close()">取消</button>
+                        <button type="submit" class="btn btn-success" ng-disabled="submit" ng-click="save()">保存</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div class="row fms-div-content" ng-if="monthlyPilferInsuranceNo != ''">
+            <process-log-list-directive wf-log-type="$root.bizTypes.pilfer" wf-log-no="monthlyPilferInsuranceNo" > </process-log-list-directive>
+        </div>
+    </div>
+
+</div>

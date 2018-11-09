@@ -1,0 +1,301 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.com.leadu.fms.data.finance.dao.FinBackfillDao">
+    <select id="selectFinBackfillsByPage" resultType="cn.com.leadu.fms.pojo.finance.vo.finbackfill.FinBackfillVo">
+        SELECT
+            fb.fil_backfill_id,
+            fb.cont_no,
+            cp.name,
+            fb.fil_backfill_sts,
+            pro.product_name,
+            cf.fin_total,
+            cf.init_perc,
+            cf.init_amount,
+            cf.license_attr,
+            cf.fin_period_type,
+            co.contract_valid_date,
+            co.vin_no,
+            co.lease_term_start_date,
+            co.lease_term_end_date
+        FROM fin_backfill fb
+        LEFT JOIN contract co ON fb.cont_no = co.cont_no
+        AND co.del_flag = ${delete_exist}
+        AND co.apply_type = '1'
+        INNER JOIN cstm_person cp ON co.apply_no = cp.apply_no
+        AND cp.del_flag = ${delete_exist}
+        INNER JOIN contract_finance cf ON co.cont_no = cf.cont_no
+        AND cf.del_flag = ${delete_exist}
+        LEFT JOIN product pro ON cf.product = pro.product
+        AND pro.del_flag = ${delete_exist}
+        WHERE fb.del_flag = ${delete_exist}
+        <if test="finBackfillVo.name != null">
+            AND cp.name like #{finBackfillVo.name}
+        </if>
+        <if test="finBackfillVo.contNo != null">
+            AND fb.cont_no like #{finBackfillVo.contNo}
+        </if>
+        <if test="finBackfillVo.filBackfillSts != null">
+            AND fb.fil_backfill_sts = #{finBackfillVo.filBackfillSts}
+        </if>
+        <if test="finBackfillVo.vinNo != null">
+            AND co.vin_no like #{finBackfillVo.vinNo}
+        </if>
+        <if test="finBackfillVo.licenseAttr != null">
+            AND  cf.license_attr = #{finBackfillVo.licenseAttr}
+        </if>
+        UNION
+        SELECT
+            fb.fil_backfill_id,
+            fb.cont_no,
+            cc.name,
+            fb.fil_backfill_sts,
+            pro.product_name,
+            cf.fin_total,
+            cf.init_perc,
+            cf.init_amount,
+            cf.license_attr,
+            cf.fin_period_type,
+            co.contract_valid_date,
+            co.vin_no,
+            co.lease_term_start_date,
+            co.lease_term_end_date
+        FROM fin_backfill fb
+        LEFT JOIN contract co ON fb.cont_no = co.cont_no
+        AND co.del_flag = ${delete_exist}
+        AND co.apply_type = '2'
+        INNER JOIN cstm_company cc ON co.apply_no = cc.apply_no
+        AND cc.del_flag = ${delete_exist}
+        INNER JOIN contract_finance cf ON co.cont_no = cf.cont_no
+        AND cf.del_flag = ${delete_exist}
+        LEFT JOIN product pro ON cf.product = pro.product
+        AND pro.del_flag = ${delete_exist}
+        WHERE fb.del_flag = ${delete_exist}
+        <if test="finBackfillVo.name != null">
+            AND cc.name like #{finBackfillVo.name}
+        </if>
+        <if test="finBackfillVo.contNo != null">
+            AND fb.cont_no like #{finBackfillVo.contNo}
+        </if>
+        <if test="finBackfillVo.filBackfillSts != null">
+            AND fb.fil_backfill_sts = #{finBackfillVo.filBackfillSts}
+        </if>
+        <if test="finBackfillVo.vinNo != null">
+            AND co.vin_no like #{finBackfillVo.vinNo}
+        </if>
+        <if test="finBackfillVo.licenseAttr != null">
+            AND  cf.license_attr = #{finBackfillVo.licenseAttr}
+        </if>
+    </select>
+
+    <select id="selectFinBackfillByFilBackfillId" parameterType="java.lang.String" resultMap="FinBackfillVoMap">
+        SELECT DISTINCT
+            fb.fil_backfill_id filBackfillId,
+            co.apply_no applyNo,
+            if(co.apply_type = '1',cp.name,cc.name) name,
+            cf.fin_period_type finPeriodType,
+            cf.invest_total cstmInvestTotal,
+            cf.fin_total cstmFinTotal,
+            cf.init_amount cstmInitAmount,
+            cf.final_amount cstmFinalAmount,
+            fb.cont_no contNo,
+            cf.license_attr licenseAttr,
+            cf.rent rent,
+            sys_group.group_name groupName,
+            contract.vin_no vinNo,
+            fb.invest_total investTotal,
+            fb.fin_total finTotal,
+            fb.init_amount initAmount,
+            fb.final_amount finalAmount,
+            fb.intrst_rate_year intrstRateYear
+        FROM fin_backfill fb
+        LEFT JOIN contract ON contract.cont_no = fb.cont_no AND contract.del_flag = ${delete_exist}
+        LEFT JOIN fin_backfill_detail fbd ON fb.cont_no = fbd.cont_no
+        AND fbd.del_flag = ${delete_exist}
+        LEFT JOIN fin_item fi ON fbd.fin_item = fi.fin_item
+        AND fi.del_flag = ${delete_exist}
+        LEFT JOIN contract co ON fb.cont_no = co.cont_no
+        AND co.del_flag = ${delete_exist}
+        LEFT JOIN cstm_person cp ON co.apply_no = cp.apply_no
+        AND cp.del_flag = ${delete_exist}
+        LEFT JOIN cstm_company cc ON co.apply_no = cc.apply_no
+        AND cc.del_flag = ${delete_exist}
+        LEFT JOIN contract_finance cf ON co.cont_no = cf.cont_no
+        AND cf.del_flag = ${delete_exist}
+        LEFT JOIN sys_group ON cf.belong_group = sys_group.group_code AND sys_group.del_flag = ${delete_exist}
+        LEFT JOIN product pro ON cf.product = pro.product
+        AND pro.del_flag = ${delete_exist}
+        WHERE fb.del_flag = ${delete_exist}
+        <if test="filBackfillId != null">
+            AND fb.fil_backfill_id = #{filBackfillId}
+        </if>
+    </select>
+
+    <resultMap id="FinBackfillVoMap" type="cn.com.leadu.fms.pojo.finance.vo.finbackfill.FinBackfillVo">
+        <id column="filBackfillId" javaType="java.lang.String" property="filBackfillId" />
+        <result column="applyNo" javaType="java.lang.String" property="applyNo" />
+        <result column="name" javaType="java.lang.String" property="name" />
+        <result column="finPeriodType" javaType="java.lang.String" property="finPeriodType" />
+        <result column="investTotal" javaType="java.math.BigDecimal" property="investTotal" />
+        <result column="finTotal" javaType="java.math.BigDecimal" property="finTotal" />
+        <result column="initAmount" javaType="java.math.BigDecimal" property="initAmount" />
+        <result column="finalAmount" javaType="java.math.BigDecimal" property="finalAmount" />
+        <result column="contNo" javaType="java.lang.String" property="contNo" />
+        <result column="licenseAttr" javaType="java.lang.String" property="licenseAttr" />
+        <result column="rent" javaType="java.math.BigDecimal" property="rent" />
+        <result column="financeInitAmount" javaType="java.math.BigDecimal" property="financeInitAmount" />
+        <result column="financeFinalAmount" javaType="java.math.BigDecimal" property="financeFinalAmount" />
+        <result column="intrstRateYear" javaType="java.math.BigDecimal" property="intrstRateYear" />
+        <result column="groupName" javaType="java.lang.String" property="groupName" />
+        <result column="vinNo" javaType="java.lang.String" property="vinNo" />
+        <collection property="finBackfillDetailVoList" ofType="cn.com.leadu.fms.pojo.finance.vo.finbackfilldetail.FinBackfillDetailVo"
+                    javaType="java.util.ArrayList" select="getFinBackfillDetailVoList" column="contNo">
+        </collection>
+        <collection property="perRentList" ofType="java.math.BigDecimal" javaType="java.util.ArrayList" select="getPerRentList" column="contNo">
+        </collection>
+    </resultMap>
+
+    <select id="getPerRentList" resultType="java.math.BigDecimal">
+        SELECT
+            rent
+        FROM cont_repay_sked
+        WHERE del_flag = ${delete_exist}
+        AND cont_no = #{contNo}
+        ORDER BY repay_date
+    </select>
+
+    <select id="getFinBackfillDetailVoList" resultMap="FinnBackfillDetailVoMap">
+        SELECT
+            fbd.fin_backfill_detail_id finBackfillDetailId,
+            fbd.fin_item finItem,
+            fi.fin_item_name finItemName,
+            <!-- 经营租赁的购置税税率为0 -->
+            if(contract.license_attr = 1 and fi.fin_item = 'purchasetax',0 ,fi.fin_tax) finTax,
+            fbd.fin_item_year finItemYear,
+            fbd.fin_amount finAmount,
+            fbd.actual_fin_amount actualFinAmount,
+            fbd.show_detail showDetail,
+            fbd.actual_tax_amount actualTaxAmount,
+            fbd.actual_cost_amount actualCostAmount
+        FROM fin_backfill_detail fbd
+        LEFT JOIN fin_item fi ON fbd.fin_item = fi.fin_item
+        AND fi.del_flag = ${delete_exist}
+        left join contract_finance contract on contract.cont_no = fbd.cont_no and contract.del_flag = ${delete_exist}
+        WHERE fbd.del_flag = ${delete_exist}
+        AND fbd.cont_no = #{contNo}
+        ORDER BY fi.order_no, fbd.fin_item_year
+    </select>
+
+    <resultMap id="FinnBackfillDetailVoMap" type="cn.com.leadu.fms.pojo.finance.vo.finbackfilldetail.FinBackfillDetailVo">
+        <id column="finBackfillDetailId" javaType="java.lang.String" property="finBackfillDetailId" />
+        <result column="finItemName" javaType="java.lang.String" property="finItemName" />
+        <result column="finItemYear" javaType="java.lang.Integer" property="finItemYear" />
+        <result column="finAmount" javaType="java.math.BigDecimal" property="finAmount" />
+        <result column="finTax" javaType="java.math.BigDecimal" property="finTax" />
+        <result column="actualFinAmount" javaType="java.math.BigDecimal" property="actualFinAmount" />
+        <result column="actualCostAmount" javaType="java.math.BigDecimal" property="actualCostAmount" />
+        <result column="actualTaxAmount" javaType="java.math.BigDecimal" property="actualTaxAmount" />
+    </resultMap>
+
+    <select id="selectContRepaySkedByfinBackfillVo" resultType="cn.com.leadu.fms.pojo.finance.vo.contrepaysked.ContRepaySkedVo">
+        SELECT
+            crs.*
+        FROM cont_repay_sked crs
+        WHERE crs.cont_no = #{contRepaySkedVo.contNo}
+        and crs.del_flag = ${delete_exist}
+        and crs.repay_status != #{contRepaySkedVo.repayStatus}
+        order by period
+    </select>
+
+    <!--导出财务回填excel-->
+    <select id="selectFinBackfillsForExportExcel" parameterType="cn.com.leadu.fms.pojo.finance.vo.finbackfill.FinBackfillVo" resultType="cn.com.leadu.fms.pojo.finance.vo.finbackfill.FinBackfillVoExcel">
+        SELECT
+        finBackfill.cont_no,
+        IF(apply.apply_type = #{finBackfillVo.person},cstmPerson.name,cstmCompany.name) name ,
+        contract.vin_no,
+        sysGroup.group_name,
+        finBackfillDetailFormat.carprice1 as carprice1,
+        finBackfillDetailFormat.purchasetax1 as purchasetax1,
+        finBackfillDetailFormat.insurance1 as insurance1,
+        finBackfillDetailFormat.extra1 as extra1,
+        finBackfillDetailFormat.license1 as license1,
+
+        finBackfillDetailFormat.carprice2 as carprice2,
+        finBackfillDetailFormat.purchasetax2 as purchasetax2,
+        finBackfillDetailFormat.insurance2 as insurance2,
+        finBackfillDetailFormat.extra2 as extra2,
+        finBackfillDetailFormat.license2 as license2,
+
+        finBackfillDetailFormat.carprice3 as carprice3,
+        finBackfillDetailFormat.purchasetax3 as purchasetax3,
+        finBackfillDetailFormat.insurance3 as insurance3,
+        finBackfillDetailFormat.extra3 as extra3,
+        finBackfillDetailFormat.license3 as license3,
+
+        contPayFormat.carpriceName,
+        contPayFormat.purchasetaxName,
+        contPayFormat.insuranceName,
+        contPayFormat.extraName,
+        contPayFormat.licenseName
+        FROM fin_backfill finBackfill
+        LEFT JOIN contract contract ON finBackfill.cont_no = contract.cont_no
+		LEFT JOIN
+        apply apply ON contract.apply_no=apply.apply_no AND apply.del_flag = ${delete_exist}
+        left join cstm_person cstmPerson on cstmPerson.del_flag = ${delete_exist}
+        and cstmPerson.apply_no = contract.apply_no
+        left join cstm_company cstmCompany on cstmCompany.del_flag = ${delete_exist}
+        and cstmCompany.apply_no = contract.apply_no
+		LEFT JOIN
+        contract_finance finance ON contract.cont_no=finance.cont_no AND finance.del_flag = ${delete_exist}
+        LEFT JOIN
+        sys_group sysGroup ON finance.belong_group = sysGroup.group_code AND sysGroup.del_flag =  ${delete_exist}
+
+		LEFT JOIN
+        (SELECT cont_no ,
+        MAX(CASE fin_item WHEN 'purchasetax' THEN fin_amount ELSE 0 END ) purchasetax1,
+        sum(CASE fin_item WHEN 'insurance' THEN fin_amount ELSE 0 END ) insurance1,
+        MAX(CASE fin_item WHEN 'carprice' THEN fin_amount ELSE 0 END ) carprice1,
+		MAX(CASE fin_item WHEN 'extra' THEN fin_amount ELSE 0 END ) extra1,
+		MAX(CASE fin_item WHEN 'license' THEN fin_amount ELSE 0 END ) license1,
+		MAX(CASE fin_item WHEN 'purchasetax' THEN actual_cost_amount ELSE 0 END ) purchasetax2,
+        sum(CASE fin_item WHEN 'insurance' THEN actual_cost_amount ELSE 0 END ) insurance2,
+        MAX(CASE fin_item WHEN 'carprice' THEN actual_cost_amount ELSE 0 END ) carprice2,
+		MAX(CASE fin_item WHEN 'extra' THEN actual_cost_amount ELSE 0 END ) extra2,
+		MAX(CASE fin_item WHEN 'license' THEN actual_cost_amount ELSE 0 END ) license2,
+		MAX(CASE fin_item WHEN 'purchasetax' THEN actual_tax_amount ELSE 0 END ) purchasetax3,
+        sum(CASE fin_item WHEN 'insurance' THEN actual_tax_amount ELSE 0 END ) insurance3,
+        MAX(CASE fin_item WHEN 'carprice' THEN actual_tax_amount ELSE 0 END ) carprice3,
+		MAX(CASE fin_item WHEN 'extra' THEN actual_tax_amount ELSE 0 END ) extra3,
+		MAX(CASE fin_item WHEN 'license' THEN actual_tax_amount ELSE 0 END ) license3
+        FROM fin_backfill_detail
+        where fin_backfill_detail.del_flag = ${delete_exist}
+        GROUP BY cont_no) finBackfillDetailFormat
+        ON finBackfillDetailFormat.cont_no = contract.cont_no
+
+        LEFT JOIN
+        (SELECT biz_code ,payment_type,
+        MAX(CASE pay_fund WHEN 'purchasetax0' THEN rec_account_name ELSE '' END ) purchasetaxName,
+        MAX(CASE pay_fund WHEN 'insurance1' THEN rec_account_name ELSE '' END ) insuranceName,
+        MAX(CASE pay_fund WHEN 'carprice0' THEN rec_account_name ELSE '' END ) carpriceName,
+		MAX(CASE pay_fund WHEN 'extra0' THEN rec_account_name ELSE '' END ) extraName,
+		MAX(CASE pay_fund WHEN 'license0' THEN rec_account_name ELSE '' END ) licenseName
+        FROM cont_pay
+        where cont_pay.del_flag = ${delete_exist}
+        GROUP BY biz_code) contPayFormat
+		ON contPayFormat.biz_code = contract.cont_no AND payment_type = #{finBackfillVo.paymentType}
+        WHERE finBackfill.del_flag = ${delete_exist}
+        <if test="finBackfillVo.filBackfillSts != null">
+            AND finBackfill.fil_backfill_sts = #{finBackfillVo.filBackfillSts}
+        </if>
+        <if test="finBackfillVo.name != null">
+            AND (cstmPerson.name LIKE #{finBackfillVo.name} OR cstmCompany.name LIKE #{finBackfillVo.name})
+        </if>
+        <if test="finBackfillVo.contNo != null">
+            AND finBackfill.cont_no like #{finBackfillVo.contNo}
+        </if>
+        <if test="finBackfillVo.vinNo != null">
+            AND contract.vin_no like #{finBackfillVo.vinNo}
+        </if>
+    </select>
+</mapper>

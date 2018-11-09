@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.com.leadu.fms.data.finance.dao.FinRepaySkedDao">
+<select id="selectRestPrincipalAmountByContNo" parameterType="java.lang.String" resultType="java.math.BigDecimal">
+        SELECT SUM(fin_repay_sked.rest_principal) FROM fin_repay_sked INNER JOIN cont_repay_sked
+        WHERE fin_repay_sked.cont_no = cont_repay_sked.cont_no
+        AND fin_repay_sked.period = cont_repay_sked.period
+        AND cont_repay_sked.cont_no = #{contNo}
+        <!-- 销售还款计划表.扣款状态不等于“2：成功”和“4:已提前结清” -->
+        AND cont_repay_sked.repay_status NOT IN ('2','4')
+        AND fin_repay_sked.del_flag = ${delete_exist};
+</select>
+        <select id="selectRestPrincipalAmountByApplyNo" parameterType="java.lang.String" resultType="java.math.BigDecimal">
+                SELECT SUM(fin_repay_sked.rest_principal) FROM contract LEFT JOIN cont_repay_sked ON contract.cont_no = cont_repay_sked.cont_no
+                AND contract.apply_no = #{applyNo}
+                INNER JOIN  fin_repay_sked
+                WHERE fin_repay_sked.cont_no = cont_repay_sked.cont_no
+                AND fin_repay_sked.period = cont_repay_sked.period
+                AND cont_repay_sked.repay_status NOT IN ('2','4')
+                AND fin_repay_sked.del_flag = ${delete_exist};
+        </select>
+        <select id="selectFinRepaySkedsByPage" resultType="cn.com.leadu.fms.pojo.finance.vo.contrepaysked.ContRepaySkedVo">
+                SELECT
+                sked.repay_sked_id,sked.cont_no,sked.period,
+                sked.deal_date,sked.repay_date,sked.intrst_month_rate,
+                sked.rent,sked.principal,sked.interest,
+                sked.charge,sked.rest_principal,sked.repay_status,
+                sked.overdue_status,sked.repay_flag,sked.rec_acc_bank,
+                sked.rec_account_no,sked.rec_account_name,sked.deposit,
+                sked.rent_actual,sked.receipt_date,sked.fin_rent,
+                sked.fin_rprincipal,sked.fin_rinterest,sked.fin_rest_principal,
+                sked.fin_revenue,sked.fin_rtax,sked.memo,
+                sked.repay_type,sked.deduction_amount,sked.invoice_prop,sked.receipt_amount,
+                IFNULL(
+                cstm_person.`name`,
+                cstm_company.`name`
+                ) name ,
+                sys_group.group_district,
+                sys_group.group_name,
+                IF (
+                apply.apply_type = #{finRepaySkedVo.applyType},
+                apply.apply_type,
+                apply.company_type1
+                ) applyType,
+                apply.company_type2,
+                cont_overdue.overdue_amount,
+                cont_overdue.exempt_amount,
+                cont_overdue.receipt_amount AS overdueReceiptAmount,
+                contract.vin_no,
+                contract_finance.license_attr,
+                contract.payment_sts,
+                invoice.invoice_id,invoice.invoice_date,invoice.invoice_amount,invoice.invoice_memo,invoice.invoice_status
+                FROM
+                cont_repay_sked sked
+                LEFT JOIN contract ON contract.cont_no = sked.cont_no
+                AND contract.del_flag = ${delete_exist}
+                LEFT JOIN apply ON apply.apply_no = contract.apply_no
+                AND apply.del_flag =${delete_exist}
+                LEFT JOIN cstm_person ON cstm_person.apply_no = apply.apply_no
+                AND cstm_person.del_flag = ${delete_exist}
+                LEFT JOIN cstm_company ON cstm_company.apply_no = apply.apply_no
+                AND cstm_company.del_flag = ${delete_exist}
+                LEFT JOIN contract_finance ON contract.cont_no = contract_finance.cont_no
+                AND contract_finance.del_flag =${delete_exist}
+                LEFT JOIN sys_group ON contract_finance.belong_group = sys_group.group_code
+                AND sys_group.del_flag =${delete_exist}
+                LEFT JOIN cont_overdue ON sked.cont_no = cont_overdue.cont_no
+                AND sked.period = cont_overdue.period
+                AND cont_overdue.del_flag = ${delete_exist}
+                LEFT JOIN invoice ON invoice.cont_no = sked.cont_no and invoice.detail_no = sked.period
+                  AND invoice.invoice_data_type in('01','03','04') AND invoice.del_flag = ${delete_exist}
+                WHERE sked.del_flag = ${delete_exist}
+                <if test="finRepaySkedVo.licenseAttr != null">
+                        AND  contract_finance.license_attr = #{finRepaySkedVo.licenseAttr}
+                </if>
+                <if test="finRepaySkedVo.startTime != null">
+                        AND  sked.repay_date &gt;= #{finRepaySkedVo.startTime}
+                </if>
+                <if test="finRepaySkedVo.endTime != null">
+                        AND  sked.repay_date &lt;= #{finRepaySkedVo.endTime}
+                </if>
+                <if test="finRepaySkedVo.startTimeReceiptDate != null">
+                        AND  sked.receipt_date &gt;= #{finRepaySkedVo.startTimeReceiptDate}
+                </if>
+                <if test="finRepaySkedVo.endTimeReceiptDate != null">
+                        AND  sked.receipt_date &lt;= #{finRepaySkedVo.endTimeReceiptDate}
+                </if>
+                <if test="finRepaySkedVo.groupDistrict != null">
+                        AND  sys_group.group_district LIKE  #{finRepaySkedVo.groupDistrict}
+                </if>
+                <if test="finRepaySkedVo.name != null">
+                        AND (cstm_person.name like #{finRepaySkedVo.name} OR cstm_company.name LIKE #{finRepaySkedVo.name})
+                </if>
+                <if test="finRepaySkedVo.repayStatus != null">
+                        AND sked.repay_status = #{finRepaySkedVo.repayStatus}
+                </if>
+                <if test="finRepaySkedVo.receDate != null">
+                        AND sked.receipt_date = #{finRepaySkedVo.receDate}
+                </if>
+                <if test="finRepaySkedVo.rent != null">
+                        AND sked.rent_actual = #{finRepaySkedVo.rent}
+                </if>
+                <if test="finRepaySkedVo.invoDate != null">
+                        AND invoice.invoice_date = #{finRepaySkedVo.invoDate}
+                </if>
+                <if test='finRepaySkedVo.invoiceStatus != null and finRepaySkedVo.invoiceStatus=="0"'>
+                        AND (invoice.invoice_status = #{finRepaySkedVo.invoiceStatus} OR invoice.invoice_status IS NULL )
+                </if>
+                <if test='finRepaySkedVo.invoiceStatus != null and finRepaySkedVo.invoiceStatus!="0"'>
+                        AND invoice.invoice_status = #{finRepaySkedVo.invoiceStatus}
+                </if>
+                <if test="finRepaySkedVo.memo != null">
+                        AND (sked.memo like #{finRepaySkedVo.memo} OR invoice.invoice_memo like #{finRepaySkedVo.memo})
+                </if>
+                <if test="finRepaySkedVo.contNo != null">
+                        AND sked.cont_no like #{finRepaySkedVo.contNo}
+                </if>
+                <if test="finRepaySkedVo.vinNo != null">
+                        AND  contract.vin_no LIKE #{finRepaySkedVo.vinNo}
+                </if>
+                <if test="finRepaySkedVo.paymentSts != null">
+                    AND contract.payment_sts = #{finRepaySkedVo.paymentSts}
+                </if>
+                <if test="finRepaySkedVo.overdueStatus != null">
+                    AND sked.overdue_status = #{finRepaySkedVo.overdueStatus}
+                </if>
+                <if test="finRepaySkedVo.invoiceProp != null">
+                        AND sked.invoice_prop = #{finRepaySkedVo.invoiceProp}
+                </if>
+                ORDER  BY  sked.cont_no ASC ,sked.period ASC
+        </select>
+</mapper>

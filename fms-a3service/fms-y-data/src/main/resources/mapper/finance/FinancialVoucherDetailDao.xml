@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.com.leadu.fms.data.finance.dao.FinancialVoucherDetailDao">
+ <select id="selectFinancialVoucherDetailVosByPage" resultType="cn.com.leadu.fms.pojo.finance.vo.financialvoucherdetail.FinancialVoucherDetailVo">
+        SELECT
+        financial_voucher_detail.*, financial_voucher.voucher_name ,financial_subject.subject_name,GROUP_CONCAT(assisAccountType.assis_account_type_name order by subjectAssisAccount.assis_account_order separator '/') AS assisAccountTypeName
+        FROM
+        financial_voucher_detail
+        LEFT JOIN financial_voucher ON financial_voucher_detail.voucher_type = financial_voucher.voucher_type AND financial_voucher.del_flag = ${delete_exist}
+        LEFT JOIN financial_subject ON financial_voucher_detail.subject_cd = financial_subject.subject_cd AND financial_subject.del_flag = ${delete_exist}
+        LEFT JOIN subject_assis_account subjectAssisAccount ON financial_voucher_detail.subject_cd = subjectAssisAccount.subject_cd AND subjectAssisAccount.del_flag = ${delete_exist}
+        LEFT JOIN assis_account_type assisAccountType ON assisAccountType.assis_account_type = subjectAssisAccount.assis_account_type AND assisAccountType.del_flag = ${delete_exist}
+        WHERE
+            financial_voucher_detail.del_flag = ${delete_exist}
+            <if test="financialVoucherDetailVo.voucherType != null">
+              AND financial_voucher_detail.voucher_type LIKE #{financialVoucherDetailVo.voucherType}
+            </if>
+        GROUP BY financial_voucher_detail.voucher_detail_id
+        ORDER BY financial_voucher_detail.voucher_detail_no ASC
+ </select>
+</mapper>

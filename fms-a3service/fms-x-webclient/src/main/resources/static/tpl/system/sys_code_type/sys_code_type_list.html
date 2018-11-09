@@ -1,0 +1,49 @@
+<div  ng-controller="sys_code_type_list_controller">
+    <div>
+        <toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-body wrapper-sm">
+            <div class="row">
+                <div class="col-lg-12">
+                    <form class="form-inline" role="form">
+                        <div class="form-group">
+                            <label class="sr-only" >codeType </label>
+                            <input class="form-control m-b-xs" ng-model="params.codeType" placeholder="数据字典类型代码">
+                        </div>
+                        <div class="form-group">
+                            <label class="sr-only" >codeTypeName </label>
+                            <input class="form-control m-b-xs" ng-model="params.codeTypeName" placeholder="数据字典类型名称">
+                        </div>
+                        <div class="form-group">
+                            <select ng-model="params.enableFlag" class="form-control m-b-xs">
+                                <option value="">---选择启用标识---</option>
+                                <option value="{{enableFlagObj.codeValue}}" ng-repeat="enableFlagObj in enableFlagList" ng-selected="params.enableFlag==enableFlagObj.codeValue">{{enableFlagObj.codeValueName}}</option>
+                            </select>
+                        </div>
+
+
+                        <div class="form-group m-b-sm">
+                            <div class="btn-group">
+                                <button class="btn btn-default m-b-xs btn-info" ng-click="searchSysCodeType()" ><i class="fa fa-search"></i>查询</button>
+                                <button class="btn btn-default m-b-xs" ng-click="resetSysCodeType()" ><i class="fa  icon-refresh"></i>重置</button>
+                            </div>
+                        </div>
+
+                        <div class="form-group pull-right">
+                            <div class="btn-group">
+                                <button class="btn btn-default m-b-xs" ng-click="saveSysCodeType()"><i class="fa fa-plus"></i>添加</button>
+                                <button class="btn btn-default m-b-xs" ng-click="modifySysCodeType()"><i class="fa icon-pencil"></i>修改</button>
+                                <button class="btn btn-default m-b-xs" ng-click="deleteSysCodeType()"><i class="fa fa-trash-o"></i>删除</button>
+                                <button class="btn btn-default m-b-xs" ng-click="exportExcel()">导出excel</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <table border="1" class="table table-striped m-b-none" id="sys_code_type_table">
+        </table>
+    </div>
+</div>
+

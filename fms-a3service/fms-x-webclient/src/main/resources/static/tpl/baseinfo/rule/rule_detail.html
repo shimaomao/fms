@@ -1,0 +1,127 @@
+<style>
+    #financeVehicle .vehicleGroup{padding: 0 20px 0 20px}
+    #financeVehicle .vehicleTableDiv{overflow-x: auto;padding: 0;}
+    #financeVehicle .table{margin-left: 0px;border: 1px solid #EDEDED;}
+    #financeVehicle .table > thead{background-color: #F7F9FB;}
+    #financeVehicle .table > tbody > tr> th{background-color: #F7F9FB;}
+    #financeVehicle .vehicleTabCon{padding: 10px;border:1px solid #dee5e7;border-top: none;}
+    #financeVehicle .tabs{background-color: #F5F5F5;padding-left: 0;margin-bottom: 0;  list-style: none; height: 40px; display: block;border:1px solid #dee5e7;border-bottom: none;}
+    #financeVehicle .tabs > li{float:left;}
+    #financeVehicle .tabs > li > a{border: none;font-weight: bold;margin-right: 2px;line-height: 1.42857143;border-radius: 4px 4px 0 0;display: block;padding: 10px 15px;}
+    #financeVehicle .selectTab{background-color: #ffffff;}
+    #financeVehicle .selectTab > a{color: black;}
+    #financeVehicle .noneTab > a{color: #999;}
+</style>
+
+
+<div ng-controller="rule_detail_controller">
+
+    <div>
+        <toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+    </div>
+
+    <div class="panel panel-default">
+        <form name="form" class="form-validation" novalidate>
+
+            <div class="row fms-page-header">
+                <div class="form-inline" role="form">
+                    <div class="form-group">
+                        <h5>规则引擎详情</h5>
+                    </div>
+                    <div class="form-group pull-right">
+                        <button class="btn btn-default btn-sm fms-button-margin-top" ng-click="goBack()">返回</button>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <div class="panel-body">
+                <div class="form-group row">
+
+                    <label class="col-sm-1 control-label text-right"><b class="form-text-black">规则类型</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-3">
+                        <label class="col-sm-12 control-label text-left"> {{rule.ruleType}}</label>
+                    </div>
+
+                    <label class="col-sm-1 control-label text-right"><b class="form-text-black">规则key</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-3">
+                        <label class="col-sm-12 control-label text-left"> {{rule.ruleKey}}</label>
+                    </div>
+
+
+                    <label class="col-sm-1 control-label text-right"><b class="form-text-black">规则名称</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-3">
+                        <label class="col-sm-12 control-label text-left"> {{rule.ruleName}}</label>
+                    </div>
+
+                </div>
+
+                <div id="financeVehicle" class="row" style="margin:20px 5px 10px 5px;">
+
+                    <div class="pull-left m-t-sm m-l-sm line-lg m-r-md" style="font-weight: bold;font-size: 14px;">规则条件信息</div>
+                    <ul id="vehVehicleTab" class="tabs">
+                        <li class="{{vehTabClass[vehicleFin.applyVehicleId]}}" ng-repeat="ruleTable in ruleTableList" >
+                            <a data-toggle="tab" id="a_tab_{{ruleTable.index}}" data="{{ruleTable.index}}" ng-click="openRuleInfo({{ruleTable.index}})">{{"规则条件" + ($index + 1)}}</a>
+                        </li>
+                        <div class="btn-group pull-right m-t-xs m-r-sm">
+
+                        </div>
+                    </ul>
+
+                    <div id="div_tab_{{ruleTable.index}}" class="tab-content vehicleTabCon ng-hide" ng-repeat="ruleTable in ruleTableList" repeat-finish>
+
+                        <div class="vehTabContentClass"  style="padding-right: 25px; padding-left: 15px;" >
+                            <div class="form-group row">
+                                <div class="col-lg-6">
+
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <form class="form-inline" role="form">
+                                                <div class="pull-left">
+                                                    <div class="btn-group">
+                                                       <input class="form-control m-b-xs" style="visibility: hidden;" />
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+
+                                    <table id="ruleCondition_{{ruleTable.index}}"  border="1" class="table table-striped m-b-none" ></table>
+
+                                </div>
+
+                                <div class="col-lg-6">
+
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <form class="form-inline" role="form">
+                                                <div class="pull-left">
+                                                    <div class="btn-group">
+                                                        &nbsp;<b class="form-text-black">结果优先级</b><b class="form-error">*</b>：
+                                                            <input class="form-control m-b-xs" type="number" minlength="1" maxlength="4" readonly style="border: 0px;background-color: white;margin-top: 1px;" name="priority" data-priority-index="{{ruleTable.index}}"  placeholder="结果优先级">
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+
+                                    <table id="ruleConsequence_{{ruleTable.index}}"  border="1" class="table table-striped m-b-none" ></table>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+
+
+
+
+
+            </div>
+        </form>
+
+    </div>
+</div>

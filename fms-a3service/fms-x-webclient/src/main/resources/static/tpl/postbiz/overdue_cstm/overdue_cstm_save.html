@@ -1,0 +1,392 @@
+<div class="modal-header">
+    <h4 class="modal-title">电话登记<button type="button" class="close" data-dismiss="modal" aria-hidden="true" ng-click="close()">&times;</button></h4>
+</div>
+<div class="modal-body">
+    <style>
+        .modal-body{max-height: 400px;overflow: auto;}
+        .dataTables_scrollBody{overflow: auto;}
+        .modal .dataTables_scrollBody{height: auto;max-height: none;}
+        .table > tbody > tr > td, .table > tfoot > tr > td{vertical-align: middle;}
+        .dataTables_scrollBody p{margin: 0;}
+    </style>
+    <form name="form" class="form-validation" novalidate>
+        <div class="">
+            <div class="row">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">申请编号</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-2">
+                    <input type="text" name="applyNo" placeholder="申请编号" class="form-control m-b-xs" ng-model="overdueCstm.applyNo"  disabled >
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">客户姓名</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-2">
+                    <input type="text" name="cstmName" placeholder="客户姓名" class="form-control m-b-xs" ng-model="overdueCstm.cstmName"  disabled >
+                </div>
+            </div>
+            <div class="row">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">联系人</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-2">
+                    <input type="text" name="relationer" placeholder="联系人" class="form-control m-b-xs" ng-model="overdueCstm.relationer"  disabled >
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">联系人类型</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-2">
+                    <input type="text" name="relationType" placeholder="联系人类型" class="form-control m-b-xs" value="{{overdueCstm.relationType | getName:'relation'}}"  disabled >
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">联系电话</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-2">
+                    <input type="text" name="telNo" placeholder="联系电话" class="form-control m-b-xs" ng-model="overdueCstm.telNo"  disabled >
+                   <!-- <p>
+                        <span class="form-info" ng-show=" (form.telNo.$dirty && form.telNo.$error.required) || (form.telNo.$error.required && formValidate)">联系电话不能为空</span>
+                        <span class="form-info" ng-show=" (form.telNo.$dirty && form.telNo.$error.pattern) || (form.telNo.$error.pattern && formValidate)">请输入正确的电话号码</span>
+                    </p>-->
+                </div>
+            </div>
+            <div class="row">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">电话备注</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-10">
+                    <textarea limit-word type="text" name="telMemo" placeholder="电话备注" class="form-control m-b-xs" ng-model="overdueCstm.telMemo"  required ></textarea>
+                    <p>
+                        <span class="form-info" ng-show=" (form.telMemo.$dirty && form.telMemo.$error.required) || (form.telMemo.$error.required && formValidate)">电话备注不能为空</span>
+                    </p>
+                </div>
+            </div>
+            <div class="row">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">逾期状态</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-2">
+                    <input type="text" placeholder="逾期状态" class="form-control m-b-xs" ng-model="overdueCstm.overdueCondName"  required readonly="readonly">
+                    <input type="hidden" name="overdueCondCd" ng-model="overdueCstm.overdueCondCd"  required>
+                    <button type="button" class="btn-success" ng-click="chooseOverdue();">选择</button>
+                    <p>
+                        <span class="form-info" ng-show=" (form.overdueCondCd.$dirty && form.overdueCondCd.$error.required) || (form.overdueCondCd.$error.required && formValidate)">逾期状态不能为空</span>
+                    </p>
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">逾期状态详情</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-2">
+                    <select name="overdueDetail" ng-model="overdueCstm.overdueDetail" class="form-control" required>
+                        <option value="">请选择</option>
+                        <option ng-repeat="a in overdueDetailList" value="{{a.codeValue}}">{{a.codeValueName}}</option>
+                    </select>
+                    <p>
+                        <span class="form-info" ng-show=" (form.overdueDetail.$dirty && form.overdueDetail.$error.required) || (form.overdueDetail.$error.required && formValidate)">逾期状态详情不能为空</span>
+                    </p>
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">风险等级</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-2">
+                    <!--<input type="text" name="overdueRisk" placeholder="风险等级" class="form-control m-b-xs" ng-model="overdueCstm.overdueRisk"  required disabled>-->
+                    <select name="overdueRisk" ng-model="overdueCstm.overdueRisk" class="form-control" required disabled>
+                        <option value="">请选择</option>
+                        <option ng-repeat="a in overdueRiskList" value="{{a.codeValue}}">{{a.codeValueName}}</option>
+                    </select>
+                    <p>
+                        <span class="form-info" ng-show=" (form.overdueRisk.$dirty && form.overdueRisk.$error.required) || (form.overdueRisk.$error.required && formValidate)">风险等级不能为空</span>
+                    </p>
+                </div>
+            </div>
+            <div class="row">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">承诺还款日</b>:</label>
+                <div class="col-sm-2">
+                    <input type="text" name="commitRepayDate" placeholder="承诺还款日" class="form-control m-b-xs" ng-model="overdueCstm.commitRepayDate" date-picker >
+                    <!--<p>-->
+                        <!--<span class="form-info" ng-show=" (form.commitRepayDate.$dirty && form.commitRepayDate.$error.required) || (form.commitRepayDate.$error.required && formValidate)">承诺还款日不能为空</span>-->
+                    <!--</p>-->
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">处理状态</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-2">
+                    <input type="text" name="assignmentSts" placeholder="处理状态" class="form-control m-b-xs" ng-value="overdueCstm.assignmentSts | getName:'assignmentSts'"  disabled >
+                </div>
+            </div>
+            <!--<div class="row">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">风险账户</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-2">
+                    <select name="riskFlag" ng-model="overdueCstm.riskFlag" class="form-control" required>
+                        <option value="">请选择</option>
+                        <option ng-repeat="a in riskFlagList" value="{{a.codeValue}}">{{a.codeValueName}}</option>
+                    </select>
+                    <p>
+                        <span class="form-info" ng-show=" (form.riskFlag.$dirty && form.riskFlag.$error.required) || (form.riskFlag.$error.required && formValidate)">风险账户不能为空</span>
+                    </p>
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">配偶</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-2">
+                    <select name="mateConnType" ng-model="overdueCstm.mateConnType" class="form-control" required>
+                        <option value="">请选择</option>
+                        <option ng-repeat="a in mateConnTypeList" value="{{a.codeValue}}">{{a.codeValueName}}</option>
+                    </select>
+                    <p>
+                        <span class="form-info" ng-show=" (form.mateConnType.$dirty && form.mateConnType.$error.required) || (form.mateConnType.$error.required && formValidate)">配偶不能为空</span>
+                    </p>
+                </div>
+            </div>
+            <div class="row">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">客户可联性</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-2">
+                    <select name="connectType" ng-model="overdueCstm.connectType" class="form-control" required>
+                        <option value="">请选择</option>
+                        <option ng-repeat="a in connectTypeList" value="{{a.codeValue}}">{{a.codeValueName}}</option>
+                    </select>
+                    <p>
+                        <span class="form-info" ng-show=" (form.connectType.$dirty && form.connectType.$error.required) || (form.connectType.$error.required && formValidate)">客户可联性不能为空</span>
+                    </p>
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">工作稳定性</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-2">
+                    <select name="jobType" ng-model="overdueCstm.jobType" class="form-control" required>
+                        <option value="">请选择</option>
+                        <option ng-repeat="a in jobTypeList" value="{{a.codeValue}}">{{a.codeValueName}}</option>
+                    </select>
+                    <p>
+                        <span class="form-info" ng-show=" (form.jobType.$dirty && form.jobType.$error.required) || (form.jobType.$error.required && formValidate)">工作稳定性不能为空</span>
+                    </p>
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">收入类型</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-2">
+                    <select name="incomeType" ng-model="overdueCstm.incomeType" class="form-control" required>
+                        <option value="">请选择</option>
+                        <option ng-repeat="a in incomeTypeList" value="{{a.codeValue}}">{{a.codeValueName}}</option>
+                    </select>
+                    <p>
+                        <span class="form-info" ng-show=" (form.incomeType.$dirty && form.incomeType.$error.required) || (form.incomeType.$error.required && formValidate)">收入类型不能为空</span>
+                    </p>
+                </div>
+            </div>
+            <div class="row">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">居住类型</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-2">
+                    <select name="resideType" ng-model="overdueCstm.resideType" class="form-control" required>
+                        <option value="">请选择</option>
+                        <option ng-repeat="a in resideTypeList" value="{{a.codeValue}}">{{a.codeValueName}}</option>
+                    </select>
+                    <p>
+                        <span class="form-info" ng-show=" (form.resideType.$dirty && form.resideType.$error.required) || (form.resideType.$error.required && formValidate)">居住类型不能为空</span>
+                    </p>
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">居住真实性</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-2">
+                    <select name="addrValidType" ng-model="overdueCstm.addrValidType" class="form-control" required>
+                        <option value="">请选择</option>
+                        <option ng-repeat="a in addrValidTypeList" value="{{a.codeValue}}">{{a.codeValueName}}</option>
+                    </select>
+                    <p>
+                        <span class="form-info" ng-show=" (form.addrValidType.$dirty && form.addrValidType.$error.required) || (form.addrValidType.$error.required && formValidate)">居住真实性不能为空</span>
+                    </p>
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">车辆使用情况</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-2">
+                    <select name="vehicleCondType" ng-model="overdueCstm.vehicleCondType" class="form-control" required>
+                        <option value="">请选择</option>
+                        <option ng-repeat="a in vehicleCondTypeList" value="{{a.codeValue}}">{{a.codeValueName}}</option>
+                    </select>
+                    <p>
+                        <span class="form-info" ng-show=" (form.vehicleCondType.$dirty && form.vehicleCondType.$error.required) || (form.vehicleCondType.$error.required && formValidate)">车辆使用情况不能为空</span>
+                    </p>
+                </div>
+            </div>
+            <div class="row">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">担保人/共申人</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-2">
+                    <select name="guaranteeConnType" ng-model="overdueCstm.guaranteeConnType" class="form-control" required>
+                        <option value="">请选择</option>
+                        <option ng-repeat="a in guaranteeConnTypeList" value="{{a.codeValue}}">{{a.codeValueName}}</option>
+                    </select>
+                    <p>
+                        <span class="form-info" ng-show=" (form.guaranteeConnType.$dirty && form.guaranteeConnType.$error.required) || (form.guaranteeConnType.$error.required && formValidate)">担保人/共申人不能为空</span>
+                    </p>
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">联系人可联性</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-2">
+                    <select name="contactConnType" ng-model="overdueCstm.contactConnType" class="form-control" required>
+                        <option value="">请选择</option>
+                        <option ng-repeat="a in contactConnTypeList" value="{{a.codeValue}}">{{a.codeValueName}}</option>
+                    </select>
+                    <p>
+                        <span class="form-info" ng-show=" (form.contactConnType.$dirty && form.contactConnType.$error.required) || (form.contactConnType.$error.required && formValidate)">联系人可联性不能为空</span>
+                    </p>
+                </div>
+            </div>-->
+        </div>
+
+        <div class="line line-dashed b-b line-lg pull-in"></div>
+
+        <div class="form-group row">
+            <div class="form-group">
+                <h4>历史地址信息</h4>
+            </div>
+            <div class="form-group pull-right">
+                <button class="btn btn-success btn-sm" type="button" ng-click="addAddrList()"><i class="fa fa-plus"></i>增加</button>
+            </div>
+        </div>
+        <div class="dataTables_scrollBody">
+            <table border="1" class="table table-striped m-b-none dataTable no-footer" style="border: 1px solid #eaeeea;">
+                <thead>
+                    <tr>
+                        <th style="padding-right:20px!important;">序号</th>
+                        <th style="padding-right:20px!important;">联系人类型</th>
+                        <th style="padding-right:20px!important;">联系人姓名</th>
+                        <th style="padding-right:100px!important;">地址类型</th>
+                        <th style="padding-right:100px!important;">地址</th>
+                        <th style="padding-right:20px!important;">是否有效</th>
+                        <th style="padding-right:100px!important;">备注信息</th>
+                        <th style="padding-right:20px!important;">更新时间</th>
+                        <th style="padding-right:20px!important;">更新人员</th>
+                        <th style="padding-right:20px!important;">操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr click-tr ng-repeat="a in overdueCstm.overdueCstmAddrList track by $index">
+                        <td>{{$index+1}}</td>
+                        <td>
+                            <!--<input ng-show="!a.flag" type="text" value="{{a.relationType | getName:'relationType'}}" class="form-control" disabled/>-->
+                            <select name="relationTypeA_{{$index}}" ng-model="a.relationType" class="form-control" required>
+                                <option value="">请选择</option>
+                                <option ng-repeat="b in relationTypeList" value="{{b.codeValue}}" ng-selected="a.relationType == b.codeValue">{{b.codeValueName}}</option>
+                            </select>
+                            <p>
+                                <span class="form-info" ng-show=" (form.relationTypeA_{{$index}}.$dirty && form.relationTypeA_{{$index}}.$error.required) || (form.relationTypeA_{{$index}}.$error.required && formValidate)">不能为空</span>
+                            </p>
+                        </td>
+                        <td>
+                            <!--<input ng-show="!a.flag" type="text" value="{{a.cstmName}}" class="form-control" disabled/>-->
+                            <input name="cstmNameA_{{$index}}" type="text" ng-model="a.cstmName" class="form-control" required/>
+                            <p>
+                                <span class="form-info" ng-show=" (form.cstmNameA_{{$index}}.$dirty && form.cstmNameA_{{$index}}.$error.required) || (form.cstmNameA_{{$index}}.$error.required && formValidate)">不能为空</span>
+                            </p>
+                        </td>
+                        <td>
+                            <!--<input ng-show="!a.flag" type="text" value="{{a.addrType}}" class="form-control" disabled/>-->
+                            <!--<input name="addrTypeA_{{$index}}" type="text" ng-model="a.addrType" class="form-control" required/>-->
+                            <select name="addrTypeA_{{$index}}" ng-model="a.addrType" class="form-control" required>
+                                <option value="">请选择</option>
+                                <option ng-repeat="b in addrTypeList" value="{{b.codeValue}}" ng-selected="a.addrType == b.codeValue">{{b.codeValueName}}</option>
+                            </select>
+                            <p>
+                                <span class="form-info" ng-show=" (form.addrTypeA_{{$index}}.$dirty && form.addrTypeA_{{$index}}.$error.required) || (form.addrTypeA_{{$index}}.$error.required && formValidate)">不能为空</span>
+                            </p>
+                        </td>
+                        <td>
+                            <!--<input ng-show="!a.flag" type="text" value="{{a.address}}" class="form-control" disabled/>-->
+                            <input name="addressA_{{$index}}" type="text" ng-model="a.address" class="form-control" required/>
+                            <p>
+                                <span class="form-info" ng-show=" (form.addressA_{{$index}}.$dirty && form.addressA_{{$index}}.$error.required) || (form.addressA_{{$index}}.$error.required && formValidate)">不能为空</span>
+                            </p>
+                        </td>
+                        <td>
+                            <select name="validFlagA_{{$index}}" class="form-control" ng-model="a.validFlag">
+                                <option value="1" ng-repeat="a in validFlagList" value="{{a.codeValue}}">{{a.codeValueName}}</option>
+                            </select>
+                            <p>
+                                <span class="form-info" ng-show=" (form.validFlagA_{{$index}}.$dirty && form.validFlagA_{{$index}}.$error.required) || (form.validFlagA_{{$index}}.$error.required && formValidate)">不能为空</span>
+                            </p>
+                        </td>
+                        <td>
+                            <!--<input ng-show="!a.flag" type="text" value="{{a.meno}}" class="form-control" disabled/>-->
+                            <input name="menoA_{{$index}}" type="text" ng-model="a.meno" class="form-control"/>
+                            <!--<p>-->
+                                <!--<span class="form-info" ng-show=" (form.menoA_{{$index}}.$dirty && form.menoA_{{$index}}.$error.required) || (form.menoA_{{$index}}.$error.required && formValidate)">不能为空</span>-->
+                            <!--</p>-->
+                        </td>
+                        <td>{{a.updateTime}}</td>
+                        <td>{{a.updater}}</td>
+                        <td>
+                            <a class="a1" ng-click="addAddrList(a,$index)">增加</a>
+                            <a class="a1" ng-show="a.flag" ng-click="delAddrList(a,$index)">删除</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="line line-dashed b-b line-lg pull-in"></div>
+
+        <div class="row">
+            <div class="form-group">
+                <h4>新增电话信息</h4>
+            </div>
+            <div class="form-group pull-right">
+                <button class="btn btn-success btn-sm" type="button" ng-click="addTelList()"><i class="fa fa-plus"></i>增加</button>
+            </div>
+        </div>
+        <div class="dataTables_scrollBody">
+            <table border="1" class="table table-striped m-b-none dataTable no-footer" style="border: 1px solid #eaeeea;">
+                <thead>
+                    <tr>
+                        <th>序号</th>
+                        <th>联系人类型</th>
+                        <th>联系人姓名</th>
+                        <th>电话号码</th>
+                        <th>更新时间</th>
+                        <th>更新人员</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr click-tr ng-repeat="a in overdueCstm.overdueCstmTelList track by $index">
+                        <td>{{$index+1}}</td>
+                        <td>
+                            <select name="relationTypeB_{{$index}}" ng-model="a.relationType" class="form-control" required>
+                                <option value="">请选择</option>
+                                <option ng-repeat="b in relationTypeList" value="{{b.codeValue}}" ng-selected="a.relationType == b.codeValue">{{b.codeValueName}}</option>
+                            </select>
+                            <p>
+                                <span class="form-info" ng-show=" (form.relationTypeB_{{$index}}.$dirty && form.relationTypeB_{{$index}}.$error.required) || (form.relationTypeB_{{$index}}.$error.required && formValidate)">不能为空</span>
+                            </p>
+                        </td>
+                        <td>
+                            <input name="cstmNameB_{{$index}}" type="text" class="form-control" ng-model="a.cstmName" required/>
+                            <p>
+                                <span class="form-info" ng-show=" (form.cstmNameB_{{$index}}.$dirty && form.cstmNameB_{{$index}}.$error.required) || (form.cstmNameB_{{$index}}.$error.required && formValidate)">不能为空</span>
+                            </p>
+                        </td>
+                        <td>
+                            <input name="telNoB_{{$index}}" type="text" class="form-control" ng-model="a.telNo" ng-pattern="/^1[345789]\d{9}$/" required/>
+                            <p>
+                                <span class="form-info" ng-show=" (form.telNoB_{{$index}}.$dirty && form.telNoB_{{$index}}.$error.required) || (form.telNoB_{{$index}}.$error.required && formValidate)">不能为空</span>
+                                <span class="form-info" ng-show="  (form.telNoB_{{$index}}.$error.pattern && !form.telNoB_{{$index}}.$error.required) || (form.telNoB_{{$index}}.$error.pattern && formValidate && !form.telNoB_{{$index}}.$error.required)">格式错误</span>
+                            </p>
+                        </td>
+                        <td>{{a.updateTime}}</td>
+                        <td>{{a.updater}}</td>
+                        <td>
+                            <a class="a1" ng-click="addTelList(a,$index)">增加</a>
+                            <a class="a1" ng-show="a.flag" ng-click="delTelList(a,$index)">删除</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="line line-dashed b-b line-lg pull-in"></div>
+
+        <h4>历史电话备注信息</h4>
+        <div class="dataTables_scrollBody">
+            <table border="1" class="table table-striped m-b-none dataTable no-footer" style="border: 1px solid #eaeeea;">
+                <thead>
+                    <tr>
+                        <th>关系类型</th>
+                        <th>联系人姓名</th>
+                        <th>电话号码</th>
+                        <th>备注信息</th>
+                        <th>催收人员</th>
+                        <th>备注时间</th>
+                        <th>逾期状态</th>
+                        <th>逾期状态详情</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr click-tr ng-repeat="a in overdueCstm.overdueTelRegisterVoList track by $index">
+                        <td>{{a.relationType | getName:'relation'}}</td>
+                        <td>{{a.cstmName}}</td>
+                        <td>{{a.telNo}}</td>
+                        <td>{{a.telMemo}}</td>
+                        <td>{{a.assignUser}}</td>
+                        <td>{{a.assignDate}}</td>
+                        <td>{{a.overdueCondCd}}</td>
+                        <td>{{a.overdueDetail | getName:'overdueDetail'}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </form>
+</div>
+<div class="modal-footer text-center">
+    <button class="btn btn-default" ng-click="close()">取消</button>
+    <button type="submit" class="btn btn-success" ng-disabled="submit" ng-click="save()">新增</button>
+</div>

@@ -1,0 +1,74 @@
+<div ng-controller="equ_mor_repay_detail_invoice_controller">
+    <div>
+        <toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+    </div>
+    <div class="panel panel-default">
+        <div class="row" style="margin: 0; padding: 10px; border: 1px solid #dddddd">
+            <div class="form-inline">
+                <div class="form-group">
+                    <h5 >更新还款状态</h5>
+                </div>
+                <div class="form-group pull-right">
+                    <div class="btn-group">
+                        <button type="submit" class="btn btn-success btn-sm fms-button-margin-bottom" ng-disabled="submit" ng-click="save()">确认更新</button>
+                        <button class="btn btn-default btn-sm fms-button-margin-bottom" ng-click="goBack()">返回</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <form name="form" class="form-validation" novalidate>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            <label class="control-label col-lg-5"><b class="form-text-black">批量录入更新日期</b>:</label>
+                            <div class="col-lg-6"><input onchange="" placeholder="请录入还款日期" class="col-lg-3 form-control m-b-sm" ng-model="allInvoiceDate" type="text"  date-picker></div>
+                        </div>
+                    </div>
+                </div>
+                <div style="padding: 0 20px;">
+                    <div class="dataTables_wrapper form-inline dt-bootstrap no-footer">
+                        <table border="1" class="table table-striped m-b-none dataTable no-footer" width="100%">
+                            <thead>
+                            <tr>
+                                <th class="sorting_disabled center" rowspan="1" colspan="1" style="width: 0px;">资方抵押任务号</th>
+                                <th class="sorting_disabled center" rowspan="1" colspan="1" style="width: 0px;">客户合同编号</th>
+                                <th class="sorting_disabled center" rowspan="1" colspan="1" style="width: 0px;">车架号</th>
+                                <th class="sorting_disabled center" rowspan="1" colspan="1" style="width: 0px;">承租人</th>
+                                <th class="sorting_disabled center" rowspan="1" colspan="1" style="width: 0px;">期数</th>
+                                <th class="sorting_disabled center" rowspan="1" colspan="1" style="width: 0px;">应还日期</th>
+                                <th class="sorting_disabled center" rowspan="1" colspan="1" style="width: 0px;">租金</th>
+                                <th class="sorting_disabled center" rowspan="1" colspan="1" style="width: 0px;">还款状态</th>
+                                <th class="sorting_disabled center" rowspan="1" colspan="1" style="width: 0px;">还款日期</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr ng-show="finRepaySkeds.length == 0">
+                                <td colspan="8" class="dataTables_empty">表中暂无数据</a></td>
+                            </tr>
+                            <tr click-tr ng-show="finRepaySkeds.length != 0" ng-repeat="a in equMorRepayDetails track by $index">
+                                <td class="text-center">{{a.equMorTaskNo}}</td>
+                                <td class="text-center">{{a.clientContNo}}</td>
+                                <td class="text-center">{{a.vinNo}}</td>
+                                <td class="text-center">{{a.tenantUser}}</td>
+                                <td class="text-center">{{a.period}}</td>
+                                <td class="text-center">{{a.repayDate}}</td>
+                                <td class="text-center">{{a.rent}}</td>
+                                <td class="text-center">{{a.equRepayStatus | getName:'equRepayStatus'}}</td>
+                                <td>
+                                    <input type="text" title="{{a.payUpdateDate}}" name="invoiceDate_{{$index}}" placeholder="请输入还款时间" class="form-control m-b-xs" ng-model="a.payUpdateDate"
+                                           date-picker>
+                                    <p>
+                                        <span class="form-info" ng-show=" (form.invoiceDate_{{$index}}.$dirty && form.invoiceDate_{{$index}}.$error.required) || (form.invoiceDate_{{$index}}.$error.required && formValidate)">还款时间不能为空</span>
+                                    </p>
+                                </td>
+
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

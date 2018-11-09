@@ -1,0 +1,164 @@
+
+<div  ng-controller="cont_receipt_detail_list_controller">
+    <div>
+        <toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-body wrapper-sm">
+            <div class="keyUp">
+                <div class="row">
+                    <div class="col-lg-2">
+                        <div class="form-group">
+                            <label class="sr-only" >车架号 </label>
+                            <input class="form-control m-b-xs" ng-model="params.vinNo" placeholder="请输入车架号">
+                        </div>
+                    </div>
+                    <div class="col-lg-2">
+                        <div class="form-group">
+                            <label class="sr-only" >承租人</label>
+                            <input class="form-control m-b-xs" ng-model="params.name" placeholder="请输入客户姓名">
+                        </div>
+                    </div>
+                    <div class="col-lg-2">
+                        <div class="form-group">
+                            <label class="sr-only" >起始时间 </label>
+                            <!--<input class="form-control m-b-xs" ng-model="startTime" placeholder="起始时间">-->
+                            <input id="validStartDate" type="text" name="validStartDate" placeholder="请输入起始应还款日"
+                                   class="form-control m-b-xs" ng-model="params.startTime" date-picker="{{maxDate}}">
+                        </div>
+                    </div>
+                    <div class="col-lg-2">
+                        <div class="form-group">
+                            <label class="sr-only" >结束时间 </label>
+                            <input id="validEndDate" type="text" name="validEndDate" placeholder="请输入结束应还款日"
+                                   class="form-control m-b-xs"  ng-model="params.endTime" date-picker="{{minDate}}">
+                        </div>
+                    </div>
+                    <div class="col-lg-2">
+                        <div class="form-group">
+                            <label class="sr-only" >应收租金</label>
+                            <input class="form-control m-b-xs" ng-model="params.rent" placeholder="请输入应收租金">
+                        </div>
+                    </div>
+                    <div class="col-lg-2">
+                        <div class="form-group">
+                            <label class="sr-only" >合同号 </label>
+                            <input class="form-control m-b-xs" ng-model="params.contNo" placeholder="请输入合同号">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-2">
+                        <div class="form-group">
+                            <label class="sr-only" >区域</label>
+                            <input class="form-control m-b-xs" ng-model="params.groupDistrict" placeholder="请输入区域">
+                        </div>
+                    </div>
+                    <div class="col-lg-2">
+                        <div class="form-group">
+                            <label class="sr-only" >实际还款日 </label>
+                            <!--<input class="form-control m-b-xs" ng-model="startTime" placeholder="起始时间">-->
+                            <input  type="text" name="receiptDate" placeholder="请输入实际还款日"
+                                    class="form-control m-b-xs" ng-model="params.receDate"
+                                    date-picker
+                                    autocomplete="off">
+                        </div>
+                    </div>
+                    <div class="col-lg-2">
+                        <div class="form-group">
+                            <label class="sr-only" >开票日期 </label>
+                            <!--<input class="form-control m-b-xs" ng-model="startTime" placeholder="起始时间">-->
+                            <input  type="text" name="invoDate" placeholder="请输入开票日期"
+                                    class="form-control m-b-xs" ng-model="params.invoDate"
+                                    date-picker
+                                    autocomplete="off">
+                        </div>
+                    </div>
+                    <div class="col-lg-2">
+                        <div class="form-group">
+                            <label class="sr-only" >备注</label>
+                            <input class="form-control m-b-xs" ng-model="params.invoiceMemo" placeholder="请输入开票备注">
+                        </div>
+                    </div>
+                    <div class="col-lg-2">
+                        <div class="form-group">
+                            <select ng-model="params.repayStatus" class="form-control m-b-xs" >
+                                <option value="">-请选择扣款状态-</option>
+                                <option ng-repeat="repayStatus in repayStatusList" value="{{repayStatus.codeValue}}" ng-selected="params.repayStatus == repayStatus.codeValue">{{repayStatus.codeValueName}}</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-2">
+                        <div class="form-group">
+                            <label class="sr-only" >付款备注 </label>
+                            <input class="form-control m-b-xs" ng-model="params.memo" placeholder="请输入付款备注">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+
+
+
+
+                    <div class="col-lg-2">
+                        <div class="form-group">
+                            <label class="sr-only" >起始时间 </label>
+                            <input id="validStartDate2" type="text" name="validStartDate2" placeholder="请输入起始到账日期"
+                                   class="form-control m-b-xs" ng-model="params.startTime2" date-picker="{{maxDate2}}">
+                        </div>
+                    </div>
+                    <div class="col-lg-2">
+                        <div class="form-group">
+                            <label class="sr-only" >结束时间 </label>
+                            <input id="validEndDate2" type="text" name="validEndDate2" placeholder="请输入结束到账日期"
+                                   class="form-control m-b-xs"  ng-model="params.endTime2" date-picker="{{minDate2}}">
+                        </div>
+                    </div>
+
+                    <div class="col-sm-2">
+                        <div class="form-group">
+                            <select ng-model="params.receiptBizType" class="form-control m-b-xs">
+                                <option value="">---请选择款项类型---</option>
+                                <option value="{{receiptBizTypeObj.codeValue}}" ng-repeat="receiptBizTypeObj in receiptBizTypeList" ng-selected="params.receiptBizType == receiptBizTypeObj.codeValue">{{receiptBizTypeObj.codeValueName}}</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-2">
+                        <div class="form-group">
+                            <select ng-model="params.voucherStatus" class="form-control m-b-xs">
+                                <option value="">---请选择凭证状态---</option>
+                                <option value="{{invoiceVoucherStatusObj.codeValue}}" ng-repeat="invoiceVoucherStatusObj in invoiceVoucherStatusList" ng-selected="params.voucherStatus == invoiceVoucherStatusObj.codeValue">{{invoiceVoucherStatusObj.codeValueName}}</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4">
+                        <div class="form-group m-b-sm">
+                            <div class="btn-group">
+                                <button class="btn btn-default m-b-xs btn-sm fms-button-margin-bottom" ng-click="searchContRepaySked()" press-enter><i class="fa fa-search"></i>查询</button>
+                                <button class="btn btn-default m-b-xs btn-sm fms-button-margin-bottom" ng-click="resetContRepaySked()" ><i class="fa  icon-refresh"></i>重置</button>
+                                <button class="btn btn-default btn-sm m-b-xs fms-button-margin-bottom" ng-click="generate()">生成凭证</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--<div class="row">-->
+                    <!--<div class="col-lg-2">-->
+                        <!--<div class="form-group">-->
+                            <!--<select ng-model="receiptBizType" class="form-control m-b-xs" >-->
+                                <!--<option value="">-请选择业务类型-</option>-->
+                                <!--<option ng-repeat="receiptBizType in receiptBizTypeList" value="{{receiptBizType.codeValue}}">{{receiptBizType.codeValueName}}</option>-->
+                            <!--</select>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
+            </div>
+        </div>
+        <table border="1" class="table table-striped m-b-none" id="cont_repay_sked_table">
+        </table>
+    </div>
+</div>
+

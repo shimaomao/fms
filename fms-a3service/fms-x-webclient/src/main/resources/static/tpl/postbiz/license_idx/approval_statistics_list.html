@@ -1,0 +1,21 @@
+<div  ng-controller="approval_statistics_list_controller">
+    <div>
+        <toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-body wrapper-sm">
+            <div class="row">
+                <div class="col-lg-12">
+                    <form class="form-inline" role="form">
+                        <div class="form-group">
+                            <label class="sr-only" >首次申请年份</label>
+                            <input class="form-control m-b-xs" ng-model="yearInquiries" placeholder="请输入首次申请年份" date-picker="{{dateParams}}">
+                            <button class="btn btn-default m-b-xs" ng-click="reportApprovalStatisticsExport()"><i class="fa"></i>审批统计报表excel导出</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

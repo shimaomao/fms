@@ -1,0 +1,182 @@
+<div ng-controller="cont_repay_sked_view_controller">
+    <div>
+        <toaster-container
+                toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-body wrapper-sm">
+            <div class="keyUp">
+                <div class="row">
+                    <div class="col-lg-2">
+                        <div class="form-group">
+                            <label class="sr-only">车架号 </label>
+                            <input class="form-control m-b-xs" ng-model="params.vinNo" placeholder="请输入车架号">
+                        </div>
+                    </div>
+                    <div class="col-lg-2">
+                        <div class="form-group">
+                            <label class="sr-only">承租人</label>
+                            <input class="form-control m-b-xs" ng-model="params.name" placeholder="请输入客户姓名">
+                        </div>
+                    </div>
+                    <div class="col-lg-2">
+                        <div class="form-group">
+                            <label class="sr-only">起始时间 </label>
+                            <input id="validStartDate" type="text" name="validStartDate" placeholder="请输入起始应还款日"
+                                   class="form-control m-b-xs" ng-model="params.startTime" date-picker="{{maxDate}}">
+                        </div>
+                    </div>
+                    <div class="col-lg-2">
+                        <div class="form-group">
+                            <label class="sr-only">结束时间 </label>
+                            <input id="validEndDate" type="text" name="validEndDate" placeholder="请输入结束应还款日"
+                                   class="form-control m-b-xs" ng-model="params.endTime" date-picker="{{minDate}}">
+                        </div>
+                    </div>
+                    <div class="col-lg-2">
+                        <div class="form-group">
+                            <label class="sr-only">应收租金</label>
+                            <input class="form-control m-b-xs" ng-model="params.rentActual" placeholder="请输入应收租金">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-2">
+                        <div class="form-group">
+                            <label class="sr-only">区域</label>
+                            <input class="form-control m-b-xs" ng-model="params.groupDistrict" placeholder="请输入区域">
+                        </div>
+                    </div>
+
+                    <div class="col-lg-2">
+                        <div class="form-group">
+                            <label class="sr-only" >起始时间 </label>
+                            <input id="validStartDateReceiptDate" type="text" name="validStartDateReceiptDate" placeholder="请输入起始实际还款日"
+                                   class="form-control m-b-xs" ng-model="params.startTimeReceiptDate" date-picker="{{maxDateReceiptDate}}">
+                        </div>
+                    </div>
+                    <div class="col-lg-2">
+                        <div class="form-group">
+                            <label class="sr-only" >结束时间 </label>
+                            <input id="validEndDateReceiptDate" type="text" name="validEndDateReceiptDate" placeholder="请输入结束实际还款日"
+                                   class="form-control m-b-xs"  ng-model="params.endTimeReceiptDate" date-picker="{{minDateReceiptDate}}">
+                        </div>
+                    </div>
+
+
+                    <div class="col-lg-2">
+                        <div class="form-group">
+                            <label class="sr-only">开票日期 </label>
+                            <!--<input class="form-control m-b-xs" ng-model="startTime" placeholder="起始时间">-->
+                            <input type="text" name="invoDate" placeholder="请输入开票日期"
+                                   class="form-control m-b-xs" ng-model="params.invoDate"
+                                   date-picker>
+                        </div>
+                    </div>
+                    <div class="col-lg-2">
+                        <div class="form-group">
+                            <label class="sr-only">备注</label>
+                            <input class="form-control m-b-xs" ng-model="params.memo" placeholder="请输入备注">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-2">
+                        <div class="form-group">
+                            <select ng-model="params.repayStatus" class="form-control m-b-xs">
+                                <option value="">-请选择扣款状态-</option>
+                                <option ng-repeat="repayStatus in repayStatusList" value="{{repayStatus.codeValue}}"
+                                        ng-selected="params.repayStatus==repayStatus.codeValue">
+                                    {{repayStatus.codeValueName}}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-lg-2">
+                        <div class="form-group">
+                            <select ng-model="params.licenseAttr" class="form-control m-b-xs">
+                                <option value="">-请选择业务类型-</option>
+                                <option ng-repeat="licenseAttr in licenseAttrList" value="{{licenseAttr.codeValue}}"
+                                        ng-selected="params.licenseAttr==licenseAttr.codeValue">
+                                    {{licenseAttr.codeValueName}}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-lg-2">
+                        <div class="form-group">
+                            <label class="sr-only">合同编号</label>
+                            <input class="form-control m-b-xs" ng-model="params.contNo" placeholder="请输入合同编号">
+                        </div>
+                    </div>
+
+
+                    <div class="col-lg-2">
+                        <div class="form-group">
+                            <select ng-model="params.paymentSts" class="form-control m-b-xs">
+                                <option value="">-请选择还款状态-</option>
+                                <option ng-repeat="paymentSts in paymentStsList" value="{{paymentSts.codeValue}}"
+                                        ng-selected="params.paymentSts==paymentSts.codeValue">
+                                    {{paymentSts.codeValueName}}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-2">
+                        <div class="form-group">
+                            <select ng-model="params.overdueStatus" class="form-control m-b-xs">
+                                <option value="">-请选择逾期状态-</option>
+                                <option ng-repeat="overdueFlag in overdueFlagList" value="{{overdueFlag.codeValue}}"
+                                        ng-selected="params.overdueFlag==overdueFlag.codeValue">
+                                    {{overdueFlag.codeValueName}}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="col-lg-2">
+                        <div class="form-group">
+                            <label class="sr-only">报表月份</label>
+                            <input id="censuMonth" type="text" name="censuMonth" placeholder="请输入报表月份"
+                                   class="form-control m-b-xs"  ng-model="params.censuMonth" date-picker="{{censuDate}}">
+                        </div>
+                    </div>
+                    <div class="col-lg-2">
+                        <div class="form-group m-b-sm">
+                            <div class="btn-group">
+                                <button class="btn btn-default m-b-xs btn-sm fms-button-margin-bottom"
+                                        ng-click="searchContRepaySked()" press-enter><i class="fa fa-search"></i>查询
+                                </button>
+                                <button class="btn btn-default m-b-xs btn-sm fms-button-margin-bottom"
+                                        ng-click="resetContRepaySked()"><i class="fa  icon-refresh"></i>重置
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group pull-right">
+                        <div class="btn-group">
+                            <div class="btn-group">
+                            <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" button-click>报表下载</button>
+                            <ul class="dropdown-menu" style="min-width: 80px;font-size: 12px;">
+                                <li ng-click="paidRent();"><a href="javascript:void(0);">本期实收租金明细表</a></li>
+                                <li ng-click="settleExcel();"><a href="javascript:void(0);">在租车辆租金明细表</a></li>
+                                <li ng-click="settleEndExcel();"><a href="javascript:void(0);">结清车辆租金明细表</a></li>
+                                <li ng-click="unpaidRent();"><a href="javascript:void(0);">未收租金明细表</a></li>
+                            </ul>
+                        </div>
+                            <button class="btn btn-default m-b-xs btn-sm fms-button-margin-bottom"
+                                    ng-click="exportExcel()">导出EXCEL
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <table border="1" class="table table-striped m-b-none" id="cont_repay_sked_table">
+        </table>
+    </div>
+</div>
+

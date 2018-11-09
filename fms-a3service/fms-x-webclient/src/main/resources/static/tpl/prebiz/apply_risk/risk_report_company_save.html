@@ -1,0 +1,416 @@
+<style>
+    .b-t{border-top: 1px solid #eaeeea;}
+    .b-b{border-bottom: 1px solid #eaeeea;}
+    .b-l{border-left: 1px solid #eaeeea;}
+    .b-r{border-right: 1px solid #eaeeea;}
+    .p-xs{padding: 5px;}
+    .risk-input{display: inline-block;width: 40px;border: none;text-align: center;}
+    .report{border:1px solid black;margin: 20px;}
+    .main-title{font-size: 20px;text-align: center;font-weight: bold;color: black;padding: 10px 0;}
+    .sub-main{overflow: hidden;}
+    .sub-title{padding: 5px;background-color: #f5f5f5;font-size: 16px;}
+    .sub-title span:first-child{font-weight: bold;color: black;}
+    .sub-title span:last-child{display: inline-block;width: 20px;height: 20px;}
+    .son-title{font-size: 14px;font-weight: bold;padding: 0 5px;background-color: #f1f1f1;}
+    .tal-tr{display: table;width: 100%;}
+    .tal-td{display: table-cell;vertical-align: middle;}
+    .tal-inline{display: inline-block;}
+    .m-t-20{margin-top: 20px;}
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+    }
+    input[type="number"]{
+        -moz-appearance: textfield;
+    }
+</style>
+<div ng-controller="risk_report_company_save_controller" class="m-t-20">
+    <div class="panel panel-default">
+        <div class="report">
+            <div class="main-title b-b">初审审查报告（企业）</div>
+            <!--承租人情况-START-->
+            <div class="sub-main" ng-if="riskData.riskCompanyVoMain" data="{{riskData.riskCompanyVoMain}}">
+                <div class="sub-title b-b clearfix" click-hide>
+                    <span class="pull-left">承租人情况</span>
+                    <span class="pull-right">
+                        <i class="glyphicon glyphicon-chevron-down"></i>
+                    </span>
+                </div>
+                <div class="sub-body">
+                    <div class="son-title b-b">风险信息提示</div>
+                    <div class="b-b p-xs">
+                        企业风险信息：{{riskData.riskCompanyVoMain.corpRiskDebt}}<br>
+                        企业债务信息：{{riskData.riskCompanyVoMain.corpDebt}}<br>
+                        出租人城市和经营地址城市匹配：{{riskData.riskCompanyVoMain.applyAddrMatch}}<br>
+                    </div>
+                    <div class="b-b p-xs">
+                        <div class="tal-tr">
+                            <div class="tal-td" style="width: 10%;">风险信息确认：</div>
+                            <div class="tal-td" style="width: 90%;">
+                                <textarea name="riskConfirm" cols="30" rows="3" ng-model="riskData.riskCompanyVoMain.riskConfirm" class="form-control r-none" ng-disabled="disabled"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="b-b p-xs">
+                        <div class="tal-td" style="width: 10%;">企业工商异常信息：</div>
+                        <div class="tal-td" style="width: 90%;">
+                            <textarea name="corpAbnornalMemo" cols="30" rows="3" ng-model="riskData.riskCompanyVoMain.corpAbnornalMemo" class="form-control r-none" ng-disabled="disabled"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--承租人情况-END-->
+
+            <!--担保人（个人）情况-START-->
+            <div class="sub-main" ng-repeat="a in riskData.riskPersonVoGuarList">
+                <div class="sub-title b-b clearfix" click-hide>
+                    <span class="pull-left">担保人个人情况（{{a.name}}）</span>
+                    <span class="pull-right">
+                        <i class="glyphicon glyphicon-chevron-down"></i>
+                    </span>
+                </div>
+                <div class="sub-body">
+                    <div></div>
+                    <div class="son-title b-b">风险信息提示</div>
+                    <div class="b-b p-xs">
+                        反欺诈风险评分：{{a.antiResult}}<br>
+                        <!--地址核验（居住地：{{a.resideAddrCheck}}/单位地址：{{a.compAddrCheck}}）<br>-->
+                        手机归属地：{{a.phoneAddr}}&nbsp;&nbsp;在网时长：{{a.timeLength}}<!--/户籍地址：{{a.censusAddrMatch}}/居住地址：{{a.resideAddrMatch}}/房产地址：{{a.propertyAddrMatch}}--><br>
+                        驾照核查：(档案编号核查结果：{{a.driverResult}})<br>
+                        出租人城市和居住地城市匹配：{{a.applyAddrMatch}}<br>
+                    </div>
+                    <div class="b-b p-xs">
+                        <div class="tal-tr">
+                            <div class="tal-td" style="width: 10%;">风险信息确认：</div>
+                            <div class="tal-td" style="width: 90%;">
+                                <textarea name="riskConfirm_{{$index}}" cols="30" rows="3" ng-model="a.riskConfirm" class="form-control r-none" ng-disabled="disabled"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="son-title b-b" ng-init="a.pbcCredit.whiteCard=a.pbcCredit.whiteCard?a.pbcCredit.whiteCard:'1'">
+                        人行征信信息（是否白户：
+                        <div class="radio" ng-repeat="b in 'validFlag'|getList"><label><input type="radio" name="whiteCard_{{$index}}" ng-model="a.pbcCredit.whiteCard" value="{{b.codeValue}}" ng-disabled="disabled">{{b.codeValueName}}</label></div>
+                        ）
+                    </div>
+                    <div ng-if="a.pbcCredit.whiteCard != 0" class="son-body">
+                        <div class="b-b tal-tr">
+                            <div class="b-r tal-td p-xs" style="width: 25%;">信贷信息概要</div>
+                            <div class="tal-td p-xs" style="width: 70%;">
+                                <div class="tal-tr">
+                                    <div class="tal-inline">信用卡或贷款状态：</div>
+                                    <div class="tal-inline">
+                                        <select name="creditStatus_{{$parent.$index}}" ng-model="a.pbcCredit.creditStatus" ng-options="a.codeValue as a.codeValueName for a in 'creditStatus'|getList" class="form-control m-b-xs" ng-disabled="disabled">
+                                            <option value="">--请选择--</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="tal-tr">
+                                    <div class="tal-inline">首笔贷款或贷记卡发放月份：</div>
+                                    <div class="tal-inline">
+                                        <input placeholder="请输入月份" name="firstCreditYm_{{$index}}" ng-model="a.pbcCredit.firstCreditYm" ng-change="getMonNum(a);" type="text" class="form-control form-inline m-b-xs" date-picker="{{dateParams1}}" ng-disabled="disabled">
+                                    </div>
+                                </div>
+                                <div class="tal-tr">
+                                    <div class="tal-inline">贷款：法人机构数（<input name="creditCount_{{$index}}" ng-model="a.pbcCredit.creditCount" class="risk-input" ng-disabled="disabled">）家、</div>
+                                    <div class="tal-inline">合同总额（<input type="number" limit-number="6" name="creditAmount_{{$index}}" ng-model="a.pbcCredit.creditAmount" ng-change="percentageA(a);" class="risk-input" ng-disabled="disabled">）万元、</div>
+                                    <div class="tal-inline">余额（<input type="number" limit-number="6" limit-change="1" name="creditRest_{{$index}}" ng-model="a.pbcCredit.creditRest" ng-change="percentageA(a);" class="risk-input" ng-disabled="disabled">）万元、</div>
+                                    <div class="tal-inline">最近6个月平均还款（<input type="number" limit-number="6" name="repayHalfYear" ng-model="a.pbcCredit.repayHalfYear" class="risk-input" ng-disabled="disabled">）万元</div>
+                                </div>
+                                <div class="tal-tr">
+                                    <div class="tal-inline">其中房产抵押或者房产贷款余额（<input type="number" limit-number="6" name="propertyCreditRest_{{$index}}" ng-model="a.pbcCredit.propertyCreditRest" ng-change="otherRest(a);" class="risk-input" ng-disabled="disabled">）万元/</div>
+                                    <div class="tal-inline">车辆按揭贷款余额（<input type="number" limit-number="6" name="carCreditRest_{{$index}}" ng-model="a.pbcCredit.carCreditRest" ng-change="otherRest(a);" class="risk-input" ng-disabled="disabled">）万元，</div>
+                                    <div class="tal-inline">其他贷款余额（{{a.pbcCredit.elseCreditRest}}）万元</div>
+                                </div>
+                                <div class="tal-tr">
+                                    <div class="tal-inline">贷记卡：发卡机构数（<input name="debitCardCount_{{$index}}" ng-model="a.pbcCredit.debitCardCount" class="risk-input" ng-disabled="disabled">）家、</div>
+                                    <div class="tal-inline">授信总额（<input type="number" limit-number="6" name="debitCardAmount_{{$index}}" ng-model="a.pbcCredit.debitCardAmount" ng-change="percentageB(a);" class="risk-input" ng-disabled="disabled">）万元、</div>
+                                    <div class="tal-inline">最高授信额度（<input type="number" limit-number="6" name="debitCardMax_{{$index}}" ng-model="a.pbcCredit.debitCardMax" class="risk-input" ng-disabled="disabled">）万元、</div>
+                                    <div class="tal-inline">已使用额度（<input type="number" limit-number="6" name="debitCardUsed_{{$index}}" ng-model="a.pbcCredit.debitCardUsed" ng-change="percentageB(a);" class="risk-input" ng-disabled="disabled">）万元、</div>
+                                    <div class="tal-inline">最近6个月平均使用额度（<input type="number" limit-number="6" name="usedHalfYear_{{$index}}" ng-model="a.pbcCredit.usedHalfYear" class="risk-input" ng-disabled="disabled">）万元</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="b-b tal-tr">
+                            <div class="b-r tal-td p-xs" style="width: 25%;">信贷信息提示</div>
+                            <div class="tal-td p-xs" style="width: 70%;">
+                                <div class="tal-tr">
+                                    <div class="tal-inline">贷款余额占授信额度比例（</div>
+                                    <div class="tal-inline">{{a.pbcCredit.debitRestRatio}}</div>
+                                    <div class="tal-inline">）</div>
+                                </div>
+                                <div class="tal-tr">
+                                    <div class="tal-inline">贷记卡已使用信用额度占授信额度比例（</div>
+                                    <div class="tal-inline">{{a.pbcCredit.debitUsedRatio}}</div>
+                                    <div class="tal-inline">）</div>
+                                </div>
+                                <div class="tal-tr">
+                                    <div class="tal-inline">最早卡户记录距今月数</div>
+                                    <div class="tal-inline">（{{a.pbcCredit.monthMax}}）</div>
+                                </div>
+                                <div class="tal-tr">
+                                    <div class="tal-inline">最近3个月贷款和信用审批查询次数（</div>
+                                    <div class="tal-inline"><input name="creditQueryCount_{{$index}}" ng-model="a.pbcCredit.creditQueryCount" class="risk-input" ng-disabled="disabled"></div>
+                                    <div class="tal-inline">）</div>
+                                </div>
+                                <div class="tal-tr">
+                                    <div class="tal-inline">最近2个月新开户数（</div>
+                                    <div class="tal-inline"><input name="newAccounts_{{$index}}" ng-model="a.pbcCredit.newAccounts" class="risk-input" ng-disabled="disabled"></div>
+                                    <div class="tal-inline">）</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="b-b tal-tr">
+                            <div class="b-r tal-td p-xs" style="width: 25%;" ng-init="a.pbcCredit.creditOverdue=a.pbcCredit.creditOverdue?a.pbcCredit.creditOverdue:'0'">
+                                逾期记录：（是否逾期：
+                                <div class="radio" ng-repeat="b in 'validFlag'|getList"><label><input type="radio" name="creditOverdue_{{$parent.$index}}" ng-model="a.pbcCredit.creditOverdue" value="{{b.codeValue}}" ng-disabled="disabled">{{b.codeValueName}}</label></div>
+                                ）
+                            </div>
+                            <div class="tal-td" style="width: 70%;">
+                                <div ng-if="a.pbcCredit.creditOverdue != 1">
+                                    <div class="p-xs b-b">
+                                        <div class="tal-tr">
+                                            <div class="tal-inline"> 贷款：最近3个月所有贷款还款记录最差状态（</div>
+                                            <div class="tal-inline"><input name="creditStatusThrm_{{$index}}" ng-model="a.pbcCredit.creditStatusThrm" class="risk-input" ng-disabled="disabled"></div>
+                                            <div class="tal-inline">）、最近24个月所有贷款还款记录最差状态（</div>
+                                            <div class="tal-inline"><input name="creditStatusTwoy_{{$index}}" ng-model="a.pbcCredit.creditStatusTwoy" class="risk-input" ng-disabled="disabled"></div>
+                                            <div class="tal-inline">）</div>
+                                        </div>
+                                        <div class="tal-tr">
+                                            <div class="tal-inline">贷记卡：最近6个月所有信用卡还款记录最差状态（</div>
+                                            <div class="tal-inline"><input name="debitStatusSixm_{{$index}}" ng-model="a.pbcCredit.debitStatusSixm" class="risk-input" ng-disabled="disabled"></div>
+                                            <div class="tal-inline">）</div>
+                                        </div>
+                                        <div class="tal-tr">
+                                            <div class="tal-inline">最近12个月内累计逾期次数（</div>
+                                            <div class="tal-inline"><input name="overdueCount_{{$index}}" ng-model="a.pbcCredit.overdueCount" class="risk-input" ng-disabled="disabled"></div>
+                                            <div class="tal-inline">）</div>
+                                        </div>
+                                    </div >
+                                    <div class="p-xs">
+                                        <div class="tal-tr">
+                                            <div class="tal-td" style="width: 15%;">逾期记录确认：</div>
+                                            <div class="tal-td" style="width: 85%;">
+                                                <textarea name="overdueConfirm_{{$index}}" cols="30" rows="3" ng-model="a.pbcCredit.overdueConfirm" class="form-control r-none" ng-disabled="disabled"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="b-b tal-tr">
+                            <div class="b-r tal-td p-xs" style="width: 25%;">其他提示信息</div>
+                            <div class="tal-td p-xs" style="width: 70%;">
+                                <textarea name="elseMemo" cols="30" rows="3" ng-model="a.pbcCredit.elseMemo" class="form-control r-none" ng-disabled="disabled"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--担保人（个人）情况-END-->
+
+            <!--担保人配偶情况-START-->
+            <div class="sub-main" ng-repeat="a in riskData.riskPersonVoGuMateList">
+                <div class="sub-title b-b clearfix" click-hide>
+                    <span class="pull-left">担保人配偶情况</span>
+                    <span class="pull-right">
+                        <i class="glyphicon glyphicon-chevron-down"></i>
+                    </span>
+                </div>
+                <div class="sub-body">
+                    <div class="b-b p-xs">反欺诈风险评分：{{a.antiResult}}</div>
+                    <div class="b-b p-xs">
+                        <div class="tal-tr">
+                            <div class="tal-td" style="width: 10%;">风险信息确认：</div>
+                            <div class="tal-td" style="width: 90%;">
+                                <textarea name="riskConfirm_{{$index}}" cols="30" rows="3" ng-model="a.riskConfirm" class="form-control r-none" ng-disabled="disabled"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--担保人配偶情况-END-->
+
+            <!--担保人（企业）情况-START-->
+            <div class="sub-main" ng-repeat="a in riskData.riskCompanyVoGuarList">
+                <div class="sub-title b-b clearfix" click-hide>
+                    <span class="pull-left">担保人（企业）情况</span>
+                    <span class="pull-right">
+                        <i class="glyphicon glyphicon-chevron-down"></i>
+                    </span>
+                </div>
+                <div class="sub-body">
+                    <div class="son-title b-b">风险信息提示</div>
+                    <div class="b-b p-xs">
+                        企业风险信息：{{a.corpRiskDebt}}<br>
+                        企业债务信息：{{a.corpDebt}}
+                    </div>
+                    <div class="b-b p-xs">
+                        <div class="tal-tr">
+                            <div class="tal-td" style="width: 10%;">风险信息确认：</div>
+                            <div class="tal-td" style="width: 90%;">
+                                <textarea name="riskConfirm_{{$index}}" cols="30" rows="3" ng-model="a.riskConfirm" class="form-control r-none" ng-disabled="disabled"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="b-b p-xs">
+                        <div class="tal-tr">
+                            <div class="tal-td" style="width: 10%;">企业工商异常信息：</div>
+                            <div class="tal-td" style="width: 90%;">
+                                <textarea name="corpAbnornalMemo_{{$index}}" cols="30" rows="3" ng-model="a.corpAbnornalMemo" class="form-control r-none" ng-disabled="disabled"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--担保人（企业）情况-END-->
+
+            <!--银行流水分析-START-->
+            <div class="sub-main">
+                <div class="sub-title b-b clearfix" click-hide>
+                    <span class="pull-left">银行流水分析</span>
+                    <span class="pull-right">
+                        <i class="glyphicon glyphicon-chevron-down"></i>
+                    </span>
+                </div>
+                <div class="sub-body">
+                    <div ng-repeat="a in riskData.accountDetailVoList">
+                        <div class="son-title b-b">{{a.relation | getName:'relation'}}流水（{{a.name}}）</div>
+                        <div class="son-body">
+                            <div class="tal-tr b-b text-right p-xs">单位：元</div>
+                            <div class="tal-tr b-b">
+                                <div class="tal-td p-xs b-r" style="width: 25%;">所属银行</div>
+                                <div class="tal-td p-xs b-r" style="width: 25%;">{{a.bankName}}</div>
+                                <div class="tal-td p-xs b-r" style="width: 25%;">银行卡号</div>
+                                <div class="tal-td p-xs" style="width: 25%;">{{a.accountNo}}</div>
+                            </div>
+                            <div class="tal-tr b-b">
+                                <div class="tal-td p-xs b-r" style="width: 25%;">月份</div>
+                                <div class="tal-td p-xs b-r" style="width: 25%;">流入量</div>
+                                <div class="tal-td p-xs b-r" style="width: 25%;">倒账金额</div>
+                                <div class="tal-td p-xs" style="width: 25%;">实际流入量</div>
+                            </div>
+                            <div class="tal-tr b-b" ng-repeat="b in a.accountDetailLists">
+                                <div class="tal-td p-xs b-r" style="width: 25%;"><input type="text" ng-change="setSumAver(a,$index);" name="yearMon_{{$parent.$index}}_{{$index}}" class="form-control" ng-model="b.yearMon" date-picker="{{dateParams}}" ng-disabled="disabled"></div>
+                                <div class="tal-td p-xs b-r" style="width: 25%;"><input type="text" ng-change="setSumAver(a,$index);" placeholder="流入量" name="income{{$parent.$index}}_{{$index}}" class="form-control" ng-model="b.income" ng-disabled="disabled" number-format></div>
+                                <div class="tal-td p-xs b-r" style="width: 25%;"><input type="text" ng-change="setSumAver(a,$index);" placeholder="倒账金额" name="receipt{{$parent.$index}}_{{$index}}" class="form-control" ng-model="b.receipt" ng-disabled="disabled" number-format></div>
+                                <div class="tal-td p-xs" style="width: 25%;"><input type="text" ng-change="setSumAver(a,$index);" placeholder="实际流入量" name="actualIncome{{$parent.$index}}_{{$index}}" class="form-control" ng-model="b.actualIncome" ng-disabled="disabled" number-format></div>
+                            </div>
+                            <div class="tal-tr b-b">
+                                <div class="tal-td p-xs b-r" style="width: 25%;">合计</div>
+                                <div class="tal-td p-xs b-r" style="width: 25%;"><input type="text" placeholder="总流入量" name="incomeSum_{{$index}}" class="form-control" ng-model="a.incomeSum" disabled number-format></div>
+                                <div class="tal-td p-xs b-r" style="width: 25%;"><input type="text" placeholder="总倒账金额" name="receiptSum_{{$index}}" class="form-control" ng-model="a.receiptSum" disabled number-format></div>
+                                <div class="tal-td p-xs" style="width: 25%;"><input type="text" placeholder="总实际流入量" name="actualIncomeSum_{{$index}}" class="form-control" ng-model="a.actualIncomeSum" disabled number-format></div>
+                            </div>
+                            <div class="tal-tr b-b">
+                                <div class="tal-td p-xs b-r" style="width: 25%;">平均</div>
+                                <div class="tal-td p-xs b-r" style="width: 25%;"><input type="text" placeholder="平均流入量" name="incomeAver_{{$index}}" class="form-control" ng-model="a.incomeAver" disabled number-format></div>
+                                <div class="tal-td p-xs b-r" style="width: 25%;"><input type="text" placeholder="平均倒账金额" name="receiptAver_{{$index}}" class="form-control" ng-model="a.receiptAver" disabled number-format></div>
+                                <div class="tal-td p-xs" style="width: 25%;"><input type="text" placeholder="平均实际流入量" name="actualIncomeAver_{{$index}}" class="form-control" ng-model="a.actualIncomeAver" disabled number-format></div>
+                            </div>
+                            <div class="tal-tr b-b">
+                                <div class="tal-td p-xs b-r" style="width: 25%;">平均季度结息</div>
+                                <div class="tal-td p-xs b-r" style="width: 25%;"><input type="text" ng-change="getIntrest(a,'quarterIntrest','dayIntrest');" placeholder="平均季度结息" name="quarterIntrest_{{$index}}" class="form-control" ng-model="a.quarterIntrest" ng-disabled="disabled" number-format></div>
+                                <div class="tal-td p-xs b-r" style="width: 25%;">日均存款结余余额</div>
+                                <div class="tal-td p-xs" style="width: 25%;"><input type="text" placeholder="日均存款结余余额" name="dayIntrest_{{$index}}" class="form-control" ng-model="a.dayIntrest" ng-disabled="disabled" number-format></div>
+                            </div>
+                            <div class="tal-tr b-b">
+                                <div class="tal-td p-xs b-r" style="width: 25%;">流水余额</div>
+                                <div class="tal-td p-xs b-r" style="width: 25%;"><input type="text" placeholder="银行流水最后余额" name="remainSum_{{$parent.$index}}_{{$index}}" ng-model="a.remainSum" class="form-control" ng-disabled="disabled" number-format></div>
+                                <div class="tal-td p-xs" style="width: 50%;"></div>
+                            </div>
+                            <div class="tal-tr b-b">
+                                <div class="tal-td p-xs b-r" style="width: 25%;">分析</div>
+                                <div class="tal-td p-xs" style="width: 75%;">
+                                    <textarea name="accountMemo_{{$index}}" placeholder="主要分析流水的质量，是否与其结算方式相符，月均流入量" cols="30" rows="3" ng-model="a.accountMemo" class="form-control r-none" ng-disabled="disabled"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--银行流水分析-END-->
+
+            <!--收入负债比测算-START-->
+            <div class="sub-main" ng-if="riskData.riskMgmtComp || riskData.riskMgmtGuaranteeList">
+                <div class="sub-title b-b clearfix" click-hide>
+                    <span class="pull-left">收入负债比测算</span>
+                    <span class="pull-right">
+                        <i class="glyphicon glyphicon-chevron-down"></i>
+                    </span>
+                </div>
+                <div class="sub-body" ng-init="init();" ng-if="riskData.riskMgmtComp">
+                    <div class="son-title b-b clearfix">
+                        <span class="pull-left">承租人</span>
+                        <span class="pull-right">单位：元</span>
+                    </div>
+                    <div class="son-body" ng-if="riskData.riskMgmtComp">
+                        <div class="tal-tr b-b">
+                            <div class="tal-td p-xs b-r" style="width: 25%;">承租人年主营收入</div>
+                            <div class="tal-td p-xs b-r" style="width: 25%;"><input type="text" ng-change="debtRatio(riskData.riskMgmtComp,'lesseeDebtRatio','lesseeAmount','lesseeDebtAmount');" name="lesseeRevenue" class="form-control" ng-model="riskData.riskMgmtComp.lesseeRevenue" ng-disabled="disabled" number-format></div>
+                            <div class="tal-td p-xs b-r" style="width: 25%;">承租人月均还贷金额</div>
+                            <div class="tal-td p-xs" style="width: 25%;"><input type="text" ng-change="debtRatio(riskData.riskMgmtComp,'lesseeDebtRatio','lesseeAmount','lesseeDebtAmount');" name="lesseeRepay" class="form-control" ng-model="riskData.riskMgmtComp.lesseeRepay" ng-disabled="disabled" number-format></div>
+                        </div>
+                        <div class="tal-tr b-b">
+                            <div class="tal-td p-xs b-r" style="width: 25%;">承租人利润率%</div>
+                            <div class="tal-td p-xs b-r" style="width: 25%;"><input type="text" ng-change="debtRatio(riskData.riskMgmtComp,'lesseeDebtRatio','lesseeAmount','lesseeDebtAmount');" name="lesseeProfitRatio" class="form-control" ng-model="riskData.riskMgmtComp.lesseeProfitRatio" ng-disabled="disabled" number-format></div>
+                            <div class="tal-td p-xs b-r" style="width: 25%;">购车每月租金</div>
+                            <div class="tal-td p-xs" style="width: 25%;"><input type="text" ng-change="debtRatio(riskData.riskMgmtComp,'lesseeDebtRatio','lesseeAmount','lesseeDebtAmount','rent');" name="rent" class="form-control" ng-model="riskData.riskMgmtComp.rent" ng-init="riskData.riskMgmtComp.rent = riskData.riskMgmtComp.rent?riskData.riskMgmtComp.rent:riskData.applyFinanceVo.rent" ng-disabled="disabled" number-format></div>
+                        </div>
+                        <div class="tal-tr b-b">
+                            <div class="tal-td p-xs b-r" style="width: 25%;">承租人月均利润</div>
+                            <div class="tal-td p-xs b-r" style="width: 25%;"><input type="text" name="lesseeAmount" class="form-control" ng-model="riskData.riskMgmtComp.lesseeAmount" ng-change="debtRatio(riskData.riskMgmtComp,'lesseeDebtRatio','lesseeAmount','lesseeDebtAmount');" ng-disabled="disabled" number-format></div>
+                            <div class="tal-td p-xs b-r" style="width: 25%;">承租人月均负债总额</div>
+                            <div class="tal-td p-xs" style="width: 25%;"><input type="text" name="lesseeDebtAmount" class="form-control" ng-model="riskData.riskMgmtComp.lesseeDebtAmount" ng-change="debtRatio(riskData.riskMgmtComp,'lesseeDebtRatio','lesseeAmount','lesseeDebtAmount');" ng-disabled="disabled" number-format></div>
+                        </div>
+                        <div class="tal-tr b-b">
+                            <div class="tal-td p-xs b-r" style="width: 25%;">收入负债比</div>
+                            <div class="tal-td p-xs b-r" style="width: 25%;"><input type="text" name="lesseeDebtRatio" class="form-control" ng-model="riskData.riskMgmtComp.lesseeDebtRatio" ng-init="debtRatio(riskData.riskMgmtComp,'lesseeDebtRatio','lesseeAmount','lesseeDebtAmount');" disabled></div>
+                            <div class="tal-td p-xs b-r" style="width: 25%;"></div>
+                            <div class="tal-td p-xs" style="width: 25%;"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="sub-body" ng-init="init();" ng-if="riskData.riskMgmtGuaranteeList">
+                    <div ng-repeat="a in riskData.riskMgmtGuaranteeList">
+                        <div class="son-title b-b clearfix">
+                            <span class="pull-left">担保人({{a.guaranteeName}})</span>
+                            <span class="pull-right">单位：元</span>
+                        </div>
+                        <div class="son-body">
+                            <div class="tal-tr b-b">
+                                <div class="tal-td p-xs b-r" style="width: 25%;">{{a.relation | getName:'relation'}}月收入总额</div>
+                                <div class="tal-td p-xs b-r" style="width: 25%;"><input type="text" name="guaranteeAmount" ng-model="a.guaranteeAmount" ng-change="debtRatio(a,'guaranteeDebtRatio','guaranteeAmount','guaranteeRepay');" class="form-control" ng-disabled="disabled" number-format></div>
+                                <div class="tal-td p-xs b-r" style="width: 25%;">{{a.relation | getName:'relation'}}月还贷金额</div>
+                                <div class="tal-td p-xs" style="width: 25%;"><input type="text" name="guaranteeRepay" ng-model="a.guaranteeRepay" ng-change="debtRatio(a,'guaranteeDebtRatio','guaranteeAmount','guaranteeRepay');" class="form-control" ng-disabled="disabled" number-format></div>
+                            </div>
+                            <div class="tal-tr b-b">
+                                <div class="tal-td p-xs b-r" style="width: 25%;">{{a.relation | getName:'relation'}}收入负债比</div>
+                                <div class="tal-td p-xs b-r" style="width: 25%;"><input type="text" name="guaranteeDebtRatio" ng-model="a.guaranteeDebtRatio" ng-init="debtRatio(a,'guaranteeDebtRatio','guaranteeAmount','guaranteeRepay');" class="form-control" disabled></div>
+                                <div class="tal-td p-xs b-r" style="width: 25%;"></div>
+                                <div class="tal-td p-xs" style="width: 25%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--收入负债比测算-END-->
+
+            <!--项目风险分析及操作建议-START-->
+            <div class="sub-main" ng-if="riskData.riskMgmtComp">
+                <div class="sub-title b-b clearfix" click-hide style="background-color: red;">
+                    <span class="pull-left">项目风险分析及操作建议</span>
+                    <span class="pull-right">
+                        <i class="glyphicon glyphicon-chevron-down"></i>
+                    </span>
+                </div>
+                <div class="sub-body">
+                    <div class="b-b p-xs">
+                        <textarea style="height: 110px;resize: none;" name="riskMemo" placeholder="描述项目中存在的主要风险，及对项目的操作建议" class="form-control m-b-xs" ng-model="riskData.riskMgmtComp.riskMemo" ng-disabled="disabled"></textarea>
+                    </div>
+                </div>
+            </div>
+            <!--项目风险分析及操作建议-END-->
+
+        </div>
+    </div>
+</div>

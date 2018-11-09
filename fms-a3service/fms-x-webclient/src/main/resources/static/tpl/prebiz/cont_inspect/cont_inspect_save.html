@@ -1,0 +1,39 @@
+
+<div>
+        <ul type="none" style="padding: 10px 80px 0px 60px;">
+            <div class="form-group row">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">操作分类</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-4">
+                    <div class="radio" ng-repeat="contInspectActTypeObj in contInspectActTypeList">
+                        <label><input type="radio" name="contInspectActType" ng-value="contInspectActTypeObj.codeValue" ng-model="contInspect.contInspectActType">{{contInspectActTypeObj.codeValueName}}</label>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group row no-gutte">
+                <div ng-if="contInspect.contInspectActType == 0" >
+                    <label class="col-sm-2 control-label text-right">退回原因<b class="form-error">*</b>:</label>
+                    <div class="col-sm-4">
+                        <select name="contInspectReason" ng-model="contInspect.contInspectReason" class="form-control m-b-xs" required>
+                            <option value="">请选择</option>
+                            <option ng-repeat="contInspectReasonObj in contInspectReasonList" value="{{contInspectReasonObj.codeValue}}">{{contInspectReasonObj.codeValueName}}</option>
+                        </select>
+                        <p>
+                            <span class="form-info" ng-show=" (form.contInspectReason.$dirty && form.contInspectReason.$error.required) || (form.contInspectReason.$error.required && formValidate)">退回原因不能为空</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group row no-gutte">
+                <label class="col-sm-2 control-label text-right">审批意见备注<b class="form-error">*</b>:</label>
+                <div class = "col-sm-10 text-left">
+                    <textarea limit-word type="text" name="remark1" placeholder="" class="form-control m-b-xs" ng-model="contInspect.remark1"  rows = "3" required></textarea>
+                    <p>
+                        <span class="form-info" ng-show=" (form.remark1.$dirty && form.remark1.$error.required) || (form.remark1.$error.required && formValidate)">审批意见备注不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <!--流程日志-->
+            <div ng-include="'tpl/common/process_log/process_log_list.html'"></div>
+        </ul>
+</div>

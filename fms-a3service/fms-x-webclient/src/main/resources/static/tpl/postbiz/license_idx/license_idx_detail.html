@@ -1,0 +1,145 @@
+<div  ng-controller="license_idx_detail_controller">
+
+    <div>
+        <toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="row">
+            <div class="btn-group m-r-lg pull-left" style="margin-left: 25px">
+                <h4>指标详情信息</h4>
+            </div>
+            <div class="btn-group m-r-lg pull-right" style="margin-left: 25px">
+                <button class="btn btn-default m-t-xs" ng-click="goBack()">返回</button>
+            </div>
+        </div>
+        <form name="form" class="form-validation" novalidate>
+
+            <div class="panel-body wrapper-sm">
+                <ul id="applyTab" class="nav nav-tabs">
+                    <li class="active"><a href="javascript:void(0);" data-toggle="tab" data-id="message"
+                                          onclick="switchPageTab(this, 'applyTab')">指标详情信息</a></li>
+                    <li><a href="javascript:void(0);" data-toggle="tab" data-id="fjmessage"
+                           onclick="switchPageTab(this, 'applyTab')">附件信息</a></li>
+                </ul>
+                <div  class="tab-content"  style="margin-top: 25px">
+                    <div class="tab-pane fade in active"  id="message">
+                <!--指标编号-->
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">指标编号</b>:</label>
+                    <!--项目可编辑-->
+                    <div class="col-sm-2">
+                        <label class="col-sm-12 control-label text-left">{{licenseIdx.licenseIdxNo}}</label>
+                    </div>
+                </div>
+
+                <!--指标所属分公司-->
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">指标所属区域</b>:</label>
+                    <!--项目可编辑-->
+                    <div class="col-sm-2">
+                        <label class="col-sm-12 control-label text-left">{{licenseIdx.groupDistrict}}</label>
+                    </div>
+
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">指标所属分公司</b>:</label>
+                    <!--不可编辑-->
+                    <div class="col-sm-4" >
+                        <label class="col-sm-12 control-label text-left">{{licenseIdx.groupName}}</label>
+                    </div>
+                </div>
+                <!--指标失效日期-->
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">指标失效日期</b>:</label>
+                    <!--项目可编辑-->
+                    <div class="col-sm-2">
+                        <label class="col-sm-12 control-label text-left">{{licenseIdx.idxInvalidDate}}</label>
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">有效天数</b>:</label>
+                    <div class="col-sm-2">
+                        <label class="col-sm-12 control-label text-left">{{licenseIdx.idxValidDay}}</label>
+                    </div>
+                </div>
+
+                <!--指标状态-->
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">指标状态</b>:</label>
+                    <div class="col-sm-2" >
+                        <label class="col-sm-12 control-label text-left">{{CommonCodeUtils.getCodeValueName(CommonCodeUtils.codeTypes.licenseIdxStatus,licenseIdx.licenseIdxStatus) }}</label>
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">指标使用人</b>:</label>
+                    <div class="col-sm-2" >
+                        <label class="col-sm-12 control-label text-left">{{licenseIdx.useCustomer}}</label>
+                    </div>
+                </div>
+
+                <!--使用人证件号-->
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">使用人证件号</b>:</label>
+                    <div class="col-sm-2" >
+                        <label class="col-sm-12 control-label text-left">{{licenseIdx.useCertifNo}}</label>
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">使用人电话</b>:</label>
+                    <div class="col-sm-2" >
+                        <label class="col-sm-12 control-label text-left">{{licenseIdx.usePhoneNo}}</label>
+                    </div>
+                </div>
+
+                <!--指标合同编号-->
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">指标合同编号</b>:</label>
+                    <div class="col-sm-2" >
+                        <label class="col-sm-12 control-label text-left">{{licenseIdx.useContNo}}</label>
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">车牌号</b>:</label>
+                    <div class="col-sm-2" >
+                        <label class="col-sm-12 control-label text-left">{{licenseIdx.useLicenseNo}}</label>
+                    </div>
+                </div>
+
+                <!--合同开始结束日期-->
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">合同开始日</b>:</label>
+                    <div class="col-sm-2" >
+                        <label class="col-sm-12 control-label text-left">{{licenseIdx.contractDate}}</label>
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">合同结束日</b>:</label>
+                    <div class="col-sm-2" >
+                        <label class="col-sm-12 control-label text-left">{{licenseIdx.contractValidDate}}</label>
+                    </div>
+                </div>
+
+                <!--指标续约开始日-->
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">指标续约开始日</b>:</label>
+                    <div class="col-sm-2" >
+                        <label class="col-sm-12 control-label text-left">{{licenseIdx.leaseStartDate}}</label>
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">指标续约结束日</b>:</label>
+                    <div class="col-sm-2" >
+                        <label class="col-sm-12 control-label text-left">{{licenseIdx.leaseEndDate}}</label>
+                    </div>
+                </div>
+
+                <!--备注-->
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">备注</b>:</label>
+                    <!--可编辑-->
+                    <div class="col-sm-2">
+                        <label class="col-sm-12 control-label text-left">{{licenseIdx.idxMemo}}</label>
+                    </div>
+                </div>
+            </div>
+                    <!--附件信息-->
+                    <div class="tab-pane fade" id="fjmessage">
+                        <ul type="none" style="padding-left: 20px;">
+                            <div class="panel-body wrapper-sm">
+                                <tree-file-directive detail-flag="$root.yesNoFlag.yes" file-type="$root.basFileTypes.indexAnnexFile" files="bizFilesList" not-upload="notUpload" not-upload-info="msgInfo"   not-file-type="notFileType" not-file-type-name="notFileTypeName">
+                                </tree-file-directive>
+                            </div>
+                        </ul>
+                    </div>
+            </div>
+            </div>
+        </form>
+    </div>
+</div>

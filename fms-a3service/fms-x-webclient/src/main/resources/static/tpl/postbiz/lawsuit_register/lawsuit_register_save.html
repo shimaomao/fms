@@ -1,0 +1,146 @@
+<div class="modal-header">
+    <h4 class="modal-title">添加postbiz <button type="button" class="close" data-dismiss="modal" aria-hidden="true" ng-click="close()">&times;</button></h4>
+</div>
+<div class="modal-body">
+    <form name="form" class="form-validation" novalidate>
+
+        <div class="panel-body">
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">诉讼任务号</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="lawsuitTaskNo" placeholder="请输入诉讼任务号" class="form-control m-b-xs" ng-model="lawsuitRegister.lawsuitTaskNo"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.lawsuitTaskNo.$dirty && form.lawsuitTaskNo.$error.required) || (form.lawsuitTaskNo.$error.required && formValidate)">诉讼任务号不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">受理法院</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="court" placeholder="请输入受理法院" class="form-control m-b-xs" ng-model="lawsuitRegister.court"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.court.$dirty && form.court.$error.required) || (form.court.$error.required && formValidate)">受理法院不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">立案案号</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="caseRecordNo" placeholder="请输入立案案号" class="form-control m-b-xs" ng-model="lawsuitRegister.caseRecordNo"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.caseRecordNo.$dirty && form.caseRecordNo.$error.required) || (form.caseRecordNo.$error.required && formValidate)">立案案号不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">案件状态</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="caseStatus" placeholder="请输入案件状态" class="form-control m-b-xs" ng-model="lawsuitRegister.caseStatus"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.caseStatus.$dirty && form.caseStatus.$error.required) || (form.caseStatus.$error.required && formValidate)">案件状态不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">案件时间</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="caseDate" placeholder="请输入案件时间" class="form-control m-b-xs" ng-model="lawsuitRegister.caseDate"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.caseDate.$dirty && form.caseDate.$error.required) || (form.caseDate.$error.required && formValidate)">案件时间不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">承办法官</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="judge" placeholder="请输入承办法官" class="form-control m-b-xs" ng-model="lawsuitRegister.judge"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.judge.$dirty && form.judge.$error.required) || (form.judge.$error.required && formValidate)">承办法官不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">承办法官联系方式</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="judgeContactNo" placeholder="请输入承办法官联系方式" class="form-control m-b-xs" ng-model="lawsuitRegister.judgeContactNo"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.judgeContactNo.$dirty && form.judgeContactNo.$error.required) || (form.judgeContactNo.$error.required && formValidate)">承办法官联系方式不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">案件说明</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="caseIntroduce" placeholder="请输入案件说明" class="form-control m-b-xs" ng-model="lawsuitRegister.caseIntroduce"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.caseIntroduce.$dirty && form.caseIntroduce.$error.required) || (form.caseIntroduce.$error.required && formValidate)">案件说明不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">诉讼金额</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="lawsuitAmount" placeholder="请输入诉讼金额" class="form-control m-b-xs" ng-model="lawsuitRegister.lawsuitAmount"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.lawsuitAmount.$dirty && form.lawsuitAmount.$error.required) || (form.lawsuitAmount.$error.required && formValidate)">诉讼金额不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">判决金额</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="judgmentAmount" placeholder="请输入判决金额" class="form-control m-b-xs" ng-model="lawsuitRegister.judgmentAmount"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.judgmentAmount.$dirty && form.judgmentAmount.$error.required) || (form.judgmentAmount.$error.required && formValidate)">判决金额不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">执行案号</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="executeCaseNo" placeholder="请输入执行案号" class="form-control m-b-xs" ng-model="lawsuitRegister.executeCaseNo"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.executeCaseNo.$dirty && form.executeCaseNo.$error.required) || (form.executeCaseNo.$error.required && formValidate)">执行案号不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+
+        </div>
+
+    </form>
+</div>
+<div class="modal-footer ng-scope">
+    <button class="btn btn-default" ng-click="close()">取消</button>
+    <button type="submit" class="btn btn-success" ng-disabled="submit" ng-click="save()">新增</button>
+</div>

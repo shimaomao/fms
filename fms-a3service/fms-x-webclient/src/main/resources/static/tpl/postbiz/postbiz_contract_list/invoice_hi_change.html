@@ -1,0 +1,20 @@
+<style>
+    .modal-dialog{
+        width: 1150px;
+    }
+</style>
+<div class="modal-header">
+    <h4 class="modal-title">开票信息变更历史</h4>
+</div>
+<div class="modal-body">
+    <div class="panel panel-default" ng-init="init()">
+        <table border="1" class="table table-striped m-b-none" id="invoice_change_table">
+        </table>
+    </div>
+</div>
+<div class="modal-footer ng-scope">
+    <div class="text-center">
+        <button type="button" class="btn btn-default" ng-click="close()">关闭</button>
+    </div>
+</div>
+

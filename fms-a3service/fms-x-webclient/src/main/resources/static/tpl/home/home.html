@@ -1,0 +1,68 @@
+<style>
+    .hbox .col{padding: 20px}
+    .hbox .panel{margin-bottom: 0;}
+    .hbox .wrapper-md{padding: 0;box-shadow: 0 5px 15px rgba(0,0,0,.5);}
+    .hbox .wrapper-md-3{width: 49%;float: left;margin-top: 20px;}
+    .hbox .wrapper-md ul{margin: 0;padding: 0;list-style: none;}
+    .hbox .wrapper-md-2 li{height: 30px;line-height: 30px;}
+    .hbox .wrapper-md-2 span.li-cell-l{color: black;cursor: pointer;}
+    .hbox .wrapper-md-2 span.li-cell-l:hover{color: #2685FF;}
+    .hbox .wrapper-md-2 span.li-cell-r{float: right;color: #545454;font-size: 14px;}
+    .hbox .wrapper-md-2 .more{color: #2685FF;float: right;font-size: 16px;font-weight: normal;cursor: pointer;}
+    .hbox .wrapper-md-2 span.new{display: inline-block;color: #FF2D2D;font-size: 12px;border: 1px solid #FF2D2D;padding: 0px 2px;height: 18px;border-radius: 2px;line-height: 18px;}
+    .hbox .text-muted {color: black;font-weight: bold;font-family: "微软雅黑";margin: 0;padding: 15px;background: white;border-bottom: 1px solid #dedede;}
+    .hbox .wrapper-md-3 .span-cell{float: left;width: 100%;background-color: #f1f1f1;height: 30px;line-height: 30px;margin: 10px 18px 0 0;padding-left: 10px;color: black;cursor: pointer;border: 1px solid #f1f1f1;}
+    .hbox .wrapper-md-3 .span-cell:hover{color: #2685FF;border: 1px solid #2685FF;background-color: white;}
+</style>
+<div>
+    <toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+</div>
+<div class="hbox hbox-auto-xs hbox-auto-sm" ng-init="
+    app.settings.asideFolded = false;
+    app.settings.asideDock = false;
+  ">
+    <!-- main -->
+    <div class="col" ng-controller="home_controller">
+        <div class="wrapper-md wrapper-md-1">
+            <div class="row">
+                <div class="col-md-12">
+                    <h4 class="font-thin text-muted">我的任务</h4>
+                    <div class="panel wrapper" style="max-height:300px">
+                        <div ng-include="'tpl/activiti/act_ru_task/act_ru_task_list.html'">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div>
+            <div class="wrapper-md wrapper-md-3" ng-hide="approveInfo == null || approveInfo == undefined" style="float: left;display: inline">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h4 class="font-thin text-muted">工作台</h4>
+                        <div class="panel wrapper">
+                            <div ng-include="'tpl/home/desk.html'">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="wrapper-md wrapper-md-3" ng-hide="menuUrl.length == 0" ng-style="homePageStyle">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h4 class="font-thin text-muted">常用功能</h4>
+                        <div class="panel wrapper">
+                            <div class="row">
+                                <div class="col-sm-4" ng-repeat="a in menuUrl" ng-click="openNewTab(a.menuClicksId,a.menuLink,a.menuName);"><span class="span-cell">{{a.menuName}}</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- / main -->
+
+</div>

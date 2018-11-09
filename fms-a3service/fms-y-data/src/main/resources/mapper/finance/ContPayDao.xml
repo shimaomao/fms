@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.com.leadu.fms.data.prebiz.dao.ContPayDao">
+    <select id="selectFinancialPrebizContPayDetailListByPage"  resultType="cn.com.leadu.fms.pojo.prebiz.vo.contpay.ContPayVo">
+        SELECT DISTINCT
+        /* 融资申请编号*/
+        contractFinance.apply_no AS applyNo,
+        /* 融资合同编号*/
+        contractFinance.cont_no AS contractNo,
+        /* 出租人*/
+        sysGroup.group_name AS groupName,
+        /* （订单提出用户）承租人*/
+        ifnull(cstmCompany.name, cstmPerson.name) userName,
+        /* 产品方案名称*/
+        product.product_name AS productName,
+        /* 租赁属性*/
+        contractFinance.license_attr AS licenseAttr,
+        /* 融资期限*/
+        contractFinance.fin_period_type AS finPeriodType,
+        /* 融资项名称*/
+        contPay.pay_fund AS payFund,
+        /* 融资金额*/
+        contractFinance.fin_total AS finTotal,
+        /* 付款金额*/
+        contPay.pay_amount AS payAmount,
+        /* 付款日期*/
+        contPay.pay_date AS payDate,
+        /* 付款人员*/
+        contPay.user AS user,
+        /* 收款方名称*/
+        contPay.rec_account_name AS recAccountName,
+        /* 收款方银行*/
+        contPay.rec_acc_bank AS recAccBank,
+        /* 收款方支行*/
+        contPay.rec_acc_branch AS recAccBranch,
+        /* 收款方帐号*/
+        contPay.rec_account_no AS recAccountNo,
+        /* 付款方名称*/
+        contPay.pay_account_name AS payAccountName,
+        /* 付款方银行*/
+        contPay.pay_acc_bank AS payAccBank,
+        /* 付款方支行*/
+        contPay.pay_acc_branch AS payAccBranch,
+        /* 付款方帐号*/
+        contPay.pay_account_no AS payAccountNo,
+        contPay.biz_code,
+        contPay.pay_date
+        FROM
+            cont_pay contPay
+        LEFT JOIN contract contract ON contPay.biz_code = contract.cont_no
+        AND contPay.del_flag = ${delete_exist}
+        left join cstm_company cstmCompany ON cstmCompany.apply_no = contract.apply_no and cstmCompany.del_flag = ${delete_exist}
+        left join cstm_person cstmPerson on cstmPerson.apply_no = contract.apply_no and cstmPerson.del_flag = ${delete_exist}
+        LEFT JOIN contract_finance contractFinance ON contract.cont_no = contractFinance.cont_no
+        AND contractFinance.del_flag = ${delete_exist}
+        LEFT JOIN product product ON product.product = contractFinance.product
+        AND product.del_flag = ${delete_exist}
+        LEFT JOIN sys_group sysGroup ON sysGroup.group_code = contractFinance.belong_group
+        AND sysGroup.del_flag = ${delete_exist}
+        WHERE 1 = 1
+        AND contract.del_flag = ${delete_exist}
+        AND contPay.payment_type = #{contPayVo.paymentTypeFlag}
+            <if test="contPayVo.contractNo!= null">
+                AND contPay.biz_code LIKE #{contPayVo.contractNo}
+            </if>
+            <if test="contPayVo.applyNo!= null">
+                AND contractFinance.apply_no LIKE #{contPayVo.applyNo}
+            </if>
+            <if test="contPayVo.userName!= null">
+                AND (cstmCompany.name LIKE #{contPayVo.userName} or cstmPerson.name LIKE #{contPayVo.userName})
+            </if>
+        ORDER BY contPay.biz_code DESC, contPay.pay_date DESC
+    </select>
+
+    <select id="selectContPayListByPage" resultType="cn.com.leadu.fms.pojo.prebiz.vo.contpay.ContPayVo">
+        SELECT
+            /* 融资申请编号*/
+            contractFinance.apply_no,
+            /* 融资合同编号*/
+            contractFinance.cont_no contractNo,
+            /* 出租人*/
+            sysGroup.group_name,
+            /* （订单提出用户）承租人*/
+            ifnull(cstmCompany.name, cstmPerson.name) userName,
+            /* 产品方案名称*/
+            product.product_name,
+            /* 租赁属性*/
+            contractFinance.license_attr,
+            /* 融资期限*/
+            contractFinance.fin_period_type,
+            /* 融资金额*/
+            contractFinance.fin_total,
+            /* 首付金额*/
+            contractFinance.init_amount,
+            /* 尾付金额*/
+            contractFinance.final_amount,
+            /* 付款金额*/
+            contPay.pay_amount,
+            /* 付款日期*/
+            contPay.pay_date,
+            /* 付款人员*/
+            contPay.user,
+            /* 付款方名称*/
+            contPay.pay_account_name,
+            /* 付款方银行*/
+            contPay.pay_acc_bank,
+            /* 付款方支行*/
+            contPay.pay_acc_branch,
+            /* 付款方帐号*/
+            contPay.pay_account_no,
+            /* 应收租金*/
+            contRepaySked.rent,
+            /* 应收利息*/
+            contRepaySked.interest,
+            /* 累计已收租金*/
+            contRepaySkedTemp.actualAccRent,
+            /* 累计已收利息*/
+            contRepaySkedTemp.actualAccInterest
+        FROM
+            contract contract
+        LEFT JOIN (
+            SELECT
+                biz_code,
+                pay_fund,
+                pay_date,
+                user,
+                pay_account_name,
+                pay_acc_bank,
+                pay_acc_branch,
+                pay_account_no,
+                SUM(pay_amount) pay_amount
+            FROM
+                cont_pay
+            WHERE
+                del_flag = ${delete_exist}
+            AND payment_type = #{contPayVo.paymentTypeFlag}
+            <if test="contPayVo.contractNo!= null">
+                AND biz_code LIKE #{contPayVo.contractNo}
+            </if>
+            GROUP BY biz_code
+        ) contPay ON contract.cont_no = contPay.biz_code
+        LEFT JOIN contract_finance contractFinance ON contract.cont_no = contractFinance.cont_no
+        AND contractFinance.del_flag = ${delete_exist}
+        left join cstm_company cstmCompany ON cstmCompany.apply_no = contractFinance.apply_no and cstmCompany.del_flag = ${delete_exist}
+        left join cstm_person cstmPerson on cstmPerson.apply_no = contractFinance.apply_no and cstmPerson.del_flag = ${delete_exist}
+        LEFT JOIN product product ON product.product = contractFinance.product
+        AND product.del_flag = ${delete_exist}
+        LEFT JOIN sys_group sysGroup ON sysGroup.group_code = contractFinance.belong_group
+        AND sysGroup.del_flag = ${delete_exist}
+        LEFT JOIN (
+            SELECT
+                cont_no,
+                SUM(rent_actual) rent,
+                SUM(interest) interest
+            FROM
+                cont_repay_sked
+            WHERE
+                del_flag = ${delete_exist}
+            GROUP BY cont_no
+        ) contRepaySked ON contRepaySked.cont_no = contract.cont_no
+        LEFT JOIN (
+            SELECT
+                cont_no,
+                SUM(rent_actual) actualAccRent,
+                SUM(interest) actualAccInterest
+            FROM
+                cont_repay_sked
+            WHERE
+                del_flag = ${delete_exist}
+            AND repay_status = #{contPayVo.repayStatus}
+            GROUP BY cont_no
+        ) contRepaySkedTemp ON contRepaySkedTemp.cont_no = contract.cont_no
+        WHERE
+            contract.del_flag = ${delete_exist}
+        <if test="contPayVo.contractNo!= null">
+            AND contract.cont_no LIKE #{contPayVo.contractNo}
+        </if>
+        <if test="contPayVo.applyNo!= null">
+            AND contractFinance.apply_no LIKE #{contPayVo.applyNo}
+        </if>
+        <if test="contPayVo.userName!= null">
+            AND (cstmCompany.name LIKE #{contPayVo.userName} or cstmPerson.name LIKE #{contPayVo.userName})
+        </if>
+        ORDER BY contPay.biz_code DESC, contPay.pay_date DESC
+    </select>
+</mapper>

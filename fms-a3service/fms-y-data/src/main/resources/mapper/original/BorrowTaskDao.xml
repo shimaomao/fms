@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.com.leadu.fms.data.original.dao.BorrowTaskDao">
+  <select id="selectBorrowTaskVosByOrigFileStatus" resultType="cn.com.leadu.fms.pojo.original.vo.borrowtask.BorrowTaskVo">
+    select temp.*
+    from (
+    SELECT DISTINCT
+    borrow_task.*, con.vin_no,
+    ifnull(cstmCompany.name, cstmPerson.name) cstmName,
+    group_concat(fileType.file_type_name) origFileDetailNames
+    FROM
+    borrow_task
+    LEFT JOIN orig_file ON borrow_task.file_record_no = orig_file.file_record_no AND orig_file.del_flag = ${delete_exist}
+    LEFT JOIN contract con ON orig_file.biz_code = con.cont_no AND con.del_flag = ${delete_exist}
+    left join cstm_company cstmCompany ON cstmCompany.apply_no = con.apply_no and cstmCompany.del_flag = ${delete_exist}
+    left join cstm_person cstmPerson on cstmPerson.apply_no = con.apply_no and cstmPerson.del_flag = ${delete_exist}
+    left join borrow_task_detail borrowDetail on borrow_task.borrow_task_no = borrowDetail.borrow_task_no and borrowDetail.del_flag = ${delete_exist}
+    left join orig_file_detail fileDetail on fileDetail.orig_file_detail_id = borrowDetail.orig_file_detail_id and fileDetail.del_flag = ${delete_exist}
+    left join bas_file_type fileType on fileDetail.file_type = fileType.file_type and fileType.del_flag = ${delete_exist}
+    WHERE borrow_task.del_flag = ${delete_exist}
+    <if test="borrowTaskVo.cstmName != null">
+      AND ifnull(cstmCompany.name, cstmPerson.name) LIKE #{borrowTaskVo.cstmName}
+    </if>
+    <if test="borrowTaskVo.vinNo != null">
+      AND con.vin_no LIKE #{borrowTaskVo.vinNo}
+    </if>
+    <if test="borrowTaskVo.bizCodeType != null">
+      AND orig_file.biz_code_type != #{borrowTaskVo.bizCodeType}
+    </if>
+    <if test="borrowTaskVo.borrowTaskStatus != null">
+      AND borrow_task.borrow_task_status = #{borrowTaskVo.borrowTaskStatus}
+    </if>
+    /*借阅用途*/
+    <if test="borrowTaskVo.borrowPurpose != null">
+      AND borrow_task.borrow_purpose = #{borrowTaskVo.borrowPurpose}
+    </if>
+    /*领取方式*/
+    <if test="borrowTaskVo.borrowGetWay != null">
+      AND borrow_task.borrow_get_way = #{borrowTaskVo.borrowGetWay}
+    </if>
+    group by borrow_task.borrow_task_no
+    ORDER BY borrow_task.update_time DESC
+    )temp
+    <if test="borrowTaskVo.origFileDetailNames != null">
+      where
+      /*借阅资料*/
+      temp.origFileDetailNames like #{borrowTaskVo.origFileDetailNames}
+    </if>
+  </select>
+
+  <select id="selectBizCodeByBorrowTaskNo" resultType="java.lang.String">
+    select origFile.biz_code contNo
+    from borrow_task task
+    left join orig_file origFile on task.file_record_no = origFile.file_record_no and origFile.del_flag = ${delete_exist}
+    where task.del_flag = ${delete_exist} and task.borrow_task_no = #{borrowTaskNo}
+  </select>
+</mapper>

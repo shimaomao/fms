@@ -1,0 +1,105 @@
+服务发现中心
+1.无需添加代码
+2.第一个启动
+3.ip:端口 访问,可以查看所有注册的服务
+4.启动服务命令
+docker run  -e="leadu-profiles-active=pre" \
+            -e="server-ip=10.10.1.160" \
+            -e="server.port=8762" \
+            -e="eureka-list=http:10.10.1.161:8763/eureka/,10.10.1.161:8764/eureka/,10.10.1.161:8765/eureka/" \
+            -d \
+            -p 8762:8761 \
+            -v /data/projectLog/a-center/10.10.1.160:8762/:/data/projectLog/a-center/
+
+
+-p 8762:8761 -> 外部端口:docker端口
+server.port -> 外部端口
+eureka-list -> http:10.10.1.161:8763/eureka/ 外部ip加外部端口(非docker)
+-v /data/projectLog/a-center/10.10.1.160:8762/:/data/projectLog/a-center/ -> docker外部日志路径:docker日志内部路径
+5.docker外部日志路径，需要统一映射到文件服务器上做集中管理
+6.服务发现不能使用配置中心来做配置
+7.服务发现的用途，所有微服务到服务发现中心进行注册,
+每个微服务可以进行多个横向注册点,
+服务发现中心对微服务进行负载均衡管理,
+微服务之间的访问无需通过ip进行访问,
+在feign中配置需要访问的微服务名称即可,
+例如
+A服务提供方
+@RequestMapping("gps")
+@Api(value = "component", description = "GPS派单")
+@RestController
+public class GpsController {
+	@Autowired
+	private GpsRPCBusiness gpsBusiness;
+
+	@ApiOperation(value = "GPS派单", notes = "GPS派单")
+	@RequestMapping(value = "gpsOrderSend", method = RequestMethod.POST)
+	public ResponseEntity<RestResponse<GpsOrderSendResVO>> gpsSend(@Valid @RequestBody GpsOrderSendVO vo,
+																   @AuthUserInfo UserInfo userInfo) throws FBGpsRpcException{
+		GpsOrderSendResVO gpsOrderSendResultVO = null;
+		try {
+			gpsOrderSendResultVO = gpsBusiness.gpsOrderSend(vo);
+		} catch (FBGpsRpcException e) {
+			throw e;
+		}catch (Exception e){
+		    e.printStackTrace();
+        }
+		RestResponse<GpsOrderSendResVO> restResponse = RestResponseGenerator.genSuccessResponse();
+		restResponse.setData(gpsOrderSendResultVO);
+		return new ResponseEntity<>(restResponse, HttpStatus.OK);
+	}
+}
+
+
+B服务调用方
+${fb.feigns.serverNames.fbMicroServiceComponent} -> 读取配置中心的服务名称
+
+@FeignClient(name = "${fb.feigns.serverNames.fbMicroServiceComponent}")
+public interface IGpsOrderSendRpc {
+    /**
+     * @param vo
+     * @return
+     * @throws
+     * @Title:
+     * @Description: GPS 派单（调用 componet 方法）
+     * @author QianHuaSheng
+     * @date 2017/11/25 04:07:58
+     * 通过这个类来实现B服务的某个service可以远程调用A服务的controller的某个方法
+     */
+    @RequestMapping(method = RequestMethod.POST, value = "/gps/gpsOrderSend")
+    ResponseEntity<RestResponse<GpsOrderSendResVO>> gpsOrderSend(GpsOrderSendVO vo)throws FBGpsRpcException;
+}
+
+
+
+@Service
+public class GpsOrderSendServiceImpl implements GpsOrderSendService {
+	@Autowired
+	private IGpsOrderSendRpc iGpsOrderSendRpc;
+	/**
+	 * @Title: GPS 派单
+	 * @Description:
+	 * @param gpsOrderSendVO
+	 * @return com.fengbang.microservice.vo.GpsOrderSendResultVO
+	 * @throws
+	 *
+	 * 			@author
+	 *             QianHuaSheng
+	 * @date 2017/11/25 04:23:04
+	 */
+	@Override
+    public ResponseEntity<RestResponse<GpsOrderSendResVO>> GpsOrderSend(GpsOrderSendVO gpsOrderSendVO)throws FBGpsRpcException {
+		ResponseEntity<RestResponse<GpsOrderSendResVO>> restResponseResponseEntity  = null;
+		try {
+			restResponseResponseEntity = iGpsOrderSendRpc.gpsOrderSend(gpsOrderSendVO);
+		} catch (FBGpsRpcException e) {
+			throw new FBGpsRpcException("Gps派单RPC调用异常 申请编号"+gpsOrderSendVO.getId());
+		}catch (Exception e){
+			throw new FBGpsRpcException("RPC调用异常 申请编号"+gpsOrderSendVO.getId(),e);
+		}
+		return restResponseResponseEntity;
+	}
+
+}
+
+

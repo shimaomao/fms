@@ -1,0 +1,74 @@
+<div class="modal-header">
+    <h4 class="modal-title">添加product <button type="button" class="close" data-dismiss="modal" aria-hidden="true" ng-click="close()">&times;</button></h4>
+</div>
+<div class="modal-body">
+    <form name="form" class="form-validation" novalidate>
+
+        <div class="panel-body">
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">产品方案代码</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="product" placeholder="请输入产品方案代码" class="form-control m-b-xs" ng-model="prodIntrstFactor.product"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.product.$dirty && form.product.$error.required) || (form.product.$error.required && formValidate)">产品方案代码不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">利率方案序号</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="intrstNo" placeholder="请输入利率方案序号" class="form-control m-b-xs" ng-model="prodIntrstFactor.intrstNo"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.intrstNo.$dirty && form.intrstNo.$error.required) || (form.intrstNo.$error.required && formValidate)">利率方案序号不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">因子代码</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="factorCode" placeholder="请输入因子代码" class="form-control m-b-xs" ng-model="prodIntrstFactor.factorCode"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.factorCode.$dirty && form.factorCode.$error.required) || (form.factorCode.$error.required && formValidate)">因子代码不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">因子值开始</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="factorValueFrom" placeholder="请输入因子值开始" class="form-control m-b-xs" ng-model="prodIntrstFactor.factorValueFrom"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.factorValueFrom.$dirty && form.factorValueFrom.$error.required) || (form.factorValueFrom.$error.required && formValidate)">因子值开始不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">因子值结束</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="factorValueTo" placeholder="请输入因子值结束" class="form-control m-b-xs" ng-model="prodIntrstFactor.factorValueTo"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.factorValueTo.$dirty && form.factorValueTo.$error.required) || (form.factorValueTo.$error.required && formValidate)">因子值结束不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+
+        </div>
+
+    </form>
+</div>
+<div class="modal-footer ng-scope">
+    <button class="btn btn-default" ng-click="close()">取消</button>
+    <button type="submit" class="btn btn-success" ng-disabled="submit" ng-click="save()">新增</button>
+</div>

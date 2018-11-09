@@ -1,0 +1,111 @@
+<div  ng-controller="sys_role_handler_controller">
+    <div>
+        <toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="row" style="margin: 0; padding: 15px; border: 1px solid #dddddd">
+            <h4 class="m-n font-thin h4">{{frameTitle}}</h4>
+        </div>
+    <form name="form" class="form-validation" novalidate>
+
+        <!--角色id-->
+        <div class="form-group row" ng-show="itemWidgetMap['I000720'].showMod">
+            <label class="col-sm-3 control-label text-right"><b class="form-text-black">角色ID</b>:</label>
+
+            <!--项目不可编辑-->
+            <div class="col-sm-8" ng-show="!itemWidgetMap['I000720'].writeMod">
+                <label class="col-sm-12 control-label text-left">{{sysRole.roleId}}</label>
+            </div>
+        </div>
+
+        <div class="line line-dashed b-b line-lg pull-in"></div>
+        <!--角色代码-->
+        <div class="form-group row" ng-show="itemWidgetMap['I000721'].showMod">
+            <label class="col-sm-3 control-label text-right"><b class="form-text-black" ng-required="itemWidgetMap['I000721'].checkMod">角色代码</b>:</label>
+            <!--项目可编辑-->
+            <div class="col-sm-9" ng-show="itemWidgetMap['I000721'].writeMod">
+                <input class="form-control m-b-xs" name="role" placeholder="角色代码" ng-model="sysRole.role" >
+                <p>
+                    <span class="form-info" ng-show=" (form.roleName.$dirty && form.roleName.$error.required) || (form.roleName.$error.required && formValidate)">角色名称不能为空</span>
+                </p>
+            </div>
+
+            <!--项目不可编辑-->
+            <div class="col-sm-8" ng-show="!itemWidgetMap['I000721'].writeMod">
+                <label class="col-sm-12 control-label text-left">{{sysRole.role}}</label>
+            </div>
+        </div>
+
+        <div class="line line-dashed b-b line-lg pull-in"></div>
+
+        <!--角色名称-->
+        <div class="form-group row" ng-show="itemWidgetMap['I000722'].showMod">
+            <label class="col-sm-3 control-label text-right"><b class="form-text-black" ng-required="itemWidgetMap['I000722'].checkMod">角色名称</b>:</label>
+            <!--项目可编辑-->
+            <div class="col-sm-9" ng-show="itemWidgetMap['I000722'].writeMod">
+                <input class="form-control m-b-xs" name="roleName" placeholder="角色名称" ng-model="sysRole.roleName" ng-required="itemWidgetMap['I000722'].checkMod">
+                <p>
+                    <span class="form-info" ng-show=" (form.roleName.$dirty && form.roleName.$error.required) || (form.roleName.$error.required && formValidate)">角色名称不能为空</span>
+                </p>
+            </div>
+
+            <!--项目不可编辑-->
+            <div class="col-sm-8" ng-show="!itemWidgetMap['I000722'].writeMod">
+                <label class="col-sm-12 control-label text-left">{{sysRole.roleName}}</label>
+            </div>
+        </div>
+
+        <div class="line line-dashed b-b line-lg pull-in"></div>
+
+        <!--启用标识-->
+        <div class="form-group row" ng-show="itemWidgetMap['I000723'].showMod">
+            <label class="col-sm-3 control-label text-right"><b class="form-text-black">启用标识</b><b class="form-error" >*</b>:</label>
+            <!--项目可编辑-->
+            <div class="col-sm-9 " ng-show="itemWidgetMap['I000723'].writeMod">
+                    <select ng-model="sysRole.enableFlag" class="form-control m-b-xs" >
+                        <option ng-repeat="enableFlagObj in enableFlagList" value="{{enableFlagObj.codeValue}}">{{enableFlagObj.codeValueName}}</option>
+                    </select>
+            </div>
+
+            <!--项目不可编辑-->
+            <div class="col-sm-8" ng-show="!itemWidgetMap['I000723'].writeMod">
+                <label class="col-sm-12 control-label text-left">{{sysRole.enableFlagVal}}</label>
+            </div>
+        </div>
+
+        <div class="line line-dashed b-b line-lg pull-in"></div>
+
+         <!--排序-->
+        <div class="form-group" ng-show="itemWidgetMap['I000724'].showMod">
+            <label class="col-sm-3 control-label text-right"><b class="form-text-black">排序</b><b class="form-error" ng-required="itemWidgetMap['I000724'].checkMod">*</b>:</label>
+            <!--项目可编辑-->
+            <div class="col-sm-9" ng-show="itemWidgetMap['I000724'].writeMod">
+                <input type="text" name="orderNo" placeholder="请输入orderNo" class="form-control m-b-xs" ng-model="sysRole.orderNo"  ng-required="itemWidgetMap['I000724'].checkMod" >
+                <p>
+                    <span class="form-info" ng-show=" (form.orderNo.$dirty && form.orderNo.$error.required) || (form.orderNo.$error.required && formValidate)">orderNo不能为空</span>
+                </p>
+            </div>
+            <!--项目不可编辑-->
+            <div class="col-sm-8" ng-show="!itemWidgetMap['I000724'].writeMod">
+                <label class="col-sm-12 control-label text-left">{{sysRole.orderNo}}</label>
+            </div>
+        </div>
+
+        <div class="row" style="margin: 10px 0 0 0;">
+            <label class="col-sm-3 control-label text-right"></label>
+            <div class="col-sm-15 m-b">
+                <button class="btn btn-default" ng-click="goBack()">返回</button>
+                <button type="submit" class="btn btn-success" ng-show="showSaveButton" ng-disabled="submit" ng-click="save()">新增</button>
+                <button type="submit" class="btn btn-success" ng-show="showModifySaveButton" ng-disabled="submit" ng-click="modify()">保存</button>
+            </div>
+        </div>
+
+    </form>
+</div>
+<!--<div class="modal-footer ng-scope">-->
+    <!--<button class="btn btn-default" ng-click="close()">关闭</button>-->
+    <!--<button type="submit" class="btn btn-success" ng-show="showSaveButton" ng-disabled="submit" ng-click="save()">新增</button>-->
+    <!--<button type="submit" class="btn btn-success" ng-show="showModifySaveButton" ng-disabled="submit" ng-click="modify()">保存</button>-->
+<!--</div>-->
+    </div>

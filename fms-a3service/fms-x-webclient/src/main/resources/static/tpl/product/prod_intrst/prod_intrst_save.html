@@ -1,0 +1,158 @@
+<div class="modal-header">
+    <h4 class="modal-title">添加product <button type="button" class="close" data-dismiss="modal" aria-hidden="true" ng-click="close()">&times;</button></h4>
+</div>
+<div class="modal-body">
+    <form name="form" class="form-validation" novalidate>
+
+        <div class="panel-body">
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">产品方案代码</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="product" placeholder="请输入产品方案代码" class="form-control m-b-xs" ng-model="prodIntrst.product"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.product.$dirty && form.product.$error.required) || (form.product.$error.required && formValidate)">产品方案代码不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">利率方案序号</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="intrstNo" placeholder="请输入利率方案序号" class="form-control m-b-xs" ng-model="prodIntrst.intrstNo"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.intrstNo.$dirty && form.intrstNo.$error.required) || (form.intrstNo.$error.required && formValidate)">利率方案序号不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">客户利率</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="intrstRate" placeholder="请输入客户利率" class="form-control m-b-xs" ng-model="prodIntrst.intrstRate"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.intrstRate.$dirty && form.intrstRate.$error.required) || (form.intrstRate.$error.required && formValidate)">客户利率不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">结算利率</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="settleIntrstRate" placeholder="请输入结算利率" class="form-control m-b-xs" ng-model="prodIntrst.settleIntrstRate"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.settleIntrstRate.$dirty && form.settleIntrstRate.$error.required) || (form.settleIntrstRate.$error.required && formValidate)">结算利率不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">手续费率</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="chargeRate" placeholder="请输入手续费率" class="form-control m-b-xs" ng-model="prodIntrst.chargeRate"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.chargeRate.$dirty && form.chargeRate.$error.required) || (form.chargeRate.$error.required && formValidate)">手续费率不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">结算手续费率</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="settleChargeRate" placeholder="请输入结算手续费率" class="form-control m-b-xs" ng-model="prodIntrst.settleChargeRate"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.settleChargeRate.$dirty && form.settleChargeRate.$error.required) || (form.settleChargeRate.$error.required && formValidate)">结算手续费率不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">一次性手续费</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="onetimeCharge" placeholder="请输入一次性手续费" class="form-control m-b-xs" ng-model="prodIntrst.onetimeCharge"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.onetimeCharge.$dirty && form.onetimeCharge.$error.required) || (form.onetimeCharge.$error.required && formValidate)">一次性手续费不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">贴息方式</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="subsidyMode" placeholder="请输入贴息方式" class="form-control m-b-xs" ng-model="prodIntrst.subsidyMode"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.subsidyMode.$dirty && form.subsidyMode.$error.required) || (form.subsidyMode.$error.required && formValidate)">贴息方式不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">贴息利率</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="subsidyRate" placeholder="请输入贴息利率" class="form-control m-b-xs" ng-model="prodIntrst.subsidyRate"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.subsidyRate.$dirty && form.subsidyRate.$error.required) || (form.subsidyRate.$error.required && formValidate)">贴息利率不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">贴息年限</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="subsidyYear" placeholder="请输入贴息年限" class="form-control m-b-xs" ng-model="prodIntrst.subsidyYear"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.subsidyYear.$dirty && form.subsidyYear.$error.required) || (form.subsidyYear.$error.required && formValidate)">贴息年限不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">贴息金额</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="subsidyAmount" placeholder="请输入贴息金额" class="form-control m-b-xs" ng-model="prodIntrst.subsidyAmount"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.subsidyAmount.$dirty && form.subsidyAmount.$error.required) || (form.subsidyAmount.$error.required && formValidate)">贴息金额不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">利率方式</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="intrstRateMode" placeholder="请输入利率方式" class="form-control m-b-xs" ng-model="prodIntrst.intrstRateMode"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.intrstRateMode.$dirty && form.intrstRateMode.$error.required) || (form.intrstRateMode.$error.required && formValidate)">利率方式不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+
+        </div>
+
+    </form>
+</div>
+<div class="modal-footer ng-scope">
+    <button class="btn btn-default" ng-click="close()">取消</button>
+    <button type="submit" class="btn btn-success" ng-disabled="submit" ng-click="save()">新增</button>
+</div>

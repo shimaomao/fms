@@ -1,0 +1,349 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.com.leadu.fms.data.cost.dao.GpsDispatchDao">
+
+    <!--
+    /**
+     * @Title:
+     * @Description: 查询派单信息一览
+     * @param gpsDispatchVo
+     * @return
+     * @throws
+     * @author qiaomengnan
+     * @date 2018/05/25 03:43:13
+     */
+     -->
+    <select id="selectGpsDispatchVosByPage" resultType="cn.com.leadu.fms.pojo.cost.vo.gpsdispatch.GpsDispatchVo">
+
+        select
+        <!-- 合同id -->
+        contract.contract_id,
+
+        <!-- 合同编号 -->
+        contract.cont_no,
+
+        <!-- 订单编号 -->
+        contract.apply_no,
+
+        <!-- 承租人 -->
+        IF(apply.apply_type = #{gpsDispatchVo.applyTypePerson},cstmPerson.name,cstmCompany.name) lessee ,
+
+        <!-- 客户类型 -->
+        apply.apply_type,
+
+        <!-- 业务类型 -->
+        contractFinance.license_attr,
+
+        <!-- 车架号 -->
+        contract.vin_no,
+
+        <!-- 业务经理(录单人) -->
+        apply.apply_user,
+
+        <!-- 放款日期 -->
+        contract.contract_valid_date,
+
+        <!-- 品牌 -->
+        vehBrandCode.vehicle_name AS vehBrandCodeName,
+
+        <!-- 车型 -->
+        vehicleCode.vehicle_name AS vehicleCodeName,
+
+        <!-- 实际销售方 -->
+        basSales.sales_name,
+
+        <!-- 融资期限 -->
+        contractFinance.fin_period_type,
+
+        <!-- gps融资额 -->
+        contFinDetail.fin_amount,
+
+        <!-- 安装师傅 -->
+        gpsDispatch.install_user,
+
+        <!-- 安装师傅电话 -->
+        gpsDispatch.install_user_mobile_no,
+
+        <!-- 安装状态 -->
+        gpsDispatch.install_status,
+
+        <!-- gps月结状态 -->
+        gpsDispatch.settle_status,
+
+        <!-- gps厂商 -->
+        gpsDispatch.gps_seller,
+
+        <!-- 盗抢险投保渠道 -->
+        contractVehicle.theft_insurance_type,
+
+        <!-- 合同状态 -->
+        contract.biz_status AS bizStatus,
+
+        <!-- 出租人区域 -->
+        sysGroup.group_name
+
+        from contract contract
+        left join contract_finance contractFinance on contractFinance.del_flag = ${delete_exist}
+        and contractFinance.cont_no = contract.cont_no and contractFinance.apply_no = contract.apply_no
+        left join sys_group sysGroup ON contractFinance.belong_group = sysGroup.group_code AND sysGroup.del_flag =  ${delete_exist}
+        left join gps_dispatch gpsDispatch on gpsDispatch.del_flag = ${delete_exist}
+        and gpsDispatch.cont_no = contract.cont_no and gpsDispatch.apply_no = contract.apply_no
+        left join apply apply on apply.del_flag = ${delete_exist}
+        and apply.apply_no = contract.apply_no
+        left join cstm_person cstmPerson on cstmPerson.del_flag = ${delete_exist}
+        and cstmPerson.apply_no = contract.apply_no
+        left join cstm_company cstmCompany on cstmCompany.del_flag = ${delete_exist}
+        and cstmCompany.apply_no = contract.apply_no
+        left join contract_vehicle contractVehicle on contractVehicle.del_flag = ${delete_exist}
+        and contractVehicle.cont_no = contract.cont_no
+        and contractVehicle.apply_no = contract.apply_no
+        left join bas_vehicle vehBrandCode on contractVehicle.veh_brand_code=vehBrandCode.vehicle_code and vehBrandCode.del_flag = ${delete_exist}
+        left join bas_vehicle vehicleCode on contractVehicle.vehicle_code=vehicleCode.vehicle_code and vehicleCode.del_flag = ${delete_exist}
+        left join bas_sales basSales on basSales.sales_code = contractVehicle.sale_group_code
+        and basSales.del_flag = ${delete_exist}
+        left join cont_fin_detail contFinDetail on contFinDetail.del_flag = ${delete_exist}
+        and contFinDetail.cont_no = contract.cont_no
+        and contFinDetail.apply_no = contract.apply_no
+        and contFinDetail.fin_item = #{gpsDispatchVo.finItemGps}
+        where contract.del_flag = ${delete_exist}
+        <!-- 合同生效日不为空 或者 （合同状态<>取消 and （车辆类型 = 二手车 or 业务类型 = 回租赁）） -->
+        and ((contract.contract_valid_date is not null) or (contract.biz_status!=#{gpsDispatchVo.contType} and (contractVehicle.vehicle_form=#{gpsDispatchVo.vehicleType} or contractFinance.license_attr=#{gpsDispatchVo.licenseType} )))
+        <!-- 申请编号查询 -->
+        <if test="gpsDispatchVo.applyNo != null">
+            and contract.apply_no like #{gpsDispatchVo.applyNo}
+        </if>
+        <!-- 合同编号查询 -->
+        <if test="gpsDispatchVo.contNo != null">
+            and contract.cont_no like #{gpsDispatchVo.contNo}
+        </if>
+        <!-- 承租人查询 -->
+        <if test="gpsDispatchVo.lessee != null">
+            and ( cstmPerson.name like #{gpsDispatchVo.lessee} or cstmCompany.name like #{gpsDispatchVo.lessee} )
+        </if>
+        <!-- 车架号查询 -->
+        <if test="gpsDispatchVo.vinNo != null">
+            and contract.vin_no like #{gpsDispatchVo.vinNo}
+        </if>
+        <!-- 出租人区域 -->
+        <if test="gpsDispatchVo.groupDistrict != null" >
+            AND sysGroup.group_district LIKE #{gpsDispatchVo.groupDistrict}
+        </if>
+        <if test="gpsDispatchVo.gpsSeller != null">
+            and gpsDispatch.gps_seller = #{gpsDispatchVo.gpsSeller}
+        </if>
+        <if test="gpsDispatchVo.theftInsuranceType != null">
+            and contractVehicle.theft_insurance_type = #{gpsDispatchVo.theftInsuranceType}
+        </if>
+        <if test="gpsDispatchVo.installStatus == 0">
+            and (gpsDispatch.install_status = #{gpsDispatchVo.installStatus} OR gpsDispatch.install_status is NULL)
+        </if>
+        <if test="gpsDispatchVo.installStatus != 0 and gpsDispatchVo.installStatus != null">
+            and gpsDispatch.install_status = #{gpsDispatchVo.installStatus}
+        </if>
+        <!-- 合同还款状态 -->
+        <if test="gpsDispatchVo.paymentSts != null">
+            and contract.payment_sts = #{gpsDispatchVo.paymentSts}
+        </if>
+        order by if(isnull(contract.contract_valid_date),0,1) asc,contract.contract_valid_date desc,contract.update_time desc
+    </select>
+
+    <!--
+      /**
+       * @Title:
+       * @Description: 查询派单信息一览
+       * @param gpsDispatchVo
+       * @return
+       * @throws
+       * @author qiaomengnan
+       * @date 2018/05/25 03:43:13
+       */
+       -->
+    <select id="selectGpsDispatchVo" resultType="cn.com.leadu.fms.pojo.cost.vo.gpsdispatch.GpsDispatchVo">
+
+        select
+        <!-- 合同id -->
+        contract.contract_id,
+
+        <!-- 合同编号 -->
+        contract.cont_no,
+
+        <!-- 订单编号 -->
+        contract.apply_no,
+
+        <!-- 承租人 -->
+        IF(apply.apply_type = #{gpsDispatchVo.applyTypePerson},cstmPerson.name,cstmCompany.name) lessee ,
+
+        <!-- 客户类型 -->
+        apply.apply_type,
+
+        <!-- 业务类型 -->
+        contractFinance.license_attr,
+
+        <!-- 车架号 -->
+        contract.vin_no,
+
+        <!-- 业务经理(录单人) -->
+        apply.apply_user,
+
+        <!-- 放款日期 -->
+        contract.contract_valid_date,
+
+        <!-- 品牌 -->
+        vehBrandCode.vehicle_name AS vehBrandCodeName,
+
+        <!-- 车型 -->
+        vehicleCode.vehicle_name AS vehicleCodeName,
+
+        <!-- 实际销售方 -->
+        basSales.sales_name,
+
+        <!-- 融资期限 -->
+        contractFinance.fin_period_type,
+
+        <!-- gps融资额 -->
+        contFinDetail.fin_amount,
+
+        gpsDispatch.*
+
+        from contract contract
+        left join contract_finance contractFinance on contractFinance.del_flag = ${delete_exist}
+        and contractFinance.cont_no = contract.cont_no and contractFinance.apply_no = contract.apply_no
+        left join gps_dispatch gpsDispatch on gpsDispatch.del_flag = ${delete_exist}
+        and gpsDispatch.cont_no = contract.cont_no and gpsDispatch.apply_no = contract.apply_no
+        left join apply apply on apply.del_flag = ${delete_exist}
+        and apply.apply_no = contract.apply_no
+        left join cstm_person cstmPerson on cstmPerson.del_flag = ${delete_exist}
+        and cstmPerson.apply_no = contract.apply_no
+        left join cstm_company cstmCompany on cstmCompany.del_flag = ${delete_exist}
+        and cstmCompany.apply_no = contract.apply_no
+        left join contract_vehicle contractVehicle on contractVehicle.del_flag = ${delete_exist}
+        and contractVehicle.cont_no = contract.cont_no
+        and contractVehicle.apply_no = contract.apply_no
+        left join bas_vehicle vehBrandCode on contractVehicle.veh_brand_code=vehBrandCode.vehicle_code and vehBrandCode.del_flag = ${delete_exist}
+        left join bas_vehicle vehicleCode on contractVehicle.vehicle_code=vehicleCode.vehicle_code and vehicleCode.del_flag = ${delete_exist}
+        left join bas_sales basSales on basSales.sales_code = contractVehicle.sale_group_code
+        and basSales.del_flag = ${delete_exist}
+        left join cont_fin_detail contFinDetail on contFinDetail.del_flag = ${delete_exist}
+        and contFinDetail.cont_no = contract.cont_no
+        and contFinDetail.apply_no = contract.apply_no
+        and contFinDetail.fin_item = #{gpsDispatchVo.finItemGps}
+        where contract.del_flag = ${delete_exist}
+        <!-- 合同生效日期不为空 -->
+--         and contract.contract_valid_date is not null
+        and contract.cont_no = #{gpsDispatchVo.contNo}
+        order by contract.contract_valid_date  desc
+    </select>
+
+    <!--申请，审批页面获取月结数据-->
+  <select id="selectGpsDispatchMonthlysVosByPage"
+          parameterType="cn.com.leadu.fms.pojo.cost.vo.gpsdispatch.GpsDispatchMonthlyVo"
+          resultType="cn.com.leadu.fms.pojo.cost.vo.gpsdispatch.GpsDispatchMonthlyVo">
+      SELECT dispatch.dispatch_id,dispatch.cont_no,dispatch.total_cost,dispatch.monthly_settlement_no,dispatch.bill_month,dispatch.expect_install_date,
+      IF(isnull(dispatch.monthly_settlement_no),ifnull(dispatch.gps_wireless_cost,0)+ifnull(dispatch.gps_wired_cost,0),dispatch.equipment_cost) equipmentCost ,
+      IF(isnull(dispatch.monthly_settlement_no),dispatch.install_cost,dispatch.installation_cost) installationCost ,
+      IF(isnull(dispatch.monthly_settlement_no),dispatch.reform_cost,dispatch.change_cost) changeCost ,
+      IF(isnull(dispatch.monthly_settlement_no),dispatch.total_cost,dispatch.bill_total_cost) billTotalCost ,
+      IF(apply.apply_type = #{gpsDispatchMonthlyVo.personFlag},cstmPerson.name,cstmCompany.name) lessee ,
+      contract.apply_type,contract.vin_no,
+      monthly.monthly_sts,
+      monthly.present_user,
+      sysGroup.group_name AS rentPerson
+      FROM gps_dispatch dispatch
+      LEFT JOIN
+        contract contract ON dispatch.cont_no = contract.cont_no AND contract.del_flag = ${delete_exist}
+      LEFT JOIN
+      contract_finance finance ON finance.cont_no = contract.cont_no AND finance.del_flag = ${delete_exist}
+      LEFT JOIN
+        apply apply on apply.apply_no = contract.apply_no AND apply.del_flag = ${delete_exist}
+      left join
+        cstm_person cstmPerson on cstmPerson.apply_no = contract.apply_no AND cstmPerson.del_flag = ${delete_exist}
+      left join
+        cstm_company cstmCompany on cstmCompany.apply_no = contract.apply_no AND cstmCompany.del_flag = ${delete_exist}
+      left join
+        monthly_settlement monthly on dispatch.monthly_settlement_no = monthly.monthly_settlement_no AND monthly.del_flag = ${delete_exist}
+      LEFT JOIN
+        sys_group sysGroup ON finance.belong_group=sysGroup.group_code AND sysGroup.del_flag = ${delete_exist}
+      WHERE dispatch.del_flag = ${delete_exist}
+      <if test="gpsDispatchMonthlyVo.dispatchIds != null">
+          AND dispatch.dispatch_id IN
+          <foreach collection="gpsDispatchMonthlyVo.dispatchIds" item="id" index="index"
+                   open="(" close=")" separator=",">
+              #{id}
+          </foreach>
+
+      </if>
+      <if test="gpsDispatchMonthlyVo.monthlySettlementNo != null">
+          AND dispatch.monthly_settlement_no = #{gpsDispatchMonthlyVo.monthlySettlementNo}
+      </if>
+      order by dispatch.create_time  desc
+  </select>
+
+    <!--查询gps月结一览-->
+    <select id="selectGpsDispatchMonthlysVosListByPage"
+            parameterType="cn.com.leadu.fms.pojo.cost.vo.gpsdispatch.GpsDispatchMonthlyVo"
+            resultType="cn.com.leadu.fms.pojo.cost.vo.gpsdispatch.GpsDispatchMonthlyVo">
+        SELECT dispatch.dispatch_id,dispatch.cont_no,dispatch.total_cost,dispatch.monthly_settlement_no,dispatch.bill_month,
+        IF(isnull(dispatch.monthly_settlement_no),ifnull(dispatch.gps_wireless_cost,0)+ifnull(dispatch.gps_wired_cost,0),dispatch.equipment_cost) equipmentCost ,
+        IF(isnull(dispatch.monthly_settlement_no),dispatch.install_cost,dispatch.installation_cost) installationCost ,
+        IF(isnull(dispatch.monthly_settlement_no),dispatch.reform_cost,dispatch.change_cost) changeCost ,
+        IF(isnull(dispatch.monthly_settlement_no),dispatch.total_cost,dispatch.bill_total_cost) billTotalCost ,
+        IF(apply.apply_type = #{gpsDispatchMonthlyVo.personFlag},cstmPerson.name,cstmCompany.name) lessee ,
+        contract.apply_type,contract.vin_no,
+        monthly.monthly_sts,
+        monthly.present_user,
+        dispatch.gps_seller,
+        dispatch.expect_install_date,
+        contractVehicle.theft_insurance_type,
+        sysGroup.group_name AS rentPerson
+        FROM gps_dispatch dispatch
+        LEFT JOIN
+        contract contract ON dispatch.cont_no = contract.cont_no AND contract.del_flag = ${delete_exist}
+        LEFT JOIN
+        contract_finance finance ON finance.cont_no = contract.cont_no AND finance.del_flag = ${delete_exist}
+        LEFT JOIN
+        apply apply on apply.apply_no = contract.apply_no AND apply.del_flag = ${delete_exist}
+        left join
+        cstm_person cstmPerson on cstmPerson.apply_no = contract.apply_no AND cstmPerson.del_flag = ${delete_exist}
+        left join
+        cstm_company cstmCompany on cstmCompany.apply_no = contract.apply_no AND cstmCompany.del_flag = ${delete_exist}
+        left join
+        monthly_settlement monthly on dispatch.monthly_settlement_no = monthly.monthly_settlement_no AND monthly.del_flag = ${delete_exist}
+        LEFT JOIN
+        sys_group sysGroup ON finance.belong_group=sysGroup.group_code AND sysGroup.del_flag = ${delete_exist}
+        left join contract_vehicle contractVehicle on contractVehicle.del_flag = ${delete_exist}
+        and contractVehicle.cont_no = contract.cont_no
+        and contractVehicle.apply_no = contract.apply_no
+        WHERE dispatch.del_flag = ${delete_exist}
+        <if test="gpsDispatchMonthlyVo.monthlySts != null">
+            AND monthly.monthly_sts =  #{gpsDispatchMonthlyVo.monthlySts}
+        </if>
+        <if test="gpsDispatchMonthlyVo.monthlySettlementNo != null">
+            AND dispatch.monthly_settlement_no like #{gpsDispatchMonthlyVo.monthlySettlementNo}
+        </if>
+        <if test="gpsDispatchMonthlyVo.groupDistrict != null" >
+            AND sysGroup.group_district LIKE #{gpsDispatchMonthlyVo.groupDistrict}
+        </if>
+        <if test="gpsDispatchMonthlyVo.vinNo != null" >
+            AND contract.vin_no LIKE #{gpsDispatchMonthlyVo.vinNo}
+        </if>
+        <if test="gpsDispatchMonthlyVo.lessee != null">
+            AND (cstmPerson.name LIKE #{gpsDispatchMonthlyVo.lessee} OR cstmCompany.name LIKE #{gpsDispatchMonthlyVo.lessee})
+        </if>
+        <if test="gpsDispatchMonthlyVo.gpsSeller != null">
+            and dispatch.gps_seller = #{gpsDispatchMonthlyVo.gpsSeller}
+        </if>
+        <if test="gpsDispatchMonthlyVo.theftInsuranceType != null">
+            and contractVehicle.theft_insurance_type = #{gpsDispatchMonthlyVo.theftInsuranceType}
+        </if>
+        <if test="gpsDispatchMonthlyVo.expectInstallStartDateStr != null">
+            and TIMESTAMPDIFF(DAY,#{gpsDispatchMonthlyVo.expectInstallStartDateStr},dispatch.expect_install_date) &gt;= ${delete_exist}
+        </if>
+        <if test="gpsDispatchMonthlyVo.expectInstallEndDateStr != null">
+            and TIMESTAMPDIFF(DAY,#{gpsDispatchMonthlyVo.expectInstallEndDateStr},dispatch.expect_install_date) &lt;= ${delete_exist}
+        </if>
+        order by dispatch.create_time  desc
+    </select>
+
+</mapper>

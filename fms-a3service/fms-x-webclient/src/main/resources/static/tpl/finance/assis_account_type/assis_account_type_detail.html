@@ -1,0 +1,32 @@
+<div class="panel panel-default wrapper-md" ng-controller="assis_account_type_detail_controller">
+<div class="modal-header">
+        <h4 class="modal-title">辅助核算类型详情</h4>
+</div>
+<div class="modal-body">
+    <form name="form" class="form-validation" novalidate>
+            <div class="form-group row">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">辅助核算类型</b> :</label>
+                <div class="col-sm-8">
+                    <label class="col-sm-12 control-label text-left">{{assisAccountType.assisAccountType}}</label>
+                </div>
+            </div>
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+            <div class="form-group row">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">辅助核算类型名称</b> :</label>
+                <div class="col-sm-8">
+                    <label class="col-sm-12 control-label text-left">{{assisAccountType.assisAccountTypeName}}</label>
+                </div>
+            </div>
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+            <div class="form-group row">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">核算项目值设值</b> :</label>
+                <div class="col-sm-8">
+                    <label class="col-sm-12 control-label text-left">{{assisAccountType.assisAccountValue}}</label>
+                </div>
+            </div>
+    </form>
+</div>
+<div class="modal-footer ng-scope">
+    <button class="btn btn-default" ng-click="close()">关闭</button>
+</div>
+</div>

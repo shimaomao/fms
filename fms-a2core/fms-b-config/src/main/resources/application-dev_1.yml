@@ -1,0 +1,18 @@
+server:
+  port: 8881
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+
+spring:
+  cloud:
+    config:
+      server:
+        git:
+          uri: http://116.236.234.246:10182/fms/fms-config.git
+          username: fms_config
+          password: fms_config
+          search-paths: /dev_1
+          default-label: wan_liang

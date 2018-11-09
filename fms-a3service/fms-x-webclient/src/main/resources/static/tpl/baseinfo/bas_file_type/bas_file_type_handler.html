@@ -1,0 +1,302 @@
+<div ng-controller="bas_file_type_handler_controller">
+    <div>
+        <toaster-container
+                toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+    </div>
+    <div class="panel panel-default">
+        <div class="row" style="margin: 0; padding: 15px; border: 1px solid #dddddd">
+            <h4 class="m-n font-thin h4">{{frameTitle}}</h4>
+        </div>
+        <form name="form" class="form-validation" novalidate>
+            <div class="panel-body wrapper-sm">
+
+
+                <div class="form-group row"> <!--ng-show="itemWidgetMap['I000812'].showMod">-->
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">上级附件类型代码</b><b
+                            class="form-error"> <!--ng-show="itemWidgetMap['I000812'].checkMod">-->*</b>:</label>
+                    <!-- 项目可编辑 -->
+                    <div class="col-sm-3 form-inline" ><!--ng-show="itemWidgetMap['I000812'].writeMod">-->
+                        <input type="text" name="parentFileType" placeholder="请输入上级附件类型代码" class="form-control m-b-xs"
+                               ng-model="basFileType.parentFileType" required disabled><!-- ng-required="itemWidgetMap['I000812'].checkMod" disabled>-->
+
+                        <button class="btn btn-info m-b-xs m-l-sm" ng-click="selectParentFileType()"><i class="fa fa-pencil-square-o m-r-xs"></i>选择</button>
+                        <p>
+                            <span class="form-info"
+                                  ng-show=" (form.parentFileType.$dirty && form.parentFileType.$error.required) || (form.parentFileType.$error.required && formValidate)">上级附件类型代码不能为空</span>
+                        </p>
+                    </div>
+                    <!--&lt;!&ndash; 项目不可编辑 &ndash;&gt;
+                    <div class="col-sm-8" ng-show="!itemWidgetMap['I000812'].writeMod">
+                        <label class="col-sm-12 control-label text-left">{{basFileType.parentFileType}}</label>
+                    </div>-->
+                </div>
+
+
+
+                <div class="form-group row"><!-- ng-show="itemWidgetMap['I000813'].showMod">-->
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">上级附件类型名称</b><b
+                            class="form-error"> <!--ng-show="itemWidgetMap['I000813'].checkMod">-->*</b>:</label>
+                    <!-- 项目可编辑 -->
+                    <div class="col-sm-3" ><!--ng-show="itemWidgetMap['I000813'].writeMod">-->
+                        <input type="text" name="parentFileTypeName" placeholder="请输入上级附件类型名称" class="form-control m-b-xs"
+                               ng-model="basFileType.parentFileTypeName" required disabled><!--ng-required="itemWidgetMap['I000813'].checkMod">-->
+                        <p>
+                            <span class="form-info"
+                                  ng-show=" (form.parentFileTypeName.$dirty && form.parentFileTypeName.$error.required) || (form.parentFileTypeName.$error.required && formValidate)">附件类型代码不能为空</span>
+                        </p>
+                    </div>
+                    <!-- &lt;!&ndash; 项目不可编辑 &ndash;&gt;
+                     <div class="col-sm-8" ng-show="!itemWidgetMap['I000813'].writeMod">
+                         <label class="col-sm-12 control-label text-left">{{basFileType.parentFileTypeName}}</label>
+                     </div>-->
+                </div>
+
+
+
+
+
+
+                <div class="form-group row"><!-- ng-show="itemWidgetMap['I000813'].showMod">-->
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">附件类型代码</b><b
+                            class="form-error"> <!--ng-show="itemWidgetMap['I000813'].checkMod">-->*</b>:</label>
+                    <!-- 项目可编辑 -->
+                    <div class="col-sm-3" ><!--ng-show="itemWidgetMap['I000813'].writeMod">-->
+                        <input type="text" name="fileType" placeholder="请输入附件类型代码" class="form-control m-b-xs"
+                               ng-model="basFileType.fileType" required ><!--ng-required="itemWidgetMap['I000813'].checkMod">-->
+                        <p>
+                            <span class="form-info"
+                                  ng-show=" (form.fileType.$dirty && form.fileType.$error.required) || (form.fileType.$error.required && formValidate)">附件类型代码不能为空</span>
+                        </p>
+                    </div>
+                    <!-- &lt;!&ndash; 项目不可编辑 &ndash;&gt;
+                     <div class="col-sm-8" ng-show="!itemWidgetMap['I000813'].writeMod">
+                         <label class="col-sm-12 control-label text-left">{{basFileType.fileType}}</label>
+                     </div>-->
+                </div>
+
+
+
+
+
+
+
+
+
+
+                <div class="form-group row"><!-- ng-show="itemWidgetMap['I000813'].showMod">-->
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">附件类型名称</b><b
+                            class="form-error"> <!--ng-show="itemWidgetMap['I000813'].checkMod">-->*</b>:</label>
+                    <!-- 项目可编辑 -->
+                    <div class="col-sm-3" ><!--ng-show="itemWidgetMap['I000813'].writeMod">-->
+                        <input type="text" name="fileTypeName" placeholder="请输入附件类型名称" class="form-control m-b-xs"
+                               ng-model="basFileType.fileTypeName" required><!--ng-required="itemWidgetMap['I000813'].checkMod">-->
+                        <p>
+                            <span class="form-info"
+                                  ng-show=" (form.fileTypeName.$dirty && form.fileTypeName.$error.required) || (form.fileTypeName.$error.required && formValidate)">附件类型名称不能为空</span>
+                        </p>
+                    </div>
+                    <!-- &lt;!&ndash; 项目不可编辑 &ndash;&gt;
+                     <div class="col-sm-8" ng-show="!itemWidgetMap['I000813'].writeMod">
+                         <label class="col-sm-12 control-label text-left">{{basFileType.fileTypeName}}</label>
+                     </div>-->
+                </div>
+
+
+
+              
+
+
+
+
+                <div class="form-group row"><!-- ng-show="itemWidgetMap['I000814'].showMod">-->
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">附件类型别名</b><b
+                            class="form-error"><!-- ng-show="itemWidgetMap['I000814'].checkMod">--></b>:</label>
+                    <!-- 项目可编辑 -->
+                    <div class="col-sm-3" ><!--ng-show="itemWidgetMap['I000814'].writeMod">-->
+                        <input type="text" name="fileTypeAlias" placeholder="请输入附件类型别名" class="form-control m-b-xs"
+                               ng-model="basFileType.fileTypeAlias"> <!--ng-required="itemWidgetMap['I000814'].checkMod">-->
+                        <p>
+                            <span class="form-info"
+                                  ng-show=" (form.fileTypeAlias.$dirty && form.fileTypeAlias.$error.required) || (form.fileTypeAlias.$error.required && formValidate)">附件类型别名不能为空</span>
+                        </p>
+                    </div>
+                    <!--&lt;!&ndash; 项目不可编辑 &ndash;&gt;
+                    <div class="col-sm-8" ng-show="!itemWidgetMap['I000814'].writeMod">
+                        <label class="col-sm-12 control-label text-left">{{basFileType.fileTypeAlias}}</label>
+                    </div>-->
+                </div>
+
+
+
+                <div class="form-group row"><!-- ng-show="itemWidgetMap['I000815'].showMod">-->
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">是否实际文件</b><b
+                            class="form-error"><!-- ng-show="itemWidgetMap['I000815'].checkMod">-->*</b>:</label>
+                    <!-- 项目可编辑 -->
+                    <div class="col-sm-3"> <!--ng-show="itemWidgetMap['I000815'].writeMod">-->
+                        <select  ng-model="basFileType.fileFlag" class="form-control m-b-xs" required> <!--ng-required="itemWidgetMap['I000815'].checkMod">-->
+                            <option value="">---选择是否实际文件---</option>
+                            <option value="{{actualFileObj.codeValue}}" ng-repeat="actualFileObj in actualFileList">{{actualFileObj.codeValueName}}</option>
+                            <!--<option value="是" >是</option>
+                            <option value="否" >否</option>-->
+                        </select>
+                        <p>
+                            <span class="form-info"
+                                  ng-show=" (form.fileFlag.$dirty && form.fileFlag.$error.required) || (form.fileFlag.$error.required && formValidate)">是否实际文件不能为空</span>
+                        </p>
+                    </div>
+                   <!-- &lt;!&ndash; 项目不可编辑 &ndash;&gt;
+                    <div class="col-sm-8" ng-show="!itemWidgetMap['I000815'].writeMod">
+                        <label class="col-sm-12 control-label text-left">{{basFileType.fileFlag}}</label>
+                    </div>-->
+                </div>
+
+
+
+                <div class="form-group row"> <!--ng-show="itemWidgetMap['I000819'].showMod">-->
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">是否必填</b><b
+                            class="form-error" ><!--ng-show="itemWidgetMap['I000819'].checkMod">-->*</b>:</label>
+                    <!-- 项目可编辑 -->
+                    <div class="col-sm-3"><!-- ng-show="itemWidgetMap['I000819'].writeMod">-->
+                        <select  ng-model="basFileType.fileChkFlag" class="form-control m-b-xs" required> <!--ng-required="itemWidgetMap['I000819'].checkMod">-->
+                            <option value="">---选择是否必填---</option>
+                            <option value="{{requiredStateObj.codeValue}}" ng-repeat="requiredStateObj in requiredStateList">{{requiredStateObj.codeValueName}}</option>
+                           <!-- <option value="是" >是</option>
+                            <option value="否" >否</option>-->
+                        </select>
+                        <p>
+                            <span class="form-info"
+                                  ng-show=" (form.fileChkFlag.$dirty && form.fileChkFlag.$error.required) || (form.fileChkFlag.$error.required && formValidate)">是否必填不能为空</span>
+                        </p>
+                    </div>
+                    <!-- &lt;!&ndash; 项目不可编辑 &ndash;&gt;
+                     <div class="col-sm-8" ng-show="!itemWidgetMap['I000819'].writeMod">
+                         <label class="col-sm-12 control-label text-left">{{basFileType.fileChkFlag}}</label>
+                     </div>-->
+                </div>
+
+
+
+
+
+
+
+
+
+
+                <div class="form-group row" ><!--ng-show="itemWidgetMap['I000817'].showMod">-->
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">类型限制</b><b
+                            class="form-error"> <!--ng-show="itemWidgetMap['I000817'].checkMod">-->*</b>:</label>
+                    <!-- 项目可编辑 -->
+                    <div class="col-sm-3" ><!--ng-show="itemWidgetMap['I000817'].writeMod">-->
+                        <input type="text" name="fileTypeSuff" placeholder="请输入类型限制" class="form-control m-b-xs"
+                               ng-model="basFileType.fileTypeSuff"><!--ng-required="itemWidgetMap['I000817'].checkMod">-->
+                        <p>
+                            <span class="form-info"
+                                  ng-show=" (form.fileTypeSuff.$dirty && form.fileTypeSuff.$error.required) || (form.fileTypeSuff.$error.required && formValidate)">类型限制不能为空</span>
+                        </p>
+                    </div>
+                  <!--  &lt;!&ndash; 项目不可编辑 &ndash;&gt;
+                    <div class="col-sm-8" ng-show="!itemWidgetMap['I000817'].writeMod">
+                        <label class="col-sm-12 control-label text-left">{{basFileType.fileTypeSuff}}</label>
+                    </div>-->
+                </div>
+
+
+                <div class="form-group row"> <!--ng-show="itemWidgetMap['I000818'].showMod">-->
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">数量限制</b><b
+                            class="form-error"><!-- ng-show="itemWidgetMap['I000818'].checkMod">-->*</b>:</label>
+                    <!-- 项目可编辑 -->
+                    <div class="col-sm-3"> <!--ng-show="itemWidgetMap['I000818'].writeMod">-->
+                        <input type="text" name="fileQtyLimit" placeholder="请输入数量限制" class="form-control m-b-xs"
+                               ng-model="basFileType.fileQtyLimit"> <!--ng-required="itemWidgetMap['I000818'].checkMod">-->
+                        <p>
+                            <span class="form-info"
+                                  ng-show=" (form.fileQtyLimit.$dirty && form.fileQtyLimit.$error.required) || (form.fileQtyLimit.$error.required && formValidate)">数量限制不能为空</span>
+                        </p>
+                    </div>
+                    <!--&lt;!&ndash; 项目不可编辑 &ndash;&gt;
+                    <div class="col-sm-8" ng-show="!itemWidgetMap['I000818'].writeMod">
+                        <label class="col-sm-12 control-label text-left">{{basFileType.fileQtyLimit}}</label>
+                    </div>-->
+                </div>
+
+
+
+
+
+
+
+
+
+                <div class="form-group row" ><!--ng-show="itemWidgetMap['I000816'].showMod">-->
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">排序</b><b
+                            class="form-error"><!-- ng-show="itemWidgetMap['I000816'].checkMod">-->*</b>:</label>
+                    <!-- 项目可编辑 -->
+                    <div class="col-sm-3" ><!--ng-show="itemWidgetMap['I000816'].writeMod">-->
+                        <input type="text" name="orderNo" placeholder="请输入排序" class="form-control m-b-xs"
+                               ng-model="basFileType.orderNo"><!-- ng-required="itemWidgetMap['I000816'].checkMod">-->
+                        <p>
+                            <span class="form-info"
+                                  ng-show=" (form.orderNo.$dirty && form.orderNo.$error.required) || (form.orderNo.$error.required && formValidate)">排序不能为空</span>
+                        </p>
+                    </div>
+                    <!-- &lt;!&ndash; 项目不可编辑 &ndash;&gt;
+                     <div class="col-sm-8" ng-show="!itemWidgetMap['I000816'].writeMod">
+                         <label class="col-sm-12 control-label text-left">{{basFileType.orderNo}}</label>
+                     </div>-->
+                </div>
+
+
+
+
+
+
+
+               <!-- <div class="form-group row"> &lt;!&ndash;ng-show="itemWidgetMap['I000806'].showMod">&ndash;&gt;
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">操作时间</b><b
+                            class="form-error"> &lt;!&ndash;ng-show="itemWidgetMap['I000806'].checkMod">&ndash;&gt;*</b>:</label>
+                    &lt;!&ndash; 项目可编辑 &ndash;&gt;
+                    <div class="col-sm-9" >&lt;!&ndash;ng-show="itemWidgetMap['I000806'].writeMod">&ndash;&gt;
+                        <input type="text" name="updateTime" placeholder="请输入操作时间" class="form-control m-b-xs"
+                               ng-model="basFileType.updateTime"> &lt;!&ndash;ng-required="itemWidgetMap['I000806'].checkMod">&ndash;&gt;
+                        &lt;!&ndash;  <p>
+                              <span class="form-info" ng-show=" (form.updateTime.$dirty && form.updateTime.$error.required) || (form.updateTime.$error.required && formValidate)">操作时间不能为空</span>
+                          </p>&ndash;&gt;
+                    </div>
+                    &lt;!&ndash;&lt;!&ndash; 项目不可编辑 &ndash;&gt;
+                    <div class="col-sm-8" ng-show="!itemWidgetMap['I000806'].writeMod">
+                        <label class="col-sm-12 control-label text-left">{{basFileType.updateTime}}</label>
+                    </div>&ndash;&gt;
+                </div>
+
+                <div class="form-group row">&lt;!&ndash; ng-show="itemWidgetMap['I000807'].showMod">&ndash;&gt;
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">操作员</b><b
+                            class="form-error" >&lt;!&ndash;ng-show="itemWidgetMap['I000807'].checkMod">&ndash;&gt;*</b>:</label>
+                    &lt;!&ndash; 项目可编辑 &ndash;&gt;
+                    <div class="col-sm-9"> &lt;!&ndash;ng-show="itemWidgetMap['I000807'].writeMod">&ndash;&gt;
+                        <input type="text" name="updater" placeholder="请输入操作员" class="form-control m-b-xs"
+                               ng-model="basFileType.updater"> &lt;!&ndash;ng-required="itemWidgetMap['I000807'].checkMod">&ndash;&gt;
+                        &lt;!&ndash;<p>
+                            <span class="form-info" ng-show=" (form.updater.$dirty && form.updater.$error.required) || (form.updater.$error.required && formValidate)">操作员不能为空</span>
+                        </p>&ndash;&gt;
+                    </div>
+                   &lt;!&ndash; &lt;!&ndash; 项目不可编辑 &ndash;&gt;
+                    <div class="col-sm-8" ng-show="!itemWidgetMap['I000807'].writeMod">
+                        <label class="col-sm-12 control-label text-left">{{basFileType.updater}}</label>
+                    </div>&ndash;&gt;
+                </div>-->
+            </div>
+
+
+            <div class="modal-footer ng-scope text-center">
+                <button class="btn btn-default" ng-click="goback()">返回</button>
+                <button type="submit" class="btn btn-success" ng-show="showSave" ng-disabled="submit"
+                        ng-click="save()">新增
+                </button>
+                <button type="submit" class="btn btn-success" ng-show="showUpdate" ng-disabled="submit"
+                        ng-click="modify()">保存
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

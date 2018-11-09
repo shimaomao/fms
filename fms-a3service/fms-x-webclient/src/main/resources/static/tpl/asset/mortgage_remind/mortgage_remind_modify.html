@@ -1,0 +1,98 @@
+<div class="modal-header">
+    <h4 class="modal-title">编辑asset <button type="button" class="close" data-dismiss="modal" aria-hidden="true" ng-click="close()">&times;</button></h4>
+</div>
+<div class="modal-body">
+    <form name="form" class="form-validation" novalidate>
+
+        <div class="panel-body">
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">承租人</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="lessee" placeholder="请输入承租人" class="form-control m-b-xs" ng-model="mortgageRemind.lessee"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.lessee.$dirty && form.lessee.$error.required) || (form.lessee.$error.required && formValidate)">承租人不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">出租人</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="lessor" placeholder="请输入出租人" class="form-control m-b-xs" ng-model="mortgageRemind.lessor"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.lessor.$dirty && form.lessor.$error.required) || (form.lessor.$error.required && formValidate)">出租人不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">车架号</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="vinNo" placeholder="请输入车架号" class="form-control m-b-xs" ng-model="mortgageRemind.vinNo"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.vinNo.$dirty && form.vinNo.$error.required) || (form.vinNo.$error.required && formValidate)">车架号不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">合同号</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="contNo" placeholder="请输入合同号" class="form-control m-b-xs" ng-model="mortgageRemind.contNo"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.contNo.$dirty && form.contNo.$error.required) || (form.contNo.$error.required && formValidate)">合同号不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">融资额</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="finTotal" placeholder="请输入融资额" class="form-control m-b-xs" ng-model="mortgageRemind.finTotal"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.finTotal.$dirty && form.finTotal.$error.required) || (form.finTotal.$error.required && formValidate)">融资额不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">融资期限</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="leasePeriod" placeholder="请输入融资期限" class="form-control m-b-xs" ng-model="mortgageRemind.leasePeriod"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.leasePeriod.$dirty && form.leasePeriod.$error.required) || (form.leasePeriod.$error.required && formValidate)">融资期限不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">抵押状态</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="mortgageStatus" placeholder="请输入抵押状态" class="form-control m-b-xs" ng-model="mortgageRemind.mortgageStatus"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.mortgageStatus.$dirty && form.mortgageStatus.$error.required) || (form.mortgageStatus.$error.required && formValidate)">抵押状态不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+
+        </div>
+    </form>
+</div>
+<div class="modal-footer ng-scope">
+    <button class="btn btn-default" ng-click="close()">取消</button>
+    <button type="submit" class="btn btn-success" ng-disabled="submit" ng-click="modify()">保存</button>
+</div>

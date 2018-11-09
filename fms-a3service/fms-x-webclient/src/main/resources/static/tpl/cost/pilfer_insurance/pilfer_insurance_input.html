@@ -1,0 +1,241 @@
+<div ng-controller="pilfer_insurance_input_controller">
+    <div>
+        <toaster-container
+                toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+    </div>
+    <div class="panel panel-default">
+
+        <div class="row">
+            <div class="btn-group m-r-lg pull-left" style="margin-left: 25px">
+                <h4>{{frameTitle}}</h4>
+            </div>
+            <div class="btn-group m-r-lg pull-right" style="margin: 15px 30px 0px 0px">
+                <button type="submit" class="btn btn-success" ng-disabled="submit"
+                        ng-click="save()">保存
+                </button>
+                <button class="btn btn-default m-t-xs" ng-click="goBack()">返回</button>
+            </div>
+        </div>
+
+        <form name="form" class="form-validation" novalidate>
+
+            <div class="panel-body wrapper-sm">
+                <ul id="applyTab" class="nav nav-tabs">
+                    <li class="active"><a href="javascript:void(0);" data-toggle="tab" data-id="message"
+                                          onclick="switchPageTab(this, 'applyTab')">盗抢险费用录入</a></li>
+                    <li><a href="javascript:void(0);" data-toggle="tab" data-id="fjmessage"
+                           onclick="switchPageTab(this, 'applyTab')">附件信息</a></li>
+                </ul>
+                <div  class="tab-content" style="margin-top: 25px">
+                    <div class="tab-pane fade in active" id="message">
+
+
+                        <div class="form-group row">
+                            <div class="col-sm-6">
+                                <div class="row">
+                                    <label class="col-sm-4 control-label text-right"><b class="form-text-black">合同编号</b><b
+                                            class="form-error">*</b>:</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" name="contNo" placeholder="请输入合同编号" class="form-control m-b-xs" ng-model="pilferInsurance.contNo"  required disabled>
+                                        <p>
+                                            <span class="form-info" ng-show=" (form.contNo.$dirty && form.contNo.$error.required) || (form.contNo.$error.required && formValidate)">合同编号不能为空</span>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="row">
+                                    <label class="col-sm-4 control-label text-right"><b class="form-text-black">承租人</b><b
+                                            class="form-error">*</b>:</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" name="lessee" placeholder="请输入承租人" class="form-control m-b-xs" ng-model="pilferInsurance.lessee"  required disabled>
+                                        <p>
+                                            <span class="form-info" ng-show=" (form.lessee.$dirty && form.lessee.$error.required) || (form.lessee.$error.required && formValidate)">承租人不能为空</span>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-sm-6">
+                                <div class="row">
+                                    <label class="col-sm-4 control-label text-right"><b class="form-text-black">车架号</b><b
+                                            class="form-error">*</b>:</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" name="vinNo" placeholder="请输入车架号" class="form-control m-b-xs" ng-model="pilferInsurance.vinNo"  required disabled>
+                                        <p>
+                                            <span class="form-info" ng-show=" (form.vinNo.$dirty && form.vinNo.$error.required) || (form.vinNo.$error.required && formValidate)">车架号不能为空</span>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="row">
+                                    <label class="col-sm-4 control-label text-right"><b class="form-text-black">发动机号</b><b
+                                            class="form-error">*</b>:</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" name="engineNo" placeholder="请输入发动机号" class="form-control m-b-xs" ng-model="pilferInsurance.engineNo"  required disabled>
+                                        <p>
+                                            <span class="form-info" ng-show=" (form.engineNo.$dirty && form.engineNo.$error.required) || (form.engineNo.$error.required && formValidate)">发动机号不能为空</span>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-sm-6">
+                                <div class="row">
+                                    <label class="col-sm-4 control-label text-right"><b class="form-text-black">有限设备号</b><b
+                                            class="form-error">*</b>:</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" name="wiredDeviceNo" placeholder="请输入有限设备号" class="form-control m-b-xs" ng-model="pilferInsurance.wiredDeviceNo"  required disabled>
+                                        <p>
+                                            <span class="form-info" ng-show=" (form.wiredDeviceNo.$dirty && form.wiredDeviceNo.$error.required) || (form.wiredDeviceNo.$error.required && formValidate)">有限设备号不能为空</span>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="row">
+                                    <label class="col-sm-4 control-label text-right"><b class="form-text-black">无限设备号</b><b
+                                            class="form-error">*</b>:</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" name="wirelessDeviceNo" placeholder="请输入无限设备号" class="form-control m-b-xs" ng-model="pilferInsurance.wirelessDeviceNo"  required disabled>
+                                        <p>
+                                            <span class="form-info" ng-show=" (form.wirelessDeviceNo.$dirty && form.wirelessDeviceNo.$error.required) || (form.wirelessDeviceNo.$error.required && formValidate)">无限设备号不能为空</span>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+
+                            <div class="col-sm-6">
+                                <div class="row">
+                                    <label class="col-sm-4 control-label text-right"><b class="form-text-black">GPS厂商</b><b
+                                            class="form-error">*</b>:</label>
+                                    <div class="col-sm-4">
+                                        <select name="gpsSeller" ng-model="pilferInsurance.gpsSeller" class="form-control m-b-xs"
+                                                required>
+                                            <option value="">--请选择GPS厂商--</option>
+                                            <option value="{{gpsSellerObj.codeValue}}" ng-repeat="gpsSellerObj in gpsSellerList">
+                                                {{gpsSellerObj.codeValueName}}
+                                            </option>
+                                        </select>
+                                        <!--<input type="text" name="gpsSeller" placeholder="请输入GPS厂商" class="form-control m-b-xs" ng-model="pilferInsurance.gpsSeller"  required >-->
+                                        <p>
+                                            <span class="form-info" ng-show=" (form.gpsSeller.$dirty && form.gpsSeller.$error.required) || (form.gpsSeller.$error.required && formValidate)">GPS厂商不能为空</span>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-6">
+                                <div class="row">
+                                    <label class="col-sm-4 control-label text-right"><b class="form-text-black">第一受益人</b><b
+                                            class="form-error">*</b>:</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" name="firstBeneficiary" placeholder="请输入第一受益人" class="form-control m-b-xs" ng-model="pilferInsurance.firstBeneficiary"  required >
+                                        <p>
+                                            <span class="form-info" ng-show=" (form.firstBeneficiary.$dirty && form.firstBeneficiary.$error.required) || (form.firstBeneficiary.$error.required && formValidate)">第一受益人不能为空</span>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="form-group row">
+                            <div class="col-sm-6">
+                                <div class="row">
+                                    <label class="col-sm-4 control-label text-right"><b class="form-text-black">新车购置价(元)</b><b
+                                            class="form-error">*</b>:</label>
+                                    <div class="col-sm-4">
+                                        <input type="number" limit-number="10" name="purchasePrice" placeholder="请输入新车购置价" class="form-control m-b-xs" ng-model="pilferInsurance.purchasePrice"  required >
+                                        <p>
+                                            <span class="form-info" ng-show=" (form.purchasePrice.$dirty && form.purchasePrice.$error.required) || (form.purchasePrice.$error.required && formValidate)">新车购置价不能为空</span>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="row">
+                                    <label class="col-sm-4 control-label text-right"><b class="form-text-black">最高赔偿限额(元)</b><b
+                                            class="form-error">*</b>:</label>
+                                    <div class="col-sm-4">
+                                        <input type="number" limit-number="10" name="maximumCompensation" placeholder="请输入最高赔偿限额" class="form-control m-b-xs" ng-model="pilferInsurance.maximumCompensation"  required >
+                                        <p>
+                                            <span class="form-info" ng-show=" (form.maximumCompensation.$dirty && form.maximumCompensation.$error.required) || (form.maximumCompensation.$error.required && formValidate)">最高赔偿限额不能为空</span>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-sm-6">
+                                <div class="row">
+                                    <label class="col-sm-4 control-label text-right"><b class="form-text-black">盗抢险费用(元)</b><b
+                                            class="form-error">*</b>:</label>
+                                    <div class="col-sm-4">
+                                        <input type="number" limit-number="10" name="pilferInsuranceCost" placeholder="请输入盗抢险费用" class="form-control m-b-xs" ng-model="pilferInsurance.pilferInsuranceCost"  required >
+                                        <p>
+                                            <span class="form-info" ng-show=" (form.pilferInsuranceCost.$dirty && form.pilferInsuranceCost.$error.required) || (form.pilferInsuranceCost.$error.required && formValidate)">盗抢险费用不能为空</span>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="row">
+                                    <label class="col-sm-4 control-label text-right"><b class="form-text-black">年限</b><b
+                                            class="form-error">*</b>:</label>
+                                    <div class="col-sm-4">
+                                        <input type="number" name="timeLimit" placeholder="请输入年限" class="form-control m-b-xs" ng-model="pilferInsurance.timeLimit"  required >
+                                        <p>
+                                            <span class="form-info" ng-show=" (form.timeLimit.$dirty && form.timeLimit.$error.required) || (form.timeLimit.$error.required && formValidate)">年限不能为空</span>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+
+
+
+                    </div>
+
+
+                    <!--附件信息-->
+                    <div class="tab-pane fade" id="fjmessage">
+                        <ul type="none" style="padding-left: 20px;">
+                            <div class="panel-body wrapper-sm" ng-if="httpData">
+                                <tree-file-directive detail-flag="$root.yesNoFlag.no" file-type="$root.basFileTypes.pilferInsuranceFile" files="$parent.bizFilesList" not-upload="$parent.notUpload" not-upload-info="$parent.msgInfo"   not-file-type="$parent.notFileType" not-file-type-name="$parent.notFileTypeName">
+                                </tree-file-directive>
+                            </div>
+                        </ul>
+                    </div>
+                    <!--附件信息-->
+                  <!--  <div class="panel-body wrapper-sm" ng-if="httpData">
+                        <tree-file-directive detail-flag="$root.yesNoFlag.no" file-type="$root.basFileTypes.pilferInsuranceFile" files="$parent.bizFilesList" not-upload="$parent.notUpload" not-upload-info="$parent.msgInfo"   not-file-type="$parent.notFileType" not-file-type-name="$parent.notFileTypeName">
+                        </tree-file-directive>
+                    </div>-->
+
+
+
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+
+
+
+
+

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.com.leadu.fms.data.riskmgmt.dao.PycreditAntiDao">
+    <select id="selectPycreditAntiList" parameterType="java.lang.String" resultType="cn.com.leadu.fms.pojo.riskmgmt.vo.pycreditanti.PycreditAntiVo">
+             select * from pycredit_anti where document_no=#{documentNo} and ${ceilingNumber}>datediff(now(),query_date)
+    </select>
+
+    <select id="selectLastPycreditAntiByDocumentNo" parameterType="java.lang.String" resultType="cn.com.leadu.fms.pojo.riskmgmt.entity.PycreditAnti">
+        select * from pycredit_anti
+        where document_no=#{documentNo}
+        ORDER BY query_date DESC
+        limit 0,1
+    </select>
+</mapper>

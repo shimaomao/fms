@@ -1,0 +1,164 @@
+<div ng-controller="cont_create_detail_controller">
+    <ul type="none" style="padding-left:20px">
+        <div class="row">
+            <li style="font-weight: bold;font-size: 14px;">融资信息</li>
+            <div class="form-group row">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">首付比例（%）</b><b
+                        class="form-error"></b>:</label>
+                <div class="col-sm-2 control-label">
+                    {{contCreate.initPerc}}
+                </div>
+
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">首付金额（元）</b><b
+                        class="form-error"></b>:</label>
+                <div class="col-sm-2 control-label">
+                    {{contCreate.initAmount}}
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">融资额（元）</b><b
+                        class="form-error"></b>:</label>
+                <div class="col-sm-2 control-label">
+                    {{contCreate.finTotal}}
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">保证金比例（%）</b><b
+                        class="form-error"></b>:</label>
+                <div class="col-sm-2 control-label">
+                    {{contCreate.depositPerc}}
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">保证金额（元）</b><b
+                        class="form-error"></b>:</label>
+                <div class="col-sm-2 control-label">
+                    {{contCreate.deposit}}
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">投资总额(元)</b><b
+                        class="form-error"></b>:</label>
+                <div class="col-sm-2 control-label">
+                    {{contCreate.investTotal}}
+                </div>
+            </div>
+            <!--第二个表单-->
+            <div>
+                <li style="font-weight: bold;font-size: 14px;">车辆信息</li>
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">车架号</b><b
+                            class="form-error"></b>:</label>
+                    <div class="col-sm-2 control-label">
+                        {{contCreate.vinNo}}
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">发动机号</b><b
+                            class="form-error"></b>:</label>
+                    <div class="col-sm-2 control-label">
+                        {{contCreate.engineNo}}
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">车辆颜色</b><b
+                            class="form-error"></b>:</label>
+                    <div class="col-sm-2 control-label">
+                        {{contCreate.color}}
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">实际销售方</b><b
+                            class="form-error"></b>:</label>
+                    <div class="col-sm-2 control-label">
+                        {{contCreate.saleGroupName}}
+                    </div>
+                    <div ng-if="contCreate.licenseIdxNo!=null">
+                        <label class="col-sm-2 control-label text-right"><b class="form-text-black">指标编号</b><b
+                                class="form-error"></b>:</label>
+                        <div class="col-sm-2 control-label">
+                            {{contCreate.licenseIdxNo}}
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <li style="font-weight: bold;font-size: 14px;">客户还款信息</li>
+                    <div class="form-group row">
+                        <label class="col-sm-2 control-label text-right"><b class="form-text-black">还款借记卡户名</b><b
+                                class="form-error"></b>:</label>
+                        <div class="col-sm-2 control-label">
+                            {{contCreate.accountName}}
+                        </div>
+                        <label class="col-sm-2 control-label text-right"><b class="form-text-black">还款借记卡开户证件号</b><b
+                                class="form-error"></b>:</label>
+                        <div class="col-sm-2 control-label">
+                            {{contCreate.certifNo}}
+                        </div>
+                        <label class="col-sm-2 control-label text-right"><b class="form-text-black">还款卡绑定手机号</b><b
+                                class="form-error"></b>:</label>
+                        <div class="col-sm-2 control-label">
+                            {{contCreate.accMobileNo}}
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 control-label text-right"><b class="form-text-black">还款借记卡开户行</b><b
+                                class="form-error"></b>:</label>
+                        <div class="col-sm-2 control-label">
+                            {{contCreate.accBank}}
+                        </div>
+                        <label class="col-sm-2 control-label text-right"><b class="form-text-black">还款借记卡账号</b><b
+                                class="form-error"></b>:</label>
+                        <div class="col-sm-2 control-label">
+                            {{contCreate.accountNo}}
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 control-label text-right"><b class="form-text-black">订金金额</b><b
+                                class="form-error"></b>:</label>
+                        <div class="col-sm-2 control-label">
+                            {{contCreate.vehDeposit}}
+                        </div>
+                        <label class="col-sm-2 control-label text-right"><b class="form-text-black">订金是否抵扣车款</b><b
+                                class="form-error"></b>:</label>
+                        <div class="col-sm-2 control-label">
+                            {{contCreate.deductibleFeesName}}
+                        </div>
+                        <label class="col-sm-2 control-label text-right"><b class="form-text-black">还款日</b><b
+                                class="form-error">*</b>:</label>
+                        <div class="col-sm-2 control-label">
+                            {{contCreate.repayDay | getName:'repayDay'}}
+                        </div>
+                    </div>
+
+                    <!--<div class="form-group row">
+                        <label class="col-sm-2 control-label text-right"><b class="form-text-black">经销商收款银行</b><b
+                                class="form-error"></b>:</label>
+                        <div class="col-sm-4 control-label">
+                            {{contCreate.recAccBank}}
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 control-label text-right"><b class="form-text-black">经销商收款银行支行</b><b
+                                class="form-error"></b>:</label>
+                        <div class="col-sm-2 control-label">
+                            {{contCreate.recAccBranchBank}}
+                        </div>
+                        <label class="col-sm-2 control-label text-right"><b class="form-text-black">经销商收款银行户名</b><b
+                                class="form-error"></b>:</label>
+                        <div class="col-sm-2 control-label">
+                            {{contCreate.recAccountName}}
+                        </div>
+                        <label class="col-sm-2 control-label text-right"><b class="form-text-black">经销商收款账号</b><b
+                                class="form-error"></b>:</label>
+                        <div class="col-sm-2 control-label">
+                            {{contCreate.recAccountNo}}
+                        </div>
+                    </div>-->
+                </div>
+            </div>
+        </div>
+    </ul>
+   <!-- <ul type="none" style="padding-left:0px">
+        <li style="font-weight: bold;font-size: 14px;">合同附件信息</li>
+        <div ng-include="'tpl/common/tree_file/tree_file.html'"></div>
+    </ul>-->
+    <div class="panel-body wrapper-sm">
+        <div>
+            <tree-file-directive detail-flag="$root.yesNoFlag.yes" file-type="contCreate.fileType" files="contCreate.bizFilesList" not-upload="fileInfo2.notUpload" not-upload-info = "fileInfo2.notUploadInfo" not-file-type="fileInfo2.notFileType" not-file-type-name="fileInfo2.notFileTypeName" >
+            </tree-file-directive>
+        </div>
+    </div>
+</div>

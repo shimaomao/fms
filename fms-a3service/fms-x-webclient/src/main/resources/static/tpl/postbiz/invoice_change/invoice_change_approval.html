@@ -1,0 +1,167 @@
+<style>
+    .applyInput .sub-main{overflow: hidden;}
+    .applyInput .sub-body{padding: 10px 40px 0 0;border: 1px solid #eaeeea;border-top: none}
+    .applyInput .sub-title{padding: 5px;font-size: 14px;cursor: pointer;background-color: #f5f5f5;border-bottom: 1px solid #eaeeea;}
+    .applyInput .sub-title span:first-child{font-weight: bold;color: black;}
+    .applyInput .sub-title span:last-child{display: inline-block;width: 20px;height: 20px;}
+    .changedColor{color:red;}
+</style>
+<div ng-controller="invoice_change_approval_controller" class="applyInput">
+    <form name="form" class="form-validation" novalidate>
+
+        <div class="panel panel-default">
+
+            <div class="panel-body wrapper-sm">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="form-group pull-left"><h1 class="m-n font-thin h4">变更审核</h1></div>
+                        <div class="form-group pull-right">
+                            <div class="btn-group">
+                                <button class="btn btn-sm fms-button-margin-bottom btn-default m-b-xs" ng-click="save()" ng-disabled="submit"><i class=""></i>通过</button>
+                                <button class="btn btn-sm fms-button-margin-bottom btn-default m-b-xs" ng-click="backUp()" ng-disabled="submit"><i class=""></i>退回</button>
+                                <button class="btn btn-sm fms-button-margin-bottom btn-default m-b-xs" ng-click="refuse()" ng-disabled="submit"><i class=""></i>拒绝</button>
+                                <button class="btn btn-sm fms-button-margin-bottom btn-default m-b-xs" ng-click="backHome()"><i class=""></i>返回</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-body">
+                <div class="sub-main">
+                    <div class="sub-title clearfix" click-hide>
+                        <span class="pull-left">客户基本信息</span>
+                        <span class="pull-right"><i class="glyphicon glyphicon-chevron-down"></i></span>
+                    </div>
+                    <div class="sub-body">
+                        <div class="form-group row">
+                            <label class="col-sm-2 control-label text-right"><b class="form-text-black">承租人</b>:</label>
+                            <div class="col-sm-3">
+                                <label class="control-label text-left"><b class="form-text-black">{{oldCstmCompany.name}}</b></label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="sub-main">
+                    <div class="sub-title clearfix"click-hide>
+                        <span class="pull-left">变更前发票信息</span>
+                        <span class="pull-right"><i class="glyphicon glyphicon-chevron-down"></i></span>
+                    </div>
+                    <div class="sub-body">
+                        <div class="form-group row">
+                            <label class="col-sm-2 control-label text-right"><b class="form-text-black">发票类型</b>:</label>
+                            <div class="col-sm-2">
+                                <label class="control-label text-left"><b class="form-text-black">{{oldCstmCompany.invoiceTypeName}}</b></label>
+                            </div>
+                            <label class="col-sm-2 control-label text-right"><b class="form-text-black">开票名</b>:</label>
+                            <div class="col-sm-3">
+                                <label class="control-label text-left"><b class="form-text-black">{{oldCstmCompany.ticketOpening}}</b></label>
+                            </div>
+                            <label class="col-sm-1 control-label text-right"><b class="form-text-black">税号</b>:</label>
+                            <div class="col-sm-2">
+                                <label class="control-label text-left"><b class="form-text-black">{{oldCstmCompany.dutyParagraph}}</b></label>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 control-label text-right"><b class="form-text-black">地址、电话</b>:</label>
+                            <div class="col-sm-6">
+                                <label class="control-label text-left"><b class="form-text-black">{{oldCstmCompany.invoiceAddr}}</b></label>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 control-label text-right"><b class="form-text-black">账号</b>:</label>
+                            <div class="col-sm-2">
+                                <label class="control-label text-left"><b class="form-text-black">{{oldCstmCompany.accountNumber}}</b></label>
+                            </div>
+                            <label class="col-sm-2 control-label text-right"><b class="form-text-black">开户行</b>:</label>
+                            <div class="col-sm-3">
+                                <label class="control-label text-left"><b class="form-text-black">{{oldCstmCompany.bankName}}</b></label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!--变更后-->
+                <div class="sub-main">
+                    <div class="sub-title clearfix" click-hide>
+                        <span class="pull-left">变更后发票信息</span>
+                        <span class="pull-right"><i class="glyphicon glyphicon-chevron-down"></i></span>
+                    </div>
+                    <div class="sub-body">
+                        <div class="form-group row">
+                            <label class="col-sm-2 control-label text-right"><b class="form-text-black">发票类型</b>:</label>
+                            <div class="col-sm-2">
+                                <div ng-if="!invoiceTypeFlag">
+                                    <label class="control-label text-left"><b class="form-text-black">{{cstmCompany.invoiceTypeName}}</b></label>
+                                </div>
+                                <div ng-if="invoiceTypeFlag">
+                                    <label class="control-label text-left"><b class="changedColor form-text-black">{{cstmCompany.invoiceTypeName}}</b></label>
+                                </div>
+                            </div>
+                            <label class="col-sm-2 control-label text-right"><b class="form-text-black">开票名</b>:</label>
+                            <div class="col-sm-3">
+                                <div ng-if="!ticketOpeningFlag">
+                                    <label class="control-label text-left"><b class="form-text-black">{{cstmCompany.ticketOpening}}</b></label>
+                                </div>
+                                <div ng-if="ticketOpeningFlag">
+                                    <label class="control-label text-left"><b class="changedColor form-text-black">{{cstmCompany.ticketOpening}}</b></label>
+                                </div>
+                            </div>
+                            <label class="col-sm-1 control-label text-right"><b class="form-text-black">税号</b>:</label>
+                            <div class="col-sm-2">
+                                <div ng-if="!dutyParagraphFlag">
+                                    <label class="control-label text-left"><b class="form-text-black">{{cstmCompany.dutyParagraph}}</b></label>
+                                </div>
+                                <div ng-if="dutyParagraphFlag">
+                                    <label class="control-label text-left"><b class="changedColor form-text-black">{{cstmCompany.dutyParagraph}}</b></label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 control-label text-right"><b class="form-text-black">地址、电话</b>:</label>
+                            <div class="col-sm-6">
+                                <div ng-if="!invoiceAddrFlag">
+                                    <label class="control-label text-left"><b class="form-text-black">{{cstmCompany.invoiceAddr}}</b></label>
+                                </div>
+                                <div ng-if="invoiceAddrFlag">
+                                    <label class="control-label text-left"><b class="changedColor form-text-black">{{cstmCompany.invoiceAddr}}</b></label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 control-label text-right"><b class="form-text-black">账号</b>:</label>
+                            <div class="col-sm-2">
+                                <div ng-if="!accountNumberFlag">
+                                    <label class="control-label text-left"><b class="form-text-black">{{cstmCompany.accountNumber}}</b></label>
+                                </div>
+                                <div ng-if="accountNumberFlag">
+                                    <label class="control-label text-left"><b class="changedColor form-text-black">{{cstmCompany.accountNumber}}</b></label>
+                                </div>
+                            </div>
+                            <label class="col-sm-2 control-label text-right"><b class="form-text-black">开户行</b>:</label>
+                            <div class="col-sm-3">
+                                <div ng-if="!bankNameFlag">
+                                    <label class="control-label text-left"><b class="form-text-black">{{cstmCompany.bankName}}</b></label>
+                                </div>
+                                <div ng-if="bankNameFlag">
+                                    <label class="control-label text-left"><b class="changedColor form-text-black">{{cstmCompany.bankName}}</b></label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!--附件信息-->
+                <div class="panel-body wrapper-sm">
+                    <tree-file-directive detail-flag="$root.yesNoFlag.yes" file-type="fileType" files="bizFilesList" not-upload="$parent.notUpload" not-upload-info="$parent.msgInfo"  not-upload-info = "$parent.notUploadInfo" not-file-type="$parent.notFileType" not-file-type-name="$parent.notFileTypeName">
+                    </tree-file-directive>
+                </div>
+
+                <div class="panel-body wrapper-sm">
+                    <!--流程日志-->
+                    <div ng-include="'tpl/common/process_log/process_log_list.html'"></div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

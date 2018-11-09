@@ -1,0 +1,17 @@
+<div  ng-controller="deposit_remark_controller" class="col-lg-12  panel panel-default">
+    <ul type="none" style="padding-left: 20px;">
+        <div id="print" class="panel panel-default" style="margin: 10px 0; padding-right: 50px;">
+
+            <div class="form-group row">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">备注</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-10">
+                    <textarea placeholder="请输入备注" limit-word class="form-control m-b-xs r-none" name="remark1" ng-model="depositApproveVo.remark" required></textarea>
+                    <p>
+                        <span class="form-info" ng-show=" (form.remark.$dirty && form.remark1.$error.required) || (form.remark.$error.required && formValidate)">请输入审批意见备注</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </ul>
+    <div ng-include="'tpl/common/process_log/process_log_list.html'"></div>
+</div>

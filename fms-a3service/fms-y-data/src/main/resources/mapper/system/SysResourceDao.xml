@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.com.leadu.fms.data.system.dao.SysResourceDao">
+
+    <select id="selectSysResBySysUserId" parameterType="java.util.List" resultType="java.lang.String">
+        select sysResource.res  from sys_role_resource sysRoleResource
+        inner join sys_role sysRole on sysRole.role_id = sysRoleResource.role_id and sysRole.del_flag = ${delete_exist}
+        inner join sys_resource sysResource on sysResource.id = sysRoleResource.resource_id
+        and sysResource.type = ${type}
+        and sysResource.del_flag = ${delete_exist}
+        where
+        sysRoleResource.role_id in
+        <foreach collection="sysRoleIds" item="item" index="index" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        and sysRoleResource.del_flag = ${delete_exist}
+    </select>
+
+
+    <select id="selectSysResMenusBySysRoleIds" parameterType="java.util.List" resultType="cn.com.leadu.fms.pojo.system.entity.SysResource">
+        select sysResource.*  from sys_role_resource sysRoleResource
+        inner join sys_role sysRole on sysRole.role_id = sysRoleResource.role_id and sysRole.del_flag = ${delete_exist}
+        inner join sys_resource sysResource on sysResource.id = sysRoleResource.resource_id
+        and sysResource.type = ${type}
+        and sysResource.del_flag = ${delete_exist}
+        where
+        sysRoleResource.role_id in
+        <foreach collection="sysRoleIds" item="item" index="index" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        and sysRoleResource.del_flag = ${delete_exist}
+        order by sysResource.sort
+    </select>
+
+    <select id="selectSysResMenusBySysUserId" parameterType="java.util.List" resultType="cn.com.leadu.fms.pojo.system.entity.SysResource">
+        select sysResource.* from sys_user_menu sysUserMenu
+        inner join sys_user sysUser on sysUser.user_id = sysUserMenu.user_id and sysUser.del_flag =  ${delete_exist}
+        inner join sys_resource sysResource on sysResource.id = sysUserMenu.menu_id and sysResource.type = ${type}
+        and sysResource.del_flag = ${delete_exist}
+        where sysUserMenu.del_flag = ${delete_exist}
+        and sysUser.user_id = #{sysUserId}
+        order by sysResource.sort
+    </select>
+
+
+    <select id="selectListBySysRoleId"  resultType="cn.com.leadu.fms.pojo.system.entity.SysResource">
+      select sysResource.* from sys_resource sysResource
+      inner join sys_role_resource sysRoleResource on sysResource.id = sysRoleResource.resource_id
+      and sysResource.type = ${type}
+      and sysRoleResource.del_flag = ${delete_exist}
+      where sysRoleResource.role_id = #{sysRoleId}
+    </select>
+
+</mapper>

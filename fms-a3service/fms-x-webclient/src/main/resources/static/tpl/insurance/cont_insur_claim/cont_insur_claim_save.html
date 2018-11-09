@@ -1,0 +1,234 @@
+
+<div ng-controller="cont_insur_claim_save_controller">
+    <div>
+        <toaster-container
+                toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+    </div>
+    <div class="panel panel-default">
+        <div class="row" style="margin: 0; padding: 10px; border: 1px solid #dddddd">
+            <h4 class="m-n font-thin h4">保险理赔申请</h4>
+            <div class="form-group pull-right">
+                <div class="btn-group">
+                    <button class="btn btn-default" ng-click="goback()">返回</button>
+                    <button type="submit" class="btn btn-success" ng-disabled="submit" ng-click="save()">保存</button>
+                </div>
+            </div>
+            </div>
+        <form name="form" class="form-validation" novalidate>
+
+            <div class="panel-body">
+                <div class="panel-body wrapper-sm" style="margin: 0; padding: 15px; border: 1px solid #dddddd">
+                    <div class="form-group row">
+                        <label class="col-sm-2 control-label text-right"><b class="form-text-black">出租人</b><b class="form-error"></b>:</label>
+                        <div class="col-sm-3">
+                            <input type="text" title="{{contInsurClaim.groupName}}" name="groupName" placeholder="请输入出租人" class="form-control m-b-xs" ng-model="contInsurClaim.groupName" disabled  >
+                        </div>
+
+                        <label class="col-sm-2 control-label text-right"><b class="form-text-black">承租人</b><b class="form-error"></b>:</label>
+                        <div class="col-sm-3">
+                            <input type="text" title="{{contInsurClaim.name}}" name="name" placeholder="请输入承租人" class="form-control m-b-xs" ng-model="contInsurClaim.name" disabled  >
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+
+                        <label class="col-sm-2 control-label text-right"><b class="form-text-black">车架号</b><b class="form-error"></b>:</label>
+                        <div class="col-sm-3">
+                            <input type="text" title="{{contInsurClaim.vinNo}}" name="vinNo" placeholder="请输入车架号" class="form-control m-b-xs" ng-model="contInsurClaim.vinNo" disabled  >
+                        </div>
+
+                        <label class="col-sm-2 control-label text-right"><b class="form-text-black">车牌号</b><b class="form-error"></b>:</label>
+                        <div class="col-sm-3">
+                            <input type="text" title="{{contInsurClaim.vehicleLicenseNo}}" name="vehicleLicenseNo" placeholder="请输入车牌号" class="form-control m-b-xs" ng-model="contInsurClaim.vehicleLicenseNo" disabled  >
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-sm-2 control-label text-right"><b class="form-text-black">保险公司</b><b class="form-error"></b>:</label>
+                        <div class="col-sm-3">
+                            <input type="text" title="{{contInsurClaim.insCompName}}" name="insCompName" placeholder="请输入保险公司" class="form-control m-b-xs" ng-model="contInsurClaim.insCompName" disabled  >
+                        </div>
+
+                        <label class="col-sm-2 control-label text-right"><b class="form-text-black">保单号</b><b class="form-error"></b>:</label>
+                        <div class="col-sm-3">
+                            <input type="text" title="{{contInsurClaim.insPolicyNo}}" name="insPolicyNo" placeholder="请输入保单号" class="form-control m-b-xs" ng-model="contInsurClaim.insPolicyNo" disabled  >
+                        </div>
+                    </div>
+
+
+                    <div class="form-group row">
+                        <label class="col-sm-2 control-label text-right"><b class="form-text-black">投保生效日</b><b class="form-error"></b>:</label>
+                        <div class="col-sm-3">
+                            <input type="text" title="{{contInsurClaim.validStartDay}}" name="validStartDay" placeholder="请输入投保生效日" class="form-control m-b-xs" ng-model="contInsurClaim.validStartDay" disabled  >
+                        </div>
+
+                        <label class="col-sm-2 control-label text-right"><b class="form-text-black">投保失效日</b><b class="form-error"></b>:</label>
+                        <div class="col-sm-3">
+                            <input type="text" title="{{contInsurClaim.validEndDay}}" name="validEndDay" placeholder="请输入投保失效日" class="form-control m-b-xs" ng-model="contInsurClaim.validEndDay" disabled  >
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-sm-2 control-label text-right"><b class="form-text-black">保单实际金额</b><b class="form-error"></b>:</label>
+                        <div class="col-sm-3">
+                            <input type="text" title="{{contInsurClaim.insFee}}" name="insFee" placeholder="请输入保单实际金额" class="form-control m-b-xs" ng-model="contInsurClaim.insFee" disabled  >
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-sm-2 control-label text-right"><b class="form-text-black">基本险种</b>:</label>
+                        <div class="col-sm-10 ">
+                            <div class="checkbox" ng-repeat="insuranceType in insuranceTypeList">
+                                <label>
+                                    <input type="checkbox" name="insuranceType" value="{{insuranceType.codeValue}}" ng-model="contInsurClaim.insuranceType" ng-checked="insuranceType.orderNo == 1" disabled>{{insuranceType.codeValueName}}
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel-body wrapper-sm" style="margin: 0; padding: 15px; border: 1px solid #dddddd">
+                    <div class="form-group row">
+                        <label class="col-sm-2 control-label text-right"><b class="form-text-black">申请日期</b><b class="form-error">*</b>:</label>
+                        <div class="col-sm-3">
+                            <input id="insurClaimDate" type="text" name="insurClaimDate" placeholder="请输入申请日期"
+                                   class="form-control m-b-xs" ng-model="contInsurClaim.insurClaimDate"
+                                   date-picker
+                                   required> <!--onClick="WdatePicker()"-->
+                            <p>
+                                    <span class="form-info"
+                                          ng-show=" (form.insurClaimDate.$dirty && form.insurClaimDate.$error.required) || (form.insurClaimDate.$error.required && formValidate)">申请日期不能为空</span>
+                            </p>
+                        </div>
+                        <label class="col-sm-2 control-label text-right"><b class="form-text-black">事故日期</b><b class="form-error">*</b>:</label>
+                        <div class="col-sm-3">
+                            <input id="accidentTime" type="text" name="accidentTime" placeholder="请输入事故日期"
+                                   class="form-control m-b-xs" ng-model="contInsurClaim.accidentTime"
+                                   date-picker
+                                   required> <!--onClick="WdatePicker()"-->
+                            <p>
+                                    <span class="form-info"
+                                          ng-show=" (form.accidentTime.$dirty && form.accidentTime.$error.required) || (form.accidentTime.$error.required && formValidate)">事故日期不能为空</span>
+                            </p>
+                        </div>
+                    </div>
+
+
+                    <div class="form-group row">
+                        <label class="col-sm-2 control-label text-right"><b class="form-text-black">理赔金额</b><b class="form-error">*</b>:</label>
+                        <div class="col-sm-3">
+                            <input type="number" limit-number="10" name="claimAmount" placeholder="请输入理赔金额" class="form-control m-b-xs" ng-model="contInsurClaim.claimAmount" required>
+                            <p>
+                                <span class="form-info" ng-show=" (form.claimAmount.$dirty && form.claimAmount.$error.required) || (form.claimAmount.$error.required && formValidate)">理赔金额不能为空</span>
+                            </p>
+                        </div>
+
+                        <label class="col-sm-2 control-label text-right"><b class="form-text-black">赔款到账日期</b><b class="form-error">*</b>:</label>
+                        <div class="col-sm-3">
+                            <input id="indemnityEnterAmountDate" type="text" name="indemnityEnterAmountDate" placeholder="请输入赔款到账日期"
+                                   class="form-control m-b-xs" ng-model="contInsurClaim.indemnityEnterAmountDate"
+                                   date-picker
+                                   required> <!--onClick="WdatePicker()"-->
+                            <p>
+                                    <span class="form-info"
+                                          ng-show=" (form.indemnityEnterAmountDate.$dirty && form.indemnityEnterAmountDate.$error.required) || (form.indemnityEnterAmountDate.$error.required && formValidate)">赔款到账日期不能为空</span>
+                            </p>
+                        </div>
+                    </div>
+
+
+                    <div class="form-group row">
+
+                        <label class="col-sm-2 control-label text-right"><b class="form-text-black">是否需要退还</b><b
+                                class="form-error">*</b>:</label>
+                        <div class="col-sm-3">
+                            <div class="radio" ng-repeat="returnFlagObj in returnFlagList">
+                                <label><input type="radio" name="returnFlag"
+                                              ng-value="returnFlagObj.codeValue"
+                                              ng-model="contInsurClaim.returnFlag" required>{{returnFlagObj.codeValueName}}</label>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="form-group row" ng-if="contInsurClaim.returnFlag == 1">
+
+                        <label class="col-sm-2 control-label text-right"><b class="form-text-black">退还方式</b><b
+                                class="form-error">*</b>:</label>
+                        <div class="col-sm-3">
+                            <div class="radio" ng-repeat="returnModeObj in returnModeList">
+                                <label><input type="radio" name="returnMode"
+                                              ng-value="returnModeObj.codeValue"
+                                              ng-model="contInsurClaim.returnMode" required>{{returnModeObj.codeValueName}}</label>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                    <div class="form-group row" ng-if="contInsurClaim.returnFlag == 1&&contInsurClaim.returnMode == 0">
+
+                        <label class="col-sm-2 control-label text-right"><b class="form-text-black">理赔收款户名</b><b class="form-error">*</b>:</label>
+                        <div class="col-sm-3">
+                            <input type="text" title="{{contInsurClaim.accountName}}" name="accountName" placeholder="请输入理赔收款户名" class="form-control m-b-xs" ng-model="contInsurClaim.accountName" required>
+                            <p>
+                                <span class="form-info" ng-show=" (form.accountName.$dirty && form.accountName.$error.required) || (form.accountName.$error.required && formValidate)">理赔收款户名不能为空</span>
+                            </p>
+                        </div>
+
+                        <label class="col-sm-2 control-label text-right"><b class="form-text-black">理赔收款账号</b><b class="form-error">*</b>:</label>
+                        <div class="col-sm-3">
+                            <input type="text" title="{{contInsurClaim.accountNo}}" name="accountNo" placeholder="请输入理赔收款账号" class="form-control m-b-xs" ng-model="contInsurClaim.accountNo" ng-pattern="/^[0-9]*$/" required>
+                            <p>
+                                <span class="form-info" ng-show=" (form.accountNo.$dirty && form.accountNo.$error.required) || (form.accountNo.$error.required && formValidate)">理赔收款账号不能为空</span>
+                                <span class="form-info" ng-show=" (form.accountNo.$error.pattern && !form.accountNo.$error.required) || (form.accountNo.$error.pattern && formValidate && !form.accountNo.$error.required)">请输入数字账号</span>
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="form-group row" ng-if="contInsurClaim.returnFlag == 1&&contInsurClaim.returnMode == 0">
+                        <!--<label class="col-sm-2 control-label text-right"><b class="form-text-black">理赔收款户名</b><b class="form-error">*</b>:</label>
+                        <div class="col-sm-3">
+                            <input type="text" name="accountName" placeholder="请输入理赔收款户名" class="form-control m-b-xs" ng-model="contInsurClaim.accountName"   >
+                            <p>
+                                <span class="form-info" ng-show=" (form.accountName.$dirty && form.accountName.$error.required) || (form.accountName.$error.required && formValidate)">理赔收款户名不能为空</span>
+                            </p>
+                        </div>-->
+
+                        <label class="col-sm-2 control-label text-right"><b class="form-text-black">理赔收款开户行</b><b class="form-error">*</b>:</label>
+                        <div class="col-sm-3"> <!--form-inline-->
+                            <input type="text" title="{{contInsurClaim.accBank}}" name="accBank" placeholder="请输入理赔收款开户行" class="form-control m-b-xs" ng-model="contInsurClaim.accBank" required>
+                            <!--<button class="btn btn-primary btn-sm m-b-xs" ng-click="selectBasBankInfo()"><i-->
+                            <!--class="fa fa-pencil-square-o m-r-xs"></i>选择-->
+                            <!--</button>-->
+                            <p>
+                                <span class="form-info" ng-show=" (form.accBank.$dirty && form.accBank.$error.required) || (form.accBank.$error.required && formValidate)">理赔收款开户行不能为空</span>
+                            </p>
+                        </div>
+
+                        <label class="col-sm-2 control-label text-right"><b class="form-text-black">理赔收款开户行分行</b><b class="form-error">*</b>:</label>
+                        <div class="col-sm-3"> <!--form-inline-->
+                            <input type="text" title="{{contInsurClaim.recAccBranch}}" name="recAccBranch" placeholder="请输入理赔收款开户行分行" class="form-control m-b-xs" ng-model="contInsurClaim.recAccBranch" required>
+                            <!--<button class="btn btn-primary btn-sm m-b-xs" ng-click="selectBasBankInfo()"><i-->
+                                    <!--class="fa fa-pencil-square-o m-r-xs"></i>选择-->
+                            <!--</button>-->
+                            <p>
+                                <span class="form-info" ng-show=" (form.recAccBranch.$dirty && form.recAccBranch.$error.required) || (form.recAccBranch.$error.required && formValidate)">理赔收款开户行分行不能为空</span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <li style="font-weight: bold;font-size: 16px;">附件信息</li>
+                <!--附件信息-->
+                <div class="panel-body wrapper-sm" ng-if="httpData">
+                    <tree-file-directive detail-flag="$root.yesNoFlag.no" file-type="$root.basFileTypes.insuranceFile" files="$parent.bizFilesList" not-upload="$parent.notUpload" not-upload-info="$parent.msgInfo"   not-file-type="$parent.notFileType" not-file-type-name="$parent.notFileTypeName">
+                    </tree-file-directive>
+                </div>
+            </div>
+        </form>
+        <div ng-show="serviceId!=null&&serviceId!=Undefined">
+            <div ng-include="'tpl/common/process_log/process_log_list.html'"></div>
+        </div>
+    </div>
+</div>

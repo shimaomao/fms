@@ -1,0 +1,72 @@
+<form name="form" id="form" class="form-validation" novalidate ng-init="init()">
+    <div class="modal-header">
+        <h4 class="modal-title">配置利率方案<button type="button" class="close" data-dismiss="modal" aria-hidden="true" ng-click="close()">&times;</button></h4>
+    </div>
+    <div class="panel-body">
+        <div class="col-sm-12">
+            <div class="row">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">客户利率</b><b class="form-error">%*</b>:</label>
+                <div class="col-sm-4">
+                    <input type="text" name="intrstRate" placeholder="请输入客户利率" class="form-control m-b-xs" ng-model="prodIntrst.intrstRate"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.intrstRate.$dirty && form.intrstRate.$error.required) || (form.intrstRate.$error.required && formValidate)">客户利率不能为空</span>
+                    </p>
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">结算利率</b><b class="form-error">%*</b>:</label>
+                <div class="col-sm-4">
+                    <input type="text" name="settleIntrstRate" placeholder="请输入结算利率" class="form-control m-b-xs" ng-model="prodIntrst.settleIntrstRate"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.settleIntrstRate.$dirty && form.settleIntrstRate.$error.required) || (form.settleIntrstRate.$error.required && formValidate)">结算利率不能为空</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-12"><div class="row">
+            <label class="col-sm-2 control-label text-right"><b class="form-text-black">手续费率</b><b class="form-error">%*</b>:</label>
+            <div class="col-sm-4">
+                <input type="text" name="chargeRate" placeholder="请输入手续费率" class="form-control m-b-xs" ng-model="prodIntrst.chargeRate"  required >
+                <p>
+                    <span class="form-info" ng-show=" (form.chargeRate.$dirty && form.chargeRate.$error.required) || (form.chargeRate.$error.required && formValidate)">手续费率不能为空</span>
+                </p>
+            </div>
+            <label class="col-sm-2 control-label text-right"><b class="form-text-black">结算手续费率</b><b class="form-error">%*</b>:</label>
+            <div class="col-sm-4">
+                <input type="text" name="settleChargeRate" placeholder="请输入结算手续费率" class="form-control m-b-xs" ng-model="prodIntrst.settleChargeRate"  required >
+                <p>
+                    <span class="form-info" ng-show=" (form.settleChargeRate.$dirty && form.settleChargeRate.$error.required) || (form.settleChargeRate.$error.required && formValidate)">结算手续费率不能为空</span>
+                </p>
+            </div>
+        </div></div>
+
+        <div class="col-sm-12">
+            <div class="row">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">一次性手续费</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-4">
+                    <input type="text" name="onetimeCharge" placeholder="请输入一次性手续费" class="form-control m-b-xs" ng-model="prodIntrst.onetimeCharge"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.onetimeCharge.$dirty && form.onetimeCharge.$error.required) || (form.onetimeCharge.$error.required && formValidate)">一次性手续费不能为空</span>
+                    </p>
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">利率方式</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-4">
+                    <select name="intrstRateMode" class="form-control m-b-xs" ng-model="prodIntrst.intrstRateMode" required>
+                        <option value="">请选择</option>
+                        <option ng-repeat="a in intrstRateModeList track by $index" value="{{a.codeValue}}" ng-selected="a.codeValue == prodIntrst.intrstRateMode">{{a.codeValueName}}</option>
+                    </select>
+                    <p>
+                        <span class="form-info" ng-show=" (form.intrstRateMode.$dirty && form.intrstRateMode.$error.required) || (form.intrstRateMode.$error.required && formValidate)">利率方式不能为空</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="intrst-main"></div>
+
+    </div>
+
+    <div class="modal-footer text-center">
+        <button class="btn btn-default" ng-click="close()">关闭</button>
+        <button type="submit" class="btn btn-success" ng-disabled="submit"  ng-click="save()">确认</button>
+    </div>
+</form>

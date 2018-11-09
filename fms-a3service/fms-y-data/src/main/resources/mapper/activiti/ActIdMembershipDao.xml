@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.leadu.fms.data.activiti.dao.ActIdMembershipDao">
+
+    <!-- 根据用户组id返回用户id -->
+    <select id="selectActUserIdsByActGroupId" parameterType="java.lang.String" resultType="java.lang.String">
+      select user_id_ from act_id_membership where group_id_ = #{actGroupId}
+    </select>
+
+</mapper>

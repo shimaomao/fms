@@ -1,0 +1,50 @@
+
+<div  ng-controller="financial_voucher_detail_list_controller">
+    <div>
+        <toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-body wrapper-sm">
+            <div class="row">
+                <div class="col-lg-12">
+                    <form class="form-inline" role="form">
+                        <div class="form-group">
+                            <label class="sr-only" >凭证类型 </label>
+                            <input class="form-control m-b-xs" ng-model="voucherType" placeholder="凭证类型">
+                        </div>
+                        <div class="form-group m-b-sm">
+                            <div class="btn-group">
+                                <button class="btn btn-default m-b-xs btn-info btn-sm fms-button-margin-bottom" ng-click="searchFinancialVoucherDetail()" ><i class="fa fa-search"></i>查询</button>
+                                <button class="btn btn-default m-b-xs btn-sm fms-button-margin-bottom" ng-click="resetFinancialVoucherDetail()" ><i class="fa  icon-refresh"></i>重置</button>
+                            </div>
+                        </div>
+
+                        <div class="form-group pull-right">
+                            <div class="btn-group">
+                                <button class="btn btn-default m-b-xs btn-sm fms-button-margin-bottom" ng-click="saveFinancialVoucher()"><i class="fa fa-plus"></i>添加凭证类型</button>
+                                <button class="btn btn-default m-b-xs btn-sm fms-button-margin-bottom" ng-click="modifyFinancialVoucher()"><i class="fa icon-pencil"></i>修改凭证类型</button>
+                                <button class="btn btn-default m-b-xs btn-sm fms-button-margin-bottom" ng-click="deleteFinancialVoucher()"><i class="fa fa-trash-o"></i>删除凭证类型</button>
+                                <button class="btn btn-default m-b-xs btn-sm fms-button-margin-bottom" ng-click="saveFinancialVoucherDetail()"><i class="fa fa-plus"></i>添加凭证明细</button>
+                                <button class="btn btn-default m-b-xs btn-sm fms-button-margin-bottom" ng-click="modifyFinancialVoucherDetail()"><i class="fa icon-pencil"></i>修改凭证明细</button>
+                                <button class="btn btn-default m-b-xs btn-sm fms-button-margin-bottom" ng-click="deleteFinancialVoucherDetail()"><i class="fa fa-trash-o"></i>删除凭证明细</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-12 form-inline panel panel-default" style="padding: 0">
+            <div class="col-lg-2 " style="padding-left: 0; padding-right: 0" >
+                <div id="financial_voucher_tree" style="max-height: 400px;overflow-y:auto;white-space:nowrap;font-size: 6px"></div>
+            </div>
+
+            <div class="col-lg-10 ">
+                <table border="1" class="table table-striped m-b-none" id="financial_voucher_detail_table">
+                </table>
+            </div>
+        </div>
+        <!--<table border="1" class="table table-striped m-b-none" id="financial_voucher_detail_table">-->
+        <!--</table>-->
+    </div>
+</div>
+

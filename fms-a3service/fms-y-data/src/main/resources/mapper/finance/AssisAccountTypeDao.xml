@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.com.leadu.fms.data.finance.dao.AssisAccountTypeDao">
+    <!--分页查询保险理赔一览-->
+    <select id="selectAssisAccountTypesByPage2" parameterType="cn.com.leadu.fms.pojo.finance.vo.assisaccounttype.AssisAccountTypeVo" resultType="cn.com.leadu.fms.pojo.finance.vo.assisaccounttype.AssisAccountTypeVo">
+        SELECT *
+        FROM
+        assis_account_type assisAccountType
+        WHERE
+        assisAccountType.del_flag = ${delete_exist}
+        ORDER BY update_time DESC
+    </select>
+</mapper>

@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.com.leadu.fms.data.postbiz.dao.VehicleDisposalDao">
+    <!-- 根据条件获取车辆处置一览数据 -->
+    <select id="selectVehicleDisposalVosByPage" resultType="cn.com.leadu.fms.pojo.postbiz.vo.vehicledisposal.VehicleDisposalVo">
+        select vehDisposal.vehicle_disposal_id,vehDisposal.cont_no,vehDisposal.disposal_status,vehDisposal.vehicle_disposal_status
+        ,vehDisposal.shipment_date,vehDisposal.agent,vehDisposal.agent_mobile_no,vehDisposal.disposal_task_no
+        ,cont.vin_no,cont.vehicle_license_no,cont.engine_no,contFin.fin_period_type,contFin.fin_total,sysGroup.group_name as rentPerson
+        ,IFNULL(cstmPer.`name`,cstmCom.`name`) as cstmName,gpsDispatch.gps_seller
+        ,retriTask.act_retr_amount as recoveryAmount,retriTask.storage_date,retriTask.storage_addr,retriTask.submit_date as recoverySubmitDate
+        <!-- 车辆处置任务状态 -->
+        ,IF(vehDisposal.disposal_status = '1',contPrepay.prepayment_sts,
+          IF(vehDisposal.disposal_status = '2',capitalTask.capital_assets_task_status,
+            IF(vehDisposal.disposal_status = '3',depositTask.deposit_task_status,''))) as disposalTaskStatus
+        from vehicle_disposal vehDisposal
+        left join contract cont on cont.cont_no = vehDisposal.cont_no and cont.del_flag = ${delete_exist}
+        left join contract_finance contFin on contFin.cont_no = vehDisposal.cont_no and contFin.del_flag = ${delete_exist}
+        left join sys_group sysGroup on sysGroup.group_code = contFin.belong_group and sysGroup.del_flag = ${delete_exist}
+        left join cstm_person cstmPer on cstmPer.apply_no = cont.apply_no and cstmPer.del_flag = ${delete_exist}
+        left join cstm_company cstmCom on cstmCom.apply_no = cont.apply_no and cstmCom.del_flag = ${delete_exist}
+        left join gps_dispatch gpsDispatch on gpsDispatch.cont_no = cont.cont_no and gpsDispatch.del_flag = ${delete_exist}
+        <!-- 收车任务表，关联条件：车辆处置.收车任务号 = 收车任务.收车任务号 -->
+        left join retrieve_cars_task retriTask on retriTask.retrieve_car_task_no = vehDisposal.recovery_task_no and retriTask.del_flag = ${delete_exist}
+        <!-- 提前还款任务表，关联条件：车辆处置.处置任务号 = 提前还款.提前还款任务号 -->
+        left join cont_prepayment contPrepay on contPrepay.cont_prepayment_no = vehDisposal.disposal_task_no and contPrepay.del_flag = ${delete_exist}
+        <!-- 保证金变更任务表，关联条件：车辆处置.处置任务号 = 保证金变更.变更任务号 -->
+        left join deposit_change_task depositTask on depositTask.deposit_task_no = vehDisposal.disposal_task_no and depositTask.del_flag = ${delete_exist}
+        <!-- 转固定资产任务表，关联条件：车辆处置.处置任务号 = 转固定资产任务.变更任务号 -->
+        left join capital_assets_task capitalTask on capitalTask.capital_assets_task_no = vehDisposal.disposal_task_no and capitalTask.del_flag = 0
+        where vehDisposal.del_flag = ${delete_exist}
+        <!-- 合同编号 -->
+        <if test="vehicleDisposalVo.contNo != null">
+            AND vehDisposal.cont_no like #{vehicleDisposalVo.contNo}
+        </if>
+        <!-- 车架号 -->
+        <if test="vehicleDisposalVo.vinNo != null">
+            AND cont.vin_no like #{vehicleDisposalVo.vinNo}
+        </if>
+        <!-- 车牌号 -->
+        <if test="vehicleDisposalVo.vehicleLicenseNo != null">
+            AND cont.vehicle_license_no like #{vehicleDisposalVo.vehicleLicenseNo}
+        </if>
+        <!-- 合同编号 -->
+        <if test="vehicleDisposalVo.cstmName != null">
+            AND (cstmPer.`name` like #{vehicleDisposalVo.cstmName} OR cstmCom.`name` like #{vehicleDisposalVo.cstmName})
+        </if>
+        <!-- 车辆处置方式 -->
+        <if test="vehicleDisposalVo.disposalStatus != null">
+            AND vehDisposal.disposal_status = #{vehicleDisposalVo.disposalStatus}
+        </if>
+        order by vehDisposal.update_time desc
+    </select>
+
+    <!-- 根据合同编号，获取合同客户信息 -->
+    <select id="selectDisposalContVoByContNo" resultType="cn.com.leadu.fms.pojo.postbiz.vo.vehicledisposal.DisposalContVo">
+        select cont.cont_no,cont.vin_no,cont.engine_no,cont.vehicle_driving_license_register_date
+        ,contFin.fin_period_type,contFin.fin_total,sysGroup.group_name as rentPerson,capitalAssets.residual_value
+        ,IFNULL(cstmPer.`name`,cstmCom.`name`) as cstmName,IFNULL(cstmPer.certif_no,cstmCom.social_certif_no) as certifNo
+        from vehicle_disposal vehDisposal
+        left join contract cont on cont.cont_no = vehDisposal.cont_no and cont.del_flag = ${delete_exist}
+        left join contract_finance contFin on contFin.cont_no = vehDisposal.cont_no and contFin.del_flag = ${delete_exist}
+        left join sys_group sysGroup on sysGroup.group_code = contFin.belong_group and sysGroup.del_flag = ${delete_exist}
+        left join cstm_person cstmPer on cstmPer.apply_no = cont.apply_no and cstmPer.del_flag = ${delete_exist}
+        left join cstm_company cstmCom on cstmCom.apply_no = cont.apply_no and cstmCom.del_flag = ${delete_exist}
+        left join capital_assets_task capitalAssets on vehDisposal.disposal_task_no = capitalAssets.capital_assets_task_no and capitalAssets.del_flag = ${delete_exist}
+        where vehDisposal.del_flag = ${delete_exist}
+        AND cont.cont_no = #{contNo}
+    </select>
+
+    <!-- 根据合同编号处置状态，获取最新收车数据的收车费用 -->
+    <select id="selectRecoveryChargeByContNo" resultType="java.math.BigDecimal">
+        SELECT retriTask.act_retr_amount
+        FROM vehicle_disposal vehDisposal
+        <!-- 收车任务表，关联条件：车辆处置.收车任务号 = 收车任务.收车任务号 -->
+        INNER JOIN retrieve_cars_task retriTask ON retriTask.retrieve_car_task_no = vehDisposal.recovery_task_no AND retriTask.del_flag = ${delete_exist}
+        WHERE vehDisposal.del_flag = ${delete_exist}
+        AND vehDisposal.vehicle_disposal_status = #{vehicleDisposalStatus}
+        AND vehDisposal.cont_no =  #{contNo}
+        ORDER BY vehDisposal.update_time DESC
+        limit 1
+    </select>
+
+    <!-- 根据处置任务号，查询构建二手车库存表需要的数据源 -->
+    <select id="selectSecCarInfoByTaskNo" resultType="cn.com.leadu.fms.pojo.postbiz.vo.capitalasstes.SecCarInfoVo">
+        SELECT contract.vin_no,contract.engine_no,retriTask.mile_age miles,vehDisposal.recovery_task_no,
+        contract.color color,contractVehicle.vehicle_code,contract.vehicle_driving_license_register_date registDate,
+        contractVehicle.veh_age_months,contractVehicle.produce_date
+        FROM vehicle_disposal vehDisposal
+        INNER JOIN contract contract ON vehDisposal.cont_no = contract.cont_no and contract.del_flag = ${delete_exist}
+        INNER JOIN contract_vehicle contractVehicle ON vehDisposal.cont_no = contractVehicle.cont_no and contractVehicle.del_flag = ${delete_exist}
+        LEFT JOIN retrieve_cars_task retriTask on retriTask.retrieve_car_task_no = vehDisposal.recovery_task_no and retriTask.del_flag = ${delete_exist}
+        WHERE vehDisposal.disposal_task_no = #{taskNo}
+        AND vehDisposal.del_flag = ${delete_exist}
+        ORDER BY vehDisposal.update_time DESC
+        limit 1
+    </select>
+
+</mapper>

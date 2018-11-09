@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.com.leadu.fms.data.product.dao.ProdFileDao">
+    <!-- 根据产品代码 获取产品的有权限的组织结构 -->
+    <select id="selectProdFileVosByProduct" parameterType="java.lang.String" resultType="cn.com.leadu.fms.pojo.product.vo.prodfile.ProdFileVo">
+        select prodFile.prod_file_id,prodFile.product,prodFile.file_type,prodFile.show_type,basFileType.file_type_name,basFileType.file_type_id
+        from prod_file prodFile
+        LEFT JOIN bas_file_type basFileType ON prodFile.file_type = basFileType.file_type and basFileType.del_flag = ${delete_exist}
+        where prodFile.del_flag = ${delete_exist}
+        <if test="product != null">
+            and prodFile.product =  #{product}
+        </if>
+    </select>
+
+</mapper>

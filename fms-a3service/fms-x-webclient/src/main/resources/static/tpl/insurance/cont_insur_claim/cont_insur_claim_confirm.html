@@ -1,0 +1,122 @@
+<div ng-controller="cont_insur_claim_confirm_controller">
+    <div>
+        <toaster-container
+                toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+    </div>
+    <div class="panel panel-default">
+        <div class="row" style="margin: 0; padding: 10px; border: 1px solid #dddddd">
+            <div class="form-group pull-right">
+                <div class="btn-group">
+                    <button class="btn btn-default" ng-click="goback()">返回</button>
+                    <button type="submit" class="btn btn-success" ng-disabled="submit" ng-click="modify()">确认</button>
+                </div>
+            </div>
+        </div>
+        <form name="form" class="form-validation" novalidate>
+            <!--<div class="form-group row">-->
+                <!--<label class="col-sm-2 control-label text-right"><b class="form-text-black">操作分类</b><b class="form-error">*</b>:</label>-->
+                <!--<div class="col-sm-4">-->
+                    <!--<span style="margin-top: 5px;" ng-repeat="approveActType in insurClaimApproveTypeList">-->
+                        <!--<input type="radio" name="actType" ng-model="contInsurClaim.actType"  value="{{approveActType.codeValue}}" /> {{approveActType.codeValueName}}-->
+                    <!--</span>-->
+                    <!--<p>-->
+                        <!--<span class="form-info" ng-show="contInsurClaim.actType == null">请选择操作分类</span>-->
+                    <!--</p>-->
+                <!--</div>-->
+            <!--</div>-->
+            <div class="form-group row">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">备注</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-10">
+                    <textarea limit-word cols="100" rows="5" name="remark1" ng-model="contInsurClaim.remark1" required></textarea>
+                    <p>
+                        <span class="form-info" ng-show=" (form.remark1.$dirty && form.remark1.$error.required) || (form.remark1.$error.required && formValidate)">请输入审批意见备注</span>
+                    </p>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">保单号</b>:</label>
+                <div class="col-sm-3">
+                    <label class="col-sm-12 control-label text-left">{{contInsurClaim.insPolicyNo}}</label>
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">保险公司</b>:</label>
+                <div class="col-sm-3">
+                    <label class="col-sm-12 control-label text-left">{{contInsurClaim.insCompName}}</label>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">承租人</b>:</label>
+                <div class="col-sm-3">
+                    <label class="col-sm-12 control-label text-left">{{contInsurClaim.name}}</label>
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">车架号</b>:</label>
+                <div class="col-sm-3">
+                    <label class="col-sm-12 control-label text-left">{{contInsurClaim.vinNo}}</label>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">出险日期</b>:</label>
+                <div class="col-sm-3">
+                    <label class="col-sm-12 control-label text-left">{{contInsurClaim.accidentTime}}</label>
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">报案号</b>:</label>
+                <div class="col-sm-3">
+                    <label class="col-sm-12 control-label text-left">{{contInsurClaim.accidentRepno}}</label>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">理赔金额</b>:</label>
+                <div class="col-sm-3">
+                    <label class="col-sm-12 control-label text-left">{{contInsurClaim.claimAmount}}</label>
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">理赔收款开户行</b>:</label>
+                <div class="col-sm-3">
+                    <label class="col-sm-12 control-label text-left">{{contInsurClaim.accBank}}</label>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">理赔收款户名</b>:</label>
+                <div class="col-sm-3">
+                    <label class="col-sm-12 control-label text-left">{{contInsurClaim.accountName}}</label>
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">理赔收款账户</b>:</label>
+                <div class="col-sm-3">
+                    <label class="col-sm-12 control-label text-left">{{contInsurClaim.accountNo}}</label>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">是否邮寄</b>:</label>
+                <div class="col-sm-3">
+                    <label class="col-sm-12 control-label text-left">{{contInsurClaim.postFlagName}}</label>
+                </div>
+            </div>
+            <div class="form-group row" ng-if="contInsurClaim.postFlag == 1">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">邮寄地址</b>:</label>
+                <div class="col-sm-3">
+                    <label class="col-sm-12 control-label text-left">{{contInsurClaim.postAddr}}</label>
+                </div>
+            </div>
+            <div class="form-group row" ng-if="contInsurClaim.postFlag == 1">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">邮寄收货人</b>:</label>
+                <div class="col-sm-3">
+                    <label class="col-sm-12 control-label text-left">{{contInsurClaim.postName}}</label>
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">联系电话</b>:</label>
+                <div class="col-sm-3">
+                    <label class="col-sm-12 control-label text-left">{{contInsurClaim.postMobno}}</label>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">情况说明</b>:</label>
+                <div class="col-sm-3">
+                    <label class="col-sm-12 control-label text-left">{{contInsurClaim.description}}</label>
+                </div>
+            </div>
+            <li style="font-weight: bold;font-size: 16px;">附件信息</li>
+            <div ng-include="'tpl/common/tree_file/tree_file.html'"></div>
+        </form>
+    </div>
+</div>

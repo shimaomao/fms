@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.com.leadu.fms.data.product.dao.ProdVehicleDao">
+    <!-- 根据产品代码 获取产品的有权限的组织结构 -->
+    <select id="selectProdVehicleVosByProduct" parameterType="java.lang.String" resultType="cn.com.leadu.fms.pojo.product.vo.prodvehicle.ProdVehicleVo">
+        select prodVehicle.prod_vehicle_id,prodVehicle.product,prodVehicle.vehicle_code,basVehicle.vehicle_name,basVehicle.vehicle_level,basVehicle.vehicle_id
+        from prod_vehicle prodVehicle
+        inner join bas_vehicle basVehicle on basVehicle.vehicle_code = prodVehicle.vehicle_code and basVehicle.del_flag = ${delete_exist}
+        where prodVehicle.del_flag = ${delete_exist}
+        <if test="product != null">
+            and prodVehicle.product =  #{product}
+        </if>
+        order by prodVehicle.update_time desc
+    </select>
+</mapper>

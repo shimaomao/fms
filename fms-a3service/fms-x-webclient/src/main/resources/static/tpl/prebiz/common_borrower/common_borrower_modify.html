@@ -1,0 +1,145 @@
+<style>
+    .modal-dialog{
+        width: 1150px;
+    }
+    .modal-dialog .modal-body{
+        max-height: 300px;
+        overflow: auto;
+    }
+</style>
+<div class="modal-header">
+    <h4 class="modal-title">共同承租人<button type="button" class="close" data-dismiss="modal" aria-hidden="true" ng-click="close()">&times;</button></h4>
+</div>
+<div class="modal-body">
+    <form name="form" class="form-validation" novalidate>
+        <div class="panel-body">
+            <div class="row">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">共同承租人姓名</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-2">
+                    <input type="text" name="name" placeholder="请输入共同承租人姓名" class="form-control m-b-xs" ng-model="commonBorrower.name"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.name.$dirty && form.name.$error.required) || (form.name.$error.required && formValidate)">共同承租人姓名不能为空</span>
+                    </p>
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">证件类型</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-2">
+                    <select name="certifType" ng-change="certiValidate()" class="form-control m-b-xs" ng-model="commonBorrower.certifType" required>
+                        <option value="">--请选择--</option>
+                        <option ng-repeat="a in certifTypeList" value="{{a.codeValue}}" ng-selected="commonBorrower.certifType == a.codeValue">{{a.codeValueName}}</option>
+                    </select>
+                    <p>
+                        <span class="form-info" ng-show=" (form.certifType.$dirty && form.certifType.$error.required) || (form.certifType.$error.required && formValidate)">证件类型不能为空</span>
+                    </p>
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">证件号码</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-2">
+                    <div class="row">
+                        <div class="col-sm-7">
+                            <input type="text" id="compCertiNo" name="certifNo" placeholder="请输入证件号码" class="form-control m-b-xs" ng-model="commonBorrower.certifNo" ng-pattern="compCertiNo" ng-pattern="/^[0-9a-zA-Z]+$/" required >
+                            <p>
+                                <span class="form-info" ng-show=" (form.certifNo.$dirty && form.certifNo.$error.required) || (form.certifNo.$error.required && formValidate)">证件号码不能为空</span>
+                                <span class="form-info" ng-show=" (form.certifNo.$error.pattern && !form.certifNo.$error.required) || (form.certifNo.$error.pattern && formValidate && !form.certifNo.$error.required)">请输入合法的证件号</span>
+                            </p>
+                        </div>
+                        <div class="col-sm-5">
+                            <button type="button" class="btn btn-sm btn-default" ng-click="selectCertiNo();">选择</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="row">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">手机号码</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-2">
+                    <input type="text" name="mobileNo" placeholder="请输入手机号码" class="form-control m-b-xs" ng-model="commonBorrower.mobileNo" ng-pattern="/^1[345789]\d{9}$/"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.mobileNo.$dirty && form.mobileNo.$error.required) || (form.mobileNo.$error.required && formValidate)">手机号码不能为空</span>
+                        <span class="form-info" ng-show=" (form.mobileNo.$error.pattern && !form.mobileNo.$error.required) || (form.mobileNo.$error.pattern && formValidate && !form.mobileNo.$error.required)">请输入正确的手机号</span>
+                    </p>
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">单位名称</b>:</label>
+                <div class="col-sm-2">
+                    <input type="text" name="compName" placeholder="请输入单位名称" class="form-control m-b-xs" ng-model="commonBorrower.compName">
+                    <p>
+                        <!--<span class="form-info" ng-show=" (form.compName.$dirty && form.compName.$error.required) || (form.compName.$error.required && formValidate)">单位名称不能为空</span>-->
+                    </p>
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">单位电话</b>:</label>
+                <div class="col-sm-2">
+                    <input type="text" name="compTel" placeholder="请输入单位电话" class="form-control m-b-xs" ng-model="commonBorrower.compTel" ng-pattern="/^0\d{2,3}-\d{7,8}$/">
+                    <p>
+                        <!--<span class="form-info" ng-show=" (form.compTel.$dirty && form.compTel.$error.required) || (form.compTel.$error.required && formValidate)">单位电话不能为空</span>-->
+                        <span class="form-info" ng-show=" (form.compTel.$dirty && form.compTel.$error.pattern) || (form.compTel.$error.pattern && formValidate)">请输入正确的电话号码</span>
+                    </p>
+                </div>
+            </div>
+            <div class="row">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">共同承租人职位</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-2">
+                    <select name="position" ng-model="commonBorrower.position" class="form-control m-b-xs" required>
+                        <option value="">--请选择</option>
+                        <option ng-repeat="a in positionTypeList" ng-selected="commonBorrower.position == a.codeValue" value="{{a.codeValue}}">{{a.codeValueName}}</option>
+                    </select>
+                    <p>
+                        <span class="form-info" ng-show=" (form.position.$dirty && form.position.$error.required) || (form.position.$error.required && formValidate)">共同承租人职位不能为空</span>
+                    </p>
+                </div>
+                <label class="col-sm-2 control-label text-right"></label>
+                <div class="col-sm-2"></div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">税后年薪(万元)</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-2">
+                    <input type="number" limit-number="4" name="salary" placeholder="请输入年薪(万元)" class="form-control m-b-xs" ng-model="commonBorrower.salary" ng-pattern="/^[0-9]+([.]{1}[0-9]+){0,1}$/" required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.salary.$dirty && form.salary.$error.required) || (form.salary.$error.required && formValidate)">年薪(万元)不能为空</span>
+                        <span class="form-info" ng-show=" (form.salary.$error.pattern && !form.salary.$error.required) || (form.salary.$error.pattern && formValidate && !form.salary.$error.required)">请输入数字</span>
+                    </p>
+                </div>
+            </div>
+            <div class="row">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">单位所在省份</b>:</label>
+                <div class="col-sm-2">
+                    <select name="compProv" ng-model="commonBorrower.compProv" ng-change="changeCountry();" class="form-control m-b-xs">
+                        <option value="">--请选择</option>
+                        <option ng-repeat="a in provinceList" value="{{a.areaCode}}" ng-selected="a.areaCode==commonBorrower.compProv?1:0">{{a.areaName}}</option>
+                    </select>
+                    <p>
+                        <!--<span class="form-info" ng-show=" (form.compProv.$dirty && form.compProv.$error.required) || (form.compProv.$error.required && formValidate)">单位所在省份不能为空</span>-->
+                    </p>
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">单位所在城市</b>:</label>
+                <div class="col-sm-2">
+                    <select name="compCity" ng-model="commonBorrower.compCity" ng-change="changeCity();" class="form-control m-b-xs">
+                        <option value="">--请选择</option>
+                        <option ng-repeat="a in cityList[commonBorrower.compProv]" value="{{a.areaCode}}" ng-selected="a.areaCode==commonBorrower.compCity?1:0">{{a.areaName}}</option>
+                    </select>
+                    <p>
+                        <!--<span class="form-info" ng-show=" (form.compCity.$dirty && form.compCity.$error.required) || (form.compCity.$error.required && formValidate)">单位所在城市不能为空</span>-->
+                    </p>
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">单位所在区县</b>:</label>
+                <div class="col-sm-2">
+                    <select name="compCounty" ng-model="commonBorrower.compCounty" class="form-control m-b-xs">
+                        <option value="">--请选择</option>
+                        <option ng-repeat="a in areaList[commonBorrower.compCity]" value="{{a.areaCode}}" ng-selected="a.areaCode==commonBorrower.compCounty?1:0">{{a.areaName}}</option>
+                    </select>
+                    <p>
+                        <!--<span class="form-info" ng-show=" (form.compCounty.$dirty && form.compCounty.$error.required) || (form.compCounty.$error.required && formValidate)">单位所在区县不能为空</span>-->
+                    </p>
+                </div>
+            </div>
+            <div class="row">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">单位详细地址</b>:</label>
+                <div class="col-sm-10">
+                    <input type="text" name="compAddr" placeholder="请输入单位详细地址" class="form-control m-b-xs" ng-model="commonBorrower.compAddr">
+                    <p>
+                        <!--<span class="form-info" ng-show=" (form.compAddr.$dirty && form.compAddr.$error.required) || (form.compAddr.$error.required && formValidate)">单位详细地址不能为空</span>-->
+                    </p>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="modal-footer ng-scope text-center">
+    <button class="btn btn-default" ng-click="close()">取消</button>
+    <button type="submit" class="btn btn-success" ng-disabled="submit" ng-click="save()">保存</button>
+</div>

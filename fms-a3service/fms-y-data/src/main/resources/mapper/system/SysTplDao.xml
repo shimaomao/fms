@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.com.leadu.fms.data.system.dao.SysTplDao">
+    <!-- 分页获取获取模板信息-->
+    <select id="selectSysTplVosByPages" parameterType="java.lang.String" resultType="cn.com.leadu.fms.pojo.system.vo.systpl.SysTplVo">
+        select sysTpl.tpl_id,sysTpl.tpl_name,sysTpl.enable_flag,sysTpl.tpl_content,sysTpl.tpl_type_key,sysTplType.tpl_type_name,sysTplType.tpl_type
+        from sys_tpl sysTpl
+        left join sys_tpl_type sysTplType on sysTplType.tpl_type_key = sysTpl.tpl_type_key and sysTplType.del_flag = ${delete_exist}
+        where sysTpl.del_flag = ${delete_exist}
+        <if test="sysTplVo.tplType != null">
+            and sysTplType.tpl_type = #{sysTplVo.tplType}
+        </if>
+        <if test="sysTplVo.tplName != null">
+            and sysTpl.tpl_name like  #{sysTplVo.tplName}
+        </if>
+        <if test="sysTplVo.tplTypeName != null">
+            and sysTplType.tpl_type_name like #{sysTplVo.tplTypeName}
+        </if>
+        order by sysTpl.update_time desc
+    </select>
+
+    <!-- 根据模板ID 获取获取模板信息-->
+    <select id="selectSysTplVoByTplId" parameterType="java.lang.String" resultType="cn.com.leadu.fms.pojo.system.vo.systpl.SysTplVo">
+        select sysTpl.tpl_id,sysTpl.tpl_name,sysTpl.enable_flag,sysTpl.tpl_content,sysTpl.tpl_type_key,sysTplType.tpl_type_name,sysTplType.tpl_type
+        from sys_tpl sysTpl
+        left join sys_tpl_type sysTplType on sysTplType.tpl_type_key = sysTpl.tpl_type_key and sysTplType.del_flag = ${delete_exist}
+        where sysTpl.del_flag = ${delete_exist}
+        <if test="tplId != null">
+            and sysTpl.tpl_id = #{tplId}
+        </if>
+    </select>
+</mapper>

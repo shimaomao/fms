@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.com.leadu.fms.data.postbiz.dao.DeferTaskDao">
+    <select id="selectDeferTaskVoByContNo" resultType="cn.com.leadu.fms.pojo.postbiz.vo.defertask.DeferTaskVo">
+        SELECT
+        <!--展期合同号-->
+        contract.cont_no contNo,
+        <!--展期金额-->
+        contract_finance.final_amount deferAmount,
+        <!--尾款-->
+        contract_finance.final_amount balancePayment,
+        <!--融资额-->
+        contract_finance.fin_total finAmount,
+        <!--融资期限-->
+        contract_finance.fin_period_type finPeriodType,
+        <!--保证金-->
+        contract_finance.deposit deposit,
+        <!--原有利率-->
+        contract_finance.intrst_rate currentInterestRate,
+        <!--还款日-->
+        contract_finance.repay_day repayDate,
+        <!--业务类型-->
+        contract_finance.license_attr licenseAttr,
+        <!--承租人-->
+        IFNULL(
+            cstm_person.NAME,
+            cstm_company.NAME
+        ) lessee,
+        <!--出租人-->
+        sys_group.group_name lessor,
+        <!--车架号-->
+        contract.vin_no vinNo,
+        <!--申请类型-->
+        apply.apply_type,
+        <!--申请编号-->
+        apply.apply_no
+    FROM
+        contract
+    LEFT JOIN apply ON apply.apply_no = contract.apply_no
+    AND apply.del_flag = ${delete_exist}
+    LEFT JOIN cstm_person ON cstm_person.apply_no = apply.apply_no
+    AND cstm_person.del_flag = ${delete_exist}
+    LEFT JOIN cstm_company ON cstm_company.apply_no = apply.apply_no
+    AND cstm_company.del_flag = ${delete_exist}
+    LEFT JOIN contract_finance ON contract.cont_no = contract_finance.cont_no
+    AND contract_finance.del_flag = ${delete_exist}
+    LEFT JOIN sys_group ON contract_finance.belong_group = sys_group.group_code
+    AND sys_group.del_flag = ${delete_exist}
+    WHERE
+        contract.del_flag = ${delete_exist}
+    AND
+        contract.cont_no = #{deferTaskVo.contNo}
+    </select>
+</mapper>

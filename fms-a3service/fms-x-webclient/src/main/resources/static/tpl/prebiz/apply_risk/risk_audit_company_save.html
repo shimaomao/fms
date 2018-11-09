@@ -1,0 +1,235 @@
+<div ng-controller="risk_audit_company_save_controller">
+    <!--基本信息-START-->
+    <div class="panel panel-default">
+        <h4>基本信息</h4>
+        <div class="panel-body">
+            <div class="row">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">单位行业类别</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-2">
+                    <select name=""  class="form-control m-b-xs" ng-model="aaa" ng-options="a.codeValue as a.codeValueName for a in 'industryType' | getList" required>
+                        <option value="">---请选择---</option>
+                        <!--<option ng-repeat="a in 'industryType' | getList" value="{{a.codeValue}}">{{a.codeValueName}}</option>-->
+                    </select>
+                    <p>
+                        <span class="form-info" ng-show=" (form.addrResideCond.$dirty && form.addrResideCond.$error.required) || (form.addrResideCond.$error.required && formValidate)">单位行业类别不能为空</span>
+                    </p>
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">经营地址类型</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-2">
+                    <select name="" class="form-control m-b-xs" ng-model="bbb" ng-options="a.codeValue as a.codeValueName for a in 'compAddrType' | getList" required>
+                        <option value="">---请选择---</option>
+                        <!--<option ng-repeat="a in 'compAddrType' | getList" value="{{a.codeValue}}">{{a.codeValueName}}</option>-->
+                    </select>
+                    <p>
+                        <span class="form-info" ng-show=" (form.addrResideCond.$dirty && form.addrResideCond.$error.required) || (form.addrResideCond.$error.required && formValidate)">经营地址类型不能为空</span>
+                    </p>
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">原有车辆</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-2">
+                    <input placeholder="请输入原有车辆" type="text" class="form-control m-b-xs" required>
+                    <p>
+                        <span class="form-info" ng-show=" (form.addrResideCond.$dirty && form.addrResideCond.$error.required) || (form.addrResideCond.$error.required && formValidate)">原有车辆不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="row">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">购买时间</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-2">
+                    <input placeholder="请输入购买时间" type="text" class="form-control m-b-xs" date-picker required>
+                    <p>
+                        <span class="form-info" ng-show=" (form.addrResideCond.$dirty && form.addrResideCond.$error.required) || (form.addrResideCond.$error.required && formValidate)">购买时间不能为空</span>
+                    </p>
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">购买价格</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-2">
+                    <input placeholder="请输入购买价格" type="text" class="form-control m-b-xs" ng-pattern="/^[0-9]+([.]{1}[0-9]+){0,1}$/" required>
+                    <p>
+                        <span class="form-info" ng-show=" (form.addrResideCond.$dirty && form.addrResideCond.$error.required) || (form.addrResideCond.$error.required && formValidate)">购买价格不能为空</span>
+                        <span class="form-info ng-hide" ng-show=" (form.mateSalary.$dirty && form.mateSalary.$error.pattern) || (form.mateSalary.$error.pattern && formValidate)">请输入合法的数值</span>
+                    </p>
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">主营业务</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-2">
+                    <input placeholder="请输入主营业务" type="text" class="form-control m-b-xs" required>
+                    <p>
+                        <span class="form-info" ng-show=" (form.addrResideCond.$dirty && form.addrResideCond.$error.required) || (form.addrResideCond.$error.required && formValidate)">主营业务不能为空</span>
+                    </p>
+                </div>
+            </div>
+            <div class="row">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">行业利润率</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-2">
+                    <input placeholder="请输入行业利润率" type="text" class="form-control m-b-xs" ng-pattern="/^[0-9]+([.]{1}[0-9]+){0,1}$/" required>
+                    <p>
+                        <span class="form-info" ng-show=" (form.addrResideCond.$dirty && form.addrResideCond.$error.required) || (form.addrResideCond.$error.required && formValidate)">行业利润率不能为空</span>
+                        <span class="form-info ng-hide" ng-show=" (form.mateSalary.$dirty && form.mateSalary.$error.pattern) || (form.mateSalary.$error.pattern && formValidate)">请输入合法的数值</span>
+                    </p>
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">企业联系电话</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-2">
+                    <input placeholder="请输入企业联系电话" type="text" class="form-control m-b-xs" ng-pattern="/^0\d{2,3}-\d{7,8}$/" required>
+                    <p>
+                        <span class="form-info" ng-show=" (form.addrResideCond.$dirty && form.addrResideCond.$error.required) || (form.addrResideCond.$error.required && formValidate)">企业联系电话不能为空</span>
+                        <span class="form-info ng-hide" ng-show=" (form.mateSalary.$dirty && form.mateSalary.$error.pattern) || (form.mateSalary.$error.pattern && formValidate)">请输入合法的数值</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--基本信息-END-->
+
+    <!--有条件同意-START-->
+    <div class="panel panel-default">
+        <h4>
+            <span class="v-middle">有条件同意checkbox</span>
+            <div class="radio" ng-repeat="a in 'approveFlag'|getList">
+                <label>
+                    <input type="radio" name="approveFlag" value="{{a.codeValue}}" ng-model="riskData.apply.approveFlag" required>
+                    <span class="v-middle">{{a.codeValueName}}</span>
+                </label>
+            </div>
+        </h4>
+        <div class="panel-body">
+            <div class="row">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">首付比例</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-2">
+                    <input placeholder="请输入首付比例" type="text" class="form-control m-b-xs" ng-pattern="/^[0-9]+([.]{1}[0-9]+){0,1}$/" required>
+                    <p>
+                        <span class="form-info ng-hide" ng-show=" (form.mateSalary.$dirty && form.mateSalary.$error.required) || (form.mateSalary.$error.required && formValidate)">首付比例不能为空</span>
+                        <span class="form-info ng-hide" ng-show=" (form.mateSalary.$dirty && form.mateSalary.$error.pattern) || (form.mateSalary.$error.pattern && formValidate)">请输入合法的数值</span>
+                    </p>
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">首付金额</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-2">
+                    <input placeholder="请输入首付金额" type="text" class="form-control m-b-xs" ng-pattern="/^[0-9]+([.]{1}[0-9]+){0,1}$/" required>
+                    <p>
+                        <span class="form-info ng-hide" ng-show=" (form.mateSalary.$dirty && form.mateSalary.$error.required) || (form.mateSalary.$error.required && formValidate)">首付金额不能为空</span>
+                        <span class="form-info ng-hide" ng-show=" (form.mateSalary.$dirty && form.mateSalary.$error.pattern) || (form.mateSalary.$error.pattern && formValidate)">请输入合法的数值</span>
+                    </p>
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">投资总额</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-2">
+                    <input placeholder="请输入投资总额" type="text" class="form-control m-b-xs" ng-pattern="/^[0-9]+([.]{1}[0-9]+){0,1}$/" required>
+                    <p>
+                        <span class="form-info ng-hide" ng-show=" (form.mateSalary.$dirty && form.mateSalary.$error.required) || (form.mateSalary.$error.required && formValidate)">投资总额不能为空</span>
+                        <span class="form-info ng-hide" ng-show=" (form.mateSalary.$dirty && form.mateSalary.$error.pattern) || (form.mateSalary.$error.pattern && formValidate)">请输入合法的数值</span>
+                    </p>
+                </div>
+            </div>
+            <div class="row">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">保证金比例</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-2">
+                    <input placeholder="请输入保证金比例" type="text" class="form-control m-b-xs" ng-pattern="/^[0-9]+([.]{1}[0-9]+){0,1}$/" required>
+                    <p>
+                        <span class="form-info ng-hide" ng-show=" (form.mateSalary.$dirty && form.mateSalary.$error.required) || (form.mateSalary.$error.required && formValidate)">保证金比例不能为空</span>
+                        <span class="form-info ng-hide" ng-show=" (form.mateSalary.$dirty && form.mateSalary.$error.pattern) || (form.mateSalary.$error.pattern && formValidate)">请输入合法的数值</span>
+                    </p>
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">保证金金额</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-2">
+                    <input placeholder="请输入保证金金额" type="text" class="form-control m-b-xs" ng-pattern="/^[0-9]+([.]{1}[0-9]+){0,1}$/" required>
+                    <p>
+                        <span class="form-info ng-hide" ng-show=" (form.mateSalary.$dirty && form.mateSalary.$error.required) || (form.mateSalary.$error.required && formValidate)">保证金金额不能为空</span>
+                        <span class="form-info ng-hide" ng-show=" (form.mateSalary.$dirty && form.mateSalary.$error.pattern) || (form.mateSalary.$error.pattern && formValidate)">请输入合法的数值</span>
+                    </p>
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">融资额</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-2">
+                    <input placeholder="请输入融资额" type="text" class="form-control m-b-xs" ng-pattern="/^[0-9]+([.]{1}[0-9]+){0,1}$/" required>
+                    <p>
+                        <span class="form-info ng-hide" ng-show=" (form.mateSalary.$dirty && form.mateSalary.$error.required) || (form.mateSalary.$error.required && formValidate)">融资额不能为空</span>
+                        <span class="form-info ng-hide" ng-show=" (form.mateSalary.$dirty && form.mateSalary.$error.pattern) || (form.mateSalary.$error.pattern && formValidate)">请输入合法的数值</span>
+                    </p>
+                </div>
+            </div>
+            <div class="row">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">尾付比例</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-2">
+                    <input placeholder="请输入尾付比例" type="text" class="form-control m-b-xs" ng-pattern="/^[0-9]+([.]{1}[0-9]+){0,1}$/" required>
+                    <p>
+                        <span class="form-info ng-hide" ng-show=" (form.mateSalary.$dirty && form.mateSalary.$error.required) || (form.mateSalary.$error.required && formValidate)">尾付比例不能为空</span>
+                        <span class="form-info ng-hide" ng-show=" (form.mateSalary.$dirty && form.mateSalary.$error.pattern) || (form.mateSalary.$error.pattern && formValidate)">请输入合法的数值</span>
+                    </p>
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">尾付金额</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-2">
+                    <input placeholder="请输入尾付金额" type="text" class="form-control m-b-xs" ng-pattern="/^[0-9]+([.]{1}[0-9]+){0,1}$/" required>
+                    <p>
+                        <span class="form-info ng-hide" ng-show=" (form.mateSalary.$dirty && form.mateSalary.$error.required) || (form.mateSalary.$error.required && formValidate)">尾付金额不能为空</span>
+                        <span class="form-info ng-hide" ng-show=" (form.mateSalary.$dirty && form.mateSalary.$error.pattern) || (form.mateSalary.$error.pattern && formValidate)">请输入合法的数值</span>
+                    </p>
+                </div>
+            </div>
+            <div class="row">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">年供比例</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-2">
+                    <input placeholder="请输入年供比例" type="text" class="form-control m-b-xs" ng-pattern="/^[0-9]+([.]{1}[0-9]+){0,1}$/" required>
+                    <p>
+                        <span class="form-info ng-hide" ng-show=" (form.mateSalary.$dirty && form.mateSalary.$error.required) || (form.mateSalary.$error.required && formValidate)">年供比例不能为空</span>
+                        <span class="form-info ng-hide" ng-show=" (form.mateSalary.$dirty && form.mateSalary.$error.pattern) || (form.mateSalary.$error.pattern && formValidate)">请输入合法的数值</span>
+                    </p>
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">年供金额</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-2">
+                    <input placeholder="请输入年供金额" type="text" class="form-control m-b-xs" ng-pattern="/^[0-9]+([.]{1}[0-9]+){0,1}$/" required>
+                    <p>
+                        <span class="form-info ng-hide" ng-show=" (form.mateSalary.$dirty && form.mateSalary.$error.required) || (form.mateSalary.$error.required && formValidate)">年供金额不能为空</span>
+                        <span class="form-info ng-hide" ng-show=" (form.mateSalary.$dirty && form.mateSalary.$error.pattern) || (form.mateSalary.$error.pattern && formValidate)">请输入合法的数值</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--有条件同意-END-->
+
+    <!--电话核实信息-START-->
+    <div class="panel panel-default">
+        <h4>
+            电话核实信息
+        </h4>
+        <div class="panel-body">
+            <div class="dataTables_wrapper">
+                <table border="1" class="table table-striped m-b-none dataTable no-footer" width="100%">
+                    <tbody>
+                    <tr click-tr ng-repeat="a in riskData.riskTelchkVoList">
+                        <td>{{$index+1}}</td>
+                        <td>
+                            {{a.telchkItemName}}
+                        </td>
+                        <td>
+                            <div class="radio" ng-repeat="b in a.codeType | getList">
+                                <label>
+                                    <input type="radio" name="{{a.codeType}}_t" value="{{b.codeValue}}" ng-model="a.telchkResult" required>{{b.codeValueName}}
+                                </label>
+                            </div>
+                        </td>
+                        <td>
+                            <input type="text" name="{{a.codeType}}_m" ng-model="a.memo" class="form-control" placeholder="填写备注">
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <!--电话核实信息-END-->
+
+    <!--附件上传-START-->
+    <div class="panel panel-default">
+        <h4>附件上传</h4>
+        <div class="panel-body">
+            <div ng-include="'tpl/common/tree_file/tree_file.html'"></div>
+        </div>
+    </div>
+    <!--附件上传-END-->
+
+    <!--附件上传-START-->
+    <div class="panel panel-default">
+        <h4>备注</h4>
+        <div class="panel-body">
+            <textarea limit-word name="" class="form-control" cols="30" rows="6" style="resize: none"></textarea>
+        </div>
+    </div>
+    <!--附件上传-END-->
+</div>

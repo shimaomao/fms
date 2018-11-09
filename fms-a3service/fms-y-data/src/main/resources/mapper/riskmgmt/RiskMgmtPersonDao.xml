@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.com.leadu.fms.data.riskmgmt.dao.RiskMgmtPersonDao">
+    <!-- 根据主贷人证件号 查询以前的风控信息 -->
+    <select id="selectRiskMgmtPersonByMain" parameterType="java.lang.String" resultType="cn.com.leadu.fms.pojo.riskmgmt.entity.RiskMgmtPerson">
+        select riskMgmtPerson.*
+        FROM
+        risk_mgmt_person riskMgmtPerson
+        left join cstm_person cstmPerson on riskMgmtPerson.apply_no = cstmPerson.apply_no and cstmPerson.del_flag =  ${delete_exist}
+        where
+        riskMgmtPerson.del_flag =  ${delete_exist}
+        and cstmPerson.certif_no = #{certifNo}
+        and riskMgmtPerson.apply_no != #{applyNo}
+        order by riskMgmtPerson.update_time DESC
+        limit 0,1
+    </select>
+
+</mapper>

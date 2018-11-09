@@ -1,0 +1,13 @@
+spring:
+  profiles:
+    active: ${leadu-profiles-active:dev}
+  application:
+    name: fms-z-original
+
+management:
+  security:
+    enabled: false
+
+
+
+

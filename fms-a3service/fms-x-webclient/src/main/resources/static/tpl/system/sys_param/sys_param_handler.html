@@ -1,0 +1,153 @@
+<div ng-controller="sys_param_handler_controller">
+    <div>
+        <toaster-container
+                toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+    </div>
+    <div class="panel panel-default">
+        <div class="row" style="margin: 0; padding: 15px; border: 1px solid #dddddd">
+            <h4 class="m-n font-thin h4">{{frameTitle}}</h4>
+        </div>
+        <form name="form" class="form-validation" novalidate>
+            <div class="panel-body wrapper-sm">
+
+
+                <div class="form-group row"><!-- ng-show="itemWidgetMap['I000801'].showMod">-->
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">参数主键</b><b
+                            class="form-error" ><!--ng-show="itemWidgetMap['I000801'].checkMod">-->*</b>:</label>
+                    <!-- 项目可编辑 -->
+                    <div class="col-sm-3"><!-- ng-show="itemWidgetMap['I000801'].writeMod">-->
+                        <input type="text" name="paramKey" placeholder="请输入参数主键" class="form-control m-b-xs"
+                               ng-model="sysParam.paramKey" required><!--ng-required="itemWidgetMap['I000801'].checkMod">-->
+                        <p>
+                            <span class="form-info"
+                                  ng-show=" (form.paramKey.$dirty && form.paramKey.$error.required) || (form.paramKey.$error.required && formValidate)">参数主键不能为空</span>
+                        </p>
+                    </div>
+                    <!-- 项目不可编辑 -->
+                    <!--<div class="col-sm-8" ng-show="!itemWidgetMap['I000801'].writeMod">
+                        <label class="col-sm-12 control-label text-left">{{sysParam.paramKey}}</label>
+                    </div>-->
+                </div>
+
+
+                <div class="form-group row"><!-- ng-show="itemWidgetMap['I000802'].showMod">-->
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">参数名称</b><b
+                            class="form-error"><!-- ng-show="itemWidgetMap['I000802'].checkMod">-->*</b>:</label>
+                    <!-- 项目可编辑 -->
+                    <div class="col-sm-3"><!--ng-show="itemWidgetMap['I000802'].writeMod">-->
+                        <input type="text" name="paramName" placeholder="请输入参数名称" class="form-control m-b-xs"
+                               ng-model="sysParam.paramName" required> <!--ng-required="itemWidgetMap['I000802'].checkMod">-->
+                        <p>
+                            <span class="form-info"
+                                  ng-show=" (form.paramName.$dirty && form.paramName.$error.required) || (form.paramName.$error.required && formValidate)">参数名称不能为空</span>
+                        </p>
+                    </div>
+                   <!-- &lt;!&ndash; 项目不可编辑 &ndash;&gt;
+                    <div class="col-sm-8" ng-show="!itemWidgetMap['I000802'].writeMod">
+                        <label class="col-sm-12 control-label text-left">{{sysParam.paramName}}</label>
+                    </div>-->
+                </div>
+
+
+                <div class="form-group row"> <!--ng-show="itemWidgetMap['I000803'].showMod">-->
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">参数值</b><b
+                            class="form-error"><!-- ng-show="itemWidgetMap['I000803'].checkMod">-->*</b>:</label>
+                    <!-- 项目可编辑 -->
+                    <div class="col-sm-3"><!-- ng-show="itemWidgetMap['I000803'].writeMod">-->
+                        <input type="text" name="paramValue" placeholder="请输入参数值" class="form-control m-b-xs"
+                               ng-model="sysParam.paramValue" required> <!--ng-required="itemWidgetMap['I000803'].checkMod">-->
+                        <p>
+                            <span class="form-info"
+                                  ng-show=" (form.paramValue.$dirty && form.paramValue.$error.required) || (form.paramValue.$error.required && formValidate)">参数值不能为空</span>
+                        </p>
+                    </div>
+                   <!-- &lt;!&ndash; 项目不可编辑 &ndash;&gt;
+                    <div class="col-sm-8" ng-show="!itemWidgetMap['I000803'].writeMod">
+                        <label class="col-sm-12 control-label text-left">{{sysParam.paramValue}}</label>
+                    </div>-->
+                </div>
+
+
+                <div class="form-group row"> <!--ng-show="itemWidgetMap['I000804'].showMod">-->
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">开始日期</b><b
+                            class="form-error"> <!--ng-show="itemWidgetMap['I000804'].checkMod">-->*</b>:</label>
+                    <!-- 项目可编辑 -->
+                    <div class="col-sm-3" ><!--ng-show="itemWidgetMap['I000804'].writeMod">-->
+                        <input id="validStartDate" type="text" name="validStartDate" placeholder="请输入开始日期" class="form-control m-b-xs" ng-model="sysParam.validStartDate" date-picker required>  <!--onFocus="WdatePicker({ maxDate:'#F{$dp.$D(\'validEndDate\')||\'new Date()\'}'})">--><!-- ng-required="itemWidgetMap['I000804'].checkMod">-->
+                        <p>
+                            <span class="form-info"
+                                  ng-show=" (form.validStartDate.$dirty && form.validStartDate.$error.required) || (form.validStartDate.$error.required && formValidate)">开始日期不能为空</span>
+                        </p>
+                    </div>
+                    <!--&lt;!&ndash; 项目不可编辑 &ndash;&gt;
+                    <div class="col-sm-8" ng-show="!itemWidgetMap['I000804'].writeMod">
+                        <label class="col-sm-12 control-label text-left">{{sysParam.validStartDate}}</label>
+                    </div>-->
+                </div>
+
+                <div class="form-group row"><!-- ng-show="itemWidgetMap['I000805'].showMod">-->
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">结束日期</b><b
+                            class="form-error"> <!--ng-show="itemWidgetMap['I000805'].checkMod">-->*</b>:</label>
+                    <!-- 项目可编辑 -->
+                    <div class="col-sm-3"> <!--ng-show="itemWidgetMap['I000805'].writeMod">-->
+                        <input  id="validEndDate" type="text" name="validEndDate" placeholder="请输入结束日期" class="form-control m-b-xs"
+                               ng-model="sysParam.validEndDate"  date-picker required><!--onFocus="WdatePicker({ minDate:'#F{$dp.$D(\'validStartDate\')}',maxDate:new Date()})"--><!-- ng-required="itemWidgetMap['I000805'].checkMod">-->
+                        <p>
+                            <span class="form-info"
+                                  ng-show=" (form.validEndDate.$dirty && form.validEndDate.$error.required) || (form.validEndDate.$error.required && formValidate)">结束日期不能为空</span>
+                        </p>
+                    </div>
+                    <!--&lt;!&ndash; 项目不可编辑 &ndash;&gt;
+                    <div class="col-sm-8" ng-show="!itemWidgetMap['I000805'].writeMod">
+                        <label class="col-sm-12 control-label text-left">{{sysParam.validEndDate}}</label>
+                    </div>-->
+                </div>
+
+                <!--<div class="form-group row"> &lt;!&ndash;ng-show="itemWidgetMap['I000806'].showMod">&ndash;&gt;
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">操作时间</b><b
+                            class="form-error"> &lt;!&ndash;ng-show="itemWidgetMap['I000806'].checkMod">&ndash;&gt;*</b>:</label>
+                    &lt;!&ndash; 项目可编辑 &ndash;&gt;
+                    <div class="col-sm-9"> &lt;!&ndash;ng-show="itemWidgetMap['I000806'].writeMod">&ndash;&gt;
+                        <input type="text" name="updateTime" placeholder="请输入操作时间" class="form-control m-b-xs"
+                               ng-model="sysParam.updateTime" disabled>&lt;!&ndash; ng-required="itemWidgetMap['I000806'].checkMod">&ndash;&gt;
+                        &lt;!&ndash;  <p>
+                              <span class="form-info" ng-show=" (form.updateTime.$dirty && form.updateTime.$error.required) || (form.updateTime.$error.required && formValidate)">操作时间不能为空</span>
+                          </p>&ndash;&gt;
+                    </div>
+                   &lt;!&ndash; &lt;!&ndash; 项目不可编辑 &ndash;&gt;
+                    <div class="col-sm-8" ng-show="!itemWidgetMap['I000806'].writeMod">
+                        <label class="col-sm-12 control-label text-left">{{sysParam.updateTime}}</label>
+                    </div>&ndash;&gt;
+                </div>-->
+
+                <!--<div class="form-group row"> &lt;!&ndash;ng-show="itemWidgetMap['I000807'].showMod">&ndash;&gt;
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">操作员</b><b
+                            class="form-error"> &lt;!&ndash;ng-show="itemWidgetMap['I000807'].checkMod">&ndash;&gt;*</b>:</label>
+                    &lt;!&ndash; 项目可编辑 &ndash;&gt;
+                    <div class="col-sm-9"> &lt;!&ndash;ng-show="itemWidgetMap['I000807'].writeMod">&ndash;&gt;
+                        <input type="text" name="updater" placeholder="请输入操作员" class="form-control m-b-xs"
+                               ng-model="sysParam.updater" disabled>&lt;!&ndash; ng-required="itemWidgetMap['I000807'].checkMod">&ndash;&gt;
+                        &lt;!&ndash;<p>
+                            <span class="form-info" ng-show=" (form.updater.$dirty && form.updater.$error.required) || (form.updater.$error.required && formValidate)">操作员不能为空</span>
+                        </p>&ndash;&gt;
+                    </div>
+                    &lt;!&ndash;&lt;!&ndash; 项目不可编辑 &ndash;&gt;
+                    <div class="col-sm-8" ng-show="!itemWidgetMap['I000807'].writeMod">
+                        <label class="col-sm-12 control-label text-left">{{sysParam.updater}}</label>
+                    </div>&ndash;&gt;
+                </div>-->
+            </div>
+
+
+            <div class="modal-footer ng-scope text-center">
+                <button class="btn btn-default" ng-click="goback()">返回</button>
+                <button type="submit" class="btn btn-success btn-sm" ng-show="showSave" ng-disabled="submit"
+                        ng-click="save()">新增
+                </button>
+                <button type="submit" class="btn btn-success btn-sm" ng-show="showUpdate" ng-disabled="submit"
+                        ng-click="modify()">保存
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

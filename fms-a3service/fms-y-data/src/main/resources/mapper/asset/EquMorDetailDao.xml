@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.com.leadu.fms.data.asset.dao.EquMorDetailDao">
+<select id="selectEquMorDetailVosByPage" resultType="cn.com.leadu.fms.pojo.asset.vo.equmordetail.EquMorDetailVo">
+        SELECT equ_mor_detail.*,
+        sys_group.group_name lessor,
+        IF(apply.apply_type = #{equMorDetailVo.applyTypePer},cstm_person.name,cstm_company.name) lessee ,
+        contract_finance.license_attr serviceType,
+        contract_finance.fin_period_type finPeriodType,
+        bas_sales.sales_name salesName,
+        equ_mor_task.management,
+        contract.payment_sts paymentSts,
+        <!-- 解押任务号 -->
+        equ_rel_task.equ_rel_task_no AS equRelTaskNo,
+        <!-- 当前状态 -->
+        equ_rel_task.relief_status as reliefStatus,
+        <!-- 当前节点用户 -->
+        equ_rel_task.present_user as presentUser
+        FROM equ_mor_detail
+        LEFT JOIN equ_mor_task ON  equ_mor_task.equ_mor_task_no = equ_mor_detail.equ_mor_task_no AND equ_mor_task.del_flag = ${delete_exist}
+        LEFT JOIN contract ON contract.cont_no = equ_mor_detail.main_cont_no AND contract.del_flag = ${delete_exist}
+        LEFT JOIN cont_prepayment ON contract.cont_no = cont_prepayment.cont_no AND cont_prepayment.del_flag = ${delete_exist}
+        LEFT JOIN apply ON contract.apply_no = apply.apply_no AND apply.del_flag = ${delete_exist}
+        LEFT JOIN cstm_person ON cstm_person.apply_no = contract.apply_no AND cstm_person.del_flag = ${delete_exist}
+        LEFT JOIN cstm_company ON cstm_company.apply_no = contract.apply_no AND cstm_company.del_flag = ${delete_exist}
+        LEFT JOIN contract_finance ON contract.cont_no = contract_finance.cont_no AND contract_finance.del_flag = ${delete_exist}
+        LEFT JOIN sys_group ON contract_finance.belong_group = sys_group.group_code AND sys_group.del_flag = ${delete_exist}
+        LEFT JOIN contract_vehicle ON contract_vehicle.apply_no = contract.apply_no AND contract_vehicle.cont_no = contract.cont_no AND contract_vehicle.del_flag = ${delete_exist}
+        LEFT JOIN bas_sales ON bas_sales.sales_code = contract_vehicle.sale_group_code AND bas_sales.del_flag = ${delete_exist}
+        left join equ_rel_task ON  equ_rel_task.equ_rel_task_no = equ_mor_detail.equ_rel_task_no AND  equ_rel_task.del_flag = ${delete_exist}
+        WHERE  equ_mor_detail.del_flag = ${delete_exist}
+        <if test="equMorDetailVo.mortgageStatusList != null">
+            AND equ_mor_detail.mortgage_status IN
+            <foreach collection="equMorDetailVo.mortgageStatusList" item="item" index="index" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="equMorDetailVo.serviceType != null">
+            AND contract_finance.license_attr = #{equMorDetailVo.serviceType}
+        </if>
+        <if test="equMorDetailVo.mainContNo != null">
+            AND equ_mor_detail.main_cont_no LIKE #{equMorDetailVo.mainContNo}
+        </if>
+        <if test="equMorDetailVo.vinNo != null">
+            AND equ_mor_detail.vin_no LIKE #{equMorDetailVo.vinNo}
+        </if>
+        <if test="equMorDetailVo.paymentSts != null">
+            AND contract.payment_sts = #{equMorDetailVo.paymentSts}
+        </if>
+        <if test="equMorDetailVo.mortgageStatus != null">
+            AND equ_mor_detail.mortgage_status = #{equMorDetailVo.mortgageStatus}
+        </if>
+        <if test="equMorDetailVo.lessee != null">
+            AND (cstm_person.name like #{equMorDetailVo.lessee} OR cstm_company.name LIKE #{equMorDetailVo.lessee})
+        </if>
+        <if test="equMorDetailVo.equMorDetailIds != null">
+            AND equ_mor_detail.equ_mor_detail_id IN
+                <foreach collection="equMorDetailVo.equMorDetailIds" item="item" index="index" open="(" separator="," close=")">
+                        #{item}
+                </foreach>
+        </if>
+        <if test="equMorDetailVo.equMorTaskNo != null">
+            AND equ_mor_detail.equ_mor_task_no = #{equMorDetailVo.equMorTaskNo}
+        </if>
+        ORDER BY equ_mor_detail.update_time DESC
+</select>
+        <select id="selectEquMorDetailVoList" resultType="cn.com.leadu.fms.pojo.asset.vo.equmordetail.EquMorDetailVo">
+                SELECT equ_mor_detail.*,
+                sys_group.group_name lessor,
+                IF(apply.apply_type = #{equMorDetailVo.applyTypePer},cstm_person.name,cstm_company.name) lessee ,
+                contract_finance.license_attr serviceType,
+                contract_finance.fin_period_type finPeriodType,
+                bas_sales.sales_name salesName
+                FROM equ_mor_detail LEFT JOIN contract
+                ON contract.cont_no = equ_mor_detail.main_cont_no AND contract.del_flag = ${delete_exist}
+                LEFT JOIN apply ON contract.apply_no = apply.apply_no AND apply.del_flag = ${delete_exist}
+                LEFT JOIN cstm_person ON cstm_person.apply_no = contract.apply_no AND cstm_person.del_flag = ${delete_exist}
+                LEFT JOIN cstm_company ON cstm_company.apply_no = contract.apply_no AND cstm_company.del_flag = ${delete_exist}
+                LEFT JOIN contract_finance ON contract.cont_no = contract_finance.cont_no AND contract_finance.del_flag = ${delete_exist}
+                LEFT JOIN sys_group ON contract_finance.belong_group = sys_group.group_code AND sys_group.del_flag = ${delete_exist}
+                LEFT JOIN contract_vehicle ON contract_vehicle.apply_no = contract.apply_no AND contract_vehicle.cont_no = contract.cont_no AND contract_vehicle.del_flag = ${delete_exist}
+                LEFT JOIN bas_sales ON bas_sales.sales_code = contract_vehicle.sale_group_code AND bas_sales.del_flag = ${delete_exist}
+                WHERE equ_mor_detail.del_flag = ${delete_exist}
+                <if test="equMorDetailVo.equRelTaskNo != null">
+                        AND equ_mor_detail.equ_rel_task_no = #{equMorDetailVo.equRelTaskNo}
+                </if>
+                ORDER BY equ_mor_detail.create_time DESC
+        </select>
+
+        <!--
+         /**
+         * @Title:
+         * @Description:   抵押任务明细
+         * @param bizCodeType   归档借阅类型
+         * @param equMorTaskNo      抵押任务号
+         * @param applyTypePerson 个人申请类型
+         * @return
+         * @throws
+         * @author qiaomengnan
+         * @date 2018/06/08 11:52:41
+         */
+         -->
+        <select id="selectEquMorDetailVosByEquMorTaskNo" resultType="cn.com.leadu.fms.pojo.asset.vo.equmordetail.EquMorDetailVo">
+            select
+              equMorDetail.equ_mor_detail_id,
+              <!-- 承租人 客户姓名 -->
+              IF(apply.apply_type = #{applyTypePerson},cstmPerson.name,cstmCompany.name) lessee ,
+              <!-- 合同编号 -->
+              equMorDetail.main_cont_no,
+              <!-- 车架号 -->
+              equMorDetail.vin_no,
+              <!-- 车牌号 -->
+              contract.vehicle_license_no,
+              <!-- 合同融资额-->
+              equMorCharge2.equ_fin_amount,
+              <!-- 归档编号 -->
+              origFile.file_record_no,
+              <!-- 更新时间 -->
+              equMorDetail.update_time,
+              <!-- 抵押地 -->
+              equMorDetail.mortgage_addr,
+              <!-- 抵押日期 -->
+              equMorDetail.mortgage_date,
+              <!-- 抵押权人,出租人 -->
+              equMorDetail.mortgagee,
+              <!-- 抵押费用财务应收合计 -->
+              equMorCharge.total_should_pay,
+              <!-- 抵押费用财务应付合计 -->
+              equMorCharge.fin_should_receive,
+              <!-- 资方 -->
+              equMorTask.management,
+              <!-- 抵押起租日 -->
+              equMorCharge2.equ_start_date as equStartDate,
+              <!-- 抵押到期日 -->
+              equMorCharge2.equ_end_date as equEndDate,
+              <!-- 出租人区域 -->
+              sysGroup.group_district,
+              <!-- 出租人 -->
+              sysGroup.group_name lessor,
+              <!-- 资方 -->
+              equMorTask.management
+            from equ_mor_detail equMorDetail
+            <!-- 关联合同表 使用主合同编号 -->
+            left join contract contract on contract.del_flag = ${delete_exist}
+            and contract.cont_no = equMorDetail.main_cont_no
+            <!-- 关联合同融资信息表 使用合同编号 -->
+            left join contract_finance contractFinance on contractFinance.del_flag = ${delete_exist}
+            and contractFinance.cont_no = contract.cont_no
+            and contractFinance.apply_no = contract.apply_no
+            <!-- 关联订单申请表 使用申请编号 -->
+            left join apply apply on apply.del_flag = ${delete_exist}
+            and apply.apply_no = contractFinance.apply_no
+            <!-- 关联个人客户表 使用申请编号 -->
+            left join cstm_person cstmPerson on cstmPerson.del_flag = ${delete_exist}
+            and cstmPerson.apply_no = contractFinance.apply_no
+            <!-- 关联企业客户表 使用申请编号 -->
+            left join cstm_company cstmCompany on cstmCompany.del_flag = ${delete_exist}
+            and cstmCompany.apply_no = contractFinance.apply_no
+            <!-- 关联归档表 使用合同编号 并且bizCodeType是抵押过户邮寄(OrigFileBizCodeTypeEnum.COMPLETE_CONTRACT) -->
+            left join orig_file origFile on origFile.del_flag = ${delete_exist} and equMorDetail.main_cont_no = origFile.biz_code
+            and origFile.biz_code_type = #{bizCodeType}
+            <!-- 关联抵押费用表 使用抵押任务号 并且费用记录是合计类型(ContDetailFlagEnums.TOTAL) -->
+            left join equ_mor_charge equMorCharge on equMorCharge.del_flag = ${delete_exist} and equMorCharge.cont_detail_flag = #{totalFlag}
+            and equMorCharge.equ_mor_task_no = equMorDetail.equ_mor_task_no
+            <!-- 关联抵押费用表 使用抵押明细中的车架号和抵押费用表中的车架号关联 取得抵押费用中的融资额 -->
+            left join equ_mor_charge equMorCharge2 on equMorCharge2.del_flag = ${delete_exist}
+            and equMorCharge2.vin_no = equMorDetail.vin_no
+            AND equMorCharge2.equ_mor_task_no = equMorDetail.equ_mor_task_no
+            <!-- 关联抵押任务表 使用抵押任务号关联 -->
+            left join equ_mor_task equMorTask on equMorTask.del_flag = ${delete_exist}
+            and equMorDetail.equ_mor_task_no = equMorTask.equ_mor_task_no
+            <!-- 使用出租人关联用户组表 -->
+            left join sys_group sysGroup on sysGroup.del_flag = ${delete_exist}
+            and sysGroup.group_code = contractFinance.belong_group
+            <!-- 条件 -->
+            where equMorDetail.del_flag = ${delete_exist}
+            <!-- 抵押任务号 -->
+            and equMorDetail.equ_mor_task_no = #{equMorTaskNo}
+        </select>
+
+</mapper>

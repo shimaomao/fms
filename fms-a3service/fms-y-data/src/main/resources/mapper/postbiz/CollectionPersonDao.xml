@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.com.leadu.fms.data.postbiz.dao.CollectionPersonDao">
+
+    <select id="selectCollectionPersonVosByPage" parameterType="java.lang.String" resultType="cn.com.leadu.fms.pojo.postbiz.vo.collectionperson.CollectionPersonVo">
+        select
+        colPer.collection_person_id,
+        colPer.collection_type,
+        colPer.collection_person_num,
+        colPer.remark,
+        colPer.enable_flag,
+        colPer.update_time,
+        colPer.updater,
+        colPer.del_flag,
+        sysUser.user_name as collectionPersonName
+        from collection_person colPer
+        left join sys_user sysUser on colPer.collection_person_num = sysUser.user
+        and sysUser.del_flag = ${delete_exist}
+        where colPer.del_flag = ${delete_exist}
+        <if test="collectionPersonVo.collectionType !=null">
+            AND colPer.`collection_type` = #{collectionPersonVo.collectionType}
+        </if>
+        <if test="collectionPersonVo.collectionPersonNum != null">
+            AND colPer.collection_person_num LIKE #{collectionPersonVo.collectionPersonNum}
+        </if>
+        ORDER BY  colPer.update_time desc
+    </select>
+
+</mapper>

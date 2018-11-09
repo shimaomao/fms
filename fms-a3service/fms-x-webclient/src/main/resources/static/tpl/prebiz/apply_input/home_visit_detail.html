@@ -1,0 +1,70 @@
+<div ng-controller="home_visit_detail_controller">
+    <div class="panel-body">
+        <div class="row">
+            <label class="col-sm-2 control-label text-right"><b class="form-text-black">是否家访</b><b class="form-error">*</b>:</label>
+            <div class="col-sm-2">
+                <div class="radio" ng-repeat="a in 'visitFlag'|getList"><label>
+                    <input type="radio" name="visitFlag" ng-model="$parent.visitFlag" value="{{a.codeValue}}" disabled>{{a.codeValueName}}</label>
+                </div>
+            </div>
+            <div ng-if="visitFlag == 1">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">家访时间</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-2">
+                    {{applyVisitVo.startTime}}
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">家访人员</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-2">
+                    {{applyVisitVo.visitorUser}}
+                </div>
+            </div>
+        </div>
+
+        <div ng-if="visitFlag == 2" class="row">
+            <label class="col-sm-2 control-label text-right"><b class="form-text-black">不家访原因</b><b class="form-error">*</b>:</label>
+            <div class="col-sm-10">
+                {{applyVisitVo.reason}}
+            </div>
+        </div>
+
+        <div ng-if="visitFlag == 1">
+            <div class="row">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">接待人员</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-2">
+                    {{applyVisitVo.reception}}
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">接待人员电话</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-2">
+                    {{applyVisitVo.receptionTel}}
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">与承租人关系</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-2">
+                    {{applyVisitVo.relation | getName:'relationPer2'}}
+                </div>
+            </div>
+
+            <div class="row">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">上门地址</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-10">
+                    {{applyVisitVo.location}}
+                </div>
+            </div>
+
+            <div class="row">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">现场走访简述</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-10">
+                    {{applyVisitVo.visitBriefReport}}
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="col-sm-12">
+                    <!--<div ng-include="'tpl/common/tree_file/tree_file.html'"></div>-->
+                    <tree-file-directive detail-flag="$root.yesNoFlag.yes" file-type="$root.basFileTypes.applyVisitFile" files="applyVisitVo.bizFilesList" not-upload="applyVisitVo.notUpload" not-upload-info = "applyVisitVo.notUploadInfo" not-file-type="applyVisitVo.notFileType" not-file-type-name="applyVisitVo.notFileTypeName">
+                    </tree-file-directive>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

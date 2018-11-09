@@ -1,0 +1,65 @@
+<div ng-controller="postbiz_invoice_change_list_controller">
+    <div>
+        <toaster-container
+                toaster-options="{'position-class': 'toast-top-right', 'close-button':true}">
+        </toaster-container>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-body wrapper-sm">
+            <div class="row">
+                <div class="col-lg-12">
+                    <form class="form-inline" role="form">
+                        <div class="form-group">
+                            <label class="sr-only">承租人 </label>
+                            <input class="form-control m-b-xs" ng-model="params.name" placeholder="请输入承租人">
+                        </div>
+                        <div class="form-group">
+                            <label class="sr-only">统一社会信用代码 </label>
+                            <input class="form-control m-b-xs" ng-model="params.socialCertifNo" placeholder="请输入统一社会信用代码">
+                        </div>
+                        <div class="form-group">
+                            <label class="sr-only">地区 </label>
+                            <input class="form-control m-b-xs" ng-model="params.groupDistrict" placeholder="请输入地区">
+                        </div>
+                        <div class="form-group">
+                            <label class="sr-only">任务发起开始时间 </label>
+                            <input class="form-control m-b-xs" id="submitDateStartSearch" name="submitDateStartSearch" ng-model="params.submitDateStartSearch" placeholder="任务发起开始时间" date-picker="{{submitMaxDate}}">
+                        </div>
+                        <div class="form-group">
+                            <label class="sr-only">任务发起结束时间 </label>
+                            <input class="form-control m-b-xs" id="submitDateEndSearch" name="submitDateEndSearch" ng-model="params.submitDateEndSearch" placeholder="任务发起结束时间" date-picker="{{submitMinDate}}">
+                        </div>
+                        <div class="form-group">
+                            <label class="sr-only" >任务状态 </label>
+                            <select ng-model="params.bizStatus" class="form-control m-b-xs">
+                                <option value="">---选择申请状态---</option>
+                                <option value="{{bizStatusObj.codeValue}}" ng-if="bizStatusObj.codeValue.startsWith($root.bizTypes.invoiceChange)" ng-repeat="bizStatusObj in bizStatusList" ng-selected="params.bizStatus == bizStatusObj.codeValue">{{bizStatusObj.codeValueName}}</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group m-b-sm">
+                            <div class="btn-group">
+                                <button class="btn btn-sm fms-button-margin-bottom btn-default m-b-xs btn-info"
+                                        ng-click="searchContractList()"><i class="fa fa-search"></i>查询
+                                </button>
+                                <button class="btn btn-sm fms-button-margin-bottom btn-default m-b-xs"
+                                        ng-click="resetContractList()"><i class="fa  icon-refresh"></i>重置
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group pull-right">
+                    <div class="btn-group">
+                        <button class="btn btn-default m-b-xs btn-sm fms-button-margin-bottom" ng-click="exportExcel()">导出EXCEL</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <table border="1" class="table table-striped m-b-none" id="contract_table">
+        </table>
+    </div>
+</div>
+

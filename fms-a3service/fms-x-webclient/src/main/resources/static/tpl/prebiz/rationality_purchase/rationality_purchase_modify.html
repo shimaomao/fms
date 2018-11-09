@@ -1,0 +1,98 @@
+<div class="modal-header">
+    <h4 class="modal-title">编辑prebiz <button type="button" class="close" data-dismiss="modal" aria-hidden="true" ng-click="close()">&times;</button></h4>
+</div>
+<div class="modal-body">
+    <form name="form" class="form-validation" novalidate>
+
+        <div class="panel-body">
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">申请编号</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="applyNo" placeholder="请输入申请编号" class="form-control m-b-xs" ng-model="rationalityPurchase.applyNo"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.applyNo.$dirty && form.applyNo.$error.required) || (form.applyNo.$error.required && formValidate)">申请编号不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">客户来源</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="customerSource" placeholder="请输入客户来源" class="form-control m-b-xs" ng-model="rationalityPurchase.customerSource"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.customerSource.$dirty && form.customerSource.$error.required) || (form.customerSource.$error.required && formValidate)">客户来源不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">购车目的</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="purposePurchase" placeholder="请输入购车目的" class="form-control m-b-xs" ng-model="rationalityPurchase.purposePurchase"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.purposePurchase.$dirty && form.purposePurchase.$error.required) || (form.purposePurchase.$error.required && formValidate)">购车目的不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">选择原因</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="chooseReason" placeholder="请输入选择原因" class="form-control m-b-xs" ng-model="rationalityPurchase.chooseReason"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.chooseReason.$dirty && form.chooseReason.$error.required) || (form.chooseReason.$error.required && formValidate)">选择原因不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">原有车辆</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="originalVehicle" placeholder="请输入原有车辆" class="form-control m-b-xs" ng-model="rationalityPurchase.originalVehicle"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.originalVehicle.$dirty && form.originalVehicle.$error.required) || (form.originalVehicle.$error.required && formValidate)">原有车辆不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">购买时间</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="purchaseTime" placeholder="请输入购买时间" class="form-control m-b-xs" ng-model="rationalityPurchase.purchaseTime"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.purchaseTime.$dirty && form.purchaseTime.$error.required) || (form.purchaseTime.$error.required && formValidate)">购买时间不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">购买价格</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="price" placeholder="请输入购买价格" class="form-control m-b-xs" ng-model="rationalityPurchase.price"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.price.$dirty && form.price.$error.required) || (form.price.$error.required && formValidate)">购买价格不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+
+        </div>
+    </form>
+</div>
+<div class="modal-footer ng-scope">
+    <button class="btn btn-default" ng-click="close()">取消</button>
+    <button type="submit" class="btn btn-success" ng-disabled="submit" ng-click="modify()">保存</button>
+</div>

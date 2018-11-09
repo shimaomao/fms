@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.com.leadu.fms.data.baseinfo.dao.BasFileGroupDao">
+<select id="selectBasFileTypeChiByFileType" resultType="cn.com.leadu.fms.pojo.baseinfo.vo.basfiletype.BasFileTypeVo">
+        SELECT
+        bas_file_type.*
+    FROM
+        bas_file_group
+    LEFT JOIN bas_file_type ON bas_file_group.file_type_chi = bas_file_type.file_type
+    AND bas_file_type.del_flag = ${delete_exist}
+    WHERE
+        bas_file_group.del_flag = ${delete_exist}
+    AND bas_file_group.file_type_par = #{fileType}
+</select>
+</mapper>

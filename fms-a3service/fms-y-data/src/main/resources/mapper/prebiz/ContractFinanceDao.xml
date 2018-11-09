@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.com.leadu.fms.data.prebiz.dao.ContractFinanceDao">
+    <!-- 根据合同 获取融资信息 -->
+    <select id="selectContractFinanceVoByContNo" parameterType="java.lang.String" resultType="cn.com.leadu.fms.pojo.prebiz.vo.contractfinance.ContractFinanceVo">
+        SELECT
+        contractFinance.* ,prod.product_name as productName,prodCatg.product_catg_name as productCatgName,prod.fill_back_flag as fillBackFlag,
+        sysGroup.group_name as belongGroupName,
+        sysGroup.social_certif_no as socialCertifNo,
+        sysGroup.registered_addr as registeredAddr,
+        sysGroup.head as head,
+        sysGroup.group_district as groupDistrict,
+        contractVehicle.renewal_deposit as renewalDeposit,
+        contractVehicle.sales_charge as salesCharge,
+        contractVehicle.license_fee as licenseFee
+        FROM
+        contract_finance contractFinance
+        left join product prod on prod.product = contractFinance.product and prod.del_flag = ${delete_exist}
+        left join product_catg prodCatg on prodCatg.product_catg = contractFinance.product_catg and prodCatg.del_flag =  ${delete_exist}
+        left join sys_group sysGroup on contractFinance.belong_group = sysGroup.group_code and sysGroup.del_flag =  ${delete_exist}
+        left join contract_vehicle contractVehicle on contractFinance.cont_no = contractVehicle.cont_no and contractVehicle.del_flag =  ${delete_exist}
+        where contractFinance.del_flag = ${delete_exist}
+        <if test="contNo!= null">
+            and contractFinance.cont_no= #{contNo}
+        </if>
+        limit 0,1
+    </select>
+
+    <!-- 通过合同编号查询合同请款时合同融资相关信息 -->
+    <select id="selectContractRequestFinanceByContNo"
+            parameterType="java.lang.String"
+            resultType="cn.com.leadu.fms.pojo.prebiz.vo.contrequestpay.ContRequestPayVo">
+        SELECT contract.cont_no,contract.vin_no,contract.contract_date,contract.apply_no,
+        vehicle.vehicle_code,vehicle.sale_group_code,
+        vehicle.veh_deposit,vehicle.deductible_fees,
+        vehicle.renewal_deposit,
+        vehicle.sales_charge,
+        vehicle.charge,
+        vehicleCode.vehicle_name AS vehicleCodeName,
+        insurance.ins_comp_name,insurance.cont_vehins_id,
+        basSales.sales_name as saleGroupName,
+        IF(isnull(cstmCompany.name),cstmPerson.name,cstmCompany.name) personName ,
+        finance.init_amount,finance.final_amount,finance.deposit,finance.annual_supply_amount,
+        finance.rent,
+        finance.license_attr,finance.rent_pay_mode,finance.repay_day,finance.fin_period_type,
+        bank.ele_account_no,bank.account_name,bank.account_no,bank.acc_bank,
+        sysGroup.group_name AS rentName,
+        sysGroup.group_district AS voucherGroup
+        FROM contract contract
+        LEFT JOIN
+        contract_finance finance ON finance.cont_no = contract.cont_no AND finance.del_flag = ${delete_exist}
+        LEFT JOIN
+        contract_vehicle vehicle on vehicle.cont_no = contract.cont_no AND vehicle.del_flag = ${delete_exist}
+        LEFT JOIN
+        bas_vehicle vehicleCode ON vehicle.vehicle_code=vehicleCode.vehicle_code AND vehicleCode.del_flag = ${delete_exist}
+        LEFT JOIN
+        cont_insurance insurance on insurance.cont_no = contract.cont_no AND insurance.del_flag = ${delete_exist}
+        LEFT JOIN
+        bas_sales basSales on basSales.sales_code = vehicle.sale_group_code AND basSales.del_flag = ${delete_exist}
+        LEFT JOIN
+        cstm_person cstmPerson on cstmPerson.apply_no = contract.apply_no AND cstmPerson.del_flag = ${delete_exist}
+        LEFT JOIN
+        cstm_company cstmCompany on cstmCompany.apply_no = contract.apply_no AND cstmCompany.del_flag = ${delete_exist}
+        LEFT JOIN
+        bas_sales sales on sales.sales_code = vehicle.sale_group_code AND sales.del_flag = ${delete_exist}
+        LEFT JOIN
+        bas_bank_info bank on bank.organization_type = '1' AND bank.organization_id = sales.sales_id AND bank.del_flag = ${delete_exist}
+        LEFT JOIN
+        sys_group sysGroup ON finance.belong_group=sysGroup.group_code AND sysGroup.del_flag = ${delete_exist}
+        WHERE contract.del_flag = ${delete_exist}
+        <if test="contNo!= null">
+            AND contract.cont_no = #{contNo}
+        </if>
+        limit 0,1
+    </select>
+
+    <!-- 通过合同编号查询合同确认收款时合同融资相关信息 -->
+    <select id="selectContReceiptPayFinanceByContNo"
+            parameterType="java.lang.String"
+            resultType="cn.com.leadu.fms.pojo.prebiz.vo.contReceiptPay.ContReceiptPayVo">
+        SELECT contract.cont_no,contract.vin_no,contract.charge_first_rent,
+        vehicle.veh_deposit,vehicle.deductible_fees,
+        vehicle.renewal_deposit,
+        vehicle.charge,
+        IF(isnull(cstmCompany.name),cstmPerson.name,cstmCompany.name) personName ,
+        finance.init_amount,finance.deposit,
+        finance.rent,
+        sysGroup.group_name AS rentName,
+        sysGroup.group_district AS voucherGroup
+        FROM contract contract
+        LEFT JOIN
+        contract_finance finance ON finance.cont_no = contract.cont_no AND finance.del_flag = ${delete_exist}
+        LEFT JOIN
+        contract_vehicle vehicle on vehicle.cont_no = contract.cont_no AND vehicle.del_flag = ${delete_exist}
+        LEFT JOIN
+        cstm_person cstmPerson on cstmPerson.apply_no = contract.apply_no AND cstmPerson.del_flag = ${delete_exist}
+        LEFT JOIN
+        cstm_company cstmCompany on cstmCompany.apply_no = contract.apply_no AND cstmCompany.del_flag = ${delete_exist}
+        LEFT JOIN
+        sys_group sysGroup ON finance.belong_group=sysGroup.group_code AND sysGroup.del_flag = ${delete_exist}
+        WHERE contract.del_flag = ${delete_exist}
+        <if test="contNo!= null">
+            AND contract.cont_no = #{contNo}
+        </if>
+        limit 0,1
+    </select>
+
+</mapper>

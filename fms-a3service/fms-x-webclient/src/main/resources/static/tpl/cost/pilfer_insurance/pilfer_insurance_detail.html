@@ -1,0 +1,312 @@
+<div ng-controller="pilfer_insurance_detail_controller">
+    <div>
+        <toaster-container
+                toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+    </div>
+    <div class="panel panel-default">
+        <div class="row">
+            <div class="btn-group m-r-lg pull-left" style="margin-left: 25px">
+                <h4>{{frameTitle}}</h4>
+            </div>
+            <div class="btn-group m-r-lg pull-right" style="margin-left: 25px">
+                <button class="btn btn-default m-t-xs" ng-click="goback()">返回</button>
+            </div>
+        </div>
+
+        <form name="form" class="form-validation" novalidate>
+
+            <div class="panel-body wrapper-sm">
+                <ul id="applyTab" class="nav nav-tabs">
+                    <li class="active"><a href="javascript:void(0);" data-toggle="tab" data-id="message"
+                                          onclick="switchPageTab(this, 'applyTab')">盗抢险基本信息</a></li>
+                    <li><a href="javascript:void(0);" data-toggle="tab" data-id="fjmessage"
+                           onclick="switchPageTab(this, 'applyTab')">附件信息</a></li>
+                </ul>
+                <div  class="tab-content"  style="margin-top: 25px">
+
+                    <div class="tab-pane fade in active"  id="message">
+
+
+
+                        <div class="form-group row">
+                            <div class="col-sm-6">
+                                <div class="row">
+                                    <label class="col-sm-4 control-label text-right"><b class="form-text-black">合同编号</b><b
+                                            class="form-error"></b>:</label>
+                                    <div class="col-sm-4">
+                                        <label class="col-sm-12 control-label text-left">{{pilferInsurance.contNo}}</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="row">
+                                    <label class="col-sm-4 control-label text-right"><b class="form-text-black">承租人</b><b
+                                            class="form-error"></b>:</label>
+                                    <div class="col-sm-4">
+                                        <label class="col-sm-12 control-label text-left">{{pilferInsurance.lessee}}</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="form-group row">
+                            <div class="col-sm-6">
+                                <div class="row">
+                                    <label class="col-sm-4 control-label text-right"><b class="form-text-black">车架号</b><b
+                                            class="form-error"></b>:</label>
+                                    <div class="col-sm-4">
+                                        <label class="col-sm-12 control-label text-left">{{pilferInsurance.vinNo}}</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="row">
+                                    <label class="col-sm-4 control-label text-right"><b class="form-text-black">发动机号</b><b
+                                            class="form-error"></b>:</label>
+                                    <div class="col-sm-4">
+                                        <label class="col-sm-12 control-label text-left">{{pilferInsurance.engineNo}}</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-sm-6">
+                                <div class="row">
+                                    <label class="col-sm-4 control-label text-right"><b class="form-text-black">有限设备号</b><b
+                                            class="form-error"></b>:</label>
+                                    <div class="col-sm-4">
+                                        <label class="col-sm-12 control-label text-left">{{pilferInsurance.wiredDeviceNo}}</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="row">
+                                    <label class="col-sm-4 control-label text-right"><b class="form-text-black">无限设备号</b><b
+                                            class="form-error"></b>:</label>
+                                    <div class="col-sm-4">
+                                        <label class="col-sm-12 control-label text-left">{{pilferInsurance.wirelessDeviceNo}}</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="form-group row">
+                            <div class="col-sm-6">
+                                <div class="row">
+                                    <label class="col-sm-4 control-label text-right"><b class="form-text-black">GPS厂商</b><b
+                                            class="form-error"></b>:</label>
+                                    <div class="col-sm-4">
+                                        <label class="col-sm-12 control-label text-left">{{pilferInsurance.gpsSellerName}}</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="row">
+                                    <label class="col-sm-4 control-label text-right"><b class="form-text-black">第一受益人</b><b
+                                            class="form-error"></b>:</label>
+                                    <div class="col-sm-4">
+                                        <label class="col-sm-12 control-label text-left">{{pilferInsurance.firstBeneficiary}}</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="form-group row">
+                            <div class="col-sm-6">
+                                <div class="row">
+                                    <label class="col-sm-4 control-label text-right"><b class="form-text-black">新车购置价(元)</b><b
+                                            class="form-error"></b>:</label>
+                                    <div class="col-sm-4">
+                                        <label class="col-sm-12 control-label text-left">{{pilferInsurance.purchasePrice}}</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="row">
+                                    <label class="col-sm-4 control-label text-right"><b class="form-text-black">最高赔偿限额(元)</b><b
+                                            class="form-error"></b>:</label>
+                                    <div class="col-sm-4">
+                                        <label class="col-sm-12 control-label text-left">{{pilferInsurance.maximumCompensation}}</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="form-group row">
+                            <div class="col-sm-6">
+                                <div class="row">
+                                    <label class="col-sm-4 control-label text-right"><b class="form-text-black">盗抢险费用(元)</b><b
+                                            class="form-error"></b>:</label>
+                                    <div class="col-sm-4">
+                                        <label class="col-sm-12 control-label text-left">{{pilferInsurance.pilferInsuranceCost}}</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="row">
+                                    <label class="col-sm-4 control-label text-right"><b class="form-text-black">年限</b><b
+                                            class="form-error"></b>:</label>
+                                    <div class="col-sm-4">
+                                        <label class="col-sm-12 control-label text-left">{{pilferInsurance.timeLimit}}</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--<div class="tab-pane fade" id="fjmessage">
+                        <ul type="none" style="padding-left: 20px;">
+                            <div ng-include="'tpl/common/tree_file/tree_file.html'"></div>
+                        </ul>
+                    </div>-->
+                    <!--附件信息-->
+                    <div class="tab-pane fade" id="fjmessage">
+                        <ul type="none" style="padding-left: 20px;">
+                            <div class="panel-body wrapper-sm" ng-if="httpData">
+                                <tree-file-directive detail-flag="$root.yesNoFlag.yes" file-type="$root.basFileTypes.pilferInsuranceFile" files="$parent.bizFilesList" not-upload="$parent.notUpload" not-upload-info="$parent.msgInfo"   not-file-type="$parent.notFileType" not-file-type-name="$parent.notFileTypeName">
+                                </tree-file-directive>
+                            </div>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--<div class="modal-header">-->
+    <!--<div class="form-group">-->
+        <!--<h4 class="modal-title">cost详情 <button type="button" class="close" data-dismiss="modal" aria-hidden="true" ng-click="close()">&times;</button></h4>-->
+    <!--</div>-->
+<!--</div>-->
+<!--<div class="modal-body">-->
+    <!--<form name="form" class="form-validation" novalidate>-->
+
+            <!--<div class="form-group row">-->
+                <!--<label class="col-sm-3 control-label text-right"><b class="form-text-black">合同编号</b><b class="form-error">*</b>:</label>-->
+                <!--<div class="col-sm-8">-->
+                    <!--<label class="col-sm-12 control-label text-left">{{pilferInsurance.column.columnNameFirstLower}}</label>-->
+                <!--</div>-->
+            <!--</div>-->
+
+            <!--<div class="line line-dashed b-b line-lg pull-in"></div>-->
+
+            <!--<div class="form-group row">-->
+                <!--<label class="col-sm-3 control-label text-right"><b class="form-text-black">gps厂商</b><b class="form-error">*</b>:</label>-->
+                <!--<div class="col-sm-8">-->
+                    <!--<label class="col-sm-12 control-label text-left">{{pilferInsurance.column.columnNameFirstLower}}</label>-->
+                <!--</div>-->
+            <!--</div>-->
+
+            <!--<div class="line line-dashed b-b line-lg pull-in"></div>-->
+
+            <!--<div class="form-group row">-->
+                <!--<label class="col-sm-3 control-label text-right"><b class="form-text-black">第一受益人</b><b class="form-error">*</b>:</label>-->
+                <!--<div class="col-sm-8">-->
+                    <!--<label class="col-sm-12 control-label text-left">{{pilferInsurance.column.columnNameFirstLower}}</label>-->
+                <!--</div>-->
+            <!--</div>-->
+
+            <!--<div class="line line-dashed b-b line-lg pull-in"></div>-->
+
+            <!--<div class="form-group row">-->
+                <!--<label class="col-sm-3 control-label text-right"><b class="form-text-black">有线设备号</b><b class="form-error">*</b>:</label>-->
+                <!--<div class="col-sm-8">-->
+                    <!--<label class="col-sm-12 control-label text-left">{{pilferInsurance.column.columnNameFirstLower}}</label>-->
+                <!--</div>-->
+            <!--</div>-->
+
+            <!--<div class="line line-dashed b-b line-lg pull-in"></div>-->
+
+            <!--<div class="form-group row">-->
+                <!--<label class="col-sm-3 control-label text-right"><b class="form-text-black">无线设备号</b><b class="form-error">*</b>:</label>-->
+                <!--<div class="col-sm-8">-->
+                    <!--<label class="col-sm-12 control-label text-left">{{pilferInsurance.column.columnNameFirstLower}}</label>-->
+                <!--</div>-->
+            <!--</div>-->
+
+            <!--<div class="line line-dashed b-b line-lg pull-in"></div>-->
+
+            <!--<div class="form-group row">-->
+                <!--<label class="col-sm-3 control-label text-right"><b class="form-text-black">新车购置价</b><b class="form-error">*</b>:</label>-->
+                <!--<div class="col-sm-8">-->
+                    <!--<label class="col-sm-12 control-label text-left">{{pilferInsurance.column.columnNameFirstLower}}</label>-->
+                <!--</div>-->
+            <!--</div>-->
+
+            <!--<div class="line line-dashed b-b line-lg pull-in"></div>-->
+
+            <!--<div class="form-group row">-->
+                <!--<label class="col-sm-3 control-label text-right"><b class="form-text-black">最高赔偿限额</b><b class="form-error">*</b>:</label>-->
+                <!--<div class="col-sm-8">-->
+                    <!--<label class="col-sm-12 control-label text-left">{{pilferInsurance.column.columnNameFirstLower}}</label>-->
+                <!--</div>-->
+            <!--</div>-->
+
+            <!--<div class="line line-dashed b-b line-lg pull-in"></div>-->
+
+            <!--<div class="form-group row">-->
+                <!--<label class="col-sm-3 control-label text-right"><b class="form-text-black">盗抢险费用</b><b class="form-error">*</b>:</label>-->
+                <!--<div class="col-sm-8">-->
+                    <!--<label class="col-sm-12 control-label text-left">{{pilferInsurance.column.columnNameFirstLower}}</label>-->
+                <!--</div>-->
+            <!--</div>-->
+
+            <!--<div class="line line-dashed b-b line-lg pull-in"></div>-->
+
+            <!--<div class="form-group row">-->
+                <!--<label class="col-sm-3 control-label text-right"><b class="form-text-black">年限</b><b class="form-error">*</b>:</label>-->
+                <!--<div class="col-sm-8">-->
+                    <!--<label class="col-sm-12 control-label text-left">{{pilferInsurance.column.columnNameFirstLower}}</label>-->
+                <!--</div>-->
+            <!--</div>-->
+
+            <!--<div class="line line-dashed b-b line-lg pull-in"></div>-->
+
+            <!--<div class="form-group row">-->
+                <!--<label class="col-sm-3 control-label text-right"><b class="form-text-black">盗抢险月结任务号</b><b class="form-error">*</b>:</label>-->
+                <!--<div class="col-sm-8">-->
+                    <!--<label class="col-sm-12 control-label text-left">{{pilferInsurance.column.columnNameFirstLower}}</label>-->
+                <!--</div>-->
+            <!--</div>-->
+
+            <!--<div class="line line-dashed b-b line-lg pull-in"></div>-->
+
+            <!--<div class="form-group row">-->
+                <!--<label class="col-sm-3 control-label text-right"><b class="form-text-black">账单盗抢险费用</b><b class="form-error">*</b>:</label>-->
+                <!--<div class="col-sm-8">-->
+                    <!--<label class="col-sm-12 control-label text-left">{{pilferInsurance.column.columnNameFirstLower}}</label>-->
+                <!--</div>-->
+            <!--</div>-->
+
+            <!--<div class="line line-dashed b-b line-lg pull-in"></div>-->
+
+            <!--<div class="form-group row">-->
+                <!--<label class="col-sm-3 control-label text-right"><b class="form-text-black">备注</b><b class="form-error">*</b>:</label>-->
+                <!--<div class="col-sm-8">-->
+                    <!--<label class="col-sm-12 control-label text-left">{{pilferInsurance.column.columnNameFirstLower}}</label>-->
+                <!--</div>-->
+            <!--</div>-->
+
+    <!--</form>-->
+<!--</div>-->
+<!--<div class="modal-footer ng-scope">-->
+    <!--<button class="btn btn-default" ng-click="close()">关闭</button>-->
+<!--</div>-->

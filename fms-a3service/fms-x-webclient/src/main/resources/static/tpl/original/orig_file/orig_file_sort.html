@@ -1,0 +1,159 @@
+<div ng-controller="orig_file_sort_controller">
+    <div>
+        <toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+    </div>
+    <div class="panel panel-default">
+        <form name="form" class="form-validation" novalidate>
+            <div class="panel-body wrapper-sm">
+                <div class="form-group pull-right">
+                    <div class="btn-group">
+                        <!--抵押申请页面查看归档资料进来隐藏返回按钮-->
+                        <button class="btn btn-default m-b-xs btn-sm fms-button-margin-bottom" ng-click="goBack()" ng-if="!equMorOtherApplyInput">返回</button>
+                        <button class="btn btn-default m-b-xs btn-sm fms-button-margin-bottom" ng-click="temporarySave()" ng-if="!detail">暂存</button>
+                        <button class="btn btn-default m-b-xs btn-sm fms-button-margin-bottom" ng-click="ReceivedConfirm()" ng-if="!detail">确认收到</button>
+                        <button class="btn btn-default m-b-xs btn-sm fms-button-margin-bottom" ng-click="confirmationFiling()" ng-if="!detail">归档</button>
+                    </div>
+                </div>
+            </div>
+
+            <table border="1" class="table table-striped m-b-none" id="file_sort_list"></table>
+
+            <div class="panel-body wrapper-sm">
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">归档编号</b>:</label>
+                    <div class="col-sm-2">
+                        <input type="text" name="fileRecordNo" placeholder="归档编号" class="form-control m-b-xs" ng-model="origFileSortVo.fileRecordNo" disabled>
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">客户姓名</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <input type="text" name="name" placeholder="客户姓名" class="form-control m-b-xs" ng-model="origFileSortVo.cstmName" disabled>
+                    </div>
+                    <button class="btn btn-sm fms-button-margin-bottom btn-default m-b-xs" ng-click="contractDetails()">查看合同详情</button>
+                </div>
+            </div>
+            <div class="panel-body wrapper-sm">
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">车辆行驶证注册日期</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <input name="vehicleDrivingLicenseRegisterDate" placeholder="车辆行驶证注册日期" class="form-control m-b-xs" ng-model="contractVo.vehicleDrivingLicenseRegisterDate" date-picker required ng-disabled="detail">
+                        <p>
+                            <span class="form-info" ng-show=" (form.vehicleDrivingLicenseRegisterDate.$dirty && form.vehicleDrivingLicenseRegisterDate.$error.required) || (form.vehicleDrivingLicenseRegisterDate.$error.required && formValidate)">车辆行驶证注册日期不能为空</span>
+                        </p>
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">车牌号</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <input type="text" name="vehicleLicenseNo" placeholder="车牌号" class="form-control m-b-xs" ng-model="contractVo.vehicleLicenseNo" required ng-disabled="detail">
+                        <p>
+                            <span class="form-info" ng-show=" (form.vehicleLicenseNo.$dirty && form.vehicleLicenseNo.$error.required) || (form.vehicleLicenseNo.$error.required && formValidate)">车牌号不能为空</span>
+                        </p>
+                    </div>
+
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">车架号</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <input type="hidden" name="vinNo" class="form-control m-b-xs" ng-model="contractVo.vinNo" ng-disabled="detail">
+                        <input type="text" name="origVinNo" placeholder="车架号" class="form-control m-b-xs" ng-model="origFileSortVo.origVinNo" ng-pattern="/^(?![0-9]+$)(?![a-zA-Z]+$)[a-zA-Z0-9]{17}$/" required ng-disabled="detail">
+                        <p>
+                            <span class="form-info" ng-show=" (form.origVinNo.$dirty && form.origVinNo.$error.required) || (form.origVinNo.$error.required && formValidate)">车架号不能为空</span>
+                            <span class="form-info" ng-show=" (form.origVinNo.$error.pattern && !form.origVinNo.$error.required) || (form.origVinNo.$error.pattern && formValidate && !form.vinNo.$error.required)">请输入正确车架号</span>
+                        </p>
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">发动机号</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <input type="hidden" name="engineNo" placeholder="发动机号" class="form-control m-b-xs" ng-model="contractVo.engineNo" ng-disabled="detail">
+                        <input type="text" name="origEngineeNo" placeholder="发动机号" class="form-control m-b-xs" ng-model="origFileSortVo.origEngineeNo" required ng-disabled="detail">
+                        <p>
+                            <span class="form-info" ng-show=" (form.origEngineeNo.$dirty && form.origEngineeNo.$error.required) || (form.origEngineeNo.$error.required && formValidate)">发动机号不能为空</span>
+                        </p>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">保险公司名称</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <input type="text" name="insCompName" placeholder="保险公司名称" class="form-control m-b-xs" ng-model="contInsuranceVo.insCompName" required ng-disabled="detail">
+                        <p>
+                            <span class="form-info" ng-show=" (form.insCompName.$dirty && form.insCompName.$error.required) || (form.insCompName.$error.required && formValidate)">保险公司名称不能为空</span>
+                        </p>
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">商业险保单号</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <input type="text" name="insPolicyNo" placeholder="商业险保单号" class="form-control m-b-xs" ng-model="contInsuranceVo.insPolicyNo" required ng-disabled="detail">
+                        <p>
+                            <span class="form-info" ng-show=" (form.insPolicyNo.$dirty && form.insPolicyNo.$error.required) || (form.insPolicyNo.$error.required && formValidate)">商业险保单号不能为空</span>
+                        </p>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">投保生效日</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <input name="validStartDay" placeholder="投保生效日" class="form-control m-b-xs" ng-model="contInsuranceVo.validStartDay" date-picker
+                               required ng-disabled="detail" ng-change="changeStartDay()">
+                        <p>
+                            <span class="form-info" ng-show=" (form.validStartDay.$dirty && form.validStartDay.$error.required) || (form.validStartDay.$error.required && formValidate)">投保生效日不能为空</span>
+                        </p>
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">投保失效日</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <input name="validEndDay" placeholder="投保失效日" class="form-control m-b-xs" ng-model="contInsuranceVo.validEndDay" date-picker required ng-disabled="detail">
+                        <p>
+                            <span class="form-info" ng-show=" (form.validEndDay.$dirty && form.validEndDay.$error.required) || (form.validEndDay.$error.required && formValidate)">投保失效日不能为空</span>
+                        </p>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">保单实际金额</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <input type="number" limit-number="10" name="insFee" placeholder="保单实际金额" class="form-control m-b-xs" ng-model="contInsuranceVo.insFee" required ng-disabled="detail">
+                        <p>
+                            <span class="form-info" ng-show=" (form.insFee.$dirty && form.insFee.$error.required) || (form.insFee.$error.required && formValidate)">保单实际金额不能为空</span>
+                        </p>
+                    </div>
+
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">车辆类型</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <select name="vehicleTypeOrig" ng-model="contractVo.vehicleTypeOrig" class="form-control m-b-xs" ng-options="a.codeValue as a.codeValueName for a in 'vehicleType2' | getList" required ng-disabled="detail">
+                            <option value="">---请选择---</option>
+                        </select>
+                        <p>
+                            <span class="form-info" ng-show=" (form.vehicleTypeOrig.$dirty && form.vehicleTypeOrig.$error.required) || (form.vehicleTypeOrig.$error.required && formValidate)">车辆类型不能为空</span>
+                        </p>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">险种</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-10">
+                        <div class="checkbox" ng-repeat="a in insuranceSelectInfoList">
+                            <label>
+                                <input type="checkbox" name="insuranceSelectInfo" ng-click="checkboxValue('insuranceSelectInfo',a.codeValue);" ng-model="a.checked" value="{{a.codeValue}}" ng-checked="(contInsuranceVo.insuranceSelectInfo | toArr).indexOf(a.codeValue) != -1" ng-disabled="detail">{{a.codeValueName}}
+                            </label>
+                        </div>
+                        <p>
+                            <span class="form-info" ng-show="(form.insuranceSelectInfo.$dirty && !contInsuranceVo.insuranceSelectInfo) || (!contInsuranceVo.insuranceSelectInfo && formValidate)">险种不能为空</span>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="form-group row" ng-if="!detail">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">备注</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-6">
+                        <textarea limit-word type="text" name="origMemo" placeholder="备注" class="form-control m-b-xs" ng-model="origFileSortVo.origMemo" required ng-disabled="detail"></textarea>
+                        <p>
+                            <span class="form-info" ng-show=" (form.origMemo.$dirty && form.origMemo.$error.required) || (form.origMemo.$error.required && formValidate)">备注不能为空</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!--附件信息-->
+            <div class="panel-body wrapper-sm">
+                <div ng-if="httpData">
+                    <tree-file-directive zip-file-name="$parent.zipFileName" detail-flag="$root.yesNoFlag.yes" file-type="$parent.fileType" files="$parent.bizFilesList" not-upload="$parent.notUpload" not-upload-info = "$parent.notUploadInfo" not-file-type="$parent.notFileType" not-file-type-name="$parent.notFileTypeName">
+                    </tree-file-directive>
+                </div>
+            </div>
+
+        </form>
+    </div>
+</div>

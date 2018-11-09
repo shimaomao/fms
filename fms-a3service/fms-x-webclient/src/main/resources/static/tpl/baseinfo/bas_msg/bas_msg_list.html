@@ -1,0 +1,52 @@
+<div class="bg-light lter b-b wrapper-md">
+    <h1 class="m-n font-thin h4">短信发送管理</h1>
+</div>
+<div  ng-controller="bas_msg_list_controller">
+    <div>
+        <toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-body wrapper-sm">
+            <div class="row">
+                <div class="col-lg-12">
+                    <form class="form-inline" role="form">
+
+
+                        <div class="form-group">
+                            <label class="sr-only" >手机号码</label>
+                            <input class="form-control m-b-xs" ng-model="telNo" placeholder="请输入手机号码">
+                        </div>
+
+                        <div class="form-group">
+                            <select ng-model="msgStatus" class="form-control m-b-xs">
+                                <option value="">---选择短信发送状态---</option>
+                                <option value="{{msgStatusObj.codeValue}}" ng-repeat="msgStatusObj in msgStatusList">{{msgStatusObj.codeValueName}}</option>
+                            </select>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label class="sr-only" >短信分类</label>
+                            <input class="form-control m-b-xs" ng-model="tplTypeName" placeholder="请输入短信分类">
+                        </div>
+
+                        <div class="form-group m-b-sm">
+                            <div class="btn-group">
+                                <button class="btn btn-default m-b-xs btn-info" ng-click="searchBasMsg()" ><i class="fa fa-search"></i>查询</button>
+                                <button class="btn btn-default m-b-xs" ng-click="resetBasMsg()" ><i class="fa  icon-refresh"></i>重置</button>
+                            </div>
+                        </div>
+                        <div class="form-group pull-right">
+                            <div class="btn-group">
+                                <button class="btn btn-default m-b-xs" ng-click="exportExcel()">导出excel</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <table border="1" class="table table-striped m-b-none" id="bas_msg_table">
+        </table>
+    </div>
+</div>
+

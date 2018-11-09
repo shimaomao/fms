@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.com.leadu.fms.data.baseinfo.dao.BasMsgDao">
+
+    <!--关联sys_tpl_type表分页查询bas_msg表（主界面）-->
+    <select id="selectBasMsgVoFromSysTplTypeVoByPage" parameterType="cn.com.leadu.fms.pojo.baseinfo.vo.basmsg.BasMsgVo" resultType="cn.com.leadu.fms.pojo.baseinfo.vo.basmsg.BasMsgVo" >
+        SELECT
+        basMsg.*,
+        sysTplType.tpl_type_name
+        FROM
+        bas_msg basMsg
+        LEFT JOIN
+        sys_tpl_type sysTplType
+        ON
+        basMsg.msg_type_key=sysTplType.tpl_type_key AND sysTplType.del_flag = ${delete_exist}
+        WHERE basMsg.del_flag = ${delete_exist}
+        <if test="basMsgVo.telNo != null" >
+            AND basMsg.tel_no = #{basMsgVo.telNo}
+        </if>
+        <if test="basMsgVo.msgStatus != null">
+            AND basMsg.msg_status = #{basMsgVo.msgStatus}
+        </if>
+        <if test="basMsgVo.tplTypeName != null">
+            AND sysTplType.tpl_type_name LIKE #{basMsgVo.tplTypeName}
+        </if>
+        ORDER BY basMsg.update_time DESC
+    </select>
+
+    <!--通过msg_id关联sys_tpl_type表查询bas_msg表（详情界面）-->
+    <select id="selectBasMsgVoFromSysTplTypeVoByMsgId" parameterType="java.lang.String" resultType="cn.com.leadu.fms.pojo.baseinfo.vo.basmsg.BasMsgVo">
+        SELECT
+        basMsg.*
+        sysTplType.tpl_type_name
+        FROM
+        bas_msg basMsg
+        LEFT JOIN
+        sys_tpl_type sysTplType
+        ON
+        basMsg.msg_type_key=sysTplType.tpl_type_key AND sysTplType.del_flag = ${delete_exist}
+        WHERE basMsg.del_flag = ${delete_exist}
+        <if test="#{msgId}!= null" >
+        AND basMsg.msg_id = #{msgId}
+        </if>
+    </select>
+</mapper>

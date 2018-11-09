@@ -1,0 +1,65 @@
+<div ng-controller="basic_change_cancel_controller">
+    <div>
+        <toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+    </div>
+    <div class="panel panel-default">
+        <div class="row" style="margin: 0; padding: 15px; border: 1px solid #dddddd">
+            <h4 class="m-n font-thin h4">{{frameTitle}}</h4>
+        </div>
+        <form name="form" class="form-validation" novalidate>
+            <div class="panel-body wrapper-sm">
+                <div class="form-group row">
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">任务号</b>:</label>
+                    <div class="col-sm-3" >
+                        <input title="{{basicChangeVo.basicTaskNo}}" type="text" name="basicTaskNo" placeholder="请输入任务号" class="form-control m-b-xs" ng-model="basicChangeVo.basicTaskNo" disabled>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">承租人</b>:</label>
+                    <div class="col-sm-3" >
+                        <input type="text" title="{{basicChangeVo.cstmName}}" name="cstmName" placeholder="请输入承租人" class="form-control m-b-xs" ng-model="basicChangeVo.cstmName" disabled>
+                    </div>
+                </div>
+                 <div class="form-group row">
+                     <label class="col-sm-3 control-label text-right"><b class="form-text-black">任务状态</b>:</label>
+                     <div class="col-sm-3">
+                         <input type="text" name="basicTaskStatus" placeholder="请输入当前订单状态" class="form-control m-b-xs" value="{{basicChangeVo.basicTaskStatus | getName:'bizStatus'}}" disabled>
+                     </div>
+                 </div>
+
+                <!--<div class="form-group row" >
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">取消原因</b><b
+                            class="form-error" >*</b>:</label>
+                    &lt;!&ndash; 项目可编辑 &ndash;&gt;
+                    <div class="col-sm-3" >
+                        <select ng-model="cancelReason" name="cancelReason" class="form-control m-b-xs"  required>
+                            <option value="">&#45;&#45;请选择取消原因&#45;&#45;</option>
+                            <option value="{{cancelReasonObj.codeValue}}" ng-repeat="cancelReasonObj in cancelReasonList">{{cancelReasonObj.codeValueName}}</option>
+                        </select>
+                        <p>
+                            <span class="form-info"
+                                  ng-show=" (form.cancelReason.$dirty && form.cancelReason.$error.required) || (form.cancelReason.$error.required && formValidate)">取消原因不能为空</span>
+                        </p>
+                    </div>
+                </div>-->
+
+                <div class="form-group row">
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">取消备注</b><b class="form-error">*</b>:</label>
+                    <!-- 项目可编辑 -->
+                    <div class="col-sm-3">
+                        <textarea limit-word="1000" name="remark" type="text" placeholder="取消备注" name="remark" class="form-control m-b-xs" ng-model="basicChangeVo.remark" required></textarea>
+                        <p>
+                             <span class="form-info"
+                                   ng-show=" (form.remark.$dirty && form.remark.$error.required) || (form.remark.$error.required && formValidate)">取消备注不能为空</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer ng-scope text-center">
+                <button class="btn btn-default" ng-click="goback()">返回</button>
+                <button type="submit" class="btn btn-success" ng-disabled="submit" ng-click="modify()">确定取消</button>
+            </div>
+        </form>
+    </div>
+</div>

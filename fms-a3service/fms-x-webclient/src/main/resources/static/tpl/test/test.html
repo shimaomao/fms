@@ -1,0 +1,39 @@
+<div  ng-controller="test_controller">
+    <div>
+        <toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-body wrapper-sm">
+            <div class="row">
+                <div class="col-lg-12">
+                    <form class="form-inline" role="form">
+                        <div class="form-group m-b-sm">
+                            <div class="btn-group">
+                                <button class="btn btn-default m-b-xs btn-info" ng-click="testrun()" >测试产品方案一览</button>
+                                <button class="btn btn-default m-b-xs btn-info" ng-click="testrun1()" >测试产品方案详情</button>
+                                <button class="btn btn-default m-b-xs btn-info" ng-click="testrun2()" >测试产品方案登录</button>
+                                <button class="btn btn-default m-b-xs btn-info" ng-click="testrun3()" >订单风控同意</button>
+                                <button class="btn btn-default m-b-xs btn-info" ng-click="testrun4()" >合同审核同意</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="col-lg-12">
+                        <div class="form-group row no-gutte">
+                            <label class="col-sm-2 control-label text-right"><b class="form-text-black">参数</b><b class="form-error">*</b>:</label>
+                            <div class = "col-sm-10 text-left">
+                                <input type="text" name="applyNo" placeholder="" class="form-control m-b-xs" ng-model="inputparam"  >
+                            </div>
+                            <label class="col-sm-2 control-label text-right"><b class="form-text-black">参数taskid</b><b class="form-error">*</b>:</label>
+                            <div class = "col-sm-10 text-left">
+                                <input type="text" name="applyNo" placeholder="" class="form-control m-b-xs" ng-model="inputparam1"  >
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

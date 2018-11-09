@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.com.leadu.fms.data.system.dao.SysUserDao">
+
+    <select id="selectSysUserVoById" parameterType="java.lang.String" resultMap="userRoleList">
+              select sys_user.*,sys_role.*  from
+                  sys_user_role INNER JOIN sys_user
+                  on  sys_user_role.user_id = sys_user.user_id
+                  and sys_user.del_flag = ${delete_exist}
+                  INNER JOIN sys_role
+                  on sys_user_role.role_id = sys_role.role_id
+                  and sys_role.del_flag = ${delete_exist}
+                  where  sys_user_role.del_flag =${delete_exist}
+                  AND  sys_user_role.user_id = #{userId}
+    </select>
+
+    <!--<select id="selectSysUserVoByPage" resultMap="userRoleList">-->
+
+                <!--select sys_user.*,sys_role.*  from-->
+                  <!--sys_user_role INNER JOIN sys_user-->
+                  <!--on  sys_user_role.user_id = sys_user.user_id-->
+                  <!--and sys_user.del_flag = ${delete_exist}-->
+                  <!--INNER JOIN sys_role-->
+                  <!--on sys_user_role.role_id = sys_role.role_id-->
+                  <!--and sys_role.del_flag = ${delete_exist}-->
+                  <!--where  sys_user_role.del_flag =${delete_exist}-->
+                  <!--<if test="sysUserVo.user !=null">-->
+                      <!--AND sys_user.`user` LIKE #{sysUserVo.user}-->
+                  <!--</if>-->
+                  <!--<if test="sysUserVo.userName != null">-->
+                      <!--AND sys_user.user_name LIKE #{sysUserVo.userName}-->
+                  <!--</if>-->
+    <!--</select>-->
+
+    <!--
+    /**
+     * @Title:
+     * @Description:   根据groupCode查询用户登录名集合
+     * @param groupCode
+     * @return
+     * @throws
+     * @author qiaomengnan
+     * @date 2018/04/08 04:41:50
+     */
+    -->
+    <select id="selectSysUserLoginNamesByGroupCode" parameterType="java.lang.String"  resultType="java.lang.String" >
+        select sysUser.user from sys_user sysUser
+        where sysUser.del_flag = ${delete_exist}
+        and sysUser.group_code = #{groupCode}
+    </select>
+
+    <!--
+    /**
+     * @Title:
+     * @Description:   根据groupCode集合查询用户登录名集合
+     * @param groupCode
+     * @return
+     * @throws
+     * @author qiaomengnan
+     * @date 2018/04/08 04:41:50
+     */
+    -->
+    <select id="selectSysUserLoginNamesByGroupCodes" resultType="java.lang.String">
+        select sysUser.user from sys_user sysUser
+        where sysUser.del_flag = ${delete_exist}
+        and sysUser.group_code in
+        <foreach collection="groupCodes" item="groupCode" open="(" close=")" separator="," >
+          #{groupCode}
+        </foreach>
+    </select>
+
+
+    <!--
+     /**
+     * @Title:
+     * @Description:   根据roleId查询用户登录名集合
+     * @param roleId
+     * @return
+     * @throws
+     * @author qiaomengnan
+     * @date 2018/04/08 04:51:56
+     */
+     -->
+    <select id="selectSysUserLoginNamesByRole" parameterType="java.lang.String"  resultType="java.lang.String" >
+        select sysUser.user from sys_user_role sysUserRole
+        inner join sys_role sysRole on sysRole.del_flag = ${delete_exist} and sysRole.role_id = sysUserRole.role_id
+        inner join sys_user sysUser on sysUser.del_flag = ${delete_exist} and sysUser.user_id = sysUserRole.user_id
+        where sysUserRole.del_flag = ${delete_exist}
+        and sysRole.role = #{role}
+    </select>
+
+    <!--
+     /**
+     * @Title:
+     * @Description:   根据roleId集合查询用户登录名集合
+     * @param roleId
+     * @return
+     * @throws
+     * @author qiaomengnan
+     * @date 2018/04/08 04:51:56
+     */
+     -->
+    <select id="selectSysUserLoginNamesByRoles" resultType="java.lang.String" >
+        select sysUser.user from sys_user_role sysUserRole
+        inner join sys_role sysRole on sysRole.del_flag = ${delete_exist} and sysRole.role_id = sysUserRole.role_id
+        inner join sys_user sysUser on sysUser.del_flag = ${delete_exist} and sysUser.user_id = sysUserRole.user_id
+        where sysUserRole.del_flag = ${delete_exist}
+        and sysRole.role in
+        <foreach collection="roles" item="role" open="(" close=")" separator="," >
+            #{role}
+        </foreach>
+    </select>
+
+    <!--
+     /**
+     * @Description: 根据roleId集合和组织机构代码查询用户登录名集合
+     * @param:
+     * @return:
+     * @Author: yangyiquan
+     * @Date: 2018/7/12 15:31
+     */
+    -->
+    <select id="findSysUserLoginNamesByRolesWithGroupCode" resultType="java.lang.String" >
+        select sysUser.user from sys_user_role sysUserRole
+        inner join sys_role sysRole on sysRole.del_flag = ${delete_exist} and sysRole.role_id = sysUserRole.role_id
+        inner join sys_user sysUser on sysUser.del_flag = ${delete_exist} and sysUser.user_id = sysUserRole.user_id
+        where sysUserRole.del_flag = ${delete_exist}
+        and sysRole.role in
+        <foreach collection="roles" item="role" open="(" close=")" separator="," >
+            #{role}
+        </foreach>
+        and sysUser.group_code = #{groupCode}
+    </select>
+
+    <!--用户map-->
+  <resultMap id="userList" type="cn.com.leadu.fms.pojo.system.vo.sysuser.SysUserVo">
+
+    <id property="userId" column="user_id" javaType="java.lang.String"/>
+    <result property="user" column="user" javaType="java.lang.String"/>
+    <result property="userName" column="user_name" javaType="java.lang.String"/>
+      <result property="userPassword" column="user_password" javaType="java.lang.String"/>
+    <result property="groupCode" column="group_code" javaType="java.lang.String"/>
+    <result property="userTelNo" column="user_tel_no" javaType="java.lang.String"/>
+    <result property="userMobileNo" column="user_mobile_no" javaType="java.lang.String"/>
+    <result property="userMailAddress" column="user_mail_address" javaType="java.lang.String"/>
+    <result property="enableFlag" column="enable_flag" javaType="java.lang.String"/>
+    <result property="employDate" column="employ_date" javaType="java.util.Date"/>
+    <result property="sex" column="sex" javaType="java.lang.String"/>
+     <result property="certifType" column="certif_type" javaType="java.lang.String"></result>
+      <result property="certifNo" column="certif_no" javaType="java.lang.String"></result>
+      <result property="userDeptLevel" column="user_dept_level" javaType="java.lang.String"></result>
+      <result property="validMenuType" column="valid_menu_type" javaType="java.lang.String"/>
+    <result property="lastLoginTime" column="last_login_time" javaType="java.util.Date"/>
+      <result property="updateTime" column="update_time" javaType="java.util.Date"/>
+      <result property="updater" column="updater" javaType="java.lang.String"/>
+  </resultMap>
+
+    <!--get user with role-->
+  <resultMap id="userRoleList" type="cn.com.leadu.fms.pojo.system.vo.sysuser.SysUserVo" extends="userList">
+    <collection property="roles" ofType="cn.com.leadu.fms.pojo.system.entity.SysRole">
+      <id property="roleId" column="role_id" javaType="java.lang.String"/>
+        <result property="role" column="role" javaType="java.lang.String"></result>
+      <result property="roleName" column="role_name" javaType="java.lang.String"/>
+    </collection>
+
+  </resultMap>
+
+
+    <resultMap id="Users" type="cn.com.leadu.fms.pojo.system.vo.sysuser.SysUserVo" >
+        <id property="userId" column="user_id" javaType="java.lang.String"/>
+        <result property="user" column="user" javaType="java.lang.String"/>
+        <result property="userName" column="user_name" javaType="java.lang.String"/>
+        <result property="groupCode" column="group_code" javaType="java.lang.String"/>
+        <result property="userTelNo" column="user_tel_no" javaType="java.lang.String"/>
+        <result property="userMobileNo" column="user_mobile_no" javaType="java.lang.String"/>
+        <result property="userMailAddress" column="user_mail_address" javaType="java.lang.String"/>
+        <result property="enableFlag" column="enable_flag" javaType="java.lang.String"/>
+        <result property="employDate" column="employ_date" javaType="java.util.Date"/>
+        <result property="sex" column="sex" javaType="java.lang.String"/>
+        <result property="certifType" column="certif_type" javaType="java.lang.String"></result>
+        <result property="certifNo" column="certif_no" javaType="java.lang.String"></result>
+        <result property="userDeptLevel" column="user_dept_level" javaType="java.lang.String"></result>
+        <result property="validMenuType" column="valid_menu_type" javaType="java.lang.String"/>
+        <result property="lastLoginTime" column="last_login_time" javaType="java.util.Date"/>
+        <result property="updateTime" column="update_time" javaType="java.util.Date"/>
+        <result property="updater" column="updater" javaType="java.lang.String"/>
+        <collection property="roles" ofType="cn.com.leadu.fms.pojo.system.entity.SysRole"
+                    javaType="java.util.ArrayList" select="getRoles"
+                    column="user_id">
+        </collection>
+    </resultMap>
+
+    <resultMap id="Roles" type="cn.com.leadu.fms.pojo.system.entity.SysRole">
+            <id property="roleId" column="role_id" javaType="java.lang.String"/>
+            <result property="role" column="role" javaType="java.lang.String"></result>
+            <result property="roleName" column="role_name" javaType="java.lang.String"/>
+    </resultMap>
+
+    <select id="selectSysUserVoByPage" resultMap="Users">
+        SELECT  * from sys_user where sys_user.del_flag = ${delete_exist}
+        <if test="sysUserVo.user !=null">
+            AND sys_user.`user` LIKE #{sysUserVo.user}
+        </if>
+        <if test="sysUserVo.userName != null">
+            AND sys_user.user_name LIKE #{sysUserVo.userName}
+        </if>
+        <if test="sysUserVo.groupCodes != null">
+            AND sys_user.group_code IN
+            <foreach collection="sysUserVo.groupCodes" item="item" index="index" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="sysUserVo.userIds != null">
+            AND sys_user.user_id IN
+            <foreach collection="sysUserVo.userIds" item="item" index="index" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+       ORDER BY sys_user.update_time DESC
+    </select>
+
+    <select id="getRoles" resultMap="Roles">
+       select * from sys_role LEFT JOIN sys_user_role on sys_role.role_id = sys_user_role.role_id AND sys_user_role.del_flag=${delete_exist}
+        where sys_role.del_flag = ${delete_exist}
+        and user_id = #{userId}
+    </select>
+
+    <!-- 根据用户组ID集合获取用户登录名 -->
+    <select id="selectSysUserNameByGroupIds" parameterType="java.lang.String"  resultType="java.lang.String" >
+        select sysUser.user from sys_group sysGroup
+        inner join sys_user sysUser on sysUser.del_flag = ${delete_exist} and sysUser.group_code = sysGroup.group_code
+        where sysGroup.del_flag = ${delete_exist}
+        and sysGroup.group_id in
+        <foreach collection="groupIds" item="item" index="index" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+  <!--根据账号获取用户所属角色List-->
+  <select id="selectRolesByUser" resultType="java.lang.String">
+    select DISTINCT r.role
+    from sys_user u
+    left join sys_user_role ur on u.user_id = ur.user_id and ur.del_flag = ${delete_exist}
+    left join sys_role r on ur.role_id = r.role_id and r.del_flag = ${delete_exist}
+    where u.del_flag = ${delete_exist} and u.user = #{user}
+  </select>
+</mapper>

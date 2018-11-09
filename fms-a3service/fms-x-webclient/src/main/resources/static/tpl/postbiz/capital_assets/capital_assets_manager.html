@@ -1,0 +1,46 @@
+<div  ng-controller="capital_assets_manager_controller">
+    <div>
+        <toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-body wrapper-sm">
+            <div class="row">
+                <div class="form-group pull-right">
+                    <div class="btn-group ">
+                        <button class="btn btn-success m-t-xs m-r-xs" ng-click="submitInfo()" ng-disabled="submit">提交</button>
+                        <button class="btn btn-default m-t-xs" ng-click="goBack()">返回</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <form name="form" class="form-validation" novalidate>
+            <div class="panel-body wrapper-sm">
+                <ul id="applyTab" class="nav nav-tabs">
+                    <li class="active"><a href="javascript:void(0);" data-toggle="tab" data-id="approve" onclick="switchPageTab(this, 'applyTab')">转固定资产审核</a></li>
+                    <li><a href="javascript:void(0);" data-toggle="tab" data-id="applyInfo" onclick="switchPageTab(this, 'applyTab')">申请信息</a></li>
+                </ul>
+                <div id="applyTabContent" class="tab-content">
+                    <!-- 审核意见备注 -->
+                    <div class="tab-pane fade in active" id="approve">
+                        <div class="row m-xs">
+                            <div class="row">
+                                <div class="col-lg-12"><label><b class="form-text-black">备注</b><b class="form-error">*</b>:</label></div>
+                                <div class="col-lg-12">
+                                    <textarea limit-word class="form-control m-b-xs r-none" name="remark" ng-model="approveVo.remark" required></textarea>
+                                    <p>
+                                        <span class="form-info" ng-show=" (form.remark1.$dirty && form.remark.$error.required) || (form.remark.$error.required && formValidate)">请输入审批意见备注</span>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div ng-include="'tpl/common/process_log/process_log_list.html'"></div>
+                    </div>
+                    <!-- 申请信息 -->
+                    <div class="tab-pane fade" id="applyInfo">
+                        <div ng-include="'tpl/postbiz/vehicle_disposal/vehicle_disposal_detail.html'" class="row m-xs"></div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

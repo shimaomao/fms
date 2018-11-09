@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.com.leadu.fms.data.postbiz.dao.LawsuitTaskDao">
+
+    <select id="selectLawsuitTasksByPage" resultType="cn.com.leadu.fms.pojo.postbiz.vo.lawsuittask.LawsuitTaskSearchVo">
+        select DISTINCT
+        task.*,
+        u.user_name submitUserName,
+        u1.user_name registerUserName,
+        cont.apply_no,
+        cont.vin_no,
+        cont.vehicle_license_no,
+        cstm.cstm_name
+        from lawsuit_task task
+        left join lawsuit_register register on task.lawsuit_task_no = register.lawsuit_task_no and register.del_flag = ${delete_exist}
+        left join overdue_cont cont on task.overdue_cont_id = cont.overdue_cont_id and cont.del_flag = ${delete_exist}
+        left join overdue_cstm cstm on cont.overdue_cstm_id = cstm.overdue_cstm_id and cstm.del_flag = ${delete_exist}
+        left join sys_user u on task.submit_user = u.user and u.del_flag = ${delete_exist}
+        left join sys_user u1 on task.register_user = u1.user and u1.del_flag = ${delete_exist}
+        where task.del_flag = ${delete_exist}
+        /*申请编号*/
+        <if test="lawsuitTaskSearchVo.applyNo != null">
+            and cont.apply_no like #{lawsuitTaskSearchVo.applyNo}
+        </if>
+        /*合同编号*/
+        <if test="lawsuitTaskSearchVo.contNo != null">
+            and task.cont_no like #{lawsuitTaskSearchVo.contNo}
+        </if>
+        /*车架号*/
+        <if test="lawsuitTaskSearchVo.vinNo != null">
+            and cont.vin_no like #{lawsuitTaskSearchVo.vinNo}
+        </if>
+        /*车牌号*/
+        <if test="lawsuitTaskSearchVo.vehicleLicenseNo != null">
+            and cont.vehicle_license_no like #{lawsuitTaskSearchVo.vehicleLicenseNo}
+        </if>
+        /*承租人*/
+        <if test="lawsuitTaskSearchVo.cstmName != null">
+            and cstm.cstm_name like #{lawsuitTaskSearchVo.cstmName}
+        </if>
+        /*发起人*/
+        <if test="lawsuitTaskSearchVo.submitUser != null">
+            and task.submit_user like #{lawsuitTaskSearchVo.submitUser}
+        </if>
+        /*任务状态*/
+        <if test="lawsuitTaskSearchVo.lawsuitTaskStatus != null">
+            and task.lawsuit_task_status = #{lawsuitTaskSearchVo.lawsuitTaskStatus}
+        </if>
+        /*派单类型*/
+        <if test="lawsuitTaskSearchVo.dispatchType != null">
+            and task.dispatch_type = #{lawsuitTaskSearchVo.dispatchType}
+        </if>
+        /*登记人*/
+        <if test="lawsuitTaskSearchVo.registerUser != null">
+            and u1.user_name like #{lawsuitTaskSearchVo.registerUser}
+        </if>
+        order by task.update_time desc
+    </select>
+
+    <select id="selectLawsuitTasksByOverdueContId" resultType="cn.com.leadu.fms.pojo.postbiz.vo.lawsuittask.LawsuitTaskSearchVo">
+        select
+        overdueCont.overdue_cont_id,
+        overdueCont.cont_no,
+        overdueCont.vin_no,
+        overdueCont.vehicle_license_no,
+        overdueCont.engine_no,
+        overdueCstm.cstm_name,
+        sysGroup.group_name belongGroupName,
+        apply.apply_no,
+        apply.apply_type
+        from overdue_cont overdueCont
+        left join contract_finance contractFinance on contractFinance.del_flag = ${delete_exist}
+        and contractFinance.cont_no = overdueCont.cont_no and contractFinance.apply_no = overdueCont.apply_no
+        left join apply apply on overdueCont.apply_no = apply.apply_no and apply.del_flag = ${delete_exist}
+        left join sys_group sysGroup on sysGroup.del_flag = ${delete_exist}
+        and sysGroup.group_code = contractFinance.belong_group
+        left join overdue_cstm overdueCstm on overdueCstm.del_flag = ${delete_exist}
+        and overdueCont.overdue_cstm_id = overdueCstm.overdue_cstm_id
+        where overdueCont.del_flag = ${delete_exist}
+        <if test="overdueContId != null">
+            and overdueCont.overdue_cont_id = #{overdueContId}
+        </if>
+    </select>
+
+    <select id="selectLawsuitTasksByTaskNo" resultType="cn.com.leadu.fms.pojo.postbiz.vo.lawsuittask.LawsuitTaskSearchVo">
+        select
+        task.*,
+        u.user_name registerUserName,
+        u1.user_name dispatchUserName,
+        cont.vin_no,
+        cont.engine_no,
+        cont.vehicle_license_no,
+        cstm.cstm_name,
+        sysGroup.group_name belongGroupName,
+        apply.apply_no,
+        apply.apply_type
+        from lawsuit_task task
+        left join overdue_cont cont on task.overdue_cont_id = cont.overdue_cont_id and cont.del_flag = ${delete_exist}
+        left join contract_finance contractFinance on contractFinance.del_flag = ${delete_exist}
+        and contractFinance.cont_no = cont.cont_no and contractFinance.apply_no = cont.apply_no
+        left join apply apply on cont.apply_no = apply.apply_no and apply.del_flag = ${delete_exist}
+        left join sys_group sysGroup on sysGroup.del_flag = ${delete_exist} and sysGroup.group_code = contractFinance.belong_group
+        left join overdue_cstm cstm on cont.overdue_cstm_id = cstm.overdue_cstm_id and cstm.del_flag = ${delete_exist}
+        left join sys_user u on task.register_user = u.user and u.del_flag = ${delete_exist}
+        left join sys_user u1 on task.dispatch_user = u1.user and u1.del_flag = ${delete_exist}
+        where task.del_flag = ${delete_exist}
+        <if test="lawsuitTaskNo != null">
+            and task.lawsuit_task_no = #{lawsuitTaskNo}
+        </if>
+    </select>
+
+    <select id="selectLawsuitRegistersByTaskNo" resultMap="lawsuitRegistersResultMap">
+        select
+        task.*,
+        u.user_name registerUserName,
+        u1.user_name dispatchUserName,
+        cont.vin_no,
+        cont.engine_no,
+        cont.vehicle_license_no,
+        cstm.cstm_name,
+        sysGroup.group_name,
+        apply.apply_no,
+        apply.apply_type
+        from lawsuit_task task
+        left join overdue_cont cont on task.overdue_cont_id = cont.overdue_cont_id and cont.del_flag = ${delete_exist}
+        left join apply apply on cont.apply_no = apply.apply_no and apply.del_flag = ${delete_exist}
+        left join contract_finance contractFinance on contractFinance.del_flag = ${delete_exist}
+        and contractFinance.cont_no = cont.cont_no and contractFinance.apply_no = cont.apply_no
+        left join sys_group sysGroup on sysGroup.del_flag = ${delete_exist} and sysGroup.group_code = contractFinance.belong_group
+        left join overdue_cstm cstm on cont.overdue_cstm_id = cstm.overdue_cstm_id and cstm.del_flag = ${delete_exist}
+        left join sys_user u on task.register_user = u.user and u.del_flag = ${delete_exist}
+        left join sys_user u1 on task.dispatch_user = u1.user and u1.del_flag = ${delete_exist}
+        where task.del_flag = ${delete_exist}
+        <if test="lawsuitTaskNo != null">
+            and task.lawsuit_task_no = #{lawsuitTaskNo}
+        </if>
+    </select>
+
+    <resultMap id="lawsuitRegistersResultMap" type="cn.com.leadu.fms.pojo.postbiz.vo.lawsuittask.LawsuitTaskSearchVo">
+        <id column="lawsuit_task_id" javaType="java.lang.String" property="lawsuitTaskId" />
+        <result column="lawsuit_task_no" javaType="java.lang.String" property="lawsuitTaskNo" />
+        <result column="lawsuit_task_status" javaType="java.lang.String" property="lawsuitTaskStatus" />
+        <result column="cont_no" javaType="java.lang.String" property="contNo" />
+        <result column="lawsuit_type" javaType="java.lang.String" property="lawsuitType" />
+        <result column="lawsuit_reason" javaType="java.lang.String" property="lawsuitReason" />
+        <result column="lawsuit_end_date" javaType="java.util.Date" property="lawsuitEndDate" />
+        <result column="lawsuit_amount" javaType="java.math.BigDecimal" property="lawsuitAmount" />
+        <result column="lawsuit_sponsor_date" javaType="java.util.Date" property="lawsuitSponsorDate" />
+        <result column="lawsuit_addr" javaType="java.lang.String" property="lawsuitAddr" />
+        <result column="defendant" javaType="java.lang.String" property="defendant" />
+        <result column="dispatch_type" javaType="java.lang.String" property="dispatchType" />
+        <result column="dispatch_user" javaType="java.lang.String" property="dispatchUser" />
+        <result column="register_user" javaType="java.lang.String" property="registerUser" />
+        <result column="tolly_name" javaType="java.lang.String" property="tollyName" />
+        <result column="tolly_contact_name" javaType="java.lang.String" property="tollyContactName" />
+        <result column="tolly_mobile_no" javaType="java.lang.String" property="tollyMobileNo" />
+        <result column="lawsuit_end_reason" javaType="java.lang.String" property="lawsuitEndReason" />
+        <result column="registerUserName" javaType="java.lang.String" property="registerUserName" />
+        <result column="dispatchUserName" javaType="java.lang.String" property="dispatchUserName" />
+        <result column="vin_no" javaType="java.lang.String" property="vinNo" />
+        <result column="engine_no" javaType="java.lang.String" property="engineNo" />
+        <result column="vehicle_license_no" javaType="java.lang.String" property="vehicleLicenseNo" />
+        <result column="cstm_name" javaType="java.lang.String" property="cstmName" />
+        <result column="group_name" javaType="java.lang.String" property="belongGroupName" />
+        <collection property="lawsuitRegisterVoList" ofType="cn.com.leadu.fms.pojo.postbiz.vo.lawsuitregister.LawsuitRegisterVo"
+                    javaType="java.util.ArrayList" select="getLawsuitRegisterVoList" column="lawsuit_task_no">
+        </collection>
+    </resultMap>
+
+    <select id="getLawsuitRegisterVoList" resultType="cn.com.leadu.fms.pojo.postbiz.vo.lawsuitregister.LawsuitRegisterVo">
+        select * from lawsuit_register where del_flag = ${delete_exist}
+        and lawsuit_task_no = #{lawsuitTaskNo}
+        order by create_time asc
+    </select>
+
+    <!-- 获取诉讼任务表中所有的逾期合同ID -->
+    <select id="selectAllOverdueContIds" resultType="java.lang.String">
+        select DISTINCT overdue_cont_id from lawsuit_task where del_flag = ${delete_exist} and overdue_cont_id is not null
+    </select>
+
+    <select id="selectLawsuitRegisterVosByLawsuitTaskNo" resultType="cn.com.leadu.fms.pojo.postbiz.vo.lawsuitregister.LawsuitRegisterVo">
+        select * from lawsuit_register where del_flag = ${delete_exist}
+        <if test="lawsuitTaskNo != null">
+            and lawsuit_task_no = #{lawsuitTaskNo}
+        </if>
+    </select>
+</mapper>

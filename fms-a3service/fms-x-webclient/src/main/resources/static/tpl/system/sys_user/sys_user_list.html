@@ -1,0 +1,49 @@
+<div  ng-controller="sys_user_list_controller">
+    <div>
+        <toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-body wrapper-sm">
+            <div class="row">
+                <div class="col-lg-12">
+                    <form class="form-inline" role="form">
+                        <div class="form-group">
+                            <label class="sr-only" >用户代码 </label>
+                            <input class="form-control m-b-xs" ng-model="user" placeholder="用户代码">
+                        </div>
+                        <div class="form-group">
+                            <label class="sr-only" >用户名称 </label>
+                            <input class="form-control m-b-xs" ng-model="userName" placeholder="用户名称">
+                        </div>
+                        <div class="form-group">
+                            <label class="sr-only" >组织机构 </label>
+                            <input class="form-control m-b-xs" ng-model="groupName" placeholder="组织机构">
+                        </div>
+                        <div class="form-group">
+                            <label class="sr-only" >用户角色 </label>
+                            <input class="form-control m-b-xs" ng-model="roleName" placeholder="用户角色">
+                        </div>
+                        <div class="form-group m-b-sm">
+                            <div class="btn-group">
+                                <button class="btn btn-default m-b-xs btn-info" ng-click="searchSysUser()" ><i class="fa fa-search"></i>查询</button>
+                                <button class="btn btn-default m-b-xs" ng-click="resetSysUser()" ><i class="fa  icon-refresh"></i>重置</button>
+                            </div>
+                        </div>
+
+                        <div class="form-group pull-right">
+                            <div class="btn-group">
+                                <button class="btn btn-default m-b-xs" ng-click="saveSysUser()"><i class="fa fa-plus"></i>添加</button>
+                                <button class="btn btn-default m-b-xs" ng-click="modifySysUser()"><i class="fa icon-pencil"></i>修改</button>
+                                <button class="btn btn-default m-b-xs" ng-click="deleteSysUser()"><i class="fa fa-trash-o"></i>删除</button>
+                                <button class="btn btn-default m-b-xs" ng-click="exportExcel()">导出excel</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <table border="1" class="table table-striped m-b-none" id="sys_user_table">
+        </table>
+    </div>
+</div>
+

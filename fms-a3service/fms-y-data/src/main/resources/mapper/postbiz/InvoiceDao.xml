@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.com.leadu.fms.data.postbiz.dao.InvoiceDao">
+
+    <!--
+     /**
+     * @Title:
+     * @Description:   查询开票信息vo列表
+     * @param invoiceVo
+     * @return
+     * @throws
+     * @author qiaomengnan
+     * @date 2018/09/12 09:57:48
+     */
+     -->
+    <select id="selectInvoiceVos" resultType="cn.com.leadu.fms.pojo.postbiz.vo.invoice.InvoiceVo">
+        SELECT  * from (select
+        invoice.*,
+        <!-- 打印状态：只有自动开票有 -->
+        if(invoice.invoice_flag = #{invoiceVo.jugInvoiceFlag} and invoice.invoice_status = 1,if(count(auto.invoice_auto_id)>0,0,1),null) printStatus,
+        <!-- 承租人 -->
+        IF(apply.apply_type = #{invoiceVo.applyTypePerson},cstmPerson.name,cstmCompany.name) lessee ,
+        <!-- 车架号 -->
+        contract.vin_no,
+        <!-- 出租人 -->
+        sysGroup.group_name lessor,
+        <!-- 承租人证件号 -->
+        IF(apply.apply_type = #{invoiceVo.applyTypePerson},cstmPerson.certif_no,cstmCompany.social_certif_no) certifNo,
+        <!-- 申请类型 -->
+        apply.apply_type,
+        <!-- 发票类型  个人场合 普票 -->
+        IF(apply.apply_type = #{invoiceVo.applyTypePerson},#{invoiceVo.cstmInvoiceType},cstmCompany.invoice_type)  cstmInvoiceType,
+        <!-- 开票名 个人场合 承租人 -->
+        IF(apply.apply_type = #{invoiceVo.applyTypePerson},cstmPerson.name,cstmCompany.ticket_opening) ticketOpening,
+        <!-- 税号 -->
+        IF(apply.apply_type = #{invoiceVo.applyTypePerson},null,cstmCompany.duty_paragraph) dutyParagraph,
+        <!-- 发票地址 -->
+        IF(apply.apply_type = #{invoiceVo.applyTypePerson},null,cstmCompany.invoice_addr) invoiceAddr,
+        <!-- 账号 -->
+        IF(apply.apply_type = #{invoiceVo.applyTypePerson},null,cstmCompany.account_number) accountNumber,
+        <!-- 开户行 -->
+        IF(apply.apply_type = #{invoiceVo.applyTypePerson},null,cstmCompany.bank_name) bankName,
+        <!-- 业务类型 -->
+        contractFinance.license_attr
+        from invoice
+        <!-- 关联合同表 使用合同号 -->
+        left join contract on invoice.cont_no = contract.cont_no
+        <!-- 关联合同融资信息 -->
+        left join contract_finance contractFinance on contractFinance.del_flag = ${delete_exist}
+        and contractFinance.cont_no = contract.cont_no and contractFinance.apply_no = contract.apply_no
+        <!-- 使用出租人关联用户组表 -->
+        left join sys_group sysGroup on sysGroup.del_flag = ${delete_exist}
+        and sysGroup.group_code = contractFinance.belong_group
+        <!-- 关联申请表 使用申请号 -->
+        left join apply apply on apply.del_flag = ${delete_exist}
+        and apply.apply_no = contract.apply_no
+        <!-- 个人客户信息 -->
+        left join cstm_person cstmPerson on cstmPerson.del_flag = ${delete_exist}
+        and cstmPerson.apply_no = contract.apply_no
+        <!-- 企业客户信息 -->
+        left join cstm_company cstmCompany on cstmCompany.del_flag = ${delete_exist}
+        and cstmCompany.apply_no = contract.apply_no
+        <!-- 自动开票信息：查询未打印数量 -->
+        left join invoice_auto auto on FIND_IN_SET(auto.infonumber,invoice.invoice_no) AND auto.del_flag = 0 and auto.print_status = '0'
+        <!-- 查询条件 -->
+        where invoice.del_flag = ${delete_exist}
+        <!-- 合同号 -->
+        <if test="invoiceVo.contNo != null">
+            and invoice.cont_no like #{invoiceVo.contNo}
+        </if>
+        <!-- 车架号 -->
+        <if test="invoiceVo.vinNo != null">
+            and contract.vin_no like #{invoiceVo.vinNo}
+        </if>
+        <!-- 开票类型 -->
+        <if test="invoiceVo.invoiceDataType != null">
+            and invoice.invoice_data_type = #{invoiceVo.invoiceDataType}
+        </if>
+        <!-- 承租人 -->
+        <if test="invoiceVo.lessee != null">
+            and ( cstmPerson.name like #{invoiceVo.lessee} or cstmCompany.name like #{invoiceVo.lessee} )
+        </if>
+        <!-- 出租人 -->
+        <if test="invoiceVo.lessor != null">
+            and sysGroup.group_name like #{invoiceVo.lessor}
+        </if>
+        <if test="invoiceVo.groupDistrict != null" >
+            AND sysGroup.group_district LIKE #{invoiceVo.groupDistrict}
+        </if>
+        <if test="invoiceVo.licenseAttr != null">
+            AND contractFinance.license_attr = #{invoiceVo.licenseAttr}
+        </if>
+        <!-- 收款日期  开始  -->
+        <if test="invoiceVo.beginReceiveDate != null">
+            and invoice.receive_date &gt;= #{invoiceVo.beginReceiveDate}
+        </if>
+        <!-- 收款日期  结束 -->
+        <if test="invoiceVo.endReceiveDate != null">
+            and invoice.receive_date &lt;= #{invoiceVo.endReceiveDate}
+        </if>
+        <!-- 开票状态 -->
+        <if test="invoiceVo.invoiceStatus != null">
+            and invoice.invoice_status = #{invoiceVo.invoiceStatus}
+        </if>
+        <!-- 发票类型 -->
+        <if test="invoiceVo.invoiceType != null and invoiceVo.invoiceType == '1'.toString()">
+            and (apply.apply_type = '1' or
+            (apply.apply_type != '1' and cstmCompany.invoice_type = #{invoiceVo.invoiceType}))
+        </if>
+        <if test="invoiceVo.invoiceType != null and invoiceVo.invoiceType == '0'.toString()">
+            and (apply.apply_type != '1'  and cstmCompany.invoice_type = #{invoiceVo.invoiceType})
+        </if>
+        <!-- 开票区分 -->
+        <if test="invoiceVo.invoiceFlag != null ">
+            AND invoice.invoice_flag = #{invoiceVo.invoiceFlag}
+        </if>
+        <!-- 开票日期开始 -->
+        <if test="invoiceVo.startTime2 != null">
+            AND  invoice.invoice_date &gt;= #{invoiceVo.startTime2}
+        </if>
+        <!-- 开票日期结束 -->
+        <if test="invoiceVo.endTime2 != null">
+            AND  invoice.invoice_date &lt;= #{invoiceVo.endTime2}
+        </if>
+        <!-- 开票id集合 -->
+        <if test="invoiceVo.invoiceIds != null">
+            and invoice.invoice_id in
+            <foreach collection="invoiceVo.invoiceIds" item="invoiceId" open="(" separator="," close=")"  >
+              #{invoiceId}
+            </foreach>
+        </if>
+        group by invoice.invoice_id
+        ORDER BY invoice.cont_no ,invoice.invoice_data_type ,(invoice.detail_no + 0) ASC) temp
+        <!-- 打印状态 -->
+        <if test="invoiceVo.printStatus != null ">
+            WHERE temp.printStatus = #{invoiceVo.printStatus}
+        </if>
+    </select>
+
+</mapper>

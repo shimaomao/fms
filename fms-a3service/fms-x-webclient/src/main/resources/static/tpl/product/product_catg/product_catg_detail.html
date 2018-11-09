@@ -1,0 +1,71 @@
+<div class="panel panel-default wrapper-md" ng-controller="product_catg_detail_controller">
+<div class="modal-header">
+    <h4 class="modal-title">产品大类详情</h4>
+</div>
+<div class="modal-body">
+    <form name="form" class="form-validation" novalidate>
+
+            <div class="form-group row">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">产品大类代码</b><b class="form-error"></b>:</label>
+                <div class="col-sm-8">
+                    <label class="control-label text-left">{{productCatg.productCatg}}</label>
+                </div>
+            </div>
+
+
+            <div class="form-group row" style="margin-top: 3px;">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">产品大类名称</b><b class="form-error"></b>:</label>
+                <div class="col-sm-8">
+                    <label class="control-label text-left">{{productCatg.productCatgName}}</label>
+                </div>
+            </div>
+
+
+            <div class="form-group row" style="margin-top: 3px;">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">产品大类描述</b><b class="form-error"></b>:</label>
+                <div class="col-sm-8">
+                    <label class="control-label text-left">{{productCatg.productCatgMemo}}</label>
+                </div>
+            </div>
+        <div class="form-group row" style="margin-top: 3px;">
+            <label class="col-sm-3 control-label text-right"><b class="form-text-black">申请类型</b><b class="form-error"></b>:</label>
+            <div class="col-sm-4">
+                <div class="checkbox"  ng-repeat="applyTypeObj in applyTypeList" style="margin-top: 2px;">
+                    <label><input type="checkbox" name="applyType" ng-checked="productCatg.applyType.indexOf(applyTypeObj.codeValue)!=-1?'checked':''" ng-true-value="{{applyTypeObj.codeValue}}" disabled>{{applyTypeObj.codeValueName}}</label>
+                </div>
+            </div>
+        </div>
+
+
+            <div class="form-group row">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">车辆类型</b><b class="form-error"></b>:</label>
+                <div class="col-sm-4">
+                <div class="checkbox"  ng-repeat="vehicleFormObj in vehicleFormList" style="margin-top: 2px;">
+                    <label><input type="checkbox" name="vehicleForm" ng-checked="productCatg.vehicleForm.indexOf(vehicleFormObj.codeValue)!=-1?'checked':''" ng-true-value="{{vehicleFormObj.codeValue}}" disabled>{{vehicleFormObj.codeValueName}}</label>
+                </div>
+                    </div>
+            </div>
+
+
+            <div class="form-group row">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">车辆种类</b><b class="form-error"></b>:</label>
+                <div class="col-sm-4">
+                <div class="checkbox"  ng-repeat="vehicleTypeObj in vehicleTypeList" style="margin-top: 2px;">
+                    <label><input type="checkbox" name="vehicleType" ng-checked="productCatg.vehicleType.indexOf(vehicleTypeObj.codeValue)!=-1?'checked':''" ng-true-value="{{vehicleTypeObj.codeValue}}" disabled>{{vehicleTypeObj.codeValueName}}</label>
+                </div>
+                    </div>
+            </div>
+
+
+            <div class="form-group row">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">启用标志</b><b class="form-error"></b>:</label>
+                <div class="col-sm-1">
+                    <label class="control-label text-left">{{productCatg.enableFlag}}</label>
+                </div>
+            </div>
+        <div class="col-sm-15 m-b text-center">
+            <button class="btn btn-default" ng-click="goBack()">返回</button>
+        </div>
+    </form>
+</div>
+</div>

@@ -1,0 +1,669 @@
+<html>
+<head>
+    <meta name="viewport" content="user-scalable=yes"/>
+</head>
+<style type="text/css">
+    @media only screen and (max-width: 1200px) { div{ font-size: 16px; }}
+    @media only screen and (max-width: 1100px) { div{ font-size: 15px; }}
+    @media only screen and (max-width: 1000px) { div{ font-size: 14px; }}
+    @media only screen and (max-width: 900px) { div{ font-size: 13px; }}
+    @media only screen and (max-width: 800px) { div{ font-size: 12px; }}
+    @media only screen and (max-width: 700px) { div{ font-size: 11px; }}
+    @media only screen and (max-width: 600px) { div{ font-size: 10px; }}
+    @media only screen and (max-width: 500px) { div{ font-size: 9px; }}
+    @media only screen and (max-width: 400px) { div{ font-size: 8px; }}
+    @media only screen and (max-width: 300px) { div{ font-size: 7px; }}
+
+    .key{color: #666666;}
+    td{word-break: break-all; word-wrap:break-word;}
+    table .tableLayoutClass{table-layout: fixed;}
+</style>
+<body style="background-color: white">
+<div ng-controller="creditModelController" ng-init="app.settings.container = false;" style="text-align: left; margin: -15px auto; width: 1000px;padding-bottom: 50px;" class="wrapper-xs">
+    <div style="background-color: #19a4f3; border: 1px solid #ddd">
+        <div style="margin: 1%5%">
+            <table style="width: 100%; font-family: microsoft yahei;"><tbody>
+            <tr><td class="h1" style="=text-align: left; color: white;" colspan="2">领友自动化信审决策报告</td></tr>
+            <tr>
+                <td style="width: 30%; text-align: left; height: 110px">
+                    <table>
+                        <tbody>
+                        <tr><td style="text-align: left; color: white; height: 30px;">编号：<span style="color: red">{{applyInputVo.cstmPerson.applyNo}}</span></td></tr>
+                        <tr><td style="text-align: left; color: white; height: 30px;">合同号：{{applyInputVo.cstmPerson.applyNo}}</td></tr>
+                        <tr><td style="text-align: left; color: white; height: 30px;">报告生成时间：{{applyInputVo.applyFinanceVo.createTime}}</td></tr>
+                        </tbody>
+                    </table>
+                </td>
+                <td style="width: 15%; text-align: left; height: 110px; color: white; position: absolute; top: 100px;left: 600px;">风险等级：{{zxtbData.risklevel}}</td>
+                <td style="width: 15%; text-align: left; height: 110px; color: white; position: absolute; top: 100px;left: 720px;">征信查询决策：{{zxtbData.zxcxgz}}</td>
+                <td ng-show="zxgzjs != null && zxgzjs != ''" style="width: 15%; text-align: left; height: 110px; color: white; position: absolute; top: 135px;left: 895px;">征信查询对象：{{zxgzjs}}</td>
+                <td style="width: 15%; text-align: left; height: 110px; color: white; position: absolute; top: 135px;left: 600px;">领友模型：</td>
+                <td style="width: 10%; text-align: left; height: 110px; color: white; position: absolute; top: 119px;left: 670px;"><span style="font-size: 36px;color: yellow;">{{applyInputVo.creditGrade}}</span></td>
+                <td style="width: 15%; text-align: left; height: 110px; color: white; position: absolute; top: 135px;left: 720px;">决策建议：</td>
+                <td style="width: 15%; text-align: left; height: 110px; position: absolute; top: 86px; left: 60%;"><i ng-show="zxtbData.apxdjy == '拒绝'"><img src="img/jujue.png" width="150" alt=""></i><i ng-show="zxtbData.apxdjy == '通过'"><img src="img/tongguo.png" width="150" alt=""></i><i ng-show="zxtbData.apxdjy == '人工'"><img src="img/zclc.png" width="150" alt=""></i></td>
+            </tr>
+            </tbody></table>
+        </div>
+    </div>
+
+    <div style="border: 1px solid #ddd;background-color: white">
+        <div style="margin:1%5%;">
+            <table style="width: 100%; font-family: microsoft yahei; color: black;">
+                <tbody>
+                <tr>
+                    <td style="text-align: left;width: 25%;"><h4 style="color: #067dc1; font-weight:bold; font-family: microsoft yahei;">自动决策备注</h4></td>
+                    <td style="color: red;width: 75%;font-weight:bold;">{{zxtbData.apxdbz}}</td>
+                </tr>
+                <tr ng-if="zxtbData.zxgzbz != null && zxtbData.zxgzbz != ''">
+                    <td style="text-align: left;width: 25%;"><h4 style="color: #067dc1; font-weight:bold; font-family: microsoft yahei;">征信决策备注</h4></td>
+                    <td style="color: red;width: 75%;font-weight:bold;">{{zxtbData.zxgzbz}}</td>
+                </tr>
+                <tr ng-if="zxtbData.tsbz != null && zxtbData.tsbz != ''">
+                    <td style="text-align: left;width: 25%;"><h4 style="color: #067dc1; font-weight:bold; font-family: microsoft yahei;">提示备注</h4></td>
+                    <td style="color: red;width: 75%;font-weight:bold;">{{zxtbData.tsbz}}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div style="border: 1px solid #ddd;background-color: white">
+        <div style="margin:1%5%;">
+            <table style="width: 100%; font-family: microsoft yahei; color: black;">
+                <tbody>
+                <tr><td style="text-align: left;"><h4 style="color: #067dc1; font-weight:bold; font-family: microsoft yahei;">申请人信息</h4></td></tr>
+                <tr>
+                    <td class="key" style="text-align: left; width: 25%; height: 40px;">姓名：</td>
+                    <td style="text-align: left; width: 25%; height: 40px;">{{applyInputVo.cstmPerson.name}}</td>
+                    <td class="key" style="text-align: left; width: 25%; height: 40px;">性别：</td>
+                    <td style="text-align: left; width: 25%; height: 40px;">{{applyInputVo.cstmPerson.sex}}</td>
+                </tr>
+                <tr>
+                    <td class="key" style="text-align: left; width: 25%; height: 40px;">年龄：</td>
+                    <td style="text-align: left; width: 25%; height: 40px;">{{applyInputVo.cstmPerson.age}}</td>
+                    <td class="key" style="text-align: left; width: 25%; height: 40px;">婚姻状况：</td>
+                    <td style="text-align: left; width: 25%; height: 40px;">{{applyInputVo.cstmPerson.marriageStatus}}</td>
+                </tr>
+                <tr>
+                    <td class="key" style="text-align: left; width: 25%; height: 40px;">手机号：</td>
+                    <td style="text-align: left; width: 25%; height: 40px;">{{applyInputVo.cstmPerson.mobileNo}}</td>
+                    <td class="key" style="text-align: left; width: 25%; height: 40px;">身份证号：</td>
+                    <td style="text-align: left; width: 25%; height: 40px;">{{applyInputVo.cstmPerson.certifNo}}</td>
+                </tr>
+                <tr>
+                    <td class="key" style="text-align: left; width: 25%; height: 40px;">申请借款日期：</td>
+                    <td style="text-align: left; width: 25%; height: 40px;">{{applyInputVo.applyFinanceVo.createTime}}</td>
+                    <td class="key" style="text-align: left; width: 25%; height: 40px;">风险融资额：</td>
+                    <td style="text-align: left; width: 25%; height: 40px;"></td>
+                </tr>
+                <tr>
+                    <td class="key" style="text-align: left; width: 25%; height: 40px;">车辆类型：</td>
+                    <td style="text-align: left; width: 25%; height: 40px;">{{applyInputVo.applyFinanceVo.vehicleForm}}</td>
+                    <td class="key" style="text-align: left; width: 25%; height: 40px;">产品车型：</td>
+                    <td style="text-align: left; width: 25%; height: 40px;"></td>
+                </tr>
+                <tr>
+                    <td class="key" style="text-align: left; width: 25%; height: 40px;">主贷人公安信息校验：</td>
+                    <td ng-show="zdrgaxxsfyz != '不一致'" style="text-align: left; width: 25%; height: 40px;"></td>
+                    <td ng-show="zdrgaxxsfyz == '不一致'" style="text-align: left; width: 25%; height: 40px;color: red;font-weight:bold"></td>
+                    <td class="key" style="text-align: left; width: 25%; height: 40px;">配偶公安信息校验：</td>
+                    <td ng-show="pogaxxsfyz != '不一致'" style="text-align: left; width: 25%; height: 40px;"></td>
+                    <td ng-show="pogaxxsfyz == '不一致'" style="text-align: left; width: 25%; height: 40px;color: red;font-weight:bold"></td>
+                </tr>
+                <tr>
+                    <td class="key" style="text-align: left; width: 25%; height: 40px;">共申人公安信息校验：</td>
+                    <td ng-show="gsrgaxxsfyz != '不一致'" style="text-align: left; width: 25%; height: 40px;"></td>
+                    <td ng-show="gsrgaxxsfyz == '不一致'" style="text-align: left; width: 25%; height: 40px;color: red;font-weight:bold"></td>
+                    <td class="key" style="text-align: left; width: 25%; height: 40px;">担保人公安信息校验：</td>
+                    <td ng-show="dbrgaxxsfyz != '不一致'" style="text-align: left; width: 25%; height: 40px;"></td>
+                    <td ng-show="dbrgaxxsfyz == '不一致'" style="text-align: left; width: 25%; height: 40px;color: red;font-weight:bold"></td>
+                </tr>
+                <tr>
+                    <td class="key" style="text-align: left; width: 25%; height: 40px;">车辆指导价：</td>
+                    <td style="text-align: left; width: 25%; height: 40px;">{{applyInputVo.vehiclesGuidePriceCount}}</td>
+                    <td class="key" style="text-align: left; width: 25%; height: 40px;"></td>
+                    <td style="text-align: left; width: 25%; height: 40px;"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div style="border: 1px solid #ddd; background-color: white">
+        <div style="margin:1%5%;">
+            <p><h4 style="color: #067dc1; text-align: left; font-weight:bold; font-family: microsoft yahei;">新车当地销售价</h4></p>
+            <p>车辆当地销售价查询网址：<a href="http://www.yiche.com/" target="_blank" style="color: #0d47a1;font-weight: bold;">http://www.yiche.com/</a></p>
+            <table style="width: 100%; font-family: microsoft yahei; color: black;border: 1px solid #ddd;" ng-show="zxtbData.zxtb001DdxsjPojoList.length >0">
+                <tr>
+                    <td><table width="100%">
+                        <tbody>
+                        <tr style="background-color: #dddddd">
+                            <td style="width: 20%; height: 40px;color: #41b4f5;text-align: center">车辆融资价格</td>
+                            <td style="width: 20%; height: 40px;color: #41b4f5;text-align: center">车辆当地销售价</td>
+                            <td style="width: 30%; height: 40px;color: #41b4f5;text-align: center">比例（融资价格／当地销售价）</td>
+                            <td style="width: 20%; height: 40px;color: #41b4f5;text-align: center">操作日期</td>
+                            <td style="width: 10%; height: 40px;color: #41b4f5;text-align: center"></td>
+                        </tr>
+                        <tr ng-repeat="data in zxtbData.zxtb001DdxsjPojoList">
+                            <td style="height: 30px;text-align: center">{{applyInputVo.applyFinanceVo.finTotal}}</td>
+                            <td style="height: 30px;text-align: center">{{data.avgjg}}</td>
+                            <td style="height: 30px;color: red;font-weight: bold;font-size: 16px;text-align: center"  ng-if="data.bili==null">{{data.bili | number:2}} </td>
+                            <td style="height: 30px;color: red;font-weight: bold;font-size: 16px;text-align: center"  ng-if="data.bili!=null&&data.bili>=1.1">{{data.bili | number:2}} [异常]</td>
+                            <td style="height: 30px;color: blue;font-weight: bold;font-size: 16px;text-align: center" ng-if="data.bili!=null&&data.bili <1.1">{{data.bili | number:2}} [正常]</td>
+
+                            <td style="height: 30px;text-align: center">{{applyInputVo.applyFinanceVo.createTime}}</td>
+                            <td><button ng-click="sbddpjj($index)" >上报</button></td>
+
+
+                        </tr>
+                        </tbody>
+                    </table></td></tr>
+            </table>
+        </div>
+    </div>
+
+    <div style="border: 1px solid #ddd; background-color: white">
+        <div style="margin:1%5%;">
+            <table style="width: 100%; font-family: microsoft yahei; color: black;">
+                <tbody>
+                <tr>
+                    <td style="text-align: left;width: 25%;"><h4 style="color: #067dc1; font-weight:bold; font-family: microsoft yahei;">地区扫描</h4></td>
+                    <td style="text-align: left;width: 25%;"></td>
+                    <td style="text-align: left;width: 25%;"></td>
+                    <td style="text-align: left;width: 25%;"></td>
+                </tr>
+                <tr>
+                    <td class="key" style="text-align: left; width: 25%; height: 40px;">申请地区：</td>
+                    <td style="text-align: left; width: 75%; height: 40px;" colspan="3"></td>
+                </tr>
+                <tr>
+                    <td class="key" style="text-align: left; width: 25%; height: 40px;">手机号归属地：</td>
+                    <td style="text-align: left; width: 75%; height: 40px;" colspan="3"></td>
+                </tr>
+                <tr>
+                    <td class="key" style="text-align: left; width: 25%; height: 40px;">身份证归属地：</td>
+                    <td style="text-align: left; width: 75%; height: 40px;" colspan="3"></td>
+                </tr>
+                <tr>
+                    <td class="key" style="text-align: left; width: 25%; height: 40px;">工作地区：</td>
+                    <td style="text-align: left; width: 75%; height: 40px;" colspan="3"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div style="border: 1px solid #ddd; background-color: white">
+        <div style="margin:1%5%;">
+            <p><h4 style="color: #067dc1; text-align: left; font-weight:bold; font-family: microsoft yahei;">手机号扫描</h4></p>
+            <table style="width: 100%; font-family: microsoft yahei; color: black;">
+                <tbody>
+                <tr>
+                    <td style="">
+                        <div ng-show="zxtbData.zxtb001Jo3PojoList.length >0" style="width: 99%;">
+                            <ul id="phoneTab" class="nav nav-tabs">
+                                <li class="{{phoneTabClass[$index]}}" ng-repeat="info in zxtbData.zxtb001Jo3PojoList" ng-init="outerIndex = $index">
+                                    <a data-toggle="tab" ng-click="openPhoneInfo($index,info.flag)">{{info.flag == '11' ? name_11 :info.flag == '1' ? name_1 : info.flag == '2' ? name_2 : info.flag == '3' ? name_3 : info.flag == '4' ? name_4 : info.flag == '5' ? name_5 : info.flag == '6' ? name_6 : ''}}</a>
+                                </li>
+                            </ul>
+                            <div id="phoneTabContent" class="tab-content" style="padding: 10px;border:1px solid #dee5e7;border-top: none;">
+                                <div class="{{phoneTabContentClass[$index]}}"  ng-repeat="data in zxtbData.zxtb001Jo3PojoList" ng-init="outerIndex = $index" >
+                                    <table width="99%" style="margin: 0 auto">
+                                        <tbody>
+                                        <tr>
+                                            <td class="key" style="width:15%; height: 30px;">姓名：</td>
+                                            <td style="width:15%; height: 30px;">{{data.hkxm}}</td>
+                                            <td class="key" style="width:15%; height: 30px;">手机号：</td>
+                                            <td style="width:15%; height: 30px;">{{data.hksj}}</td>
+                                            <td class="key" style="width:20%; height: 30px;">手机号码归属地：</td>
+                                            <td style="width:20%; height: 30px;">{{data.ispnum}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="key" style="width:15%; height: 30px;">{{(data.flag == '5' || data.flag == '6') ? zwyz : swyz}}：</td>
+                                            <td style="width:15%; height: 30px;">{{data.swsfyz}}</td>
+                                            <td class="key" style="width:15%; height: 30px;" ng-show="phoneShow">手机状态：</td>
+                                            <td style="width:15%; height: 30px;" ng-show="phoneShow">{{data.sjkzt}}</td>
+                                            <td class="key" style="width:20%; height: 30px;" ng-show="phoneShow">在网时长：</td>
+                                            <td style="width:20%; height: 30px;" ng-show="phoneShow">{{data.zwsc}}</td>
+                                        </tr>
+                                        <tr ng-show="phoneShow">
+                                            <td class="key" style="width:15%; height: 30px;">消费档次：</td>
+                                            <td style="width:85%; height: 30px;" colspan="5">{{data.xfdc}}</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div style="border: 1px solid #ddd; background-color: white">
+        <div style="margin:1%5%;">
+            <p><h4 style="color: #067dc1; text-align: left; font-weight:bold; font-family: microsoft yahei;">驾驶证扫描</h4></p>
+            <table style="width: 100%; font-family: microsoft yahei; color: black;">
+                <tbody>
+                <tr>
+                    <td style="">
+                        <div ng-show="zxtbData.zxtb001JszPojoList.length >0" style="width: 99%;">
+                            <ul id="jszTab" class="nav nav-tabs">
+                                <li class="{{jszTabClass[$index]}}" ng-repeat="info in zxtbData.zxtb001JszPojoList" ng-init="outerIndex = $index">
+                                    <a data-toggle="tab" ng-click="openJszInfo($index)">{{info.flag == '11' ? name_11 :info.flag == '1' ? name_1 : info.flag == '2' ? name_2 : info.flag == '3' ? name_3 : info.flag == '4' ? name_4 : info.flag == '5' ? name_5 : info.flag == '6' ? name_6 : ''}}</a>
+                                </li>
+                            </ul>
+                            <div id="jszTabContent" class="tab-content" style="padding: 10px;border:1px solid #dee5e7;border-top: none;">
+                                <div class="{{jszTabContentClass[$index]}}"  ng-repeat="data in zxtbData.zxtb001JszPojoList" ng-init="outerIndex = $index" >
+                                    <table width="99%" style="margin: 0 auto">
+                                        <tbody>
+                                        <tr>
+                                            <td class="key" style="width:15%; height: 30px;">姓名：</td>
+                                            <td style="width:15%; height: 30px;">{{data.khxm}}</td>
+                                            <td class="key" style="width:15%; height: 30px;">驾照是否存在：</td>
+                                            <td style="width:15%; height: 30px;">{{data.jszbhsfyz}}</td>
+                                            <td class="key" style="width:20%; height: 30px;">驾驶证姓名一致性：</td>
+                                            <td style="width:20%; height: 30px;">{{data.xmsfyz}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="key" style="width:15%; height: 30px;">驾驶证状态：</td>
+                                            <td style="width:15%; height: 30px;" ng-if="data.jszzt=='正常'">{{data.jszzt}}</td>
+                                            <td style="width:15%; height: 30px; color: red;font-weight: bold;font-size: 16px;" ng-if="data.jszzt!='正常'">{{data.jszzt}}</td>
+                                            <td class="key" style="width:15%; height: 30px;">准驾车型是否一致：</td>
+                                            <td style="width:15%; height: 30px;">{{data.zjcxsfyz}}</td>
+                                            <td class="key" style="width:20%; height: 30px;">是否主申请人驾照：</td>
+                                            <td style="width:20%; height: 30px;">{{data.sfzdrjz}}</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div style="border: 1px solid #ddd; background-color: white">
+        <div style="margin:1%5%;">
+            <p><h4 style="color: #067dc1; text-align: left; font-weight:bold; font-family: microsoft yahei;">好信度</h4></p>
+            <table style="width: 100%; font-family: microsoft yahei; color: black;">
+                <tbody>
+                <tr>
+                    <td style="">
+                        <div ng-show="zxtbData.zxtb001QhhxdPojoList.length >0" style="width: 99%;">
+                            <ul id="hxdTab" class="nav nav-tabs">
+                                <li class="{{hxdTabClass[$index]}}" ng-repeat="info in zxtbData.zxtb001QhhxdPojoList" ng-init="outerIndex = $index">
+                                    <a data-toggle="tab" ng-click="openHxdInfo($index)">{{info.flag == '11' ? name_11 :info.flag == '1' ? name_1 : info.flag == '2' ? name_2 : info.flag == '3' ? name_3 : info.flag == '4' ? name_4 : info.flag == '5' ? name_5 : info.flag == '6' ? name_6 : ''}}</a>
+                                </li>
+                            </ul>
+                            <div id="hxdTabContent" class="tab-content" style="padding: 10px;border:1px solid #dee5e7;border-top: none;">
+                                <div class="{{hxdTabContentClass[$index]}}"  ng-repeat="data in zxtbData.zxtb001QhhxdPojoList" ng-init="outerIndex = $index" >
+                                    <table width="99%" style="margin: 0 auto">
+                                        <tbody>
+                                        <tr>
+                                            <td class="key" style="width:15%; height: 30px;">姓名：</td>
+                                            <td style="width:15%; height: 30px;">{{applyInputVo.cstmPerson.name}}</td>
+                                            <td class="key" style="width:15%; height: 30px;">好信度：</td>
+                                            <td style="width:55%; height: 30px;"></td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div style="border: 1px solid #ddd; background-color: white">
+        <div style="margin:1%5%;">
+            <p><h4 style="color: #067dc1; text-align: left; font-weight:bold; font-family: microsoft yahei;">黑名单</h4></p>
+            <table style="width: 100%; font-family: microsoft yahei; color: black;">
+                <tbody>
+                <tr>
+                    <td style="">
+                        <div ng-show="zxtbData.zxtb001QhhmdPojoList.length >0" style="width: 99%;">
+                            <ul id="hmdTab" class="nav nav-tabs">
+                                <li class="{{hmdTabClass[$index]}}" ng-repeat="info in zxtbData.zxtb001QhhmdPojoList" ng-init="outerIndex = $index">
+                                    <a data-toggle="tab" ng-click="openHmdInfo($index)">{{info.flag == '11' ? name_11 :info.flag == '1' ? name_1 : info.flag == '2' ? name_2 : info.flag == '3' ? name_3 : info.flag == '4' ? name_4 : info.flag == '5' ? name_5 : info.flag == '6' ? name_6 : ''}}</a>
+                                </li>
+                            </ul>
+                            <div id="hmdTabContent" class="tab-content" style="padding: 10px;border:1px solid #dee5e7;border-top: none;">
+                                <div class="{{hmdTabContentClass[$index]}}"  ng-repeat="data in zxtbData.zxtb001QhhmdPojoList" ng-init="outerIndex = $index" >
+                                    <table width="99%" style="margin: 0 auto">
+                                        <tbody>
+                                        <tr>
+                                            <td class="key" style="width:15%; height: 30px;">姓名：</td>
+                                            <td style="width:15%; height: 30px;">{{applyInputVo.cstmPerson.name}}</td>
+                                            <td class="key" style="width:15%; height: 30px;">黑名单来源：</td>
+                                            <td style="width:20%; height: 30px;">{{data.sourceid}}</td>
+                                            <td class="key" style="width:15%; height: 30px;">逾期天数：</td>
+                                            <td style="width:20%; height: 30px;">{{data.yqts}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="key" style="width:15%; height: 30px;">逾期金额：</td>
+                                            <td style="width:15%; height: 30px;">{{data.yqje}}</td>
+                                            <td class="key" style="width:15%; height: 30px;">风险标记：</td>
+                                            <td style="width:20%; height: 30px;">{{data.rskmark}}</td>
+                                            <td class="key" style="width:15%; height: 30px;">业务时间：</td>
+                                            <td style="width:20%; height: 30px;">{{data.databuildtime}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="key" style="width:15%; height: 30px;">数据验证状态：</td>
+                                            <td style="width:85%; height: 30px;" colspan="5">{{data.datastatus}}</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div style="border: 1px solid #ddd; background-color: white">
+        <div style="margin:1%5%;">
+            <p><h4 style="color: #067dc1; text-align: left; font-weight:bold; font-family: microsoft yahei;">前科记录</h4></p>
+            <table style="width: 100%; font-family: microsoft yahei; color: black;">
+                <tbody>
+                <tr>
+                    <td style="">
+                        <div ng-show="zxtbData.zxtb001QkPojoList.length >0" style="width: 99%;">
+                            <ul id="qkTab" class="nav nav-tabs">
+                                <li class="{{qkTabClass[$index]}}" ng-repeat="info in zxtbData.zxtb001QkPojoList" ng-init="outerIndex = $index">
+                                    <a data-toggle="tab" ng-click="openQkInfo($index)">{{info.flag == '11' ? name_11 :info.flag == '1' ? name_1 : info.flag == '2' ? name_2 : info.flag == '3' ? name_3 : info.flag == '4' ? name_4 : info.flag == '5' ? name_5 : info.flag == '6' ? name_6 : ''}}</a>
+                                </li>
+                            </ul>
+                            <div id="qkTabContent" class="tab-content" style="padding: 10px;border:1px solid #dee5e7;border-top: none;">
+                                <div class="{{qkTabContentClass[$index]}}"  ng-repeat="data in zxtbData.zxtb001QkPojoList" ng-init="outerIndex = $index" >
+                                    <table width="99%" style="margin: 0 auto">
+                                        <tbody>
+                                        <tr>
+                                            <td class="key" style="width:15%; height: 30px;">姓名：</td>
+                                            <td style="width:15%; height: 30px;">{{applyInputVo.cstmPerson.name}}</td>
+                                            <td class="key" style="width:15%; height: 30px;">涉案类型：</td>
+                                            <td style="width:20%; height: 30px;"></td>
+                                            <!--<td style="width:20%; height: 30px;" ng-if="data.crimetype.indexOf('涉毒') == -1 && data.crimetype.indexOf('吸毒') == -1 && data.crimetype.indexOf('在逃') == -1">{{data.crimetype}}</td>-->
+                                            <!--<td style="width:20%; height: 30px; color: red;font-weight: bold;font-size: 16px;" ng-if="data.crimetype.indexOf('涉毒') != -1 || data.crimetype.indexOf('吸毒') != -1 || data.crimetype.indexOf('在逃') != -1">{{data.crimetype}}</td>-->
+                                            <td class="key" style="width:15%; height: 30px;">案件数量：</td>
+                                            <td style="width:20%; height: 30px;">{{data.count}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="key" style="width:15%; height: 30px;">案件类型：</td>
+                                            <td style="width:15%; height: 30px;" ng-if="data.casetype.indexOf('侵犯财产案') == -1" >{{data.casetype}}</td>
+                                            <td style="width:15%; height: 30px; color: red;font-weight: bold;font-size: 16px;" ng-if="data.casetype.indexOf('侵犯财产案') != -1" >{{data.casetype}}</td>
+                                            <td class="key" style="width:15%; height: 30px;">案件来源：</td>
+                                            <td style="width:20%; height: 30px;">{{data.casesource}}</td>
+                                            <td class="key" style="width:15%; height: 30px;">案件时间段：</td>
+                                            <td style="width:20%; height: 30px;" ng-if="data.caseperiod != '2-5年（不含）以内'">{{data.caseperiod}}</td>
+                                            <td style="width:20%; height: 30px; color: red;font-weight: bold;font-size: 16px;" ng-if="data.caseperiod == '2-5年（不含）以内'">{{data.caseperiod}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="key" style="width:15%; height: 30px;">案件级别：</td>
+                                            <td style="width:85%; height: 30px;" colspan="5">{{data.caselevel}}</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div style="border: 1px solid #ddd; background-color: white">
+        <div style="margin:1%5%;">
+            <p><h4 style="color: #067dc1; text-align: left; font-weight:bold; font-family: microsoft yahei;">法院信息</h4></p>
+            <table style="width: 100%; font-family: microsoft yahei; color: black;">
+                <tbody>
+                <tr>
+                    <td style="">
+                        <div ng-show="zxtbData.zxtb001JzzbPojoList.length >0" style="width: 99%;">
+                            <ul id="fyTab" class="nav nav-tabs">
+                                <li class="{{jzTabClass[$index]}}" ng-repeat="info in zxtbData.zxtb001JzzbPojoList" ng-init="outerIndex = $index">
+                                    <a data-toggle="tab" ng-click="openJzInfo($index)">{{info.flag == '11' ? name_11 :info.flag == '1' ? name_1 : info.flag == '2' ? name_2 : info.flag == '3' ? name_3 : info.flag == '4' ? name_4 : info.flag == '5' ? name_5 : info.flag == '6' ? name_6 : ''}}</a>
+                                </li>
+                            </ul>
+                            <div id="fyTabContent" class="tab-content" style="padding: 10px;border:1px solid #dee5e7;border-top: none;">
+                                <div class="{{jzTabContentClass[$index]}}"  ng-repeat="data in zxtbData.zxtb001JzzbPojoList" ng-init="outerIndex = $index" >
+                                    <table width="99%" style="margin: 0 auto">
+                                        <tbody>
+                                        <tr><td style="width: 100%;" colspan="2">{{applyInputVo.cstmPerson.name}}：</td></tr>
+                                        <tr ng-repeat="data1 in data.zxtb001JzPojoList">
+                                            <td>
+                                                <table width="99%"><tbody>
+                                                <tr>
+                                                    <td class="key" style="width:50%; height: 30px;">{{data1.type}}</td>
+                                                    <td style="width:50%; height: 30px;"></td>
+                                                </tr>
+                                                <tr ng-show="data1.displayFlag" style="border: 1px solid #ddd;">
+                                                    <td style="width:100%;" colspan="2">
+                                                        <table width="99%"><tbody>
+                                                        <tr ng-repeat="data2 in data1.zxtb001JzMxPojoList">
+                                                            <td style="width:25%; height: 30px; color: #41b4f5">{{data2.mxtitle}}:</td>
+                                                            <td style="width:75%; height: 30px;">{{data2.mxcont}}</td>
+                                                        </tr>
+                                                        </tbody></table>
+                                                    </td>
+                                                </tr>
+                                                </tbody></table>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div style="border: 1px solid #ddd; background-color: white">
+        <div style="margin:1%5%;">
+            <p><h4 style="color: #067dc1; text-align: left; font-weight:bold; font-family: microsoft yahei;">法院模糊信息</h4></p>
+            <table style="width: 100%; font-family: microsoft yahei; color: black;">
+                <tbody>
+                <tr>
+                    <td style="">
+                        <div ng-show="zxtbData.zxtb001MhzbPojoList.length >0" style="width: 99%;">
+                            <ul id="mhTab" class="nav nav-tabs">
+                                <li class="{{jzmhTabClass[$index]}}" ng-repeat="info in zxtbData.zxtb001MhzbPojoList" ng-init="outerIndex = $index">
+                                    <a data-toggle="tab" ng-click="openJzmhInfo($index)">{{info.flag == '11' ? name_11 :info.flag == '1' ? name_1 : info.flag == '2' ? name_2 : info.flag == '3' ? name_3 : info.flag == '4' ? name_4 : info.flag == '5' ? name_5 : info.flag == '6' ? name_6 : ''}}</a>
+                                </li>
+                            </ul>
+                            <div id="mhTabContent" class="tab-content" style="padding: 10px;border:1px solid #dee5e7;border-top: none;">
+                                <div class="{{jzmhTabContentClass[$index]}}"  ng-repeat="data in zxtbData.zxtb001MhzbPojoList" ng-init="outerIndex = $index" >
+                                    <table width="99%" style="margin: 0 auto">
+                                        <tbody>
+                                        <tr><td style="width: 100%;" colspan="4">{{applyInputVo.cstmPerson.name}}：</td></tr>
+                                        <tr>
+                                            <td class="key" style="width:30%; height: 30px;color: #41b4f5;">类型</td>
+                                            <td class="key" style="width:30%; height: 30px;color: #41b4f5;">数字</td>
+                                            <td class="key" style="width:40%; height: 30px; padding-top: 5px;color: #41b4f5;">是否命中</td>
+                                        </tr>
+                                        <tr ng-repeat="data1 in data.zxtb001MhpojoList">
+                                            <td class="key" style="height: 30px;">{{data1.type}}</td>
+                                            <td class="key" style="height: 30px;">{{data1.num}}</td>
+                                            <td class="key" style="height: 30px;" ng-if="data1.num>0">命中</td>
+                                            <td class="key" style="height: 30px;" ng-if="data1.num==null||data1.num<=0">&nbsp;</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div style="border: 1px solid #ddd; background-color: white">
+        <div style="margin:1%5%;">
+            <p><h4 style="color: #067dc1; text-align: left; font-weight:bold; font-family: microsoft yahei;">信贷记录</h4></p>
+            <table style="width: 100%; font-family: microsoft yahei; color: black;">
+                <tbody>
+                <tr>
+                    <td style="">
+                        <div ng-show="zxtbData.zxtb001TdzbPojoList.length >0" style="width: 99%;">
+                            <ul id="tdTab" class="nav nav-tabs">
+                                <li class="{{tdTabClass[$index]}}" ng-repeat="info in zxtbData.zxtb001TdzbPojoList" ng-init="outerIndex = $index">
+                                    <a data-toggle="tab" ng-click="openTdInfo($index, info.khxm)">{{info.flag == '11' ? name_11 :info.flag == '1' ? name_1 : info.flag == '2' ? name_2 : info.flag == '3' ? name_3 : info.flag == '4' ? name_4 : info.flag == '5' ? name_5 : info.flag == '6' ? name_6 : ''}}</a>
+                                </li>
+                            </ul>
+                            <div id="tdTabContent" class="tab-content" style="padding: 10px;border:1px solid #dee5e7;border-top: none;">
+                                <div class="{{tdTabContentClass[$index]}}"  ng-repeat="data in zxtbData.zxtb001TdzbPojoList" ng-init="outerIndex = $index" >
+                                    <table width="99%">
+                                        <tbody>
+                                        <tr><td style="width: 100%;" colspan="3">{{applyInputVo.cstmPerson.name}}：</td></tr>
+                                        <tr>
+                                            <td style="width:40%; height: 30px;color: #818ba3;"><h5>检查项目</h5></td>
+                                            <td style="width:20%; height: 30px;color: #818ba3;"><h5>风险级别</h5></td>
+                                            <td style="width:40%; height: 30px;color: #818ba3;"><h5>风险描述</h5></td>
+                                        </tr>
+                                        <tr ng-repeat="data1 in data.zxtb001Td1PojoList">
+                                            <td colspan="3">
+                                                <table width="100%"><tbody>
+                                                <tr>
+                                                    <td style="width:40%; height: 30px;">{{data1.vgroup}}</td>
+                                                    <td style="width:20%; height: 30px;">{{data1.riskLevel == 'high' ? high : data1.riskLevel == 'medium' ? medium : low}}</td>
+                                                    <td style="color: #41b4f5;width:40%; height: 30px;" ng-if="!(data1.riskName.indexOf('命中信贷逾期') != -1 || data1.redFlag)">{{data1.riskName}}&nbsp;&nbsp;&nbsp;<span ng-click="tdClick($index)" ng-show="data1.zxtb001Td2Pojo != null" style="color: #41b4f5; padding-left: 10px">详情</span></td>
+                                                    <td style="color: #41b4f5;width:40%; height: 30px;" ng-if="data1.riskName.indexOf('命中信贷逾期') != -1 || data1.redFlag" ><b style="color: red;font-weight: bold;font-size: 16px">{{data1.riskName}}</b>&nbsp;&nbsp;&nbsp;<span ng-click="tdClick($index)" ng-show="data1.zxtb001Td2Pojo != null" style="color: #41b4f5; padding-left: 10px">详情</span></td>
+                                                </tr>
+                                                <tr ng-show="data1.displayFlag" style="border: 1px solid #ddd;">
+                                                    <td style="width:100%;" colspan="3">
+                                                        <table width="99%"><tbody>
+                                                        <tr ng-show="data1.zxtb001Td2Pojo.discreditTimes != '' && data1.zxtb001Td2Pojo.discreditTimes != null">
+                                                            <td style="width:25%; height: 40px; color: #41b4f5">&nbsp;&nbsp;&nbsp;信贷逾期次数:</td>
+                                                            <td style="width:75%; height: 40px;">{{data1.zxtb001Td2Pojo.discreditTimes}}</td>
+                                                        </tr>
+                                                        <tr ng-show="data1.zxtb001Td2Pojo.overdueDetails != '' && data1.zxtb001Td2Pojo.overdueDetails != null">
+                                                            <td style="width:25%; height: 40px; color: #41b4f5">&nbsp;&nbsp;&nbsp;逾期详情:</td>
+                                                            <td style="width:75%; height: 40px;">{{data1.zxtb001Td2Pojo.overdueDetails}}</td>
+                                                        </tr>
+                                                        <tr ng-show="data1.zxtb001Td2Pojo.platformCount != '' && data1.zxtb001Td2Pojo.platformCount != null">
+                                                            <td style="width:25%; height: 40px; color: #41b4f5">&nbsp;&nbsp;&nbsp;多头借贷:</td>
+                                                            <td style="width:75%; height: 40px;">{{data1.zxtb001Td2Pojo.platformCount}}</td>
+                                                        </tr>
+                                                        <tr ng-show="data1.zxtb001Td2Pojo.platformDetail != '' && data1.zxtb001Td2Pojo.platformDetail != null">
+                                                            <td style="width:25%; height: 40px; color: #41b4f5">&nbsp;&nbsp;&nbsp;多头借贷详情:</td>
+                                                            <td style="width:75%; height: 40px;">{{data1.zxtb001Td2Pojo.platformDetail}}</td>
+                                                        </tr>
+                                                        <tr ng-show="data1.zxtb001Td2Pojo.platformDetailDimension != '' && data1.zxtb001Td2Pojo.platformDetailDimension != null">
+                                                            <td style="width:25%; height: 40px; color: #41b4f5">&nbsp;&nbsp;&nbsp;多头借贷详情2:</td>
+                                                            <td style="width:75%; height: 40px;">{{data1.zxtb001Td2Pojo.platformDetailDimension}}</td>
+                                                        </tr>
+                                                        <tr ng-show="data1.zxtb001Td2Pojo.highRiskAreas != '' && data1.zxtb001Td2Pojo.highRiskAreas != null">
+                                                            <td style="width:25%; height: 40px; color: #41b4f5">&nbsp;&nbsp;&nbsp;高风险区域:</td>
+                                                            <td style="width:75%; height: 40px;">{{data1.zxtb001Td2Pojo.highRiskAreas}}</td>
+                                                        </tr>
+                                                        <tr ng-show="data1.zxtb001Td2Pojo.hitListDatas != '' && data1.zxtb001Td2Pojo.hitListDatas != null">
+                                                            <td style="width:25%; height: 40px; color: #41b4f5">&nbsp;&nbsp;&nbsp;命中列表数据:</td>
+                                                            <td style="width:75%; height: 40px;">{{data1.zxtb001Td2Pojo.hitListDatas}}</td>
+                                                        </tr>
+                                                        <tr ng-show="data1.zxtb001Td2Pojo.fraudType != '' && data1.zxtb001Td2Pojo.fraudType != null">
+                                                            <td style="width:25%; height: 40px; color: #41b4f5">&nbsp;&nbsp;&nbsp;风险类型:</td>
+                                                            <td style="width:75%; height: 40px;">{{data1.zxtb001Td2Pojo.fraudType}}</td>
+                                                        </tr>
+                                                        <tr ng-show="data1.zxtb001Td2Pojo.frequencyDetailList != '' && data1.zxtb001Td2Pojo.frequencyDetailList != null">
+                                                            <td style="width:25%; height: 40px; color: #41b4f5">&nbsp;&nbsp;&nbsp;频度详情:</td>
+                                                            <td style="width:75%; height: 40px;">{{data1.zxtb001Td2Pojo.frequencyDetailList}}</td>
+                                                        </tr>
+                                                        <tr ng-show="data1.zxtb001Td2Pojo.namelistHitDetails != '' && data1.zxtb001Td2Pojo.namelistHitDetails != null">
+                                                            <td style="width:25%; height: 40px; color: #41b4f5">&nbsp;&nbsp;&nbsp;命中名单详情列表:</td>
+                                                            <td style="width:75%; height: 40px;">{{data1.zxtb001Td2Pojo.namelistHitDetails}}</td>
+                                                        </tr>
+                                                        <tr ng-show="data1.zxtb001Td2Pojo.courtDetails != '' && data1.zxtb001Td2Pojo.courtDetails != null">
+                                                            <td style="width:25%; height: 40px; color: #41b4f5">&nbsp;&nbsp;&nbsp;风险名单:</td>
+                                                            <td style="width:75%; height: 40px;">{{data1.zxtb001Td2Pojo.courtDetails}}</td>
+                                                        </tr>
+                                                        <tr ng-show="data1.zxtb001Td2Pojo.fuzzyDetailHits != '' && data1.zxtb001Td2Pojo.fuzzyDetailHits != null">
+                                                            <td style="width:25%; height: 40px; color: #41b4f5">&nbsp;&nbsp;&nbsp;模糊名单命中详情:</td>
+                                                            <td style="width:75%; height: 40px;">{{data1.zxtb001Td2Pojo.fuzzyDetailHits}}</td>
+                                                        </tr>
+                                                        </tbody></table>
+                                                    </td>
+                                                </tr>
+                                                </tbody></table>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div style="border: 1px solid #ddd; background-color: white">
+        <div style="margin:1%5%;">
+            <p><h4 style="color: #067dc1; text-align: left; font-weight:bold; font-family: microsoft yahei;">HPL历史纪录</h4></p>
+            <table style="width: 100%; font-family: microsoft yahei; color: black;border: 1px solid #ddd;" ng-show="zxtbData.zxtb001HPLHisPojoList.length >0">
+                <tr>
+                    <td><table width="100%">
+                        <tbody>
+                        <tr style="background-color: #dddddd">
+                            <td style="width: 8%; height: 40px;color: #41b4f5;text-align: center">角色</td>
+                            <td style="width: 8%; height: 40px;color: #41b4f5;text-align: center">类型</td>
+                            <td style="width: 20%; height: 40px;color: #41b4f5;text-align: center">内容</td>
+                            <td style="width: 10%; height: 40px;color: #41b4f5;text-align: center">关联合同编号</td>
+                            <td style="width: 19%; height: 40px;color: #41b4f5;text-align: center">对应当前状态</td>
+                            <td style="width: 10%; height: 40px;color: #41b4f5;text-align: center">对应当前逾期天数</td>
+                            <td style="width: 10%; height: 40px;color: #41b4f5;text-align: center">对应最高逾期天数</td>
+                        </tr>
+                        <tr ng-repeat="info in zxtbData.zxtb001HPLHisPojoList">
+                            <td style="height: 30px;text-align: center">{{info.flag == '11' ? name_11 :info.flag == '1' ? name_1 : info.flag == '2' ? name_2 : info.flag == '3' ? name_3 : info.flag == '4' ? name_4 : info.flag == '5' ? name_5 : info.flag == '6' ? name_6 : ''}}</td>
+                            <td style="height: 30px;text-align: center">{{info.dtype}}</td>
+                            <td style="height: 30px;text-align: center">{{info.ddata}}</td>
+                            <td style="height: 30px;text-align: center;color: red;font-weight: bold;font-size: 16px;">{{info.glbaddbh}}</td>
+                            <td style="height: 30px;text-align: center">{{info.glbasqzc}}</td>
+
+                            <td style="height: 30px;text-align: center;" ng-if="info.glsjyqts == 0">{{info.glsjyqts}}</td>
+                            <td style="height: 30px;text-align: center;color: red;font-weight: bold;font-size: 16px;" ng-if="info.glsjyqts > 0">{{info.glsjyqts}}</td>
+                            <td style="height: 30px;text-align: center;" ng-if="info.glzgyqts <= 30">{{info.glzgyqts}}</td>
+                            <td style="height: 30px;text-align: center;color: red;font-weight: bold;font-size: 16px;" ng-if="info.glzgyqts > 30">{{info.glzgyqts}}</td>
+
+                        </tr>
+                        </tbody>
+                    </table></td></tr>
+            </table>
+        </div>
+    </div>
+
+
+    <div style="border: 1px solid #ddd; background-color: white">
+        <div style="margin:1%5%;">
+            <!--<p><h4 style="color: #067dc1; text-align: left; font-weight:bold; font-family: microsoft yahei;">人物关系</h4></p>-->
+            <div id="main" style="height: 500px;width: 100%" >
+
+
+            </div>
+        </div>
+    </div>
+
+
+</div>
+</body>
+</html>

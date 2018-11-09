@@ -1,0 +1,106 @@
+<div ng-controller="bas_blacklist_handler_controller">
+    <div>
+        <toaster-container
+                toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+    </div>
+    <div class="panel panel-default">
+        <div class="row" style="margin: 0; padding: 15px; border: 1px solid #dddddd">
+            <h4 class="m-n font-thin h4">{{frameTitle}}</h4>
+        </div>
+        <form name="form" class="form-validation" novalidate>
+            <div class="panel-body wrapper-sm">
+                <div class="form-group row">
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">客户名称</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-3">
+                        <input type="text" name="name" placeholder="请输入客户名称" class="form-control m-b-xs" ng-model="basBlacklist.name" limit-word="50"  required >
+                        <p>
+                            <span class="form-info"
+                                  ng-show=" (form.name.$dirty && form.name.$error.required) || (form.name.$error.required && formValidate)">客户名称不能为空</span>
+                        </p>
+                    </div>
+                </div>
+
+
+                <div class="form-group row">
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">证件号码</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-3">
+                        <input type="text" name="certifNo" placeholder="请输入证件号码" class="form-control m-b-xs" ng-model="basBlacklist.certifNo" limit-word="50" ng-pattern="/^[0-9a-zA-Z]+$/" required >
+                        <p>
+                            <span class="form-info"
+                                  ng-show=" (form.certifNo.$dirty && form.certifNo.$error.required) || (form.certifNo.$error.required && formValidate)">证件号码不能为空</span>
+                            <span class="form-info" ng-show=" (form.certifNo.$error.pattern && !form.certifNo.$error.required) || (form.certifNo.$error.pattern && formValidate && !form.certifNo.$error.required)">请输入合法的证件号</span>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">手机号码</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-3">
+                        <input type="text" name="mobileNo" placeholder="请输入手机号码" class="form-control m-b-xs" ng-model="basBlacklist.mobileNo" ng-pattern="/^1[345789]\d{9}$/" limit-word="11" required >
+                        <p>
+                            <span class="form-info"
+                                  ng-show=" (form.mobileNo.$dirty && form.mobileNo.$error.required) || (form.mobileNo.$error.required && formValidate)">手机号码不能为空</span>
+                            <span class="form-info"
+                                  ng-show=" (form.mobileNo.$error.pattern && !form.mobileNo.$error.required) || (form.mobileNo.$error.pattern && formValidate && !form.mobileNo.$error.required)">请输入正确的手机号码</span>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">黑名单级别</b><b
+                            class="form-error">*</b>:</label>
+                    <div class="col-sm-3">
+                        <select ng-model="basBlacklist.blackLevel" name="blackLevel" class="form-control m-b-xs" required>
+                            <option value="">--请选择黑名单级别--</option>
+                            <option value="{{blackLevalObj.codeValue}}" ng-repeat="blackLevalObj in blackLevalList">
+                                {{blackLevalObj.codeValueName}}
+                            </option>
+                        </select>
+                        <p>
+                            <span class="form-info"
+                                  ng-show=" (form.blackLevel.$dirty && form.blackLevel.$error.required) || (form.blackLevel.$error.required && formValidate)">请选择黑名单级别</span>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">来源</b><b
+                            class="form-error">*</b>:</label>
+                    <div class="col-sm-3">
+                        <select name="source" ng-model="basBlacklist.source" class="form-control m-b-xs"
+                                required>
+                            <option value="">--请选择来源--</option>
+                            <option value="{{sourceObj.codeValue}}" ng-repeat="sourceObj in sourceList">
+                                {{sourceObj.codeValueName}}
+                            </option>
+                        </select>
+                        <p>
+                            <span class="form-info"
+                                  ng-show=" (form.source.$dirty && form.source.$error.required) || (form.source.$error.required && formValidate)">请选择来源</span>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">备注</b>:</label>
+                    <div class="col-sm-6">
+                        <textarea name="memo" class="form-control m-b-xs ng-pristine ng-valid ng-touched" ng-model="basBlacklist.memo" limit-word="300"></textarea>
+                    </div>
+                </div>
+
+            </div>
+
+
+
+            <div class="col-sm-15 m-b text-center">
+                <button class="btn btn-default" ng-click="goback()">返回</button>
+                <button type="submit" class="btn btn-success ng-scope" ng-show="showSave" ng-disabled="submit"
+                        ng-click="save()">新增
+                </button>
+                <button type="submit" class="btn btn-success ng-scope" ng-show="showUpdate" ng-disabled="submit"
+                        ng-click="modify()">保存
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

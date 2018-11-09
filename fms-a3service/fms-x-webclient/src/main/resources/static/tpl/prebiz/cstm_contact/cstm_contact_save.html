@@ -1,0 +1,122 @@
+<div class="modal-header">
+    <h4 class="modal-title">添加prebiz <button type="button" class="close" data-dismiss="modal" aria-hidden="true" ng-click="close()">&times;</button></h4>
+</div>
+<div class="modal-body">
+    <form name="form" class="form-validation" novalidate>
+
+        <div class="panel-body">
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">订单编号</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="applyNo" placeholder="请输入订单编号" class="form-control m-b-xs" ng-model="cstmContact.applyNo"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.applyNo.$dirty && form.applyNo.$error.required) || (form.applyNo.$error.required && formValidate)">订单编号不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">序号</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="contactNo" placeholder="请输入序号" class="form-control m-b-xs" ng-model="cstmContact.contactNo"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.contactNo.$dirty && form.contactNo.$error.required) || (form.contactNo.$error.required && formValidate)">序号不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">联系人姓名</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="name" placeholder="请输入联系人姓名" class="form-control m-b-xs" ng-model="cstmContact.name"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.name.$dirty && form.name.$error.required) || (form.name.$error.required && formValidate)">联系人姓名不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">联系人关系</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="relation" placeholder="请输入联系人关系" class="form-control m-b-xs" ng-model="cstmContact.relation"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.relation.$dirty && form.relation.$error.required) || (form.relation.$error.required && formValidate)">联系人关系不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">联系人手机号码</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="mobileNo" placeholder="请输入联系人手机号码" class="form-control m-b-xs" ng-model="cstmContact.mobileNo"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.mobileNo.$dirty && form.mobileNo.$error.required) || (form.mobileNo.$error.required && formValidate)">联系人手机号码不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">联系人所在省份</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="resideProv" placeholder="请输入联系人所在省份" class="form-control m-b-xs" ng-model="cstmContact.resideProv"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.resideProv.$dirty && form.resideProv.$error.required) || (form.resideProv.$error.required && formValidate)">联系人所在省份不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">联系人所在城市</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="resideCity" placeholder="请输入联系人所在城市" class="form-control m-b-xs" ng-model="cstmContact.resideCity"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.resideCity.$dirty && form.resideCity.$error.required) || (form.resideCity.$error.required && formValidate)">联系人所在城市不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">联系人所在区县</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="resideCounty" placeholder="请输入联系人所在区县" class="form-control m-b-xs" ng-model="cstmContact.resideCounty"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.resideCounty.$dirty && form.resideCounty.$error.required) || (form.resideCounty.$error.required && formValidate)">联系人所在区县不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">联系人所在详细地址</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="resideAddr" placeholder="请输入联系人所在详细地址" class="form-control m-b-xs" ng-model="cstmContact.resideAddr"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.resideAddr.$dirty && form.resideAddr.$error.required) || (form.resideAddr.$error.required && formValidate)">联系人所在详细地址不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+
+        </div>
+
+    </form>
+</div>
+<div class="modal-footer ng-scope">
+    <button class="btn btn-default" ng-click="close()">取消</button>
+    <button type="submit" class="btn btn-success" ng-disabled="submit" ng-click="save()">新增</button>
+</div>

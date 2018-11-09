@@ -1,0 +1,115 @@
+<div  ng-controller="orig_file_borrow_mail_controller">
+    <form name="form" class="form-validation" novalidate>
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <div class="row m-b-md">
+                    <div class="col-lg-12">
+                        <div class="form-group"><h1 class="m-n font-thin h4">资管邮寄</h1></div>
+                        <div class="form-group pull-right">
+                            <div class="btn-group">
+                                <button class="btn btn-default m-b-xs btn-sm fms-button-margin-bottom" ng-click="backHome()"><i class=""></i>返回</button>
+                                <button class="btn btn-success m-b-xs btn-sm fms-button-margin-bottom" ng-click="submitOrigFileBorrow()" ng-disabled="submit"><i class=""></i>提交</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <table border="1" class="table table-striped m-b-none" id="orig_file_borrow_mail_table">
+                </table>
+
+                <div class="form-group row">
+                    <div class="form-group row">
+                        <label class="col-sm-2 control-label text-right"><b class="form-text-black">申请人</b>:</label>
+                        <div class="col-sm-2">
+                            <input type="text" name="borrowUser" placeholder="申请人" class="form-control m-b-xs" ng-model="borrowTaskVo.borrowUser" disabled>
+                        </div>
+                        <label class="col-sm-2 control-label text-right"><b class="form-text-black">申请人联系方式</b>:</label>
+                        <div class="col-sm-2">
+                            <input type="text" name="borrowUserTel" placeholder="申请人联系方式" class="form-control m-b-xs" ng-model="borrowTaskVo.borrowUserTel" disabled>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-sm-2 control-label text-right"><b class="form-text-black">领取方式</b>:</label>
+                            <div class="col-sm-2">
+                                <input type="text" name="borrowGetWay" placeholder="领取方式" class="form-control m-b-xs" ng-value="borrowTaskVo.borrowGetWay | getName:'borrowGetWay'" disabled>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 control-label text-right"><b class="form-text-black">邮寄详细地址</b>:</label>
+                        <div class="col-sm-6">
+                            <textarea type="text" name="postDetailAddress" placeholder="邮寄详细地址" class="form-control m-b-xs" ng-model="borrowTaskVo.postDetailAddress" disabled></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 control-label text-right"><b class="form-text-black">是否交押金</b>:</label>
+                        <div class="col-sm-2">
+                            <input type="text" name="depositFlag" placeholder="是否交押金" class="form-control m-b-xs" value="{{borrowTaskVo.depositFlag | getName:'depositFlag'}}" disabled>
+                        </div>
+                        <label class="col-sm-2 control-label text-right"><b class="form-text-black">押金金额</b>:</label>
+                        <div class="col-sm-2">
+                            <input type="number" name="depositAmount" placeholder="押金金额" class="form-control m-b-xs" ng-model="borrowTaskVo.depositAmount" disabled>
+                        </div>
+                        <label class="col-sm-2 control-label text-right"><b class="form-text-black">预计归还时间</b>:</label>
+                        <div class="col-sm-2">
+                            <input type="text" name="expectedReturnDate" placeholder="预计归还时间" class="form-control m-b-xs" ng-model="borrowTaskVo.expectedReturnDate"  disabled>
+                        </div>
+                    </div>
+                    <div ng-if="borrowTaskVo.borrowGetWay != 0" class="form-group row">
+                        <label class="col-sm-2 control-label text-right"><b class="form-text-black">快递公司</b><b class="form-error">*</b>:</label>
+                        <div class="col-sm-2">
+                            <input type="text" name="postComp" placeholder="快递公司" class="form-control m-b-xs" ng-model="borrowTaskVo.postComp" required>
+                            <p>
+                                <span class="form-info" ng-show=" (form.postComp.$dirty && form.postComp.$error.required) || (form.postComp.$error.required && formValidate)">快递公司不能为空</span>
+                            </p>
+                        </div>
+                        <label class="col-sm-2 control-label text-right"><b class="form-text-black">快递编号</b><b class="form-error">*</b>:</label>
+                        <div class="col-sm-2">
+                            <input type="text" name="postNo" placeholder="快递编号" class="form-control m-b-xs" ng-model="borrowTaskVo.postNo" required>
+                            <p>
+                                <span class="form-info" ng-show=" (form.postNo.$dirty && form.postNo.$error.required) || (form.postNo.$error.required && formValidate)">快递编号不能为空</span>
+                            </p>
+                        </div>
+                        <label class="col-sm-2 control-label text-right"><b class="form-text-black">领取日期</b><b class="form-error">*</b>:</label>
+                        <div class="col-sm-2">
+                            <input name="postDate" placeholder="领取日期" class="form-control m-b-xs" ng-model="borrowTaskVo.postDate" date-picker required/>
+                            <p>
+                                <span class="form-info" ng-show=" (form.postDate.$dirty && form.postDate.$error.required) || (form.postDate.$error.required && formValidate)">领取日期不能为空</span>
+                            </p>
+                        </div>
+                    </div>
+                    <div ng-if="borrowTaskVo.borrowGetWay == 0" class="form-group row">
+                        <label class="col-sm-2 control-label text-right"><b class="form-text-black">快递公司</b>:</label>
+                        <div class="col-sm-2">
+                            <input type="text" name="postComp" placeholder="快递公司" class="form-control m-b-xs" ng-model="borrowTaskVo.postComp">
+                        </div>
+                        <label class="col-sm-2 control-label text-right"><b class="form-text-black">快递编号</b>:</label>
+                        <div class="col-sm-2">
+                            <input type="text" name="postNo" placeholder="快递编号" class="form-control m-b-xs" ng-model="borrowTaskVo.postNo">
+                        </div>
+                        <label class="col-sm-2 control-label text-right"><b class="form-text-black">领取日期</b><b class="form-error">*</b>:</label>
+                        <div class="col-sm-2">
+                            <input name="postDate" placeholder="领取日期" class="form-control m-b-xs" ng-model="borrowTaskVo.postDate" date-picker required/>
+                            <p>
+                                <span class="form-info" ng-show=" (form.postDate.$dirty && form.postDate.$error.required) || (form.postDate.$error.required && formValidate)">领取日期不能为空</span>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 control-label text-right"><b class="form-text-black">备注</b><b class="form-error">*</b>:</label>
+                        <div class="col-sm-6">
+                            <textarea limit-word type="text" name="remark" placeholder="备注" class="form-control m-b-xs" ng-model="borrowTaskVo.remark" required></textarea>
+                            <p>
+                                <span class="form-info" ng-show=" (form.remark.$dirty && form.remark.$error.required) || (form.remark.$error.required && formValidate)">备注不能为空</span>
+                            </p>
+                        </div>
+                    </div>
+
+                    <!--流程日志-->
+                    <div ng-include="'tpl/common/process_log/process_log_list.html'"></div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+

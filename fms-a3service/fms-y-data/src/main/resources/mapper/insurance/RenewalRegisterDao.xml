@@ -1,0 +1,395 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.com.leadu.fms.data.insurance.dao.RenewalRegisterDao">
+    <!--分页查询续保任务一览-->
+    <select id="selectRenewalRegistersByPage" parameterType="cn.com.leadu.fms.pojo.insurance.vo.renewalregister.RenewalRegisterVo" resultType="cn.com.leadu.fms.pojo.insurance.vo.renewalregister.RenewalRegisterVo">
+        SELECT
+        renewalRegister.*,
+        contract_finance.license_attr AS serviceType,
+        contract_finance.fin_period_type AS finPeriodType,
+        contractVehicle.renewal_deposit,
+        contractVehicle.theft_insurance_type,
+        cont_insurance.ins_comp_name,
+        cont_insurance.ins_fee,
+        cont_insurance.ins_policy_no,
+        cont_insurance.valid_start_day,
+        cont_insurance.valid_end_day,
+        cont_insurance.insurance_type,
+        cont_insurance.insurance_select_info,
+        person.name,
+        person.driver,
+        person.driver_mobno,
+        contract.apply_type,
+        contract.apply_no,
+        person.mobile_no,
+        contract.engine_no,
+        contract.vin_no,
+        contract.vehicle_license_no,
+        vehicleCode.vehicle_name AS vehicleCodeName,
+        sysGroup.group_name AS lessor
+        FROM
+        renewal_register renewalRegister
+        LEFT JOIN
+        contract contract ON renewalRegister.cont_no = contract.cont_no AND contract.del_flag =  ${delete_exist}
+        LEFT JOIN
+        sys_group ON contract.apply_group = sys_group.group_code AND sys_group.del_flag = ${delete_exist}
+        LEFT JOIN
+        contract_finance ON contract.cont_no = contract_finance.cont_no AND contract_finance.del_flag = ${delete_exist}
+        LEFT JOIN
+        cstm_person person ON contract.apply_no=person.apply_no AND person.del_flag = ${delete_exist}
+        LEFT JOIN
+        contract_vehicle contractVehicle ON contract.cont_no=contractVehicle.cont_no AND contractVehicle.del_flag =  ${delete_exist}
+        LEFT JOIN
+        bas_vehicle vehicleCode ON contractVehicle.vehicle_code=vehicleCode.vehicle_code AND vehicleCode.del_flag = ${delete_exist}
+        LEFT JOIN
+        sys_group sysGroup ON contract_finance.belong_group = sysGroup.group_code AND sysGroup.del_flag =  ${delete_exist}
+        LEFT JOIN
+        cont_insurance ON renewalRegister.current_insurance_id = cont_insurance.cont_vehins_id AND cont_insurance.del_flag =  ${delete_exist}
+        WHERE
+        renewalRegister.del_flag = ${delete_exist}
+        <if test="renewalRegisterVo.contNo != null" >
+            AND contract.cont_no LIKE #{renewalRegisterVo.contNo}
+        </if>
+        <if test="renewalRegisterVo.name != null" >
+            AND person.name LIKE #{renewalRegisterVo.name}
+        </if>
+        <if test="renewalRegisterVo.serviceType != null">
+            AND contract_finance.license_attr = #{renewalRegisterVo.serviceType}
+        </if>
+        <if test="renewalRegisterVo.vinNo != null">
+            AND contract.vin_no LIKE #{renewalRegisterVo.vinNo}
+        </if>
+        <if test="renewalRegisterVo.vehicleLicenseNo != null">
+            AND contract.vehicle_license_no LIKE #{renewalRegisterVo.vehicleLicenseNo}
+        </if>
+        <if test="renewalRegisterVo.renewalRegisterId != null">
+            AND renewalRegister.renewal_register_id = #{renewalRegisterVo.renewalRegisterId}
+        </if>
+        <if test="renewalRegisterVo.renewalTaskNo != null">
+            AND renewalRegister.renewal_task_no = #{renewalRegisterVo.renewalTaskNo}
+        </if>
+        <!-- 保险失效日(续保期限日)开始时间 -->
+        <if test="renewalRegisterVo.validStartTime != null">
+            AND renewalRegister.renewal_deadline_date &gt;= #{renewalRegisterVo.validStartTime}
+        </if>
+        <!-- 保险失效日(续保期限日)结束时间 -->
+        <if test="renewalRegisterVo.validEndTime != null">
+            AND renewalRegister.renewal_deadline_date &lt;= #{renewalRegisterVo.validEndTime}
+        </if>
+        AND contract.apply_type='1'
+
+        UNION
+
+        SELECT
+        renewalRegister.*,
+        contract_finance.license_attr AS serviceType,
+        contract_finance.fin_period_type AS finPeriodType,
+        contractVehicle.renewal_deposit,
+        contractVehicle.theft_insurance_type,
+        cont_insurance.ins_comp_name,
+        cont_insurance.ins_fee,
+        cont_insurance.ins_policy_no,
+        cont_insurance.valid_start_day,
+        cont_insurance.valid_end_day,
+        cont_insurance.insurance_type,
+        cont_insurance.insurance_select_info,
+        person.name,
+        person.driver,
+        person.driver_mobno,
+        contract.apply_type,
+        contract.apply_no,
+        person.mobile_no,
+        contract.engine_no,
+        contract.vin_no,
+        contract.vehicle_license_no,
+        vehicleCode.vehicle_name AS vehicleCodeName,
+        sysGroup.group_name AS lessor
+        FROM
+        renewal_register renewalRegister
+        LEFT JOIN
+        contract contract ON renewalRegister.cont_no = contract.cont_no AND contract.del_flag =  ${delete_exist}
+        LEFT JOIN
+        sys_group ON contract.apply_group = sys_group.group_code AND sys_group.del_flag = ${delete_exist}
+        LEFT JOIN
+        contract_finance ON contract.cont_no = contract_finance.cont_no AND contract_finance.del_flag = ${delete_exist}
+        LEFT JOIN
+        cstm_company person ON contract.apply_no=person.apply_no AND person.del_flag = ${delete_exist}
+        LEFT JOIN
+        contract_vehicle contractVehicle ON contract.cont_no=contractVehicle.cont_no AND contractVehicle.del_flag =  ${delete_exist}
+        LEFT JOIN
+        bas_vehicle vehicleCode ON contractVehicle.vehicle_code=vehicleCode.vehicle_code AND vehicleCode.del_flag = ${delete_exist}
+        LEFT JOIN
+        sys_group sysGroup ON contract_finance.belong_group = sysGroup.group_code AND sysGroup.del_flag =  ${delete_exist}
+        LEFT JOIN
+        cont_insurance ON renewalRegister.current_insurance_id = cont_insurance.cont_vehins_id  AND cont_insurance.del_flag =  ${delete_exist}
+        WHERE
+        renewalRegister.del_flag = ${delete_exist}
+        <if test="renewalRegisterVo.contNo != null" >
+            AND contract.cont_no LIKE #{renewalRegisterVo.contNo}
+        </if>
+        <if test="renewalRegisterVo.name != null" >
+            AND person.name LIKE #{renewalRegisterVo.name}
+        </if>
+        <if test="renewalRegisterVo.serviceType != null">
+            AND contract_finance.license_attr = #{renewalRegisterVo.serviceType}
+        </if>
+        <if test="renewalRegisterVo.vinNo != null">
+            AND contract.vin_no LIKE #{renewalRegisterVo.vinNo}
+        </if>
+        <if test="renewalRegisterVo.vehicleLicenseNo != null">
+            AND contract.vehicle_license_no LIKE #{renewalRegisterVo.vehicleLicenseNo}
+        </if>
+        <if test="renewalRegisterVo.renewalRegisterId != null">
+            AND renewalRegister.renewal_register_id = #{renewalRegisterVo.renewalRegisterId}
+        </if>
+        <if test="renewalRegisterVo.renewalTaskNo != null">
+            AND renewalRegister.renewal_task_no = #{renewalRegisterVo.renewalTaskNo}
+        </if>
+        <!-- 保险失效日(续保期限日)开始时间 -->
+        <if test="renewalRegisterVo.validStartTime != null">
+            AND renewalRegister.renewal_deadline_date &gt;= #{renewalRegisterVo.validStartTime}
+        </if>
+        <!-- 保险失效日(续保期限日)结束时间 -->
+        <if test="renewalRegisterVo.validEndTime != null">
+            AND renewalRegister.renewal_deadline_date &lt;= #{renewalRegisterVo.validEndTime}
+        </if>
+        AND contract.apply_type='2'
+        ORDER BY update_time DESC
+    </select>
+
+    <!--分页查询续保任务一览-->
+    <select id="selectRenewalRegistersByTaskNo" parameterType="cn.com.leadu.fms.pojo.insurance.vo.renewalregister.RenewalRegisterVo" resultType="cn.com.leadu.fms.pojo.insurance.vo.renewalregister.RenewalRegisterVo">
+        (SELECT
+        renewalRegister.*,
+        contract_finance.license_attr AS serviceType,
+        contract_finance.fin_period_type AS finPeriodType,
+        contractVehicle.renewal_deposit,
+        contractVehicle.theft_insurance_type,
+        cont_insurance.ins_comp_name,
+        cont_insurance.ins_fee,
+        cont_insurance.ins_policy_no,
+        cont_insurance.valid_start_day,
+        cont_insurance.valid_end_day,
+        cont_insurance.insurance_type,
+        cont_insurance.insurance_select_info,
+        person.name,
+        person.driver,
+        person.driver_mobno,
+        contract.apply_type,
+        contract.apply_no,
+        person.mobile_no,
+        contract.engine_no,
+        contract.vin_no,
+        contract.vehicle_license_no,
+        vehicleCode.vehicle_name AS vehicleCodeName,
+        sysGroup.group_name AS lessor
+        FROM
+        renewal_register renewalRegister
+        LEFT JOIN
+        contract contract ON renewalRegister.cont_no = contract.cont_no AND contract.del_flag =  ${delete_exist}
+        LEFT JOIN
+        sys_group ON contract.apply_group = sys_group.group_code AND sys_group.del_flag = ${delete_exist}
+        LEFT JOIN
+        contract_finance ON contract.cont_no = contract_finance.cont_no AND contract_finance.del_flag = ${delete_exist}
+        LEFT JOIN
+        cstm_person person ON contract.apply_no=person.apply_no AND person.del_flag = ${delete_exist}
+        LEFT JOIN
+        contract_vehicle contractVehicle ON contract.cont_no=contractVehicle.cont_no AND contractVehicle.del_flag =  ${delete_exist}
+        LEFT JOIN
+        bas_vehicle vehicleCode ON contractVehicle.vehicle_code=vehicleCode.vehicle_code AND vehicleCode.del_flag = ${delete_exist}
+        LEFT JOIN
+        sys_group sysGroup ON contract_finance.belong_group = sysGroup.group_code AND sysGroup.del_flag =  ${delete_exist}
+        LEFT JOIN
+        cont_insurance ON renewalRegister.current_insurance_id = cont_insurance.cont_vehins_id  AND cont_insurance.del_flag =  ${delete_exist}
+        WHERE
+        renewalRegister.del_flag = ${delete_exist}
+        <if test="renewalRegisterVo.renewalTaskNo != null">
+            AND renewalRegister.renewal_task_no = #{renewalRegisterVo.renewalTaskNo}
+        </if>
+        AND contract.apply_type='1'
+        ORDER BY renewalRegister.update_time DESC)
+
+        UNION
+
+        (SELECT
+        renewalRegister.*,
+        contract_finance.license_attr AS serviceType,
+        contract_finance.fin_period_type AS finPeriodType,
+        contractVehicle.renewal_deposit,
+        contractVehicle.theft_insurance_type,
+        cont_insurance.ins_comp_name,
+        cont_insurance.ins_fee,
+        cont_insurance.ins_policy_no,
+        cont_insurance.valid_start_day,
+        cont_insurance.valid_end_day,
+        cont_insurance.insurance_type,
+        cont_insurance.insurance_select_info,
+        person.name,
+        person.driver,
+        person.driver_mobno,
+        contract.apply_type,
+        contract.apply_no,
+        person.mobile_no,
+        contract.engine_no,
+        contract.vin_no,
+        contract.vehicle_license_no,
+        vehicleCode.vehicle_name AS vehicleCodeName,
+        sysGroup.group_name AS lessor
+        FROM
+        renewal_register renewalRegister
+        LEFT JOIN
+        contract contract ON renewalRegister.cont_no = contract.cont_no AND contract.del_flag =  ${delete_exist}
+        LEFT JOIN
+        sys_group ON contract.apply_group = sys_group.group_code AND sys_group.del_flag = ${delete_exist}
+        LEFT JOIN
+        contract_finance ON contract.cont_no = contract_finance.cont_no AND contract_finance.del_flag = ${delete_exist}
+        LEFT JOIN
+        cstm_company person ON contract.apply_no=person.apply_no AND person.del_flag = ${delete_exist}
+        LEFT JOIN
+        contract_vehicle contractVehicle ON contract.cont_no=contractVehicle.cont_no AND contractVehicle.del_flag =  ${delete_exist}
+        LEFT JOIN
+        bas_vehicle vehicleCode ON contractVehicle.vehicle_code=vehicleCode.vehicle_code AND vehicleCode.del_flag = ${delete_exist}
+        LEFT JOIN
+        sys_group sysGroup ON contract_finance.belong_group = sysGroup.group_code AND sysGroup.del_flag =  ${delete_exist}
+        LEFT JOIN
+        cont_insurance ON renewalRegister.current_insurance_id = cont_insurance.cont_vehins_id  AND cont_insurance.del_flag =  ${delete_exist}
+        WHERE
+        renewalRegister.del_flag = ${delete_exist}
+        <if test="renewalRegisterVo.renewalTaskNo != null">
+            AND renewalRegister.renewal_task_no = #{renewalRegisterVo.renewalTaskNo}
+        </if>
+        AND contract.apply_type='2'
+        ORDER BY renewalRegister.update_time DESC)
+    </select>
+
+    <select id="selectRenewalRegistersPriorMonth" resultType="cn.com.leadu.fms.pojo.insurance.vo.renewalregister.RenewalRegisterVo">
+                    SELECT
+            cont_insurance.valid_end_day,
+            cstm_person.mobile_no,
+            contract.vehicle_license_no,
+            renewal_register.custom_payment_amount finAmount
+        FROM
+            renewal_register
+        LEFT JOIN cont_insurance ON renewal_register.current_insurance_id = cont_insurance.cont_vehins_id
+        AND cont_insurance.del_flag = ${delete_exist}
+        LEFT JOIN orig_file ON renewal_register.renewal_task_no = orig_file.biz_code
+        AND orig_file.del_flag = ${delete_exist}
+        LEFT JOIN contract ON renewal_register.cont_no = contract.cont_no
+        AND contract.del_flag = ${delete_exist}
+        LEFT JOIN apply ON apply.apply_no = contract.apply_no
+        AND apply.del_flag = ${delete_exist}
+        INNER JOIN cstm_person ON cstm_person.apply_no = apply.apply_no
+        AND cstm_person.del_flag = ${delete_exist}
+        WHERE
+            renewal_register.fin_flag = '0'
+        AND renewal_register.renewal_deadline_date = #{renewalRegisterVo.jugTime}
+        AND   (apply.company_type1 != #{renewalRegisterVo.companyType} or apply.company_type1 is  null)
+        AND renewal_register.del_flag = ${delete_exist}
+        AND orig_file.orig_file_status != '1'
+        UNION
+            (
+                SELECT
+                    cont_insurance.valid_end_day,
+                    cstm_company.contact_mobno,
+                    contract.vehicle_license_no,
+                    renewal_register.custom_payment_amount finAmount
+                FROM
+                    renewal_register
+                LEFT JOIN cont_insurance ON renewal_register.current_insurance_id = cont_insurance.cont_vehins_id
+                AND cont_insurance.del_flag = ${delete_exist}
+                LEFT JOIN orig_file ON renewal_register.renewal_task_no = orig_file.biz_code
+                AND orig_file.del_flag = ${delete_exist}
+                LEFT JOIN contract ON renewal_register.cont_no = contract.cont_no
+                AND contract.del_flag = ${delete_exist}
+                LEFT JOIN apply ON apply.apply_no = contract.apply_no
+                AND apply.del_flag = ${delete_exist}
+                INNER JOIN cstm_company ON cstm_company.apply_no = apply.apply_no
+                AND cstm_company.del_flag = ${delete_exist}
+                WHERE
+                    renewal_register.fin_flag = '0'
+                AND renewal_register.renewal_deadline_date = #{renewalRegisterVo.jugTime}
+                AND   (apply.company_type1 != #{renewalRegisterVo.companyType} or apply.company_type1 is  null)
+                AND renewal_register.del_flag = ${delete_exist}
+                    AND orig_file.orig_file_status != '1'
+
+            )
+    </select>
+   <select id="selectContInsurance" resultType="cn.com.leadu.fms.pojo.insurance.vo.renewalregister.RenewalRegisterVo">
+                   SELECT
+                cstm_person.mobile_no,
+                cont_insurance.valid_end_day,
+                contract.vehicle_license_no
+            FROM
+                cont_insurance
+            INNER JOIN contract_finance ON cont_insurance.cont_no = contract_finance.cont_no
+            AND (
+                cont_insurance.insurance_years * 12
+            ) >= contract_finance.fin_period_type
+            AND contract_finance.del_flag = ${delete_exist}
+            LEFT JOIN contract ON contract.cont_no = cont_insurance.cont_no AND contract.del_flag = ${delete_exist}
+            LEFT JOIN apply ON apply.apply_no = contract.apply_no
+            AND apply.del_flag = ${delete_exist}
+            INNER JOIN cstm_person ON cstm_person.apply_no = contract.apply_no
+            AND cstm_person.del_flag = ${delete_exist}
+            WHERE
+                cont_insurance.insurance_status = '1'
+                AND cont_insurance.valid_end_day  = #{renewalRegisterVo.jugTime}
+                AND   (apply.company_type1 != #{renewalRegisterVo.companyType} or apply.company_type1 is  null)
+            AND cont_insurance.del_flag = ${delete_exist}
+
+            UNION(
+            SELECT
+                cstm_company.contact_mobno,
+                cont_insurance.valid_end_day,
+                contract.vehicle_license_no
+            FROM
+                cont_insurance
+            INNER JOIN contract_finance ON cont_insurance.cont_no = contract_finance.cont_no
+            AND (
+                cont_insurance.insurance_years * 12
+            ) >= contract_finance.fin_period_type
+            AND contract_finance.del_flag = ${delete_exist}
+            LEFT JOIN contract ON contract.cont_no = cont_insurance.cont_no AND contract.del_flag = ${delete_exist}
+            LEFT JOIN apply ON apply.apply_no = contract.apply_no
+            AND apply.del_flag = ${delete_exist}
+            INNER JOIN cstm_company ON cstm_company.apply_no = contract.apply_no
+            AND cstm_company.del_flag = ${delete_exist}
+            WHERE
+                cont_insurance.insurance_status = '1'
+             AND cont_insurance.valid_end_day  = #{renewalRegisterVo.jugTime}
+             AND   (apply.company_type1 != #{renewalRegisterVo.companyType} or apply.company_type1 is  null)
+            AND cont_insurance.del_flag = ${delete_exist}
+            )
+   </select>
+    <select id="selectContInsuranPerMonth" resultType="cn.com.leadu.fms.pojo.prebiz.vo.continsurance.ContInsuranceVo">
+          SELECT
+            cont_insurance.cont_no,
+            cont_insurance.valid_end_day validEndDay,
+            contract.vehicle_license_no vehicleLicenseNo,
+            apply.apply_no applyNo,
+            apply.company_type1 companyType1,
+            contract.lease_term_end_date
+        FROM
+            cont_insurance
+        LEFT JOIN contract ON cont_insurance.cont_no = contract.cont_no
+        AND contract.del_flag = ${delete_exist}
+        LEFT JOIN apply ON apply.apply_no = contract.apply_no
+        AND apply.del_flag = ${delete_exist}
+        LEFT JOIN cstm_person ON cstm_person.apply_no = apply.apply_no
+        AND cstm_person.del_flag = ${delete_exist}
+        LEFT JOIN cstm_company ON cstm_company.apply_no = apply.apply_no
+        AND cstm_company.del_flag = ${delete_exist}
+        LEFT JOIN cont_fin_detail ON cont_insurance.cont_no = cont_fin_detail.cont_no
+        AND  (cont_insurance.insurance_years+ 1) = cont_fin_detail.fin_item_year
+        AND cont_fin_detail.fin_item = #{renewalRegisterVo.finItem}
+        INNER JOIN contract_finance ON cont_insurance.cont_no = contract_finance.cont_no
+            AND contract_finance.del_flag = ${delete_exist}
+        WHERE
+        (cont_fin_detail.fin_amount = 0 or cont_fin_detail.fin_amount is null)
+        AND  cont_insurance.valid_end_day  = #{renewalRegisterVo.jugTime}
+        AND   (apply.company_type1 != #{renewalRegisterVo.companyType} or apply.company_type1 is  null)
+        AND  cont_insurance.del_flag = ${delete_exist}
+    </select>
+</mapper>

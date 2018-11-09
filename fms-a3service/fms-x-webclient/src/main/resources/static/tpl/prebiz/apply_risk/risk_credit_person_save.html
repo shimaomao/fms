@@ -1,0 +1,389 @@
+<style>
+    .b-t{border-top: 1px solid #eaeeea;}
+    .b-b{border-bottom: 1px solid #eaeeea;}
+    .b-l{border-left: 1px solid #eaeeea;}
+    .b-r{border-right: 1px solid #eaeeea;}
+    .p-xs{padding: 5px;}
+    .report{border:1px solid #eaeeea;margin: 20px;}
+    .main-title{font-size: 20px;text-align: center;font-weight: bold;color: black;padding: 10px 0;}
+    .sub-title{padding: 5px;background-color: #f5f5f5;font-size: 16px;}
+    .sub-title span:first-child{font-weight: bold;color: black;}
+    .sub-title span:last-child{display: inline-block;width: 20px;height: 20px;}
+    .son-title{font-size: 14px;font-weight: bold;padding: 0 5px;background-color: #f1f1f1;}
+    .tal-tr{display: table;width: 100%;}
+    .tal-td{display: table-cell;vertical-align: middle;}
+    .report .row{line-height: 28px;}
+    .m-t-20{margin-top: 20px;}
+</style>
+<div ng-controller="risk_credit_person_save_controller" class="m-t-20">
+    <div class="panel panel-default">
+        <div class="report">
+
+            <!--反欺诈分析--Start-->
+            <div class="sub-main" ng-hide="antiList.length == 0">
+                <div class="sub-title b-b clearfix" click-hide>
+                    <span class="pull-left">反欺诈分析：</span>
+                    <span class="pull-right">
+                        <i class="glyphicon glyphicon-chevron-down"></i>
+                    </span>
+                </div>
+                <div class="sub-body">
+                    <div ng-repeat="a in antiList" class="b-b">
+                        <div class="tal-tr">
+                            <div class="tal-td b-r p-xs" style="width: 10%;">
+                                {{a.relation | getName:'relation'}}:
+                            </div>
+                            <div class="tal-td" style="width: 90%;">
+                                <div class="p-xs form-inline b-b">
+                                    姓名：<input type="text" ng-model="a.name" class="form-control" placeholder="姓名" disabled>
+                                    证件号码：<input type="text" ng-model="a.documentNo" class="form-control" placeholder="证件号码" disabled>
+                                    手机号码：<input type="text" ng-model="a.phone" class="form-control" placeholder="手机号码" disabled>
+                                    <button type="button" ng-click="getTableData(a);" class="btn btn-success btn-sm" ng-if="!disabled">查询</button>
+                                    <button type="button" ng-click="downloadXml(a.pycreditAnti.cisReportsXml);" class="btn btn-success btn-sm" ng-if="!disabled">下载报文</button>
+                                </div>
+                                <div class="son-body p-xs">
+                                    <div class="row">
+                                        <label class="col-sm-2 text-right"><b class="form-text-black">核查状态</b>:</label>
+                                        <div class="col-sm-2">{{a.pycreditAnti.treatResult}}</div>
+                                        <label class="col-sm-2 text-right"><b class="form-text-black">身份认证结果</b>:</label>
+                                        <div class="col-sm-2">{{a.pycreditAnti.result}}</div>
+                                        <label class="col-sm-2 text-right"><b class="form-text-black">姓名核查结果</b>:</label>
+                                        <div class="col-sm-2">{{a.pycreditAnti.nameCheckResult}}</div>
+                                    </div>
+                                    <div class="row">
+                                        <label class="col-sm-2 text-right"><b class="form-text-black">证件号码核查结果</b>:</label>
+                                        <div class="col-sm-2">{{a.pycreditAnti.documentNoCheckResult}}</div>
+                                        <label class="col-sm-2 text-right"><b class="form-text-black">手机号码核查结果</b>:</label>
+                                        <div class="col-sm-2">{{a.pycreditAnti.phoneCheckResult}}</div>
+                                        <label class="col-sm-2 text-right"><b class="form-text-black">运营商名称</b>:</label>
+                                        <div class="col-sm-2">{{a.pycreditAnti.operator}}</div>
+                                    </div>
+                                    <div class="row">
+                                        <label class="col-sm-2 text-right"><b class="form-text-black">手机状态</b>:</label>
+                                        <div class="col-sm-2">{{a.pycreditAnti.phoneStatus}}</div>
+                                        <label class="col-sm-2 text-right"><b class="form-text-black">手机号码在网时长</b>:</label>
+                                        <div class="col-sm-2">{{a.pycreditAnti.timeLength}}</div>
+                                    </div>
+                                    <div class="row">
+                                        <label class="col-sm-2 text-right"><b class="form-text-black">反欺诈综述信息</b>:</label>
+                                        <div class="col-sm-10">{{a.pycreditAnti.personAntiSpoofingDesc}}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--反欺诈分析--End-->
+
+            <!--地址核验--Start-->
+            <div class="sub-main" ng-hide="addrList.length == 0">
+                <div class="sub-title b-b clearfix" click-hide>
+                    <span class="pull-left">地址核验：</span>
+                    <span class="pull-right">
+                        <i class="glyphicon glyphicon-chevron-down"></i>
+                    </span>
+                </div>
+                <div class="sub-body">
+                    <div ng-repeat="a in addrList">
+                        <div class="tal-tr">
+                            <div class="tal-td b-r p-xs" ng-class="{'b-b':$index%2==1}" style="width: 10%;"><span ng-show="$index%2==0">{{a.relation | getName:'relation'}}:</span></div>
+                            <div class="tal-td" style="width: 90%;">
+                                <div class="p-xs b-b form-inline">
+                                    姓名：<input type="text" ng-model="a.name" class="form-control" placeholder="姓名" disabled>
+                                    证件号码：<input type="text" ng-model="a.documentNo" class="form-control" placeholder="证件号码" disabled>
+                                    手机号码：<input type="text" ng-model="a.phone" class="form-control" placeholder="手机号码" disabled>
+                                    地址：<input ng-if="a.pycreditType == 21" type="text" ng-model="a.resideAddr" class="form-control" placeholder="地址" disabled>
+                                    <input ng-if="a.pycreditType == 22" type="text" ng-model="a.compAddr" class="form-control" placeholder="地址" disabled>
+                                    <button type="button" ng-click="getTableData(a);" class="btn btn-success btn-sm" ng-if="!disabled">{{typeName[a.pycreditType]}}核查</button>
+                                </div>
+                                <div class="son-body p-xs b-b">
+                                    <div class="row">
+                                        <label class="col-sm-2 text-right"><b class="form-text-black">核查状态</b>:</label>
+                                        <div class="col-sm-2">{{a.pycreditAddr.treatResult}}</div>
+                                        <label class="col-sm-2 text-right"><b class="form-text-black">省核查结果</b>:</label>
+                                        <div class="col-sm-2">{{a.pycreditAddr.provinceCheckResult}}</div>
+                                        <label class="col-sm-2 text-right"><b class="form-text-black">市核查结果</b>:</label>
+                                        <div class="col-sm-2">{{a.pycreditAddr.cityCheckResult}}</div>
+                                    </div>
+                                    <div class="row">
+                                        <label class="col-sm-2 text-right"><b class="form-text-black">区/县核查结果</b>:</label>
+                                        <div class="col-sm-2">{{a.pycreditAddr.countyCheckResult}}</div>
+                                        <label class="col-sm-2 text-right"><b class="form-text-black">详细地址核查结果</b>:</label>
+                                        <div class="col-sm-2">{{a.pycreditAddr.detailAddressCheckResult}}</div>
+                                    </div>
+                                    <!--核查状态{{a.pycreditAddr.treatResult}}<br>
+                                    省核查结果{{a.pycreditAddr.provinceCheckResult}}<br>
+                                    市核查结果{{a.pycreditAddr.cityCheckResult}}<br>
+
+                                    区/县核查结果{{a.pycreditAddr.countyCheckResult}}<br>
+                                    详细地址核查结果{{a.pycreditAddr.detailAddressCheckResult}}<br>-->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--地址核验--End-->
+
+            <!--卡核查及交易--Start-->
+            <div class="sub-main" ng-hide="cardCheckList.length == 0">
+                <div class="sub-title b-b clearfix" click-hide>
+                    <span class="pull-left">卡核查及交易：</span>
+                    <span class="pull-right">
+                        <i class="glyphicon glyphicon-chevron-down"></i>
+                    </span>
+                </div>
+                <div class="sub-body">
+                    <div ng-repeat="a in cardCheckList" class="b-b">
+                        <div class="p-xs">{{a.relation | getName:'relation'}}:<button type="button" ng-click="getTableData(a);" class="btn btn-success btn-sm">查询</button></div>
+                        <div class="son-body">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--卡核查及交易--End-->
+
+            <!--个人银行卡核查--Start-->
+            <div class="sub-main" ng-hide="personBkchkekList.length == 0">
+                <div class="sub-title b-b clearfix" click-hide>
+                    <span class="pull-left">个人银行卡核查：</span>
+                    <span class="pull-right">
+                        <i class="glyphicon glyphicon-chevron-down"></i>
+                    </span>
+                </div>
+                <div class="sub-body">
+                    <div ng-repeat="a in personBkchkekList" class="b-b">
+                        <div class="tal-tr">
+                            <div class="tal-td p-xs b-r" style="width: 10%;">{{a.relation | getName:'relation'}}:</div>
+                            <div class="tal-td" style="width: 90%;">
+                                <div class="p-xs b-b form-inline">
+                                    姓名：<input type="text" ng-model="a.name" class="form-control" placeholder="姓名" disabled>
+                                    证件号码：<input type="text" ng-model="a.documentNo" class="form-control" placeholder="证件号码" disabled>
+                                    银行账号：<input type="text" ng-model="a.accountNo" ng-blur="setBankNo(a);" class="form-control" placeholder="银行账号" ng-disabled="disabled">
+                                    开户行行号：<input type="text" ng-model="a.openBankNo" class="form-control" placeholder="开户行行号" ng-disabled="disabled">
+                                    <button type="button" ng-click="getTableData(a);" class="btn btn-success btn-sm" ng-if="!disabled">查询</button>
+                                </div>
+                                <div class="son-body p-xs">
+                                    <div class="row">
+                                        <div class="col-sm-2 text-right"><b class="form-text-black">核查状态</b>:</div>
+                                        <div class="col-sm-2">{{a.pycreditPersonBkcheck.treatResult}}</div>
+                                        <div class="col-sm-2 text-right"><b class="form-text-black">银行卡核查结果</b>:</div>
+                                        <div class="col-sm-2">{{a.pycreditPersonBkcheck.status}}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--个人银行卡核查--End-->
+
+            <!--企业银行卡核查--Start-->
+            <div class="sub-main" ng-hide="corpBkcheckList.length == 0">
+                <div class="sub-title b-b clearfix" click-hide>
+                    <span class="pull-left">企业银行卡核查：</span>
+                    <span class="pull-right">
+                        <i class="glyphicon glyphicon-chevron-down"></i>
+                    </span>
+                </div>
+                <div class="sub-body">
+                    <div ng-repeat="a in corpBkcheckList" class="b-b">
+                        <div class="tal-tr">
+                            <div class="tal-td b-r p-xs" style="width: 10%;">
+                                {{a.relation | getName:'relation'}}:
+                            </div>
+                            <div class="tal-td" style="width: 90%;">
+                                <div class="p-xs b-b form-inline">
+                                    企业名称：<input type="text" ng-model="a.name" class="form-control" placeholder="企业名称" disabled>
+                                    银行账号：<input type="text" ng-model="a.accountNo" ng-blur="setBankNo(a);" class="form-control" placeholder="银行账号" ng-disabled="disabled">
+                                    开户行行号：<input type="text" ng-model="a.openBankNo" class="form-control" placeholder="开户行行号" ng-disabled="disabled">
+                                    <button type="button" ng-click="getTableData(a);" class="btn btn-success btn-sm" ng-if="!disabled">查询</button>
+                                </div>
+                                <div class="son-body">
+                                    <div class="row">
+                                        <label class="col-sm-2 text-right"><b class="form-text-black">核查状态</b>:</label>
+                                        <div class="col-sm-2">{{a.pycreditCorpBkcheck.treatResult}}</div>
+                                        <label class="col-sm-2 text-right"><b class="form-text-black">银行卡核查结果</b>:</label>
+                                        <div class="col-sm-2">{{a.pycreditCorpBkcheck.status}}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--企业银行卡核查--End-->
+
+            <!--驾驶证核查--Start-->
+            <div class="sub-main" ng-hide="driverList.length == 0">
+                <div class="sub-title b-b clearfix" click-hide>
+                    <span class="pull-left">驾驶证核查：</span>
+                    <span class="pull-right">
+                        <i class="glyphicon glyphicon-chevron-down"></i>
+                    </span>
+                </div>
+                <div class="sub-body">
+                    <div ng-repeat="a in driverList">
+                        <div class="tal-tr">
+                            <div class="tal-td b-r p-xs b-b" style="width: 10%;">{{a.relation | getName:'relation'}}:</div>
+                            <div class="tal-td" style="width: 90%;">
+                                <div class="p-xs b-b form-inline">
+                                    用车人姓名：<input type="text" ng-model="person.actCarUser" class="form-control" placeholder="用车人姓名" disabled>
+                                    驾驶证号码：<input type="text" ng-model="person.driLicenseNo" class="form-control" placeholder="驾驶证号码" disabled>
+                                    档案编号：<input type="text" ng-model="person.actLicenseNo" class="form-control" placeholder="档案编号" disabled>
+                                    <button type="button" ng-click="getTableData(a);" class="btn btn-success btn-sm" ng-if="!disabled">驾驶证核查</button>
+                                </div>
+                                <!--<div class="p-xs b-b">
+                                    <div class="row">
+                                        <div class="col-sm-2 text-right"><b class="form-text-black">姓名</b>:</div>
+                                        <div class="col-sm-2"><input type="text" ng-model="a.name" class="form-control" placeholder="姓名" disabled><p></p></div>
+                                        <div class="col-sm-2 text-right"><b class="form-text-black">证件号码</b>:</div>
+                                        <div class="col-sm-2"><input type="text" ng-model="a.documentNo" class="form-control" placeholder="证件号码" disabled></div>
+                                        <div class="col-sm-2 text-right"><b class="form-text-black">准驾车型</b>:</div>
+                                        <div class="col-sm-2">
+                                            <select name="carModels" ng-model="a.carModels" ng-options="a.codeValue as a.codeValueName for a in 'quasiDriveModel'|getList" class="form-control" disabled>
+                                                <option value="">&#45;&#45;请选择&#45;&#45;</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-2 text-right"><b class="form-text-black">初次领证日期</b>:</div>
+                                        <div class="col-sm-2"><input type="text" ng-model="a.firstGetDate" class="form-control" placeholder="初次领证日期" disabled></div>
+                                        <div class="col-sm-2 text-right"><b class="form-text-black">档案编号</b>:</div>
+                                        <div class="col-sm-2"><input type="text" ng-model="a.archviesNo" class="form-control" placeholder="档案编号" disabled></div>
+                                        <div class="col-sm-2 text-right"><button type="button" ng-click="getTableData(a);" class="btn btn-success btn-sm" ng-if="!disabled">驾驶证核查</button></div>
+                                    </div>
+                                </div>-->
+                                <div class="son-body">
+                                    <div class="row">
+                                        <div class="col-sm-2 text-right"><b class="form-text-black">用车人姓名核查结果</b>:</div>
+                                        <div class="col-sm-2">{{a.pycreditDriver.nameCheckResult}}</div>
+                                        <div class="col-sm-2 text-right"><b class="form-text-black">驾驶证号码核查结果</b>:</div>
+                                        <div class="col-sm-2">{{a.pycreditDriver.documentNoCheckResult}}</div>
+                                        <div class="col-sm-2 text-right"><b class="form-text-black">档案编号核查结果</b>:</div>
+                                        <div class="col-sm-2">{{a.pycreditDriver.checkResult}}</div>
+                                    </div>
+                                    <!--<div class="row">
+                                        <div class="col-sm-3 text-right"><b class="form-text-black">准驾车型核查结果</b>:</div>
+                                        <div class="col-sm-3">{{a.pycreditDriver.checkResult}}</div>
+                                        <div class="col-sm-3 text-right"><b class="form-text-black">驾驶证状态</b>:</div>
+                                        <div class="col-sm-3">{{a.pycreditDriver.driverLicenseStatusDesc}}</div>
+                                        <div class="col-sm-3 text-right"><b class="form-text-black">初次领证日期核查结果</b>:</div>
+                                        <div class="col-sm-3">{{a.pycreditDriver.checkResult}}</div>
+                                    </div>-->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--驾驶证核查--End-->
+
+            <!--企业风险--Start-->
+            <div class="sub-main" ng-hide="corpRiskList.length == 0">
+                <div class="sub-title b-b clearfix" click-hide>
+                    <span class="pull-left">企业风险：</span>
+                    <span class="pull-right">
+                        <i class="glyphicon glyphicon-chevron-down"></i>
+                    </span>
+                </div>
+                <div class="sub-body">
+                    <div ng-repeat="a in corpRiskList" class="b-b">
+                        <div class="tal-tr">
+                            <div class="tal-td b-r p-xs" style="width: 10%;">
+                                {{a.relation | getName:'relation'}}:
+                            </div>
+                            <div class="tal-td" style="width: 90%;">
+                                <div class="p-xs b-b form-inline">
+                                    企业名称：<input type="text" ng-model="a.name" class="form-control" placeholder="企业名称" disabled>
+                                    <!--组织机构代码：<input type="text" ng-model="a.registerNo" class="form-control" placeholder="企业的组织机构代码" disabled>-->
+                                    社会信用代码：<input type="text" ng-model="a.documentNo" class="form-control" placeholder="企业的组织社会信用代码" disabled>
+                                    <button type="button" ng-click="getTableData(a);" class="btn btn-success btn-sm" ng-if="!disabled">查询</button>
+                                </div>
+                                <div class="son-body">
+                                    <div class="row">
+                                        <label class="col-sm-2 text-right"><b class="form-text-black">核查状态</b>:</label>
+                                        <div class="col-sm-2">{{a.pycreditCorpRisk.treatResult}}</div>
+                                        <label class="col-sm-2 text-right"><b class="form-text-black">司法案例信息条数</b>:</label>
+                                        <div class="col-sm-2">{{a.pycreditCorpRisk.alCount}}</div>
+                                        <label class="col-sm-2 text-right"><b class="form-text-black">司法执行信息条数</b>:</label>
+                                        <div class="col-sm-2">{{a.pycreditCorpRisk.zxCount}}</div>
+                                    </div>
+                                    <div class="row">
+                                        <label class="col-sm-2 text-right"><b class="form-text-black">司法失信信息条数</b>:</label>
+                                        <div class="col-sm-2">{{a.pycreditCorpRisk.sxCount}}</div>
+                                        <label class="col-sm-2 text-right"><b class="form-text-black">税务行政执法信息条数</b>:</label>
+                                        <div class="col-sm-2">{{a.pycreditCorpRisk.swCount}}</div>
+                                        <label class="col-sm-2 text-right"><b class="form-text-black">催欠公告信息条数</b>:</label>
+                                        <div class="col-sm-2">{{a.pycreditCorpRisk.cqggCount}}</div>
+                                    </div>
+                                    <div class="row">
+                                        <label class="col-sm-2 text-right"><b class="form-text-black">网贷逾期信息条数</b>:</label>
+                                        <div class="col-sm-2">{{a.pycreditCorpRisk.wdyqCount}}</div>
+                                        <label class="col-sm-2 text-right"><b class="form-text-black">开庭公告信息条数</b>:</label>
+                                        <div class="col-sm-2">{{a.pycreditCorpRisk.ktggCount}}</div>
+                                        <label class="col-sm-2 text-right"><b class="form-text-black">其他司法公告信息条数</b>:</label>
+                                        <div class="col-sm-2">{{a.pycreditCorpRisk.qtsfggCount}}</div>
+                                    </div>
+                                    <div class="row">
+                                        <label class="col-sm-2 text-right"><b class="form-text-black">审判流程信息条数</b>:</label>
+                                        <div class="col-sm-2">{{a.pycreditCorpRisk.splcCount}}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--企业风险--End-->
+
+            <!--企业债务--Start-->
+            <div class="sub-main" ng-hide="corpDebtList.length == 0">
+                <div class="sub-title b-b clearfix" click-hide>
+                    <span class="pull-left">企业债务：</span>
+                    <span class="pull-right">
+                        <i class="glyphicon glyphicon-chevron-down"></i>
+                    </span>
+                </div>
+                <div class="sub-body">
+                    <div ng-repeat="a in corpDebtList" class="b-b">
+                        <div class="tal-tr">
+                            <div class="tal-td p-xs b-r" style="width: 10%;">
+                                {{a.relation | getName:'relation'}}:
+                            </div>
+                            <div class="tal-td" style="width: 90%;">
+                                <div class="p-xs b-b form-inline">
+                                    企业名称：<input type="text" ng-model="a.name" class="form-control" placeholder="企业名称" disabled>
+                                    社会信用代码：<input type="text" ng-model="a.documentNo" class="form-control" placeholder="企业的组织社会信用代码" disabled>
+                                    <button type="button" ng-click="getTableData(a);" class="btn btn-success btn-sm" ng-if="!disabled">查询</button>
+                                </div>
+                                <div class="son-body">
+                                    <div class="row">
+                                        <label class="col-sm-2 text-right"><b class="form-text-black">核查状态</b>:</label>
+                                        <div class="col-sm-2">{{a.pycreditCorpDebt.treatResult}}</div>
+                                        <label class="col-sm-2 text-right"><b class="form-text-black">动产抵押</b>:</label>
+                                        <div class="col-sm-2">{{a.pycreditCorpDebt.morDetailInfo}}</div>
+                                        <label class="col-sm-2 text-right"><b class="form-text-black">动产抵押物</b>:</label>
+                                        <div class="col-sm-2">{{a.pycreditCorpDebt.morgualInfo}}</div>
+                                    </div>
+                                    <div class="row">
+                                        <label class="col-sm-2 text-right"><b class="form-text-black">股权冻结</b>:</label>
+                                        <div class="col-sm-2">{{a.pycreditCorpDebt.sharesFrostInfo}}</div>
+                                        <label class="col-sm-2 text-right"><b class="form-text-black">股权出质</b>:</label>
+                                        <div class="col-sm-2">{{a.pycreditCorpDebt.sharesImpawnInfo}}</div>
+                                        <label class="col-sm-2 text-right"><b class="form-text-black">清算信息</b>:</label>
+                                        <div class="col-sm-2">{{a.pycreditCorpDebt.liquidationInfo}}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--企业债务--End-->
+
+        </div>
+    </div>
+</div>

@@ -1,0 +1,360 @@
+<style>
+    #finVehDetail .vehicleGroup{padding: 0 20px 0 20px}
+    #finVehDetail .vehicleTableDiv{overflow-x: auto;padding: 0;}
+    #finVehDetail .table{margin-left: 0px;border: 1px solid #EDEDED;}
+    #finVehDetail .table > thead{background-color: #F7F9FB;}
+    #finVehDetail .table > tbody > tr> th{background-color: #F7F9FB;}
+    #finVehDetail .vehicleTabCon{padding: 10px;border:1px solid #dee5e7;border-top: none;}
+    #finVehDetail .tabs{background-color: #F5F5F5;padding-left: 0;margin-bottom: 0;  list-style: none; height: 40px; display: block;border:1px solid #dee5e7;border-bottom: none;}
+    #finVehDetail .tabs > li{float:left;}
+    #finVehDetail .tabs > li > a{border: none;font-weight: bold;margin-right: 2px;line-height: 1.42857143;border-radius: 4px 4px 0 0;display: block;padding: 10px 15px;}
+    #finVehDetail .selectTab{background-color: #ffffff;}
+    #finVehDetail .selectTab > a{color: black;}
+    #finVehDetail .noneTab > a{color: #999;}
+</style>
+<div id="finVehDetail" ng-controller="apply_finance_vehicle_detail_controller">
+    <ul type="none" style="padding-left: 20px;">
+        <!-- 融资方案信息 -->
+        <div class="row" style="margin: 5px; padding-right: 40px;">
+            <div class="form-group row">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">出租人</b>:</label>
+                <div class="col-sm-2">
+                        <label class="col-sm-12 control-label text-left">{{applyFinanceVo.belongGroupName}}</label>
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">产品大类</b>:</label>
+                <div class="col-sm-2">
+                    <label class="col-sm-12 control-label text-left">{{applyFinanceVo.productCatgName}}</label>
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">产品方案</b>:</label>
+                <div class="col-sm-2">
+                    <label class="col-sm-12 control-label text-left">{{applyFinanceVo.productName}}</label>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">车辆类型</b>:</label>
+                <div class="col-sm-2">
+                    <label class="col-sm-12 control-label text-left">{{applyFinanceVo.vehicleFormName}}</label>
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">还款频率</b>:</label>
+                <div class="col-sm-2">
+                    <label class="col-sm-12 control-label text-left">{{applyFinanceVo.repayRateName}}</label>
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">租金支付模式</b>:</label>
+                <div class="col-sm-2">
+                    <label class="col-sm-12 control-label text-left">{{applyFinanceVo.rentPayModeName}}</label>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">还款方式</b>:</label>
+                <div class="col-sm-2">
+                    <label class="col-sm-12 control-label text-left">{{applyFinanceVo.repayModeName}}</label>
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">融资期限(月)</b>:</label>
+                <div class="col-sm-2">
+                    <label class="col-sm-12 control-label text-left">{{applyFinanceVo.finPeriodTypeName}}</label>
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">业务类型</b>:</label>
+                <div class="col-sm-2">
+                    <label class="col-sm-12 control-label text-left">{{applyFinanceVo.licenseAttrName}}</label>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">销售顾问</b>:</label>
+                <div class="col-sm-2">
+                    <label class="col-sm-12 control-label text-left">{{applyFinanceVo.salesCounselor}}</label>
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">销售顾问手机</b>:</label>
+                <div class="col-sm-2">
+                    <label class="col-sm-12 control-label text-left">{{applyFinanceVo.salesCounselorMobno}}</label>
+                </div>
+            </div>
+        </div>
+        <!-- 车辆和融资明细信息 -->
+        <!--<div class="row line-lg" style="font-weight: bold;font-size: 14px;">车辆和融资明细信息</div>-->
+        <div class="row" style="margin:20px 5px 10px -25px;">
+            <div class="pull-left m-t-sm m-l-sm line-lg m-r-md" style="font-weight: bold;font-size: 14px;">车辆和融资明细信息</div>
+            <ul id="finVehicleTab" class="tabs">
+                <li class="{{vehTabClass[vehicleFin.applyVehicleId]}}" ng-repeat="vehicleFin in vehicleFinList" ng-init="outerIndex = $index">
+                    <a data-toggle="tab" ng-click="openFinVehicleInfo(vehicleFin.applyVehicleId)">{{"车辆明细" + ($index + 1)}}</a>
+                </li>
+            </ul>
+            <div id="simTabContent" class="tab-content vehicleTabCon">
+                <div class="{{vehTabContentClass[vehicleFin.applyVehicleId]}}" id="{{vehicleFin.applyVehicleId}}" ng-repeat="vehicleFin in vehicleFinList" ng-init="outerIndex = $index" style="padding-right: 25px; padding-left: 15px;" >
+                    <div class="row">
+                        <div class="col-sm-8">
+                            <!-- 车辆信息 -->
+                            <div class="form-group row">
+                                <label class="col-sm-2 control-label text-right"><b class="form-text-black">车型</b>:</label>
+                                <div class="col-sm-4 form-inline">
+                                    <label class="col-sm-12 control-label text-left">{{vehicleFin.vehicleName}}</label>
+                                </div>
+                                <label class="col-sm-2 control-label text-right"><b class="form-text-black">实际销售方</b>:</label>
+                                <div class="col-sm-4 form-inline">
+                                    <label class="col-sm-12 control-label text-left">{{vehicleFin.saleGroupName}}</label>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 control-label text-right"><b class="form-text-black">车辆分类</b>:</label>
+                                <div class="col-sm-4">
+                                    <label class="col-sm-12 control-label text-left">{{vehicleFin.vehicleType2 | getName:'vehicleType2'}}</label>
+                                </div>
+                                <label class="col-sm-2 control-label text-right"><b class="form-text-black">制造商</b>:</label>
+                                <div class="col-sm-4">
+                                    <label class="col-sm-12 control-label text-left">{{vehicleFin.vehMakerName}}</label>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 control-label text-right"><b class="form-text-black">品牌</b>:</label>
+                                <div class="col-sm-4">
+                                    <label class="col-sm-12 control-label text-left">{{vehicleFin.vehBrandName}}</label>
+                                </div>
+                                <label class="col-sm-2 control-label text-right"><b class="form-text-black">车系</b>:</label>
+                                <div class="col-sm-4">
+                                    <label class="col-sm-12 control-label text-left">{{vehicleFin.vehSeriesName}}</label>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 control-label text-right"><b class="form-text-black">车辆指导价(元)</b>:</label>
+                                <div class="col-sm-4">
+                                    <label class="col-sm-12 control-label text-left">{{vehicleFin.guidePrice}}</label>
+                                </div>
+                                <label class="col-sm-2 control-label text-right"><b class="form-text-black">折扣率</b>:</label>
+                                <div class="col-sm-4">
+                                    <label class="col-sm-12 control-label text-left">{{vehicleFin.priceOffRate}}</label>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 control-label text-right"><b class="form-text-black">是否挂靠</b>:</label>
+                                <div class="col-sm-4">
+                                    <label class="col-sm-12 control-label text-left">{{vehicleFin.linkFlagName}}</label>
+                                </div>
+                                <label class="col-sm-2 control-label text-right"><b class="form-text-black">挂靠名称</b>:</label>
+                                <div class="col-sm-4">
+                                    <label class="col-sm-12 control-label text-left">{{vehicleFin.linkName}}</label>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 control-label text-right"><b class="form-text-black">数量</b>:</label>
+                                <div class="col-sm-4">
+                                    <label class="col-sm-12 control-label text-left">{{vehicleFin.vehicleCount}}</label>
+                                </div>
+                                <label class="col-sm-2 control-label text-right"><b class="form-text-black">GPS安装</b>:</label>
+                                <div class="col-sm-4">
+                                    <label class="col-sm-12 control-label text-left">{{vehicleFin.gpsInstModeName}}</label>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 control-label text-right"><b class="form-text-black">盗抢险投保渠道</b>:</label>
+                                <div class="col-sm-4">
+                                    <label class="col-sm-12 control-label text-left">{{vehicleFin.theftInsuranceType | getName:'theftInsuranceType'}}</label>
+                                </div>
+                                <label class="col-sm-2 control-label text-right"><b class="form-text-black">是否融盗抢险</b>:</label>
+                                <div class="col-sm-4">
+                                    <label class="col-sm-12 control-label text-left">{{vehicleFin.theftInsuranceFlag | getName:'yesNoFlag'}}</label>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 control-label text-right"><b class="form-text-black">车辆状态</b>:</label>
+                                <div class="col-sm-4">
+                                    <label class="col-sm-12 control-label text-left">{{vehicleFin.pickType | getName:'pickType'}}</label>
+                                </div>
+                                <label class="col-sm-2 control-label text-right"><b class="form-text-black">车辆外观颜色</b>:</label>
+                                <div class="col-sm-4">
+                                    <label class="col-sm-12 control-label text-left">{{vehicleFin.carAppearance}}</label>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 control-label text-right"><b class="form-text-black">续保押金(元)</b>:</label>
+                                <div class="col-sm-4">
+                                    <label class="col-sm-12 control-label text-left">{{vehicleFin.renewalDeposit}}</label>
+                                </div>
+                                <label class="col-sm-2 control-label text-right"><b class="form-text-black">代收手续费(元)</b>:</label>
+                                <div class="col-sm-4">
+                                    <label class="col-sm-12 control-label text-left">{{vehicleFin.salesCharge}}</label>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 control-label text-right"><b class="form-text-black">牌照使用费(元)</b>:</label>
+                                <div class="col-sm-4">
+                                    <label class="col-sm-12 control-label text-left">{{vehicleFin.licenseFee}}</label>
+                                </div>
+                                <label class="col-sm-2 control-label text-right"><b class="form-text-black">申请金额(元)</b>:</label>
+                                <div class="col-sm-4">
+                                    <label class="col-sm-12 control-label text-left">{{vehicleFin.investTotal}}</label>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 control-label text-right"><b class="form-text-black">参考购置税(元)</b>:</label>
+                                <div class="col-sm-4">
+                                    <label class="col-sm-12 control-label text-left">{{vehicleFin.referPurchaseTax}}</label>
+                                </div>
+                                <label class="col-sm-2 control-label text-right"><b class="form-text-black">参考保险费(元)</b>:</label>
+                                <div class="col-sm-4">
+                                    <label class="col-sm-12 control-label text-left">{{vehicleFin.referInsuranceFee}}</label>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 control-label text-right"><b class="form-text-black">回购价(元)</b>:</label>
+                                <div class="col-sm-4">
+                                    <label class="col-sm-12 control-label text-left">{{vehicleFin.backPurchase}}</label>
+                                </div>
+                                <label class="col-sm-2 control-label text-right"><b class="form-text-black">手续费(元)</b>:</label>
+                                <div class="col-sm-4">
+                                    <label class="col-sm-12 control-label text-left">{{vehicleFin.charge}}</label>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 control-label text-right"><b class="form-text-black">渠道佣金(元)</b>:</label>
+                                <div class="col-sm-4">
+                                    <label class="col-sm-12 control-label text-left">{{vehicleFin.channelCommission}}</label>
+                                </div>
+                                <label class="col-sm-2 control-label text-right"><b class="form-text-black">现金奖励(元)</b>:</label>
+                                <div class="col-sm-4">
+                                    <label class="col-sm-12 control-label text-left">{{vehicleFin.cashReward}}</label>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 control-label text-right"><b class="form-text-black">内部提成(元)</b>:</label>
+                                <div class="col-sm-4">
+                                    <label class="col-sm-12 control-label text-left">{{vehicleFin.internalFormation}}</label>
+                                </div>
+                            </div>
+                            <!--二手车-->
+                            <div ng-if="isOldCar">
+                                <div class="form-group row">
+                                    <label class="col-sm-2 control-label text-right" ><b class="form-text-black">车龄</b>:</label>
+                                    <div class="col-sm-4">
+                                        <label class="col-sm-12 control-label text-left">{{vehicleFin.vehAgeMonths}}</label>
+                                    </div>
+                                    <label class="col-sm-2 control-label text-right" ><b class="form-text-black">登记日期</b>:</label>
+                                    <div class="col-sm-4">
+                                        <label class="col-sm-12 control-label text-left">{{vehicleFin.registDate}}</label>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-sm-2 control-label text-right" ><b class="form-text-black">出厂日期</b>:</label>
+                                    <div class="col-sm-4">
+                                        <label class="col-sm-12 control-label text-left">{{vehicleFin.produceDate}}</label>
+                                    </div>
+                                    <label class="col-sm-2 control-label text-right" ><b class="form-text-black">二手车公里数</b>:</label>
+                                    <div class="col-sm-4">
+                                        <label class="col-sm-12 control-label text-left">{{vehicleFin.secHandMiles}}</label>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-sm-2 control-label text-right" ><b class="form-text-black">二手车车架号</b>:</label>
+                                    <div class="col-sm-4">
+                                        <label class="col-sm-12 control-label text-left">{{vehicleFin.secHandVin}}</label>
+                                    </div>
+                                    <label class="col-sm-2 control-label text-right" ><b class="form-text-black">评估金额</b>:</label>
+                                    <div class="col-sm-4">
+                                        <label class="col-sm-12 control-label text-left">{{vehicleFin.evaluatePrice}}</label>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-sm-2 control-label text-right" ><b class="form-text-black">评估人员</b>:</label>
+                                    <div class="col-sm-4">
+                                        <label class="col-sm-12 control-label text-left">{{vehicleFin.evaluatePer}}</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <!-- 融资明细 -->
+                            <div class="form-group row vehicleGroup">
+                                <div class="col-lg-12 form-inline vehicleTableDiv">
+                                    <table border="2" class="table m-b-none dataTable no-footer" role="grid" >
+                                        <tr>
+                                            <th class="sorting_disabled text-center">融资项目名称</th>
+                                            <th class="sorting_disabled text-center" >融资金额(元)</th>
+                                        </tr>
+                                        <tr ng-repeat="item in vehicleFin.applyFinDetailVoList">
+                                            <th class="text-center">{{item.finItemName}}</th>
+                                            <td class="text-center">{{item.finAmount != null ? ("￥"+item.finAmount) : ""}}</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row line-lg" style="font-weight: bold;font-size: 14px;">融资方案信息</div>
+        <div class="row" style="margin: 5px; padding-right: 40px;">
+            <div class="form-group row">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">保证金率(%)</b>:</label>
+                <div class="col-sm-2">
+                    <label class="col-sm-12 control-label text-left">{{applyFinanceVo.depositPerc}}</label>
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">保证金(元)</b>:</label>
+                <div class="col-sm-2">
+                    <label class="col-sm-12 control-label text-left">{{applyFinanceVo.deposit}}</label>
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">IRR(%)</b>:</label>
+                <div class="col-sm-2">
+                    <label class="col-sm-12 control-label text-left">{{applyFinanceVo.irr}}</label>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">首付比例(%)</b>:</label>
+                <div class="col-sm-2">
+                    <label class="col-sm-12 control-label text-left">{{applyFinanceVo.initPerc}}</label>
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">首付金额(元)</b>:</label>
+                <div class="col-sm-2">
+                    <label class="col-sm-12 control-label text-left">{{applyFinanceVo.initAmount}}</label>
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">申请金额(元)</b>:</label>
+                <div class="col-sm-2">
+                    <label class="col-sm-12 control-label text-left">{{applyFinanceVo.investTotal}}</label>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">年供比例(%)</b>:</label>
+                <div class="col-sm-2">
+                    <label class="col-sm-12 control-label text-left">{{applyFinanceVo.annualSupplyRate}}</label>
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">年供金额(元)</b>:</label>
+                <div class="col-sm-2">
+                    <label class="col-sm-12 control-label text-left">{{applyFinanceVo.annualSupplyAmount}}</label>
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">融资额(元)</b>:</label>
+                <div class="col-sm-2">
+                    <label class="col-sm-12 control-label text-left">{{applyFinanceVo.finTotal}}</label>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">尾付比例(%)</b>:</label>
+                <div class="col-sm-2">
+                    <label class="col-sm-12 control-label text-left">{{applyFinanceVo.finalPerc}}</label>
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">尾付金额(元)</b>:</label>
+                <div class="col-sm-2">
+                    <label class="col-sm-12 control-label text-left">{{applyFinanceVo.finalAmount}}</label>
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">月供(元)</b>:</label>
+                <div class="col-sm-2">
+                    <label class="col-sm-12 control-label text-left">{{applyFinanceVo.rent}}</label>
+                </div>
+            </div>
+
+
+            <div class="form-group row">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">客户利率(%)</b>:</label>
+                <div class="col-sm-2">
+                    <label class="col-sm-12 control-label text-left">{{applyFinanceVo.intrstRate}}</label>
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">贷款利息(元)</b>:</label>
+                <div class="col-sm-2">
+                    <label class="col-sm-12 control-label text-left">{{applyFinanceVo.loanInterest}}</label>
+                </div>
+                <div class="col-sm-4 text-center" ng-if="contNo">
+                <!--<label class="col-sm-2 control-label text-right">&nbsp;&nbsp;&nbsp;</label>-->
+                    <button class="btn btn-sm fms-button-margin-bottom btn-default m-b-xs" ng-click="overdueSales(contNo)">查看销售还款计划表</button>
+                </div>
+
+            </div>
+        </div>
+    </ul>
+</div>

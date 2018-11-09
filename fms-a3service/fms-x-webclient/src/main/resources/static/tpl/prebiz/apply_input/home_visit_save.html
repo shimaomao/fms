@@ -1,0 +1,98 @@
+<div ng-controller="home_visit_save_controller">
+    <div class="panel-body">
+        <div class="row">
+            <label class="col-sm-2 control-label text-right"><b class="form-text-black">是否家访</b><b class="form-error">*</b>:</label>
+            <div class="col-sm-2">
+                <div class="radio" ng-repeat="a in 'visitFlag'|getList"><label>
+                    <input type="radio" name="visitFlag" ng-model="$parent.visitFlag" value="{{a.codeValue}}">{{a.codeValueName}}</label>
+                </div>
+            </div>
+            <div ng-if="visitFlag == 1">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">家访时间</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-2">
+                    <input type="text" id="startDate" placeholder="请输入家访时间" name="startTime" date-picker class="form-control" ng-model="applyVisitVo.startTime" required>
+                    <p>
+                        <span class="form-info" ng-show=" (form.startTime.$dirty && form.startTime.$error.required) || (form.startTime.$error.required && formValidate)">家访时间不能为空</span>
+                    </p>
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">家访人员</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-2">
+                    <input type="text" name="visitorUser" placeholder="请输入家访人员" class="form-control m-b-xs" ng-model="applyVisitVo.visitorUser"  required>
+                    <p>
+                        <span class="form-info" ng-show=" (form.visitorUser.$dirty && form.visitorUser.$error.required) || (form.visitorUser.$error.required && formValidate)">家访人员不能为空</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div ng-if="visitFlag == 2" class="row">
+            <label class="col-sm-2 control-label text-right"><b class="form-text-black">不家访原因</b><b class="form-error">*</b>:</label>
+            <div class="col-sm-10">
+                <textarea name="reason" placeholder="请输入不家访原因" ng-model="applyVisitVo.reason" class="form-control r-none" cols="30" rows="5" required></textarea>
+                <p>
+                    <span class="form-info" ng-show=" (form.reason.$dirty && form.reason.$error.required) || (form.reason.$error.required && formValidate)">不家访原因不能为空</span>
+                </p>
+            </div>
+        </div>
+
+        <div ng-if="visitFlag == 1">
+            <div class="row">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">接待人员</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-2">
+                    <input type="text" name="reception" placeholder="请输入接待人员" class="form-control m-b-xs" ng-model="applyVisitVo.reception"  required>
+                    <p>
+                        <span class="form-info" ng-show=" (form.reception.$dirty && form.reception.$error.required) || (form.reception.$error.required && formValidate)">接待人员不能为空</span>
+                    </p>
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">接待人员电话</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-2">
+                    <input type="text" name="receptionTel" placeholder="请输入接待人员电话" class="form-control m-b-xs" ng-model="applyVisitVo.receptionTel" ng-pattern="/^1[345789]\d{9}$/"  required>
+                    <p>
+                        <span class="form-info" ng-show=" (form.receptionTel.$dirty && form.receptionTel.$error.required) || (form.receptionTel.$error.required && formValidate)">接待人员电话不能为空</span>
+                        <span class="form-info" ng-show=" (form.receptionTel.$error.pattern && !form.receptionTel.$error.required) || (form.receptionTel.$error.pattern && formValidate && !form.receptionTel.$error.required)">请输入正确的电话</span>
+                    </p>
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">与承租人关系</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-2">
+                    <select name="relation"  ng-model="applyVisitVo.relation" class="form-control m-b-xs" ng-options="a.codeValue as a.codeValueName for a in 'relationPer2' | getList"  required>
+                        <option value="">--请选择--</option>
+                        <!--<option ng-repeat="a in 'relationType' | getList" value="{{a.codeValue}}">{{a.codeValueName}}</option>-->
+                    </select>
+                    <p>
+                        <span class="form-info" ng-show=" (form.relation.$dirty && form.relation.$error.required) || (form.relation.$error.required && formValidate)">与承租人关系不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="row">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">上门地址</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-10">
+                    <input type="text" name="location" placeholder="请输入上门地址" class="form-control m-b-xs" ng-model="applyVisitVo.location"  required>
+                    <p>
+                        <span class="form-info" ng-show=" (form.location.$dirty && form.location.$error.required) || (form.location.$error.required && formValidate)">上门地址不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="row">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">现场走访简述</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-10">
+                    <textarea name="visitBriefReport" placeholder="若上门至借款人家里，重点描述借款人个人印象、家庭环境，装修情况，特别是配偶及家人就业收入等信息；&#13;&#10;若上门至借款人企业，重点描述企业现场办公情况：公司铭牌是否一致、企业员工数量、部门划分是否清晰、企业办公现场是否与企业主营业务种类、运作模式（主要上下游企业及结算方式）、企业利润（企业规模、毛利率、净利率），实际控制人的行业经验、行业背景等。" ng-model="applyVisitVo.visitBriefReport" class="form-control r-none" cols="30" rows="5" required></textarea>
+                    <p>
+                        <span class="form-info" ng-show=" (form.visitBriefReport.$dirty && form.visitBriefReport.$error.required) || (form.visitBriefReport.$error.required && formValidate)">现场走访简述不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="col-sm-12">
+                    <!--<div ng-include="'tpl/common/tree_file/tree_file.html'"></div>-->
+                    <tree-file-directive detail-flag="$root.yesNoFlag.no" file-type="$root.basFileTypes.applyVisitFile" files="applyVisitVo.bizFilesList" not-upload="applyVisitVo.notUpload" not-upload-info = "applyVisitVo.notUploadInfo" not-file-type="applyVisitVo.notFileType" not-file-type-name="applyVisitVo.notFileTypeName">
+                    </tree-file-directive>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.com.leadu.fms.data.system.dao.NumGenerateDao">
+    <!-- 根据订单编号 获取融资费用明细信息 -->
+    <select id="selectByNumTypeLock" parameterType="java.lang.String" resultType="cn.com.leadu.fms.pojo.system.entity.NumGenerate">
+        select numGenerate.*
+        from num_generate numGenerate
+        where numGenerate.del_flag = ${delete_exist}
+            and numGenerate.num_type = #{numType}
+        <if test="generateDate != null">
+            and numGenerate.generate_date = #{generateDate}
+        </if>
+        FOR UPDATE
+    </select>
+</mapper>

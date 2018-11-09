@@ -1,0 +1,97 @@
+<!--<div class="bg-light lter b-b wrapper-md">-->
+    <!--<h1 class="m-n font-thin h4">逾期客户电话登记</h1>-->
+<!--</div>-->
+<div  ng-controller="overdue_cstm_list_controller">
+    <div class="panel panel-default">
+        <div class="panel-body wrapper-sm">
+            <div class="row">
+                <div class="col-lg-12">
+                    <form class="form-inline" role="form">
+                        <div class="form-group">
+                            <label class="sr-only" >客户姓名 </label>
+                            <input class="form-control m-b-xs" ng-model="params.cstmName" placeholder="客户姓名">
+                        </div>
+                        <div class="form-group">
+                            <label class="sr-only" >出租人 </label>
+                            <input class="form-control m-b-xs" ng-model="params.groupName" placeholder="出租人">
+                        </div>
+                        <div class="form-group">
+                            <label class="sr-only" >合同编号 </label>
+                            <input class="form-control m-b-xs" ng-model="params.contNo" placeholder="合同编号">
+                        </div>
+                        <div class="form-group">
+                            <label class="sr-only" >车架号 </label>
+                            <input class="form-control m-b-xs" ng-model="params.vinNo" placeholder="车架号">
+                        </div>
+                        <div class="form-group">
+                            <label class="sr-only" >客户逾期天数起始 </label>
+                            <input class="form-control m-b-xs" ng-model="params.cstmOverdueStartDays" placeholder="客户逾期天数起始">
+                        </div>
+                        <div class="form-group">
+                            <label class="sr-only" >客户逾期天数结束 </label>
+                            <input class="form-control m-b-xs" ng-model="params.cstmOverdueEndDays" placeholder="客户逾期天数结束">
+                        </div>
+                        <div class="form-group">
+                            <label class="sr-only" >合同逾期天数起始 </label>
+                            <input class="form-control m-b-xs" ng-model="params.contOverdueStartDays" placeholder="合同逾期天数起始">
+                        </div>
+                        <div class="form-group">
+                            <label class="sr-only" >合同逾期天数结束 </label>
+                            <input class="form-control m-b-xs" ng-model="params.contOverdueEndDays" placeholder="合同逾期天数结束">
+                        </div>
+                        <!--<div class="form-group">
+                            <label class="sr-only" >分配人员账号 </label>
+                            <input class="form-control m-b-xs" ng-model="params.assignUser" placeholder="分配人员账号">
+                        </div>-->
+                        <div class="form-group">
+                            <label class="sr-only" >催收组别 </label>
+                            <select name="assignmentType" ng-model="params.assignmentType" class="form-control m-b-xs" ng-options="a.codeValue as a.codeValueName for a in 'assignmentType' | getList">
+                                <option value="">---请选择催收组别---</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="sr-only" >分配人员 </label>
+                            <select ng-model="params.assignUser" class="form-control m-b-xs">
+                                <option value="">---选择分配人员---</option>
+                                <option value="{{sysUserObj.user}}" ng-repeat="sysUserObj in sysUserList" ng-selected="params.assignUser == sysUserObj.user">{{sysUserObj.userName}}</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="sr-only" >当前是否逾期 </label>
+                            <select name="overdueFlag" ng-model="params.overdueFlag" class="form-control m-b-xs" ng-options="a.codeValue as a.codeValueName for a in 'overdueFlag' | getList">
+                                <option value="">---请选择当前是否逾期---</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="sr-only" >任务处理状态 </label>
+                            <select name="assignmentSts" ng-model="params.assignmentSts" class="form-control m-b-xs" ng-options="a.codeValue as a.codeValueName for a in 'assignmentSts' | getList">
+                                <option value="">---请选择任务处理状态---</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group m-b-sm">
+                            <div class="btn-group">
+                                <button class="btn btn-default m-b-xs btn-info" ng-click="searchOverdueCstm()" ><i class="fa fa-search"></i>查询</button>
+                                <button class="btn btn-default m-b-xs" ng-click="resetOverdueCstm()" ><i class="fa  icon-refresh"></i>重置</button>
+                            </div>
+                        </div>
+
+                        <div class="form-group pull-right">
+                            <div class="btn-group">
+                                <!--<button class="btn btn-default m-b-xs" ng-click="overdueDetail()"><i class=""></i>逾期详情</button>-->
+                                <button class="btn btn-default m-b-xs" ng-click="assign()"><i class=""></i>催收任务分配</button>
+                                <button class="btn btn-default m-b-xs" ng-click="collectionLetterDownload()"><i class=""></i>催收函下载</button>
+                                <button class="btn btn-default m-b-xs" ng-click="lawyerLetterDownload()"><i class=""></i>律师函下载</button>
+                                <button class="btn btn-default m-b-xs" ng-click="saveOverdueCstm()"><i class=""></i>催收电话登记</button>
+                                <button class="btn btn-default m-b-xs" ng-click="exportOverdueCstm()"><i class=""></i>导出Excel</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <table border="1" class="table table-striped m-b-none" id="overdue_cstm_table">
+        </table>
+    </div>
+</div>
+

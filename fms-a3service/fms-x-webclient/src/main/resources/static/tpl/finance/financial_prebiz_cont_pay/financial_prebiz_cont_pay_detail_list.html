@@ -1,0 +1,47 @@
+<div class="bg-light lter b-b wrapper-md">
+    <h1 class="m-n font-thin h4">财务付款清单明细报表</h1>
+</div>
+<div  ng-controller="cont_pay_detail_list_controller">
+    <div>
+        <toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-body wrapper-sm">
+            <div class="row">
+                <div class="col-lg-12">
+                    <form class="form-inline" role="form">
+                        <div class="form-group">
+                            <label class="sr-only" >融资合同编号 </label>
+                            <input class="form-control m-b-xs" ng-model="contractNo" placeholder="请输入融资合同编号">
+                        </div>
+                        <div class="form-group">
+                            <label class="sr-only" >融资申请编号 </label>
+                            <input class="form-control m-b-xs" ng-model="applyNo" placeholder="请输入融资申请编号">
+                        </div>
+                        <div class="form-group">
+                            <label class="sr-only" >承租人姓名 </label>
+                            <input class="form-control m-b-xs" ng-model="userName" placeholder="请输入承租人姓名">
+                        </div>
+
+                        <div class="form-group m-b-sm">
+                            <div class="btn-group">
+                                <button class="btn btn-default m-b-xs btn-info" ng-click="searchContPayDetailList()" ><i class="fa fa-search"></i>查询</button>
+                                <button class="btn btn-default m-b-xs" ng-click="resetContPayDetailList()" ><i class="fa  icon-refresh"></i>重置</button>
+                            </div>
+                        </div>
+
+                        <div class="form-group pull-right">
+                            <div class="btn-group">
+
+
+                            </div>
+                        </div>
+                    </form>
+                </div>·
+            </div>
+        </div>
+        <table border="1" class="table table-striped m-b-none" id="cont_pay_detail_table">
+        </table>
+    </div>
+</div>
+

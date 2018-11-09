@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.com.leadu.fms.data.finance.dao.ContReceiptDao">
+    <select id="selectContReceiptsByPage" resultType="cn.com.leadu.fms.pojo.finance.vo.contreceipt.ContReceiptVo">
+        SELECT
+            *
+        FROM cont_receipt
+        WHERE del_flag = ${delete_exist}
+        <if test="contReceiptVo.recAccountNo != null">
+            AND rec_account_no like #{contReceiptVo.recAccountNo}
+        </if>
+        <if test="contReceiptVo.receiptDateSearch != null">
+            AND receipt_date = #{contReceiptVo.receiptDateSearch}
+        </if>
+        <if test="contReceiptVo.memo != null">
+            AND  memo LIKE #{contReceiptVo.memo}
+        </if>
+       <!-- <if test="contReceiptVo.payAccountName != null">
+            AND pay_account_name LIKE #{contReceiptVo.payAccountName}
+        </if>-->
+        <if test="contReceiptVo.recAccountName != null">
+            AND rec_account_name LIKE #{contReceiptVo.recAccountName}
+        </if>
+        AND rest_amount > 0
+        <!-- 差额在前，保证金抵扣在后-->
+        ORDER BY case cont_receipt.input_mode when cont_receipt.input_mode &lt; 2 then cont_receipt.input_mode when 2 then 3 when 3 then 2 end asc
+        ,cont_receipt.receipt_date ASC
+    </select>
+    <select id="selectContReceiptsImport" resultType="cn.com.leadu.fms.pojo.finance.vo.contreceipt.ContReceiptVo">
+        SELECT
+        *
+        FROM cont_receipt
+        WHERE del_flag = ${delete_exist}
+        <if test="contReceiptVo.recAccountNo != null">
+            AND rec_account_no like #{contReceiptVo.recAccountNo}
+        </if>
+        <if test="contReceiptVo.receiptDateSearch != null">
+            AND receipt_date = #{contReceiptVo.receiptDateSearch}
+        </if>
+        <if test="contReceiptVo.memo != null">
+            AND  memo LIKE #{contReceiptVo.memo}
+        </if>
+        <if test="contReceiptVo.payAccountName != null">
+            AND pay_account_name LIKE #{contReceiptVo.payAccountName}
+        </if>
+        <if test="contReceiptVo.recAccountName != null">
+            AND rec_account_name LIKE #{contReceiptVo.recAccountName}
+        </if>
+        ORDER BY update_time DESC
+    </select>
+</mapper>

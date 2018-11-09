@@ -1,0 +1,101 @@
+<div  ng-controller="veh_maintain_modify_controller">
+    <div class="panel panel-default">
+        <div class="row" style="margin: 0; padding: 15px; border: 1px solid #dddddd">
+            <div class="form-group pull-left"><h1 class="m-n font-thin h4">修改维修记录</h1></div>
+
+            <div class="form-group pull-right">
+                <div class="btn-group">
+                    <button class="btn btn-default" ng-click="goBack()">返回</button>
+                    <button type="submit" class="btn btn-success" ng-disabled="submit" ng-click="modify()">保存</button>
+                </div>
+            </div>
+
+        </div>
+        <form name="form" class="form-validation" novalidate>
+
+            <div class="panel-body">
+
+                <input type="hidden" name="maintainFlag"  class="form-control m-b-xs" value= "1" >
+
+                <div class="panel-body wrapper-sm">
+                    <div class="panel-body ">
+                        <div class="keyUp">
+                            <div class="row">
+                                <label class="col-sm-1 control-label text-right"><b class="form-text-black">车架号</b><b class="form-error">*</b>:</label>
+                                <div class="col-sm-2 ">
+                                    <input type="text" name="vinNo" placeholder="请选择车架号" class="form-control m-b-xs" ng-model="vehMaintain.vinNo" disabled required>
+                                    <p>
+                                        <span class="form-info" ng-show=" (form.vinNo.$dirty && form.vinNo.$error.required) || (form.vinNo.$error.required && formValidate)">车架号不能为空</span>
+                                    </p>
+                                </div>
+
+                                <label class="col-sm-1 control-label text-right"><b class="form-text-black">发动机号</b><b class="form-error">*</b>:</label>
+                                <div class="col-sm-2">
+                                    <input type="text" name="engineNo" placeholder="请输入发动机号" class="form-control m-b-xs" ng-model="vehMaintain.engineNo" disabled required>
+                                    <p>
+                                        <span class="form-info" ng-show=" (form.engineNo.$dirty && form.engineNo.$error.required) || (form.engineNo.$error.required && formValidate)">发动机号不能为空</span>
+                                    </p>
+                                </div>
+
+                                <label class="col-sm-1 control-label text-right"><b class="form-text-black">车牌号</b><b class="form-error">*</b>:</label>
+                                <div class="col-sm-2">
+                                    <input type="text" name="vehicleLicenseNo" placeholder="请输入车牌号" class="form-control m-b-xs" ng-model="vehMaintain.vehicleLicenseNo" disabled required>
+                                    <p>
+                                        <span class="form-info" ng-show=" (form.vehicleLicenseNo.$dirty && form.vehicleLicenseNo.$error.required) || (form.vehicleLicenseNo.$error.required && formValidate)">车牌号不能为空</span>
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <label class="col-sm-1 control-label text-right"><b class="form-text-black">维修日期</b><b class="form-error">*</b>:</label>
+                                <div class="col-sm-2">
+                                    <input type="text" name="maintainDate" placeholder="请输入维修日期" class="form-control m-b-xs" ng-model="vehMaintain.maintainDate"  required date-picker >
+                                    <p>
+                                        <span class="form-info" ng-show=" (form.maintainDate.$dirty && form.maintainDate.$error.required) || (form.maintainDate.$error.required && formValidate)">维修日期不能为空</span>
+                                    </p>
+                                </div>
+                                 <label class="col-sm-1 control-label text-right"><b class="form-text-black">维修地点</b><b class="form-error">*</b>:</label>
+                                <div class="col-sm-2">
+                                    <input type="text" name="maintainAddr" placeholder="请输入维修地点" class="form-control m-b-xs" ng-model="vehMaintain.maintainAddr"  required >
+                                    <p>
+                                        <span class="form-info" ng-show=" (form.maintainAddr.$dirty && form.maintainAddr.$error.required) || (form.maintainAddr.$error.required && formValidate)">维修地点不能为空</span>
+                                    </p>
+                                </div>
+
+                                <label class="col-sm-1 control-label text-right"><b class="form-text-black">维修金额</b><b class="form-error">*</b>:</label>
+                                <div class="col-sm-2">
+                                    <input type="number" imit-number="10" name="maintainAmount" placeholder="请输入维修金额" class="form-control m-b-xs" ng-model="vehMaintain.maintainAmount"  required>
+                                    <p>
+                                        <span class="form-info" ng-show=" (form.maintainAmount.$dirty && form.maintainAmount.$error.required) || (form.maintainAmount.$error.required && formValidate)">维修金额不能为空</span>
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <label class="col-sm-1 control-label text-right"><b class="form-text-black">维修备注</b><b class="form-error">*</b>:</label>
+                                <div class="col-sm-5">
+                                    <textarea limit-word cols="100" rows="5" maxlength="500" placeholder="请输入维修备注" class="form-control m-b-xs" name="maintainMemo" ng-model="vehMaintain.maintainMemo" required></textarea>
+                                    <p>
+                                        <span class="form-info" ng-show=" (form.maintainMemo.$dirty && form.maintainMemo.$error.required) || (form.maintainMemo.$error.required && formValidate)">维修备注不能为空</span>
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <label class="col-sm-1 control-label text-right"><b class="form-text-black">附件上传</b></label>
+                                <div class="col-sm-9 control-label" ng-if="httpData">
+                                    <tree-file-directive detail-flag="$root.yesNoFlag.no" file-type="$root.basFileTypes.vehMaintainFile" files="$parent.bizFilesList" not-upload="$parent.notUpload" not-upload-info="$parent.msgInfo"   not-file-type="$parent.notFileType" not-file-type-name="$parent.notFileTypeName">
+                                    </tree-file-directive>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div>
+        <toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+    </div>
+</div>

@@ -1,0 +1,73 @@
+<div>
+    <toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+</div>
+<div ng-controller="collection_task_list_controller">
+    <div class="panel panel-default">
+        <div class="panel-body wrapper-sm">
+            <div class="row">
+                <div class="col-lg-12">
+                    <form class="form-inline" role="form">
+                        <div class="form-group">
+                            <label class="sr-only" >承租人 </label>
+                            <input class="form-control m-b-xs" ng-model="params.cstmName" placeholder="承租人">
+                        </div>
+                        <div class="form-group">
+                            <label class="sr-only" >任务号 </label>
+                            <input class="form-control m-b-xs" ng-model="params.collectionTaskNo" placeholder="任务号">
+                        </div>
+                        <div class="form-group">
+                            <label class="sr-only" >发起人 </label>
+                            <input class="form-control m-b-xs" ng-model="params.applyUser" placeholder="发起人">
+                        </div>
+                        <div class="form-group">
+                            <label class="sr-only" >登记人 </label>
+                            <input class="form-control m-b-xs" ng-model="params.registerUser" placeholder="登记人">
+                        </div>
+                        <div class="form-group">
+                            <label class="sr-only" >任务状态 </label>
+                            <select ng-model="params.collectionTaskStatus" class="form-control m-b-xs">
+                                <option value="">---选择申请状态---</option>
+                                <option value="{{bizStatusObj.codeValue}}" ng-if="bizStatusObj.codeValue.startsWith($root.bizTypes.collectionTask)" ng-repeat="bizStatusObj in bizStatusList" ng-selected="params.collectionTaskStatus == bizStatusObj.codeValue">{{bizStatusObj.codeValueName}}</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="sr-only" >任务来源 </label>
+                            <select name="dataSource" ng-model="params.dataSource" class="form-control m-b-xs" ng-selected="params.dataSource == a.codeValue" ng-options="a.codeValue as a.codeValueName for a in 'dataSourceType' | getList">
+                                <option value="">---请选择任务来源---</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="sr-only" >催收等级 </label>
+                            <select name="collectionLevel" ng-model="params.collectionLevel" class="form-control m-b-xs" ng-selected="params.collectionLevel == a.codeValue" ng-options="a.codeValue as a.codeValueName for a in 'collectionLevel' | getList">
+                                <option value="">---请选择催收等级---</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="sr-only" >派单类型 </label>
+                            <select name="dispatchType" ng-model="params.dispatchType" class="form-control m-b-xs" ng-selected="params.dispatchType == a.codeValue" ng-options="a.codeValue as a.codeValueName for a in 'dispatchType' | getList">
+                                <option value="">---请选择派单类型---</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group m-b-sm">
+                            <div class="btn-group">
+                                <button class="btn btn-default m-b-xs btn-info" ng-click="searchCollectionTask()" ><i class="fa fa-search"></i>查询</button>
+                                <button class="btn btn-default m-b-xs" ng-click="resetCollectionTask()" ><i class="fa  icon-refresh"></i>重置</button>
+                            </div>
+                        </div>
+
+                        <div class="form-group pull-right">
+                            <div class="btn-group">
+                                <button class="btn btn-default m-b-xs" ng-click="saveCollectionTask()"><i class="fa fa-plus"></i>发起任务</button>
+                                <button class="btn btn-default m-b-xs" ng-click="exportCollectionTask()" ><i class=""></i>导出Excel</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <table border="1" class="table table-striped m-b-none" id="collection_task_table">
+        </table>
+    </div>
+</div>
+

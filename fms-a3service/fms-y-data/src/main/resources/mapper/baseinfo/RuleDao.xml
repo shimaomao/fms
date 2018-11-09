@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.leadu.fms.data.baseinfo.dao.RuleDao">
+
+    <!--
+     /**
+     * @Title:
+     * @Description:   查询ruleVo，并根据时间倒序
+     * @param ruleVo
+     * @return
+     * @throws
+     * @author qiaomengnan
+     * @date 2018/05/23 12:28:09
+     */
+     -->
+    <select id="selectRuleVos" resultType="cn.com.leadu.fms.pojo.baseinfo.vo.rule.RuleVo">
+      select
+      rule.rule_id ,rule.rule_type,rule.rule_key,rule.rule_name
+      ,sysCode.code_value_name ruleTypeName
+      from rule rule
+      left join sys_code sysCode on sysCode.del_flag = ${delete_exist}
+      and sysCode.code_type = #{ruleVo.ruleCodeType}
+      and sysCode.code_value = rule.rule_type
+      where rule.del_flag = ${delete_exist}
+      order by rule.create_time desc
+    </select>
+
+    <!--
+     /**
+     * @Title:
+     * @Description:   根据条件单个查询ruleVo
+     * @param ruleVo
+     * @return
+     * @throws
+     * @author qiaomengnan
+     * @date 2018/05/23 12:28:09
+     */
+     -->
+    <select id="selectRuleVo" resultType="cn.com.leadu.fms.pojo.baseinfo.vo.rule.RuleVo">
+        select
+        rule.rule_id ,rule.rule_type,rule.rule_key,rule.rule_name
+        ,sysCode.code_value_name ruleTypeName
+        from rule rule
+        left join sys_code sysCode on sysCode.del_flag = ${delete_exist}
+        and sysCode.code_type = #{ruleVo.ruleCodeType}
+        and sysCode.code_value = rule.rule_type
+        where rule.del_flag = ${delete_exist}
+        <if test="ruleVo.ruleType != null">
+            and rule.rule_type = #{ruleVo.ruleType}
+        </if>
+        <if test="ruleVo.ruleKey != null">
+            and rule.rule_key = #{ruleVo.ruleKey}
+        </if>
+        order by rule.create_time desc
+    </select>
+
+</mapper>

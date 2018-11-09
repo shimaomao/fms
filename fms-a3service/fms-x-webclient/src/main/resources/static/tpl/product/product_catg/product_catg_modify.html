@@ -1,0 +1,104 @@
+<div  class="panel panel-default wrapper-md"   ng-controller="product_catg_modify_controller">
+<div class="modal-header">
+    <h4 class="modal-title">编辑产品大类 </h4>
+</div>
+
+    <div>
+        <toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+    </div>
+<div class="panel-body wrapper-sm">
+    <form name="form" class="form-validation" novalidate>
+
+        <div class="panel-body">
+
+            <div class="form-group row">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">产品大类代码</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-3">
+                    <input type="text" name="productCatg" placeholder="请输入产品大类代码" class="form-control m-b-xs" ng-model="productCatg.productCatg" readonly required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.productCatg.$dirty && form.productCatg.$error.required) || (form.productCatg.$error.required && formValidate)">产品大类代码不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+
+            <div class="form-group row">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">产品大类名称</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-3">
+                    <input type="text" name="productCatgName" placeholder="请输入产品大类名称" class="form-control m-b-xs" ng-model="productCatg.productCatgName"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.productCatgName.$dirty && form.productCatgName.$error.required) || (form.productCatgName.$error.required && formValidate)">产品大类名称不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+
+            <div class="form-group row">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">产品大类描述</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-3">
+                    <input type="text" name="productCatgMemo" placeholder="请输入产品大类描述" class="form-control m-b-xs" ng-model="productCatg.productCatgMemo"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.productCatgMemo.$dirty && form.productCatgMemo.$error.required) || (form.productCatgMemo.$error.required && formValidate)">产品大类描述不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">申请类型</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-4">
+                    <div class="checkbox"  ng-repeat="applyTypeObj in applyTypeList" style="margin-top: 2px;">
+                        <label><input type="checkbox" name="applyType" ng-checked="productCatg.applyType.indexOf(applyTypeObj.codeValue)!=-1?'checked':''" ng-true-value="{{applyTypeObj.codeValue}}">{{applyTypeObj.codeValueName}}</label>
+                    </div>
+                    <p>
+                        <span class="form-info" ng-show="productCatg.applyType==''&&formValidate">请选择申请类型</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">车辆类型</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-4">
+                    <div class="checkbox"  ng-repeat="vehicleFormObj in vehicleFormList" style="margin-top: 2px;">
+                        <label><input type="checkbox" name="vehicleForm" ng-checked="productCatg.vehicleForm.indexOf(vehicleFormObj.codeValue)!=-1?'checked':''" ng-true-value="{{vehicleFormObj.codeValue}}">{{vehicleFormObj.codeValueName}}</label>
+                    </div>
+                    <p>
+                        <span class="form-info" ng-show="productCatg.vehicleForm==''&&formValidate">请选择车辆类型</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">车辆种类</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-4">
+                    <div class="checkbox"  ng-repeat="vehicleTypeObj in vehicleTypeList" style="margin-top: 2px;">
+                        <label><input type="checkbox" name="vehicleType" ng-checked="productCatg.vehicleType.indexOf(vehicleTypeObj.codeValue)!=-1?'checked':''" ng-true-value="{{vehicleTypeObj.codeValue}}">{{vehicleTypeObj.codeValueName}}</label>
+                    </div>
+                    <p>
+                        <span class="form-info" ng-show="productCatg.vehicleType==''&&formValidate">请选择车辆种类</span>
+                    </p>
+                </div>
+            </div>
+
+
+          <div class="form-group row">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">启用标志</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-2">
+                    <select ng-model="productCatg.enableFlag" class="form-control m-b-xs">
+                        <option value="">-&#45;&#45;选择启用标识-&#45;&#45;</option>
+                        <option value="{{enableFlagObj.codeValue}}" ng-repeat="enableFlagObj in enableFlagList">{{enableFlagObj.codeValueName}}</option>
+                    </select>
+                    <p>
+                        <span class="form-info" ng-show=" (form.enableFlag.$dirty && form.enableFlag.$error.required) || (form.enableFlag.$error.required && formValidate)">启用标志不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+
+        </div>
+        <div class="col-sm-15 m-b text-center">
+            <button class="btn btn-default" ng-click="goBack()">返回</button>
+            <button type="submit" class="btn btn-success" ng-disabled="submit" ng-click="modify()">保存</button>
+        </div>
+    </form>
+</div>
+    </div>

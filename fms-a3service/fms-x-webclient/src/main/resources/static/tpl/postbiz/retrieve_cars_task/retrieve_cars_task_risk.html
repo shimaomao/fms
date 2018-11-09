@@ -1,0 +1,297 @@
+<div class="panel panel-default"  ng-controller="retrieve_cars_task_risk_controller">
+    <div>
+        <toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+    </div>
+    <form name="form" class="form-validation" novalidate>
+
+        <div class="row" style="margin: 0; padding: 15px; border: 1px solid #dddddd">
+            <div class="form-inline" role="form">
+                <div class="form-group">
+                    <h4 class="m-n font-thin h4">风控主管派单</h4>
+                </div>
+                <div class="form-group pull-right">
+                    <button class="btn btn-success m-t-xs m-r-xs btn-sm fms-button-margin-top" ng-click="save()"  ng-disabled="submit">通过</button>
+                    <button class="btn btn-default btn-sm fms-button-margin-top" ng-click="goRefuse()"  ng-disabled="submit">拒绝</button>
+                    <button class="btn btn-default btn-sm fms-button-margin-top" ng-click="sendBack()"  ng-disabled="submit">退回</button>
+                    <button class="btn btn-default btn-sm fms-button-margin-top" ng-click="goBack()"  ng-disabled="submit">返回</button>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="panel-body">
+            <div class="row line-lg" style="font-weight: bold;font-size: 14px;">申请信息</div>
+            <div class="form-group row">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">合同编号</b>:</label>
+                <div class="col-sm-2 text-left">
+                    <label class="control-label text-left"><b class="form-text-black">{{retrieveCarsTask.contNo}}</b></label>
+                    <!--<input type="text" disabled placeholder="请选择合同编号" class="form-control " style="width: auto;display: inline-block" ng-model="retrieveCarsTask.contNo" name="contNo" required>-->
+                </div>
+                <div class="col-sm-7 text-left">
+                    <button class="btn btn-success btn-sm fms-margin-bottom-2" ng-click="contractDetails()"  ng-disabled="submit">合同详情</button>
+                    <button class="btn btn-success btn-sm fms-margin-bottom-2" ng-click="overdueDetail()"  ng-disabled="submit">逾期详情</button>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">承租人</b>:</label>
+                <div class="col-sm-3">
+                    <label class="control-label text-left"><b class="form-text-black">{{retrieveCarsTask.cstmName}}</b></label>
+                </div>
+                <label class="col-sm-1 control-label text-right"><b class="form-text-black">出租人</b>:</label>
+                <div class="col-sm-3">
+                    <label class="control-label text-left"><b class="form-text-black">{{retrieveCarsTask.lessor}}</b></label>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">发动机号</b>:</label>
+                <div class="col-sm-2">
+                    <label class="control-label text-left"><b class="form-text-black">{{retrieveCarsTask.engineNo}}</b></label>
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">试算金额(元)</b>:</label>
+                <div class="col-sm-3">
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <label class="control-label text-left"><b class="form-text-black">{{retrieveCarsTask.trialAmount}}</b></label>
+                        </div>
+                        <div class="col-sm-8">
+                            <button type="button" class="btn btn-sm btn-success" ng-click="preCount()">试算详情</button>
+                        </div>
+                    </div>
+                </div>
+                <label class="col-sm-1 control-label text-right"><b class="form-text-black">车牌号</b>:</label>
+                <div class="col-sm-2">
+                    <label class="control-label text-left"><b class="form-text-black">{{retrieveCarsTask.vehicleLicenseNo}}</b></label>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">车辆残值(元)</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-2">
+                    <!--<label class="control-label text-left"><b class="form-text-black">{{retrieveCarsTask.vehicleLicenseNo}}</b></label>-->
+                    <input type="number" placeholder="请输入车辆残值" limit-number name="salvageValue" title="{{retrieveCarsTask.salvageValue}}" class="form-control" style="width: auto;display: inline-block" ng-change="calculateTrial()" ng-model="retrieveCarsTask.salvageValue" required>
+                    <p>
+                        <span class="form-info" ng-show=" (form.salvageValue.$error.pattern && !form.salvageValue.$error.required) || (form.salvageValue.$error.required && formValidate)">请输入车辆残值</span>
+                    </p>
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">费用差额(元)</b>:</label>
+                <div class="col-sm-2">
+                    <label class="control-label text-left"><b class="form-text-black">{{retrieveCarsTask.costDifference}}</b></label>
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">车架号</b>:</label>
+                <div class="col-sm-2">
+                    <label class="control-label text-left"><b class="form-text-black">{{retrieveCarsTask.overdueContVinNo}}</b></label>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">收车原因</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-8">
+                    <textarea ng-model="retrieveCarsTask.retrieveReason" style="height: 110px;resize: none; " name="retrieveReason" class="form-control" limit-word="1000" required ></textarea>
+                    <p>
+                        <span class="form-info" ng-show=" (form.retrieveReason.$error.pattern && !form.retrieveReason.$error.required) || (form.retrieveReason.$error.required && formValidate)">请输入收车原因</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <!--<div class="panel-body">-->
+            <!---->
+        <!--</div>-->
+
+        <div class="panel-body">
+            <div class="row line-lg" style="font-weight: bold;font-size: 14px;">派单信息</div>
+            <div class="form-group row">
+            <label class="col-sm-2 control-label text-right"><b class="form-text-black">预估收车费用(元)</b><b class="form-error">*</b>:</label>
+            <div class="col-sm-2">
+                <input type="number" placeholder="请输入预估收车费用" limit-number name="forRetrAmount" title="{{retrieveCarsTask.forRetrAmount}}" class="form-control" style="width: auto;display: inline-block" ng-model="retrieveCarsTask.forRetrAmount" required>
+                <p>
+                    <span class="form-info" ng-show=" (form.forRetrAmount.$dirty && form.forRetrAmount.$error.required) || (form.forRetrAmount.$error.required && formValidate)">请输入预估收车费用</span>
+                </p>
+            </div>
+            <label class="col-sm-2 control-label text-right"><b class="form-text-black">派单类型</b><b class="form-error">*</b>:</label>
+            <div class="col-sm-2">
+                <select ng-model="retrieveCarsTask.dispachType" name="dispachType" class="form-control m-b-xs" style="width: auto;display: inline-block" required >
+                    <option value="">---请选择---</option>
+                    <option ng-selected="retrieveCarsTask.dispachType == dispatchType.codeValue" ng-repeat="dispatchType in dispatchTypes" value="{{dispatchType.codeValue}}">{{dispatchType.codeValueName}}</option>
+                </select>
+                <p>
+                    <span class="form-info" ng-show=" (form.dispachType.$dirty && form.dispachType.$error.required) || (form.dispachType.$error.required && formValidate)">请选择派单类型</span>
+                </p>
+            </div>
+            <label ng-if="retrieveCarsTask.dispachType == 1" class="col-sm-2 control-label text-right"><b class="form-text-black">任务派单人</b><b class="form-error">*</b>:</label>
+            <div class="col-sm-2" ng-if="retrieveCarsTask.dispachType == 1">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <input type="text" placeholder="请选择派单人" limit-word="50" name="dispachPeopleName" title="{{retrieveCarsTask.dispachPeopleName}}" class="form-control" style="width: auto;display: inline-block" ng-model="retrieveCarsTask.dispachPeopleName" required disabled>
+                        <p>
+                            <span class="form-info" ng-show=" (form.dispachPeopleName.$dirty && form.dispachPeopleName.$error.required) || (form.dispachPeopleName.$error.required && formValidate)">请选择派单人</span>
+                        </p>
+                    </div>
+                    <div class="col-sm-6">
+                        <button class="btn btn-success btn-sm fms-margin-bottom-2" ng-click="selectUser()">选择</button>
+                    </div>
+                </div>
+            </div>
+            <label ng-if="retrieveCarsTask.dispachType == 2" class="col-sm-2 control-label text-right"><b class="form-text-black">任务登记人</b><b class="form-error">*</b>:</label>
+            <div class="col-sm-2" ng-if="retrieveCarsTask.dispachType == 2">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <input type="text" placeholder="请选择登记人" limit-word="50" name="registerPeopleName" title="{{retrieveCarsTask.registerPeopleName}}" class="form-control" style="width: auto;display: inline-block" ng-model="retrieveCarsTask.registerPeopleName" required disabled>
+                        <p>
+                            <span class="form-info" ng-show=" (form.registerPeopleName.$dirty && form.registerPeopleName.$error.required) || (form.registerPeopleName.$error.required && formValidate)">请选择登记人</span>
+                        </p>
+                    </div>
+                    <div class="col-sm-6">
+                        <button class="btn btn-success btn-sm fms-margin-bottom-2" ng-click="selectUser()">选择</button>
+                    </div>
+                </div>
+              </div>
+            </div>
+            <div class="form-group row" ng-if="retrieveCarsTask.dispachType == 2">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">第三方机构名称</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <input type="text" placeholder="请输入第三方机构名称" limit-word="50" name="thirdDispachOrg" title="{{retrieveCarsTask.thirdDispachOrg}}" class="form-control" style="width: auto;display: inline-block" ng-model="retrieveCarsTask.thirdDispachOrg" required>
+                        <p>
+                            <span class="form-info" ng-show=" (form.thirdDispachOrg.$dirty && form.thirdDispachOrg.$error.required) || (form.thirdDispachOrg.$error.required && formValidate)">请输入第三方机构名称</span>
+                        </p>
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">第三方机构联系人</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <input type="text" placeholder="请输入第三方机构联系人" limit-word="50" name="thirdDispachContact" title="{{retrieveCarsTask.thirdDispachContact}}" class="form-control" style="width: auto;display: inline-block" ng-model="retrieveCarsTask.thirdDispachContact" required>
+                        <p>
+                            <span class="form-info" ng-show=" (form.thirdDispachContact.$dirty && form.thirdDispachContact.$error.required) || (form.thirdDispachContact.$error.required && formValidate)">请输入第三方机构联系人</span>
+                        </p>
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">第三方机构联系电话</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <input type="text" placeholder="请输入第三方机构联系电话" limit-word="50" name="thirdDispachMobile" title="{{retrieveCarsTask.thirdDispachMobile}}" class="form-control" style="width: auto;display: inline-block" ng-model="retrieveCarsTask.thirdDispachMobile" required>
+                        <p>
+                            <span class="form-info" ng-show=" (form.thirdDispachMobile.$dirty && form.thirdDispachMobile.$error.required) || (form.thirdDispachMobile.$error.required && formValidate)">请选择登记人</span>
+                        </p>
+                    </div>
+            </div>
+        </div>
+        <!--<div class="row text-center m-b">-->
+            <!--<div class="col-lg-3">-->
+                <!--<h3>派单信息</h3>-->
+            <!--</div>-->
+        <!--</div>-->
+
+        <!--<div class="row text-center m-b" >-->
+                <!--<div class="col-lg-4" >-->
+                    <!--<div class="col-lg-5">-->
+                        <!--<label class="control-label">预估收车费用(元)<b class="form-error">*</b>: </label>-->
+                    <!--</div>-->
+                    <!--<div class="col-lg-7">-->
+                        <!--<input type="number"  placeholder="请输入预估收车费用" class="form-control " name="forRetrAmount"  ng-model="retrieveCarsTask.forRetrAmount"  limit-number required>-->
+                        <!--<p>-->
+                            <!--<span class="form-info" ng-show=" (form.forRetrAmount.$dirty && form.forRetrAmount.$error.required) || (form.forRetrAmount.$error.required && formValidate)">请输入预估收车费用</span>-->
+                        <!--</p>-->
+                    <!--</div>-->
+                <!--</div>-->
+                <!--<div class="col-lg-4">-->
+                    <!--<div class="col-lg-4">-->
+                        <!--<label class="control-label">派单类型<b class="form-error">*</b>: </label>-->
+                    <!--</div>-->
+                    <!--<div class="col-lg-6">-->
+                        <!--<select ng-model="retrieveCarsTask.dispachType" name="dispachType" class="form-control m-b-xs" required >-->
+                            <!--<option value="">-&#45;&#45;请选择-&#45;&#45;</option>-->
+                            <!--<option ng-selected="retrieveCarsTask.dispachType == dispatchType.codeValue" ng-repeat="dispatchType in dispatchTypes" value="{{dispatchType.codeValue}}">{{dispatchType.codeValueName}}</option>-->
+                        <!--</select>-->
+                        <!--<p>-->
+                            <!--<span class="form-info" ng-show=" (form.dispachType.$dirty && form.dispachType.$error.required) || (form.dispachType.$error.required && formValidate)">请选择派单类型</span>-->
+                        <!--</p>-->
+                    <!--</div>-->
+                <!--</div>-->
+
+                <!--<div class="col-lg-4" ng-if="retrieveCarsTask.dispachType == 1">-->
+                    <!--<div class="col-lg-4">-->
+                        <!--<label class="control-label">任务派单<b class="form-error">*</b>: </label>-->
+                    <!--</div>-->
+                    <!--<div class="col-lg-6">-->
+                        <!--<input type="text" disabled placeholder="请选择派单人" class="form-control " name="dispachPeopleName" ng-model="retrieveCarsTask.dispachPeopleName"  required>-->
+                        <!--<p>-->
+                            <!--<span class="form-info" ng-show=" (form.dispachPeopleName.$dirty && form.dispachPeopleName.$error.required) || (form.dispachPeopleName.$error.required && formValidate)">请选择派单人</span>-->
+                        <!--</p>-->
+                    <!--</div>-->
+                    <!--<div class="col-lg-2">-->
+                        <!--<button class="btn btn-success btn-sm fms-margin-bottom-2" ng-click="selectUser()"  ng-disabled="submit">选择</button>-->
+                    <!--</div>-->
+                <!--</div>-->
+
+
+                <!--<div class="col-lg-4" ng-if="retrieveCarsTask.dispachType == 2">-->
+                    <!--<div class="col-lg-4">-->
+                        <!--<label class="control-label">任务登记<b class="form-error">*</b>: </label>-->
+                    <!--</div>-->
+                    <!--<div class="col-lg-6">-->
+                        <!--<input type="text" disabled placeholder="请选择登记人" class="form-control "  ng-model="retrieveCarsTask.registerPeopleName"  required>-->
+                        <!--<p>-->
+                            <!--<span class="form-info" ng-show=" (form.registerPeopleName.$dirty && form.registerPeopleName.$error.required) || (form.registerPeopleName.$error.required && formValidate)">请选择登记人</span>-->
+                        <!--</p>-->
+                    <!--</div>-->
+                    <!--<div class="col-lg-2">-->
+                        <!--<button class="btn btn-success btn-sm fms-margin-bottom-2" ng-click="selectUser()"  ng-disabled="submit">选择</button>-->
+                    <!--</div>-->
+                <!--</div>-->
+
+        <!--</div>-->
+
+
+
+        <!--<div class="row text-center m-b" ng-if="retrieveCarsTask.dispachType == 2">-->
+            <!--<div class="col-lg-4"  >-->
+                <!--<div class="col-lg-5">-->
+                    <!--<label class="control-label">第三方机构名称<b class="form-error">*</b>: </label>-->
+                <!--</div>-->
+                <!--<div class="col-lg-7">-->
+                    <!--<input type="text" limit-word="50"  placeholder="第三方机构名称" class="form-control " name="thirdDispachOrg" ng-model="retrieveCarsTask.thirdDispachOrg"  required>-->
+                    <!--<p>-->
+                        <!--<span class="form-info" ng-show=" (form.thirdDispachOrg.$dirty && form.thirdDispachOrg.$error.required) || (form.thirdDispachOrg.$error.required && formValidate)">请选择登记人</span>-->
+                    <!--</p>-->
+                <!--</div>-->
+            <!--</div>-->
+
+
+            <!--<div class="col-lg-4">-->
+                <!--<div class="col-lg-6">-->
+                    <!--<label class="control-label">第三方机构联系人<b class="form-error">*</b>: </label>-->
+                <!--</div>-->
+                <!--<div class="col-lg-6">-->
+                    <!--<input type="text" limit-word="50"  placeholder="第三方机构联系人" class="form-control " name="thirdDispachContact"  ng-model="retrieveCarsTask.thirdDispachContact"  required>-->
+                    <!--<p>-->
+                        <!--<span class="form-info" ng-show=" (form.thirdDispachContact.$dirty && form.thirdDispachContact.$error.required) || (form.thirdDispachContact.$error.required && formValidate)">请选择登记人</span>-->
+                    <!--</p>-->
+                <!--</div>-->
+            <!--</div>-->
+
+            <!--<div class="col-lg-4">-->
+                <!--<div class="col-lg-6">-->
+                    <!--<label class="control-label">第三方机构联系电话<b class="form-error">*</b>: </label>-->
+                <!--</div>-->
+                <!--<div class="col-lg-6">-->
+                    <!--<input type="text" limit-word="50"  placeholder="机构联系电话" class="form-control " name="thirdDispachMobile" ng-model="retrieveCarsTask.thirdDispachMobile"  required>-->
+                    <!--<p>-->
+                        <!--<span class="form-info" ng-show=" (form.thirdDispachMobile.$dirty && form.thirdDispachMobile.$error.required) || (form.thirdDispachMobile.$error.required && formValidate)">请选择登记人</span>-->
+                    <!--</p>-->
+                <!--</div>-->
+            <!--</div>-->
+
+        <!--</div>-->
+
+        <div class="panel-body">
+            <div class="form-group row">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">备注</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-8">
+                    <textarea ng-model="retrieveCarsTask.memo" name="memo"  class="form-control" limit-word="1000" required></textarea>
+                    <p>
+                        <span class="form-info" ng-show=" (form.memo.$error.pattern && !form.memo.$error.required) || (form.memo.$error.required && formValidate)">请输入备注</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel-body">
+            <process-log-list-directive wf-log-type="$root.bizTypes.retrieveCar" wf-log-no="retrieveCarTaskNo"> </process-log-list-directive>
+        </div>
+
+    </form>
+</div>

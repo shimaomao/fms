@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>调试菜单</title>
+    <script src="vendor/angular/angular.min.js"></script>
+    <style>
+        *{margin: 0;padding: 0;}
+        .ul-group{list-style: none;}
+        .li-cell{float: left;float: left;margin-right: 10px;background: #f0f0f0;}
+        .li-cell h4{color: #2685FF;}
+        .li-cell div{cursor: pointer;font-size: 14px;margin: 5px;}
+        .li-cell div:hover{color: #2685FF;}
+    </style>
+</head>
+<body ng-app="myApp" ng-controller="myCtrl">
+    <ul class="ul-group">
+        <li class="li-cell" ng-repeat="a in menuData" ng-show="a.children != 0">
+            <h4>{{a.menuName}}</h4>
+            <div ng-repeat="b in a.children" ng-click="goUrl(b.menuLink);">{{b.menuName}}</div>
+        </li>
+    </ul>
+
+</body>
+<script>
+   angular.module('myApp',[]).controller('myCtrl',['$scope',function ($scope) {
+       $scope.menuData = JSON.parse(localStorage.getItem('ngStorage-user')).sysMenus;
+       $scope.goUrl = function (menuLink) {
+           var menu = menuLink.replace('.','/');
+           var url = "http://localhost:9001/#/"+menu;
+           console.log(url);
+           window.open(url,'_self');
+       };
+   }]); 
+</script>
+</html>

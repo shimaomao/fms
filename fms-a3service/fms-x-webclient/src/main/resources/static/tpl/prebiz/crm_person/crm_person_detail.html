@@ -1,0 +1,294 @@
+<div ng-controller="crm_person_detail_controller">
+    <form name="form" class="form-validation" novalidate>
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <div class="row">
+                    <div class="form-group pull-right">
+                        <div class="btn-group ">
+                            <button class="btn btn-default m-t-xs" ng-click="goBack()">返回</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="row line-lg" style="font-weight: bold;font-size: 14px;">
+                    <div class="col-sm-12">个人基本信息</div>
+                </div>
+                <div style="margin: 5px; padding-right: 50px;">
+                    <div class="row">
+                        <label class="col-sm-2 text-right"><b class="form-text-black">客户姓名</b>:</label>
+                        <div class="col-sm-2">
+                            {{crmPerson.name}}
+                        </div>
+
+                        <label class="col-sm-2 text-right"><b class="form-text-black">证件类型</b>:</label>
+                        <div class="col-sm-2">
+                            {{crmPerson.certifType | getName:'certifType'}}
+                        </div>
+                        <label class="col-sm-2 text-right"><b class="form-text-black">证件号码</b>:</label>
+                        <div class="col-sm-2">
+                            {{crmPerson.certifNo}}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label class="col-sm-2 text-right"><b class="form-text-black">性别</b>:</label>
+                        <div class="col-sm-2">
+                            {{crmPerson.sex | getName:'gender'}}
+                        </div>
+                        <label class="col-sm-2 text-right"><b class="form-text-black">出生日期</b>:</label>
+                        <div class="col-sm-2">
+                            {{crmPerson.birthDate}}
+                        </div>
+                        <label class="col-sm-2 text-right"><b class="form-text-black">生肖</b>:</label>
+                        <div class="col-sm-2">
+                            {{crmPerson.chineseZodiac | getName:'chineseZodiac'}}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label class="col-sm-2 text-right"><b class="form-text-black">婚姻状况</b>:</label>
+                        <div class="col-sm-2">
+                            {{crmPerson.marriageStatus | getName:'marriageStatus'}}
+                        </div>
+                        <label class="col-sm-2 text-right"><b class="form-text-black">户口类别</b>:</label>
+                        <div class="col-sm-2">
+                            {{crmPerson.censusType | getName:'censusType'}}
+                        </div>
+                        <label class="col-sm-2 text-right"><b class="form-text-black">客户学历</b>:</label>
+                        <div class="col-sm-2">
+                            {{crmPerson.eduBgType | getName:'eduBgType'}}
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <label class="col-sm-2 text-right"><b class="form-text-black">手机号码</b>:</label>
+                        <div class="col-sm-2">
+                            {{crmPerson.mobileNo}}
+                        </div>
+                        <label class="col-sm-2 text-right"><b class="form-text-black">电话号码</b>:</label>
+                        <div class="col-sm-2">
+                            {{crmPerson.telNo}}
+                        </div>
+                        <label class="col-sm-2 text-right"><b class="form-text-black">QQ号</b>:</label>
+                        <div class="col-sm-2">
+                            {{crmPerson.qqNo}}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label class="col-sm-2 text-right"><b class="form-text-black">微信号</b>:</label>
+                        <div class="col-sm-2">
+                            {{crmPerson.wechatNo}}
+                        </div>
+                        <label class="col-sm-2 text-right"><b class="form-text-black">E-mail</b>:</label>
+                        <div class="col-sm-2">
+                            {{crmPerson.mail}}
+                        </div>
+                        <label class="col-sm-2 text-right"><b class="form-text-black">民族</b>:</label>
+                        <div class="col-sm-2">
+                            {{crmPerson.ethnicType | getName:'ethnicType'}}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label class="col-sm-2 text-right"><b class="form-text-black">档案编号</b>:</label>
+                        <div class="col-sm-2">
+                            {{crmPerson.licenseNo}}
+                        </div>
+                        <label class="col-sm-2 text-right"><b class="form-text-black">房产评估值</b>:</label>
+                        <div class="col-sm-2">
+                            {{crmPerson.propertyValue}}
+                        </div>
+                        <label class="col-sm-2 text-right"><b class="form-text-black">客户描述</b>:</label>
+                        <div class="col-sm-2">
+                            {{crmPerson.sourceIncomeDes}}
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <label class="col-sm-2 text-right"><b class="form-text-black">初次领证日期</b>:</label>
+                        <div class="col-sm-2">
+                            {{crmPerson.firstIssueDate}}
+                        </div>
+                        <label class="col-sm-2 text-right"><b class="form-text-black">房产建筑面积(m²)</b>:</label>
+                        <div class="col-sm-2">
+                            {{crmPerson.propertySize}}
+                        </div>
+                        <label class="col-sm-2 text-right"><b class="form-text-black">房产购买时间</b>:</label>
+                        <div class="col-sm-2">
+                            {{crmPerson.propertyGetDate}}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label class="col-sm-2 text-right"><b class="form-text-black">准驾车型</b>:</label>
+                        <div class="col-sm-2">
+                            {{crmPerson.quasiDriveModel | getName:'quasiDriveModel'}}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row line-lg" style="font-weight: bold;font-size: 14px;">
+                    <div class="col-sm-12">职业信息</div>
+                </div>
+                <div style="margin: 5px; padding-right: 50px;">
+                    <div class="row">
+                        <label class="col-sm-2 text-right"><b class="form-text-black">单位名称</b>:</label>
+                        <div class="col-sm-2">
+                            {{crmPerson.compName}}
+                        </div>
+                        <label class="col-sm-2 text-right"><b class="form-text-black">单位行业类别</b>:</label>
+                        <div class="col-sm-2">
+                            {{crmPerson.industry | getName:'industryType'}}
+                        </div>
+                        <label class="col-sm-2 text-right"><b class="form-text-black">单位电话</b>:</label>
+                        <div class="col-sm-2">
+                            {{crmPerson.compTel}}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label class="col-sm-2 text-right"><b class="form-text-black">在职年限</b>:</label>
+                        <div class="col-sm-2">
+                            {{crmPerson.workYear}}
+                        </div>
+                        <label class="col-sm-2 text-right"><b class="form-text-black">职业</b>:</label>
+                        <div class="col-sm-2">
+                            {{crmPerson.profession | getName:'professionType'}}
+                        </div>
+                        <label class="col-sm-2 text-right"><b class="form-text-black">职位</b>:</label>
+                        <div class="col-sm-2">
+                            {{crmPerson.position | getName:'positionType'}}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label class="col-sm-2 text-right"><b class="form-text-black">单位所在省份</b>:</label>
+                        <div class="col-sm-2">
+                            {{crmPerson.compProv | getAreaName}}
+                        </div>
+                        <label class="col-sm-2 text-right"><b class="form-text-black">单位所在城市</b>:</label>
+                        <div class="col-sm-2">
+                            {{crmPerson.compCity | getAreaName}}
+                        </div>
+                        <label class="col-sm-2 text-right"><b class="form-text-black">单位所在区县</b>:</label>
+                        <div class="col-sm-2">
+                            {{crmPerson.compCounty | getAreaName}}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label class="col-sm-2 text-right"><b class="form-text-black">税后年薪(万元)</b>:</label>
+                        <div class="col-sm-2">
+                            {{crmPerson.salary}}
+                        </div>
+                        <div class="col-sm-4"></div>
+                        <label class="col-sm-2 text-right"><b class="form-text-black">其他收入(万元)</b>:</label>
+                        <div class="col-sm-2">
+                            {{crmPerson.elseSalary}}
+                        </div>
+                    </div>
+                    <div class="row" id="jobComAddr">
+                        <label class="col-sm-2 text-right"><b class="form-text-black">单位详细地址</b>:</label>
+                        <div class="col-sm-10 control-label">
+                            {{crmPerson.compAddr}}
+                        </div>
+                    </div>
+                </div>
+
+                <div ng-if="crmPerson.marriageStatus !=2 && crmPerson.marriageStatus !=3 && crmPerson.marriageStatus !=4" class="row line-lg" style="font-weight: bold;font-size: 14px;">
+                    <div class="col-sm-12">配偶信息</div>
+                </div>
+                <div ng-if="crmPerson.marriageStatus !=2 && crmPerson.marriageStatus !=3 && crmPerson.marriageStatus !=4" style="margin: 5px; padding-right: 50px;" >
+                    <div class="row">
+                        <label class="col-sm-2 text-right"><b class="form-text-black">配偶姓名</b>:</label>
+                        <div class="col-sm-2">
+                            {{crmPerson.mateName}}
+                        </div>
+                        <label class="col-sm-2 text-right"><b class="form-text-black">证件类型</b>:</label>
+                        <div class="col-sm-2">
+                            {{crmPerson.mateCertifType | getName:'certifType'}}
+                        </div>
+                        <label class="col-sm-2 text-right"><b class="form-text-black">证件号</b>:</label>
+                        <div class="col-sm-2">
+                            {{crmPerson.mateCertifNo}}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row line-lg" style="font-weight: bold;font-size: 14px;">
+                    <div class="col-sm-12">地址信息</div>
+                </div>
+                <div class="row" style="margin: 5px; padding-right: 50px;">
+                    <div class="row">
+                        <label class="col-sm-2 text-right"><b class="form-text-black">居住状况</b>:</label>
+                        <div class="col-sm-2">
+                            {{crmPerson.resideCond | getName:'resideCond'}}
+                        </div>
+                        <label class="col-sm-2 text-right"><b class="form-text-black">房产类型</b>:</label>
+                        <div class="col-sm-2">
+                            {{crmPerson.propertyType |getName:'propertyType'}}
+                        </div>
+                        <label class="col-sm-2 text-right"><b class="form-text-black">居住年份</b>:</label>
+                        <div class="col-sm-2">
+                            {{crmPerson.resideYear | getName:'resideYear'}}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label class="col-sm-2 text-right"><b class="form-text-black">居住省份</b>:</label>
+                        <div class="col-sm-2">
+                            {{crmPerson.resideProv | getAreaName}}
+                        </div>
+                        <label class="col-sm-2 text-right"><b class="form-text-black">居住城市</b>:</label>
+                        <div class="col-sm-2">
+                            {{crmPerson.resideCity | getAreaName}}
+                        </div>
+
+                        <label class="col-sm-2 text-right"><b class="form-text-black">居住区县</b>:</label>
+                        <div class="col-sm-2">
+                            {{crmPerson.resideCounty | getAreaName}}
+                        </div>
+                    </div>
+                    <div class="row" id="resideAddr">
+                        <label class="col-sm-2 text-right"><b class="form-text-black">居住详细地址</b>:</label>
+                        <div class="col-sm-10">
+                            {{crmPerson.resideAddr}}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label class="col-sm-2 text-right"><b class="form-text-black">户籍省份</b>:</label>
+                        <div class="col-sm-2">
+                            {{crmPerson.censusProv | getAreaName}}
+                        </div>
+                        <label class="col-sm-2 text-right"><b class="form-text-black">户籍城市</b>:</label>
+                        <div class="col-sm-2">
+                            {{crmPerson.censusCity | getAreaName}}
+                        </div>
+                        <label class="col-sm-2 text-right"><b class="form-text-black">户籍区县</b>:</label>
+                        <div class="col-sm-2">
+                            {{crmPerson.censusCounty | getAreaName}}
+                        </div>
+                    </div>
+                    <div class="row" id="censusAddr">
+                        <label class="col-sm-2 text-right"><b class="form-text-black">户籍详细地址</b>:</label>
+                        <div class="col-sm-10">
+                            {{crmPerson.censusAddr}}
+                        </div>
+                    </div>
+                    <div class="row">
+
+                        <label class="col-sm-2 text-right"><b class="form-text-black">房产省份</b>:</label>
+                        <div class="col-sm-2">
+                            {{crmPerson.propertyProv | getAreaName}}
+                        </div>
+                        <label class="col-sm-2 text-right"><b class="form-text-black">房产城市</b>:</label>
+                        <div class="col-sm-2">
+                            {{crmPerson.propertyCity | getAreaName}}
+                        </div>
+                        <label class="col-sm-2 text-right"><b class="form-text-black">房产区县</b>:</label>
+                        <div class="col-sm-2">
+                            {{crmPerson.propertyCounty | getAreaName}}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label class="col-sm-2 text-right"><b class="form-text-black">房产详细地址</b>:</label>
+                        <div class="col-sm-10">
+                            {{crmPerson.propertyAddr}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

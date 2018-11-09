@@ -1,0 +1,198 @@
+<style>
+    #tabContent {margin:20px 0px 10px 0px;}
+    #tabContent .tab-con{padding: 10px;border:1px solid #dee5e7;border-top: none;}
+    #tabContent .tabs{background-color: #F5F5F5;padding-left: 0;margin-bottom: 0;  list-style: none; height: 40px; display: block;border:1px solid #dee5e7;border-bottom: none;}
+    #tabContent .tabs > li{float:left;}
+    #tabContent .tabs > li > a{border: none;font-weight: bold;margin-right: 2px;line-height: 1.42857143;border-radius: 4px 4px 0 0;display: block;padding: 10px 15px;}
+    #tabContent .selectTab{background-color: #ffffff;}
+    #tabContent .selectTab > a{color: black;}
+    #tabContent .noneTab > a{color: #999;}
+</style>
+
+
+<div class="panel panel-default" ng-controller="equ_mor_info_review_controller">
+
+
+    <div class="row fms-page-header" >
+        <div class="form-inline" role="form">
+            <div class="form-group">
+                <h5>资方抵押资管复核</h5>
+            </div>
+            <div class="form-group pull-right">
+                <button class="btn btn-default btn-sm fms-button-margin-top" ng-click="goBack()" ng-disabled="submit">返回</button>
+                <button class="btn btn-default btn-sm fms-button-margin-top" ng-click="returnSuperior()" ng-disabled="submit">退回</button>
+                <button class="btn btn-success m-t-xs m-r-xs btn-sm fms-button-margin-top" ng-click="save()"  ng-disabled="submit">提交</button>
+                <toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+            </div>
+        </div>
+    </div>
+    <form name="form" class="form-validation" novalidate>
+        <div class="row fms-div-content">
+            <div class="row fms-div-content">
+                <h4 class="fms-margin-bottom-30"><b>客户信息</b></h4>
+                <div class="col-lg-12">
+                    <div class="dataTables_wrapper form-inline dt-bootstrap no-footer">
+                        <table border="2" class="table m-b-none dataTable no-footer" role="grid" >
+                            <thead>
+                            <tr>
+                                <th class="sorting_disabled text-center">客户姓名</th>
+                                <th class="sorting_disabled text-center">合同编号</th>
+                                <th class="sorting_disabled text-center">车架号</th>
+                                <th class="sorting_disabled text-center">车牌号</th>
+                                <th class="sorting_disabled text-center">融资额</th>
+                                <th class="sorting_disabled text-center">归档编号</th>
+                                <th class="sorting_disabled text-center">抵押地(注册地)<b class="form-error">*</b></th>
+                                <th class="sorting_disabled text-center">抵押日期<b class="form-error">*</b></th>
+                                <th class="sorting_disabled text-center">抵押权人(出租人)<b class="form-error">*</b></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr click-tr ng-repeat="equMorDetailObj in equMorDetails">
+                                <td class="text-center">{{equMorDetailObj.lessee}}</td>
+                                <td class="text-center">{{equMorDetailObj.mainContNo}}</td>
+                                <td class="text-center">{{equMorDetailObj.vinNo}}</td>
+                                <td class="text-center">{{equMorDetailObj.vehicleLicenseNo}}</td>
+                                <td class="text-center">{{equMorDetailObj.equFinAmount}}</td>
+                                <td class="text-center">{{equMorDetailObj.fileRecordNo}}</td>
+                                <td class="text-center">{{equMorDetailObj.mortgageAddr}}</td>
+                                <td class="text-center">{{equMorDetailObj.mortgageDate}}</td>
+                                <td class="text-center">{{equMorDetailObj.mortgagee}}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="row" id="tabContent" >
+                <ul class="tabs">
+                    <li ng-repeat="equMorDetailObj in equMorDetails" >
+                        <a data-toggle="tab" id="a_tab_{{equMorDetailObj.equMorDetailId}}"  ng-click="switchTab('{{equMorDetailObj.equMorDetailId}}')">
+                            {{equMorDetailObj.mainContNo}}附件信息<b class="form-error">*</b>
+                        </a>
+                    </li>
+                </ul>
+
+                <div id="div_tab_{{equMorDetailObj.equMorDetailId}}" class="tab-content tab-con clearfix ng-hide" ng-repeat="equMorDetailObj in equMorDetails" repeat-finish >
+                    <tree-file-directive detail-flag="$root.yesNoFlag.yes" file-type="$root.basFileTypes.equMorFile" files="equMorDetailObj.bizFilesList" not-upload="equMorDetailObj.notUpload" not-upload-info = "equMorDetailObj.notUploadInfo" not-file-type="equMorDetailObj.notFileType" not-file-type-name="equMorDetailObj.notFileTypeName" >
+                    </tree-file-directive>
+                </div>
+            </div>
+
+            <div class="row fms-div-content">
+                <h4 class="fms-margin-bottom-30"><b>抵押费用信息</b></h4>
+                <div class="col-lg-12">
+                    <div class="dataTables_wrapper form-inline dt-bootstrap no-footer">
+                        <table border="2" class="table m-b-none dataTable no-footer" role="grid" >
+                            <thead>
+                            <tr>
+                                <th class="sorting_disabled text-center">资方名称</th>
+                                <th class="sorting_disabled text-center">抵押合同号</th>
+                                <th class="sorting_disabled text-center">车架号</th>
+                                <th class="sorting_disabled text-center">抵押合同金额</th>
+                                <th class="sorting_disabled text-center">保证金</th>
+                                <th class="sorting_disabled text-center">手续费</th>
+                                <th class="sorting_disabled text-center">管理费</th>
+                                <th class="sorting_disabled text-center">服务费</th>
+                                <th class="sorting_disabled text-center">一次性利息</th>
+                                <th class="sorting_disabled text-center">留购价</th>
+                                <th class="sorting_disabled text-center">应付合计</th>
+                                <th class="sorting_disabled text-center">财务应收合计</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr click-tr ng-repeat="equMorCharge in equMorCharges">
+                                <td class="text-center">{{equMorCharge.managementName}}</td>
+                                <td class="text-center">{{equMorCharge.equContNo}}</td>
+                                <td class="text-center">{{equMorCharge.vinNo}}</td>
+                                <td class="text-center">{{equMorCharge.equFinAmount}}</td>
+                                <td class="text-center">{{equMorCharge.margin}}</td>
+                                <td class="text-center">{{equMorCharge.factorge}}</td>
+                                <td class="text-center">{{equMorCharge.managementCharge}}</td>
+                                <td class="text-center">{{equMorCharge.serviceCharge}}</td>
+                                <td class="text-center">{{equMorCharge.oneTimeInterest}}</td>
+                                <td class="text-center">{{equMorCharge.retentionPrice}}</td>
+                                <td class="text-center">{{equMorCharge.totalShouldPay}}</td>
+                                <td class="text-center">{{equMorCharge.finShouldReceive}}</td>
+                            </tr>
+                            <tr ng-if="equMorCharges.length < 1">
+                                <td class="text-center" colspan="12">暂无抵押费用信息</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row fms-div-content">
+                <h4 class="fms-margin-bottom-30"><b>收款银行信息</b></h4>
+                <div class="col-lg-12">
+                    <!--<label class="col-sm-2 control-label text-right"><b class="form-text-black">收款银行</b><b class="form-error">*</b>: &nbsp;&nbsp;&nbsp;{{basBankInfoVo.accBankName}} </label></label>-->
+                    <label class="col-sm-1 control-label text-right"><b class="form-text-black">收款分行</b>:</label>
+                    <div class="col-sm-2">
+                        <label class="col-sm-12 control-label text-left"> {{basBankInfoVo.accBranchBank}}</label>
+                    </div>
+                    <label class="col-sm-1 control-label text-right"><b class="form-text-black">收款户名</b>:</label>
+                    <div class="col-sm-2">
+                        <label class="col-sm-12 control-label text-left"> {{basBankInfoVo.accountName}}</label>
+                    </div>
+                    <label class="col-sm-1 control-label text-right"><b class="form-text-black">收款账号</b>:</label>
+                    <div class="col-sm-2">
+                        <label class="col-sm-12 control-label text-left"> {{basBankInfoVo.accountNo}}</label>
+                    </div>
+                    <!--<label class="col-sm-1 control-label text-right"><b class="form-text-black">收款联行号</b><b class="form-error">*</b>:</label>-->
+                    <!--<div class="col-sm-2">-->
+                        <!--<label class="col-sm-12 control-label text-left"> {{basBankInfoVo.eleAccountNo}}</label>-->
+                    <!--</div>-->
+                </div>
+            </div>
+
+            <div class="row fms-div-content">
+                <h4 class="fms-margin-bottom-30"><b>客户还款计划</b></h4>
+                <div class="col-lg-12">
+                    <div class="dataTables_wrapper form-inline dt-bootstrap no-footer">
+                        <table border="2" class="table m-b-none dataTable no-footer" role="grid" id="equ_mor_archive_plan_review">
+                            <thead>
+                            <tr>
+                                <th class="sorting_disabled text-center">客户姓名</th>
+                                <th class="sorting_disabled text-center">车架号</th>
+                                <th class="sorting_disabled text-center">融资期限</th>
+                                <th class="sorting_disabled text-center">还款日</th>
+                                <th class="sorting_disabled text-center">租金</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr click-tr ng-repeat="equMorRepayVo in equMorRepayVos">
+                                <td class="text-center">{{equMorRepayVo.clientName}}</td>
+                                <td class="text-center">{{equMorRepayVo.vinNo}}</td>
+                                <td class="text-center">{{equMorRepayVo.leasePeriod}}</td>
+                                <td class="text-center">{{equMorRepayVo.repayDate}}</td>
+                                <td class="text-center">{{equMorRepayVo.rent}}</td>
+                            </tr>
+                            <tr ng-if="equMorRepayVos.length < 1">
+                                <td class="text-center" colspan="5">暂无相关信息</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row fms-div-content">
+                <label class="col-sm-1 control-label text-right"><b class="form-text-black">备注</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-11">
+                    <textarea limit-word style="height: 110px;resize: none;" limit-word="200" name="memo" placeholder="请输入备注" class="form-control m-b-xs" ng-model="equMorDetailsInfoReviewVo.memo"  required ></textarea>
+                    <p>
+                        <span class="form-info" ng-show=" (form.memo.$dirty && form.memo.$error.required) || (form.memo.$error.required && formValidate)">请输入备注</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <div class="row fms-div-content">
+        <process-log-list-directive wf-log-type="$root.bizTypes.equMortgage" wf-log-no="equMorTaskNo" wf-log-sub-no="subNo"> </process-log-list-directive>
+    </div>
+
+</div>

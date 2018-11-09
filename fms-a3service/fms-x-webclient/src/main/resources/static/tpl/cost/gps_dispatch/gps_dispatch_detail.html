@@ -1,0 +1,215 @@
+<div class="panel panel-default" ng-controller="gps_dispatch_detail_controller">
+    <div>
+        <toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+    </div>
+    <form name="form" class="form-validation" novalidate>
+
+        <div class="row" style="margin: 0; padding: 15px; border: 1px solid #dddddd">
+            <div class="form-inline" role="form">
+                <div class="form-group">
+                    <h4 class="m-n font-thin h4">GPS派单详情</h4>
+                </div>
+                <div class="form-group pull-right">
+                    <button class="btn btn-default" ng-click="goBack()">返回</button>
+                </div>
+            </div>
+        </div>
+
+
+        <ul type="none" style="padding-left: 20px;">
+            <div class="row line-lg" style="font-weight: bold;font-size: 14px;">个人基本信息</div>
+            <div class="row" style="margin: 5px; padding-right: 50px;">
+                <div class="row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">合同编号</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <label class="col-sm-12 control-label text-left"> {{gpsDispatch.contNo}}</label>
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">承租人</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <label class="col-sm-12 control-label text-left"> {{gpsDispatch.lessee}}</label>
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">客户类型</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <label class="col-sm-12 control-label text-left"> {{gpsDispatch.applyType}}</label>
+                    </div>
+                </div>
+
+
+                <div class="row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">业务类型</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <label class="col-sm-12 control-label text-left"> {{gpsDispatch.licenseAttr}}</label>
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">车架号</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <label class="col-sm-12 control-label text-left"> {{gpsDispatch.vinNo}}</label>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="row line-lg" style="font-weight: bold;font-size: 14px;">派单信息</div>
+            <div class="row" style="margin: 5px; padding-right: 50px;">
+                <div class="row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">GPS厂商</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <label class="col-sm-12 control-label text-left"> {{gpsDispatch.gpsSeller}}</label>
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">安装日期</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <label class="col-sm-12 control-label text-left"> {{gpsDispatch.installDate}}</label>
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">预计安装时间</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <label class="col-sm-12 control-label text-left"> {{gpsDispatch.expectInstallDate}}</label>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">安装省份</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <label class="col-sm-12 control-label text-left"> {{gpsDispatch.installProvince}}</label>
+                    </div>
+
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">安装城市</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <label class="col-sm-12 control-label text-left"> {{gpsDispatch.installCity}}</label>
+                    </div>
+
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">安装区县</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <label class="col-sm-12 control-label text-left"> {{gpsDispatch.installCounty}}</label>
+                    </div>
+
+                </div>
+
+                <div class="row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">安装地址</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-10">
+                        <label class="col-sm-12 control-label text-left"> {{gpsDispatch.installAddress}}</label>
+                    </div>
+                </div>
+
+
+
+                <div class="row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">对接人员</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <label class="col-sm-12 control-label text-left"> {{gpsDispatch.abutmentUser}}</label>
+                    </div>
+
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">对接人员电话</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <label class="col-sm-12 control-label text-left"> {{gpsDispatch.abutmentUserMobileNo}}</label>
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">是否派单</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <label class="col-sm-12 control-label text-left"> {{gpsDispatch.dispatchFlag}}</label>
+                    </div>
+                </div>
+
+
+                <div class="row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">派工人</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <label class="col-sm-12 control-label text-left"> {{gpsDispatch.dispatchWorkerUser}}</label>
+                    </div>
+
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">派工人电话</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <label class="col-sm-12 control-label text-left"> {{gpsDispatch.dispatchWorkerUserMobileNo}}</label>
+                    </div>
+
+                </div>
+
+
+
+                <div class="row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">GPS有线数量</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <label class="col-sm-12 control-label text-left"> {{gpsDispatch.gpsWiredNum}}</label>
+                    </div>
+
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">有线设备年限</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <label class="col-sm-12 control-label text-left"> {{gpsDispatch.gpsWiredYears}}</label>
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">有线设备费用</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <label class="col-sm-12 control-label text-left"> {{gpsDispatch.gpsWiredCost}}</label>
+                    </div>
+                </div>
+
+
+                <div class="row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">GPS有无线数量</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <label class="col-sm-12 control-label text-left"> {{gpsDispatch.gpsWirelessNum}}</label>
+                    </div>
+
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">无线设备年限</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <label class="col-sm-12 control-label text-left"> {{gpsDispatch.gpsWirelessYears}}</label>
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">无线设备费用</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <label class="col-sm-12 control-label text-left"> {{gpsDispatch.gpsWirelessCost}}</label>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">安装费用</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <label class="col-sm-12 control-label text-left"> {{gpsDispatch.installCost}}</label>
+                    </div>
+
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">拆改费</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <label class="col-sm-12 control-label text-left"> {{gpsDispatch.reformCost}}</label>
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">费用合计</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <label class="col-sm-12 control-label text-left"> {{gpsDispatch.totalCost}}</label>
+                    </div>
+                </div>
+
+            </div>
+
+
+
+            <div class="row line-lg" style="font-weight: bold;font-size: 14px;">安装信息</div>
+            <div class="row" style="margin: 5px; padding-right: 50px;">
+                <div class="row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">有线设备号</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <label class="col-sm-12 control-label text-left"> {{gpsDispatch.wiredDeviceNo}}</label>
+                    </div>
+
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">无线设备号</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <label class="col-sm-12 control-label text-left"> {{gpsDispatch.wirelessDeviceNo}}</label>
+                    </div>
+                </div>
+
+
+                <div class="row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">安装师傅</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <label class="col-sm-12 control-label text-left"> {{gpsDispatch.installUser}}</label>
+                    </div>
+
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">安装师傅电话</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <label class="col-sm-12 control-label text-left"> {{gpsDispatch.installUserMobileNo}}</label>
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">安装状态</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <label class="col-sm-12 control-label text-left"> {{gpsDispatch.installStatus}}</label>
+                    </div>
+                </div>
+            </div>
+
+        </ul>
+
+    </form>
+</div>

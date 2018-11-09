@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.com.leadu.fms.data.prebiz.dao.WorkflowLogDao">
+    <!-- 根据订单号或者合同号查询 -->
+    <select id="selectWorkFlowLogs" resultType="cn.com.leadu.fms.pojo.prebiz.vo.workflowlog.WorkflowLogVo">
+        select workflowLog.*, sysWidget.widget_name actWidgetName,sysUser.user_name FROM
+        workflow_log workflowLog LEFT JOIN sys_widget sysWidget on workflowLog.act_widget_id = sysWidget.widget_id and sysWidget.del_flag = ${delete_exist}
+        LEFT JOIN sys_user sysUser ON sysUser.user = workflowLog.user AND sysUser.del_flag = ${delete_exist}
+        where workflowLog.del_flag = ${delete_exist}
+        and workflowLog.wf_log_type = #{wfLogType}
+        <if test="applyNo != null">
+            and workflowLog.wf_log_no = #{applyNo}
+        </if>
+        <if test="contNo != null">
+            and (workflowLog.wf_log_sub_no = #{contNo} or workflowLog.wf_log_sub_no is null or workflowLog.wf_log_sub_no = '')
+        </if>
+        order by workflowLog.update_time desc
+    </select>
+</mapper>

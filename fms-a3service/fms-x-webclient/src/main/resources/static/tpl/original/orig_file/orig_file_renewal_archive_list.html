@@ -1,0 +1,51 @@
+<div ng-controller="orig_file_renewal_archive_controller">
+    <div class="panel panel-default">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="panel-body wrapper-sm">
+                    <div class="row m-t-xs">
+                        <div class="col-md-12">
+                            <form class="form-inline">
+                                <div class="form-group">
+                                    <input class="form-control m-b-xs" ng-model="params.contNo" placeholder="请输入合同号">
+                                </div>
+                                <div class="form-group">
+                                    <input class="form-control m-b-xs" ng-model="params.cstmName" placeholder="承租人">
+                                </div>
+                                <div class="form-group">
+                                    <input class="form-control m-b-xs" ng-model="params.vinNo" placeholder="请输入车架号">
+                                </div>
+                                <div class="form-group">
+                                    <select ng-model="params.origFileStatus" class="form-control m-b-xs">
+                                        <option value="">---选择归档状态---</option>
+                                        <option value="{{origFileStatusObj.codeValue}}" ng-repeat="origFileStatusObj in origFileStatusList" ng-selected="params.origFileStatus == origFileStatusObj.codeValue">{{origFileStatusObj.codeValueName}}</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group m-b-sm">
+                                    <div class="btn-group">
+                                        <button class="btn btn-sm fms-button-margin-bottom btn-default m-b-xs btn-info" ng-click="searchOrigFile()" ><i class="fa fa-search"></i>查询</button>
+                                        <button class="btn btn-sm fms-button-margin-bottom btn-default m-b-xs" ng-click="resetOrigFile()" ><i class="fa  icon-refresh"></i>重置</button>
+                                        <button class="btn btn-sm fms-button-margin-bottom btn-success m-b-xs" ng-click="origFileMail()">归档</button>
+                                        <button class="btn btn-sm fms-button-margin-bottom btn-success m-b-xs" ng-click="origFileDetail()">详情</button>
+                                        <button class="btn btn-sm fms-button-margin-bottom btn-success m-b-xs" ng-click="uploadFile()">上传附件</button>
+                                    </div>
+                                </div>
+                            </form>
+
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+            <div class="col-md-6">
+                <span ng-if="showTitle" style="text-align: center;font-size: 16px;font-weight: bold;display: block;margin-top: 15px;">待归档明细一览</span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6"><table border="1" class="table table-striped m-b-none" id="file_archive_list"></table></div>
+            <div class="col-md-6" ng-show="showTitle"><table border="1" class="table table-striped m-b-none" id="file_archive_detail"></table></div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,68 @@
+<style>
+    .panel h4{padding: 15px;border-bottom: 1px solid #dedede;color: black;font-weight: 600;margin: 0;font-size: 14px;}
+    .m-t-20{margin-top: 20px;}
+    .checkbox,.radio {display: inline-block;margin: 2px 10px 0 0;}
+    .table > tbody > tr > td, .table > tfoot > tr > td{vertical-align: middle;}
+</style>
+<div  ng-controller="postbiz_basic_change_risk_save_controller">
+    <div>
+        <toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-body wrapper-sm" style="position: fixed;width: 100%;background-color: white;z-index: 10;margin-top: -1px;padding-bottom: 0;">
+            <div class="row">
+                <div class="form-group pull-right" style="margin-top: 4px;">
+                    <div class="btn-group ">
+                        <button type="button" class="btn btn-success m-t-xs m-r-xs" ng-click="modify()" ng-disabled="submit" ng-if="detailFlag == '1'">暂存</button>
+
+                        <button type="button" class="btn btn-success m-t-xs m-r-xs" ng-click="save()" ng-disabled="submit">提交</button>
+
+                        <button type="button" class="btn btn-success m-t-xs m-r-xs" ng-click="sendBack()" ng-disabled="submit">退回</button>
+
+                        <button type="button" class="btn btn-success m-t-xs m-r-xs" ng-click="refuse()" ng-disabled="submit">拒绝</button>
+
+                        <button type="button" class="btn btn-default m-t-xs" ng-click="goBack()">返回</button>
+                    </div>
+                </div>
+                <ul id="applyTab" class="nav nav-tabs">
+                    <li class="active"><a href="javascript:void(0);" data-toggle="tab" data-id="audit" onclick="switchPageTab(this, 'applyTab')">风控审核</a></li>
+                    <li ng-if="riskData.guaranteePersList.length > 0 || riskData.guaranteeCompList.length > 0"><a href="javascript:void(0);" data-toggle="tab" data-id="credit" onclick="switchPageTab(this, 'applyTab')">鹏元征信</a></li>
+                    <li ng-if="riskData.guaranteePersList.length > 0 || riskData.guaranteeCompList.length > 0"><a href="javascript:void(0);" data-toggle="tab" data-id="report" onclick="switchPageTab(this, 'applyTab')">风控报告</a></li>
+                    <li><a href="javascript:void(0);" data-toggle="tab" data-id="applyInfo" onclick="switchPageTab(this, 'applyTab')">申请信息</a></li>
+                </ul>
+            </div>
+        </div>
+        <form name="form" class="form-validation" novalidate style="margin-top: 70px;">
+            <div id="applyTabContent" class="tab-content">
+                <!-- 风控审核 -->
+                <div class="tab-pane fade in active" id="audit">
+                    <div class="row m-xs">
+                        <div class="row">
+                            <div class="col-lg-12"><label><b class="form-text-black">备注</b><b class="form-error">*</b>:</label></div>
+                            <div class="col-lg-12">
+                                <textarea limit-word class="form-control m-b-xs r-none" name="remark" ng-model="riskData.remark" required></textarea>
+                                <p>
+                                    <span class="form-info" ng-show=" (form.remark1.$dirty && form.remark.$error.required) || (form.remark.$error.required && formValidate)">请输入审批意见备注</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div ng-include="'tpl/common/process_log/process_log_list.html'"></div>
+                </div>
+                <!-- 鹏元征信 -->
+                <div class="tab-pane fade" id="credit" ng-if="riskData.guaranteePersList.length > 0 || riskData.guaranteeCompList.length > 0">
+                    <div ng-include="'tpl/prebiz/apply_risk/risk_credit_person_save.html'"></div>
+                </div>
+                <!-- 风控报告 -->
+                <div class="tab-pane fade" id="report" ng-if="riskData.guaranteePersList.length > 0 || riskData.guaranteeCompList.length > 0">
+                    <div ng-if="applyType == 1" ng-include="'tpl/prebiz/apply_risk/risk_report_person_save.html'"></div>
+                    <div ng-if="applyType == 2" ng-include="'tpl/prebiz/apply_risk/risk_report_company_save.html'"></div>
+                </div>
+                <!-- 申请信息 -->
+                <div class="tab-pane fade" id="applyInfo">
+                    <div ng-include="'tpl/postbiz/deposit_change_task/deposit_change_detail.html'" class="row m-xs"></div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

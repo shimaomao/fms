@@ -1,0 +1,66 @@
+<div ng-controller="bas_blacklist_detail_controller">
+    <div>
+        <toaster-container
+                toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+    </div>
+    <div class="panel panel-default">
+        <div class="row" style="margin: 0; padding: 15px; border: 1px solid #dddddd">
+            <h4 class="m-n font-thin h4">{{frameTitle}}</h4>
+        </div>
+        <form name="form" class="form-validation" novalidate>
+            <div class="panel-body wrapper-sm">
+
+                <div class="form-group row">
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">客户名称</b><b
+                            class="form-error"></b>:</label>
+                    <div class="col-sm-8">
+                        <label class="col-sm-12 control-label text-left">{{basBlacklist.name}}</label>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">证件号码</b><b
+                            class="form-error"></b>:</label>
+                    <div class="col-sm-8">
+                        <label class="col-sm-12 control-label text-left">{{basBlacklist.certifNo}}</label>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">手机号码</b><b
+                            class="form-error"></b>:</label>
+                    <div class="col-sm-8">
+                        <label class="col-sm-12 control-label text-left">{{basBlacklist.mobileNo}}</label>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">黑名单级别</b><b
+                            class="form-error" ></b>:</label>
+                    <div class="col-sm-8">
+                        <label class="col-sm-12 control-label text-left">{{basBlacklist.blackLevelName}}</label>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">来源</b><b
+                            class="form-error"></b>:</label>
+                    <div class="col-sm-8">
+                        <label class="col-sm-12 control-label text-left">{{basBlacklist.sourceName}}</label>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">备注</b><b
+                            class="form-error"></b>:</label>
+                    <div class="col-sm-8">
+                        <label class="col-sm-12 control-label text-left">{{basBlacklist.memo}}</label>
+                    </div>
+                </div>
+
+
+            </div>
+            <div class="col-sm-15 m-b text-center">
+                <button class="btn btn-default" ng-click="goback()">返回</button>
+            </div>
+        </form>
+    </div>
+</div>

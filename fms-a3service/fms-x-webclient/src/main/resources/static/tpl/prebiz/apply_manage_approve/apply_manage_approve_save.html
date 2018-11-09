@@ -1,0 +1,57 @@
+<ul type="none" style="padding-left:20px">
+    <div class="row" style="margin: 5px; padding-right: 50px;">
+
+        <div class="form-group row">
+            <label class="col-sm-2 control-label text-right"><b class="form-text-black">审批操作</b><b
+                    class="form-error">*</b>:</label>
+            <div class="col-sm-10">
+                <div class="radio" ng-repeat="contRequestPayActTypeObj in contRequestPayActTypeList">
+                    <label>
+                        <input type="radio" name="actType" ng-model="applyManageApproveVo.actType"  ng-value="contRequestPayActTypeObj.codeValue" required>
+                        {{contRequestPayActTypeObj.codeValueName}}
+                    </label>
+                </div>
+                <p>
+                    <span class="form-info"
+                          ng-show=" (form.actType.$dirty && form.actType.$error.required) || (form.actType.$error.required && formValidate)">请选择审批操作</span>
+                </p>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="col-sm-2 control-label text-right"><b class="form-text-black">风险融资额（元）</b><b
+                    class="form-error"></b>:</label>
+            <div class="col-sm-2">
+                <input title="{{riskData.riskAmount}}" type="number" class="form-control m-b-xs" ng-disabled="true"
+                       ng-model="riskData.riskAmount" name="riskAmount" required>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="col-sm-2 control-label text-right"><b class="form-text-black">风控经理操作建议</b><b
+                    class="form-error"></b>:</label>
+            <div class="col-sm-6">
+                <textarea limit-word class="form-control m-b-xs r-none"
+                          ng-model="riskData.apply.windcontrManagerProposal" name="windcontrManagerProposal" disabled></textarea>
+                <p>
+                    <span class="form-info"
+                          ng-show=" (form.windcontrManagerProposal.$dirty && form.windcontrManagerProposal.$error.required) || (form.windcontrManagerProposal.$error.required && formValidate)">请输入风控经理操作建议</span>
+                </p>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="col-sm-2 control-label text-right"><b class="form-text-black">审批备注</b><b
+                    class="form-error">*</b>:</label>
+            <div class="col-sm-5">
+                <textarea limit-word class="form-control m-b-xs"
+                          ng-model="applyManageApproveVo.memo" name="memo_1" required></textarea>
+                <p>
+                    <span class="form-info"
+                          ng-show=" (form.memo_1.$dirty && form.memo_1.$error.required) || (form.memo_1.$error.required && formValidate)">请输入备注</span>
+                </p>
+            </div>
+        </div>
+        <div ng-include="'tpl/common/process_log/process_log_list.html'"></div>
+    </div>
+</ul>

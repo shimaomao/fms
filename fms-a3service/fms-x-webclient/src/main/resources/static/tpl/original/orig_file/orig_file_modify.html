@@ -1,0 +1,74 @@
+<div class="modal-header">
+    <h4 class="modal-title">编辑prebiz <button type="button" class="close" data-dismiss="modal" aria-hidden="true" ng-click="close()">&times;</button></h4>
+</div>
+<div class="modal-body">
+    <form name="form" class="form-validation" novalidate>
+
+        <div class="panel-body">
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">资料邮寄业务号</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="bizCode" placeholder="请输入资料邮寄业务号" class="form-control m-b-xs" ng-model="origFile.bizCode"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.bizCode.$dirty && form.bizCode.$error.required) || (form.bizCode.$error.required && formValidate)">资料邮寄业务号不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">资料邮寄业务类型</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="bizCodeType" placeholder="请输入资料邮寄业务类型" class="form-control m-b-xs" ng-model="origFile.bizCodeType"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.bizCodeType.$dirty && form.bizCodeType.$error.required) || (form.bizCodeType.$error.required && formValidate)">资料邮寄业务类型不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">归档状态</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="origFileStatus" placeholder="请输入归档状态" class="form-control m-b-xs" ng-model="origFile.origFileStatus"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.origFileStatus.$dirty && form.origFileStatus.$error.required) || (form.origFileStatus.$error.required && formValidate)">归档状态不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">归档用户</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="origFileUser" placeholder="请输入归档用户" class="form-control m-b-xs" ng-model="origFile.origFileUser"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.origFileUser.$dirty && form.origFileUser.$error.required) || (form.origFileUser.$error.required && formValidate)">归档用户不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">归档用户所属机构</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="origFileGroup" placeholder="请输入归档用户所属机构" class="form-control m-b-xs" ng-model="origFile.origFileGroup"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.origFileGroup.$dirty && form.origFileGroup.$error.required) || (form.origFileGroup.$error.required && formValidate)">归档用户所属机构不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+
+        </div>
+    </form>
+</div>
+<div class="modal-footer ng-scope">
+    <button class="btn btn-default" ng-click="close()">取消</button>
+    <button type="submit" class="btn btn-success" ng-disabled="submit" ng-click="modify()">保存</button>
+</div>

@@ -1,0 +1,149 @@
+<div ng-controller="bas_partner_detail_controller">
+    <div class="panel panel-default">
+            <div class="row">
+                <div class="btn-group m-r-lg pull-left" style="margin-left: 25px">
+                    <h4>{{frameTitle}}</h4>
+                </div>
+                <div class="btn-group m-r-lg pull-right" style="margin: 15px 30px 0px 0px">
+                    <button class="btn btn-default m-t-xs" ng-click="goBack()">返回</button>
+                </div>
+            </div>
+        <form name="form" class="form-validation" novalidate on-finish-render-filters>
+            <div class="panel-body wrapper-sm">
+                <ul id="applyTab" class="nav nav-tabs">
+                    <li class="active"><a href="javascript:void(0);" data-toggle="tab" data-id="message"
+                                          onclick="switchPageTab(this, 'applyTab')">经销商基本信息</a></li>
+                    <li><a href="javascript:void(0);" data-toggle="tab" data-id="fjmessage"
+                           onclick="switchPageTab(this, 'applyTab')">附件信息</a></li>
+                </ul>
+                <div  class="tab-content"  style="margin-top: 25px">
+                    <div class="tab-pane fade in active"  id="message">
+                        <div class="form-group row">
+                            <label class="col-sm-2 control-label text-right"><b class="form-text-black">经销商代码</b>:</label>
+                            <div class="col-sm-3 control-label">{{basPartner.partnerCode}}
+                            </div>
+                            <label class="col-sm-2 control-label text-right"><b class="form-text-black">经销商全称</b>:</label>
+                            <div class="col-sm-3 control-label">{{basPartner.partnerName}}
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 control-label text-right"><b class="form-text-black">经销商简称</b>:</label>
+                            <div class="col-sm-3 control-label">{{basPartner.partnerNameShort}}
+                            </div>
+                            <label class="col-sm-2 control-label text-right"><b class="form-text-black">经销商联系人员</b>:</label>
+                            <div class="col-sm-3 control-label">{{basPartner.contact}}
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-sm-2 control-label text-right"><b class="form-text-black">经销商联系方式1</b>:</label>
+                            <div class="col-sm-3 control-label">{{basPartner.contactTel1}}
+                            </div>
+                            <label class="col-sm-2 control-label text-right"><b class="form-text-black">经销商联系方式2</b>:</label>
+                            <div class="col-sm-3 control-label">{{basPartner.contactTel2}}
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-sm-2 control-label text-right"><b class="form-text-black">经销商合作类型</b>:</label>
+                            <div class="col-sm-10">
+                                <div  class="checkbox" ng-repeat="partnerTypeObj in partnerTypeList" >
+                                    <label><input type="checkbox" name="partnerType" disabled ng-checked="basPartner.partnerType.indexOf(partnerTypeObj.codeValue)!=-1?'checked':''" ng-true-value="{{partnerTypeObj.codeValue}}">{{partnerTypeObj.codeValueName}}</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-sm-2 control-label text-right"><b class="form-text-black">车辆类型</b>:</label>
+                            <div class="col-sm-10">
+                                <div class="checkbox"  ng-repeat="vehicleFormObj in vehicleFormList" >
+                                    <label><input type="checkbox" name="vehicleForm" disabled ng-checked="basPartner.vehicleForm.indexOf(vehicleFormObj.codeValue)!=-1?'checked':''" ng-true-value="{{vehicleFormObj.codeValue}}">{{vehicleFormObj.codeValueName}}</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-sm-2 control-label text-right"><b class="form-text-black">放款模式</b>:</label>
+                            <div class="col-sm-10">
+                                <div class="checkbox"  ng-repeat="remitTypeObj in remitTypeList" >
+                                    <label><input type="checkbox" name="remitType" disabled ng-checked="basPartner.remitType.indexOf(remitTypeObj.codeValue)!=-1?'checked':''" ng-true-value="{{remitTypeObj.codeValue}}">{{remitTypeObj.codeValueName}}</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-sm-2 control-label text-right"><b class="form-text-black">经营牌照类型</b>:</label>
+                            <div class="col-sm-10">
+                                <div class="checkbox"  ng-repeat="rentTypeObj in rentTypeList" >
+                                    <label><input type="checkbox" name="rentType" disabled ng-checked="basPartner.rentType.indexOf(rentTypeObj.codeValue)!=-1?'checked':''" ng-true-value="{{rentTypeObj.codeValue}}">{{rentTypeObj.codeValueName}}</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 control-label text-right"><b class="form-text-black">金融专员</b>:</label>
+                            <div class="col-sm-3 control-label">{{basPartner.salesExec}}
+                            </div>
+                            <label class="col-sm-2 control-label text-right"><b class="form-text-black">联系方式</b>:</label>
+                            <div class="col-sm-3 control-label">{{basPartner.salesExecMobno}}
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-sm-2 control-label text-right"><b class="form-text-black">经销商层级</b>:</label>
+                            <div class="col-sm-3 control-label">{{basPartner.groupLevName}}
+                            </div>
+                            <label class="col-sm-2 control-label text-right"><b class="form-text-black">经营品牌</b>:</label>
+                            <div class="col-sm-3 control-label">{{basPartner.brand}}
+                            </div>
+
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-sm-2 control-label text-right"><b class="form-text-black">上级组织代码</b>:</label>
+                            <div class="col-sm-3 control-label">{{basPartner.parentGroupCode}}
+                            </div>
+                            <label class="col-sm-2 control-label text-right"><b class="form-text-black">组织名称</b>:</label>
+                            <div class="col-sm-3 control-label">{{basPartner.parentGroupName}}
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-sm-2 control-label text-right"><b class="form-text-black">区域经理</b>:</label>
+                            <div class="col-sm-3 control-label">{{basPartner.areaManagerName}}
+                            </div>
+                            <label class="col-sm-2 control-label text-right"><b class="form-text-black">区域经理手机</b>:</label>
+                            <div class="col-sm-3 control-label">
+                                {{basPartner.areaManagerMobno}}
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-sm-2 control-label text-right"><b class="form-text-black">经销商地址</b>:</label>
+                            <div class="col-sm-3 control-label">
+                                {{areaName[basPartner.partnerProv]}}  {{areaName[basPartner.partnerCity]}} {{areaName[basPartner.partnerCounty]}}
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 control-label text-right"><b class="form-text-black">经销商经营地址</b>:</label>
+                            <div class="col-sm-3 control-label">
+                                {{basPartner.partnerAddr}}
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 control-label text-right"><b class="form-text-black">备注</b>:</label>
+                            <div class="col-sm-3 control-label">{{basPartner.remark}}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tab-pane fade" id="fjmessage">
+                        <ul type="none" style="padding-left: 20px;">
+                            <tree-file-directive detail-flag="$root.yesNoFlag.yes" file-type="$root.basFileTypes.partnerFile" files="basPartner.bizFilesList" not-upload="notUpload" not-upload-info = "notUploadInfo" not-file-type="notFileType" not-file-type-name="notFileTypeName" >
+                            </tree-file-directive>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

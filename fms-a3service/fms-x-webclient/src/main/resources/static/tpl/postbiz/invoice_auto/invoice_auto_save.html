@@ -1,0 +1,194 @@
+<div class="modal-header">
+    <h4 class="modal-title">添加postbiz <button type="button" class="close" data-dismiss="modal" aria-hidden="true" ng-click="close()">&times;</button></h4>
+</div>
+<div class="modal-body">
+    <form name="form" class="form-validation" novalidate>
+
+        <div class="panel-body">
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">发票种类</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="infokind" placeholder="请输入发票种类" class="form-control m-b-xs" ng-model="invoiceAuto.infokind"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.infokind.$dirty && form.infokind.$error.required) || (form.infokind.$error.required && formValidate)">发票种类不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">购方名称</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="infoclientname" placeholder="请输入购方名称" class="form-control m-b-xs" ng-model="invoiceAuto.infoclientname"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.infoclientname.$dirty && form.infoclientname.$error.required) || (form.infoclientname.$error.required && formValidate)">购方名称不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">购方税号（公司必填）</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="infoclienttaxcode" placeholder="请输入购方税号（公司必填）" class="form-control m-b-xs" ng-model="invoiceAuto.infoclienttaxcode"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.infoclienttaxcode.$dirty && form.infoclienttaxcode.$error.required) || (form.infoclienttaxcode.$error.required && formValidate)">购方税号（公司必填）不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">购方开户行及账号（专用发票必填）</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="infoclientbankaccount" placeholder="请输入购方开户行及账号（专用发票必填）" class="form-control m-b-xs" ng-model="invoiceAuto.infoclientbankaccount"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.infoclientbankaccount.$dirty && form.infoclientbankaccount.$error.required) || (form.infoclientbankaccount.$error.required && formValidate)">购方开户行及账号（专用发票必填）不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">购方地址电话（专用发票必填）</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="infoclientaddressphone" placeholder="请输入购方地址电话（专用发票必填）" class="form-control m-b-xs" ng-model="invoiceAuto.infoclientaddressphone"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.infoclientaddressphone.$dirty && form.infoclientaddressphone.$error.required) || (form.infoclientaddressphone.$error.required && formValidate)">购方地址电话（专用发票必填）不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">税率</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="infotaxrate" placeholder="请输入税率" class="form-control m-b-xs" ng-model="invoiceAuto.infotaxrate"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.infotaxrate.$dirty && form.infotaxrate.$error.required) || (form.infotaxrate.$error.required && formValidate)">税率不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">发票十位代码</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="infotypecode" placeholder="请输入发票十位代码" class="form-control m-b-xs" ng-model="invoiceAuto.infotypecode"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.infotypecode.$dirty && form.infotypecode.$error.required) || (form.infotypecode.$error.required && formValidate)">发票十位代码不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">发票号码</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="infonumber" placeholder="请输入发票号码" class="form-control m-b-xs" ng-model="invoiceAuto.infonumber"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.infonumber.$dirty && form.infonumber.$error.required) || (form.infonumber.$error.required && formValidate)">发票号码不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">销货清单标志</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="goodslistflag" placeholder="请输入销货清单标志" class="form-control m-b-xs" ng-model="invoiceAuto.goodslistflag"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.goodslistflag.$dirty && form.goodslistflag.$error.required) || (form.goodslistflag.$error.required && formValidate)">销货清单标志不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">开票日期</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="infoinvdate" placeholder="请输入开票日期" class="form-control m-b-xs" ng-model="invoiceAuto.infoinvdate"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.infoinvdate.$dirty && form.infoinvdate.$error.required) || (form.infoinvdate.$error.required && formValidate)">开票日期不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">所属月份</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="infmonth" placeholder="请输入所属月份" class="form-control m-b-xs" ng-model="invoiceAuto.infmonth"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.infmonth.$dirty && form.infmonth.$error.required) || (form.infmonth.$error.required && formValidate)">所属月份不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">合计不含税金额</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="infoamount" placeholder="请输入合计不含税金额" class="form-control m-b-xs" ng-model="invoiceAuto.infoamount"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.infoamount.$dirty && form.infoamount.$error.required) || (form.infoamount.$error.required && formValidate)">合计不含税金额不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">合计税额</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="infotaxamount" placeholder="请输入合计税额" class="form-control m-b-xs" ng-model="invoiceAuto.infotaxamount"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.infotaxamount.$dirty && form.infotaxamount.$error.required) || (form.infotaxamount.$error.required && formValidate)">合计税额不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">接口请求xml</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="invSendXml" placeholder="请输入接口请求xml" class="form-control m-b-xs" ng-model="invoiceAuto.invSendXml"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.invSendXml.$dirty && form.invSendXml.$error.required) || (form.invSendXml.$error.required && formValidate)">接口请求xml不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">接口返回xml</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="invBackXml" placeholder="请输入接口返回xml" class="form-control m-b-xs" ng-model="invoiceAuto.invBackXml"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.invBackXml.$dirty && form.invBackXml.$error.required) || (form.invBackXml.$error.required && formValidate)">接口返回xml不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+
+        </div>
+
+    </form>
+</div>
+<div class="modal-footer ng-scope">
+    <button class="btn btn-default" ng-click="close()">取消</button>
+    <button type="submit" class="btn btn-success" ng-disabled="submit" ng-click="save()">新增</button>
+</div>

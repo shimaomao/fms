@@ -1,0 +1,35 @@
+<div class="modal-header">
+    <h4 class="modal-title">财务凭证核算数据 <button type="button" class="close" data-dismiss="modal" aria-hidden="true" ng-click="close()">&times;</button></h4>
+</div>
+<div ng-init="init()">
+    <div class="panel-body">
+        <div class="panel panel-default" style="border: 0">
+            <div class="dataTables_wrapper form-inline dt-bootstrap no-footer">
+                <table border="2" class="table m-b-none dataTable no-footer" role="grid" >
+                    <thead>
+                    <tr>
+                        <th class="sorting_disabled text-center">辅助核算类型</th>
+                        <th class="sorting_disabled text-center">辅助核算序号</th>
+                        <th class="sorting_disabled text-center">核算项目值</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr click-tr ng-repeat="finVouAssis in finVouAssisList">
+                        <td class="text-center">{{finVouAssis.assisAccountTypeName}}</td>
+                        <td class="text-center">{{finVouAssis.assisAccountOrder}}</td>
+                        <td class="text-center">{{finVouAssis.assisAccountValue}}</td>
+                    </tr>
+                    <tr ng-show="finVouAssisList.length < 1">
+                        <td class="text-center" colspan="13">暂无相关信息</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal-footer ng-scope text-center">
+    <div class="text-center">
+        <button class="btn btn-default" ng-click="close()">关闭</button>
+    </div>
+</div>

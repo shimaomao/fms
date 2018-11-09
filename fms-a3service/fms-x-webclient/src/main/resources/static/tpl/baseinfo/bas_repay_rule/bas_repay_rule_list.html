@@ -1,0 +1,41 @@
+<div  ng-controller="bas_repay_rule_list_controller">
+    <div>
+        <toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-body wrapper-sm">
+            <div class="row">
+                <div class="col-lg-12">
+                    <form class="form-inline" role="form">
+                        <div class="form-group">
+                            <label class="sr-only" >repayDay </label>
+                            <input class="form-control m-b-xs" ng-model="repayDay" placeholder="还款日">
+                        </div>
+                        <div class="form-group">
+                            <label class="sr-only" >beginInterval </label>
+                            <input class="form-control m-b-xs" ng-model="beginInterval" placeholder="开始区间">
+                        </div>
+
+                        <div class="form-group m-b-sm">
+                            <div class="btn-group">
+                                <button class="btn btn-default m-b-xs btn-info" ng-click="searchBasRepayRule()" ><i class="fa fa-search"></i>查询</button>
+                                <button class="btn btn-default m-b-xs" ng-click="resetBasRepayRule()" ><i class="fa  icon-refresh"></i>重置</button>
+                            </div>
+                        </div>
+
+                        <div class="form-group pull-right">
+                            <div class="btn-group">
+                                <button class="btn btn-default m-b-xs" ng-click="saveBasRepayRule()"><i class="fa fa-plus"></i>添加</button>
+                                <button class="btn btn-default m-b-xs" ng-click="modifyBasRepayRule()"><i class="fa icon-pencil"></i>修改</button>
+                                <button class="btn btn-default m-b-xs" ng-click="deleteBasRepayRule()"><i class="fa fa-trash-o"></i>删除</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <table border="1" class="table table-striped m-b-none" id="bas_repay_rule_table">
+        </table>
+    </div>
+</div>
+

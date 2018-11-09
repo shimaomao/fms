@@ -1,0 +1,458 @@
+<div class="modal-header">
+    <h4 class="modal-title">编辑system <button type="button" class="close" data-dismiss="modal" aria-hidden="true" ng-click="close()">&times;</button></h4>
+</div>
+<div class="modal-body">
+    <form name="form" class="form-validation" novalidate>
+
+        <div class="panel-body">
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">产品方案代码</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="product" placeholder="请输入产品方案代码" class="form-control m-b-xs" ng-model="product.product"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.product.$dirty && form.product.$error.required) || (form.product.$error.required && formValidate)">产品方案代码不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">产品大类代码</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="productCatg" placeholder="请输入产品大类代码" class="form-control m-b-xs" ng-model="product.productCatg"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.productCatg.$dirty && form.productCatg.$error.required) || (form.productCatg.$error.required && formValidate)">产品大类代码不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">产品方案名称</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="productName" placeholder="请输入产品方案名称" class="form-control m-b-xs" ng-model="product.productName"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.productName.$dirty && form.productName.$error.required) || (form.productName.$error.required && formValidate)">产品方案名称不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">产品方案描述</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="productMemo" placeholder="请输入产品方案描述" class="form-control m-b-xs" ng-model="product.productMemo"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.productMemo.$dirty && form.productMemo.$error.required) || (form.productMemo.$error.required && formValidate)">产品方案描述不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">开始日期</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="startDate" placeholder="请输入开始日期" class="form-control m-b-xs" ng-model="product.startDate"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.startDate.$dirty && form.startDate.$error.required) || (form.startDate.$error.required && formValidate)">开始日期不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">结束日期</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="endDate" placeholder="请输入结束日期" class="form-control m-b-xs" ng-model="product.endDate"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.endDate.$dirty && form.endDate.$error.required) || (form.endDate.$error.required && formValidate)">结束日期不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">车辆类型</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="vehicleForm" placeholder="请输入车辆类型" class="form-control m-b-xs" ng-model="product.vehicleForm"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.vehicleForm.$dirty && form.vehicleForm.$error.required) || (form.vehicleForm.$error.required && formValidate)">车辆类型不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">申请类型</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="applyType" placeholder="请输入申请类型" class="form-control m-b-xs" ng-model="product.applyType"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.applyType.$dirty && form.applyType.$error.required) || (form.applyType.$error.required && formValidate)">申请类型不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">车辆种类</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="vehicleType" placeholder="请输入车辆种类" class="form-control m-b-xs" ng-model="product.vehicleType"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.vehicleType.$dirty && form.vehicleType.$error.required) || (form.vehicleType.$error.required && formValidate)">车辆种类不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">牌照属性</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="licenseAttr" placeholder="请输入牌照属性" class="form-control m-b-xs" ng-model="product.licenseAttr"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.licenseAttr.$dirty && form.licenseAttr.$error.required) || (form.licenseAttr.$error.required && formValidate)">牌照属性不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">租金支付模式</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="rentPayMode" placeholder="请输入租金支付模式" class="form-control m-b-xs" ng-model="product.rentPayMode"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.rentPayMode.$dirty && form.rentPayMode.$error.required) || (form.rentPayMode.$error.required && formValidate)">租金支付模式不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">GPS安装情况</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="gpsInstMode" placeholder="请输入GPS安装情况" class="form-control m-b-xs" ng-model="product.gpsInstMode"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.gpsInstMode.$dirty && form.gpsInstMode.$error.required) || (form.gpsInstMode.$error.required && formValidate)">GPS安装情况不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">还款方式</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="repayMode" placeholder="请输入还款方式" class="form-control m-b-xs" ng-model="product.repayMode"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.repayMode.$dirty && form.repayMode.$error.required) || (form.repayMode.$error.required && formValidate)">还款方式不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">还款频率</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="repayRate" placeholder="请输入还款频率" class="form-control m-b-xs" ng-model="product.repayRate"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.repayRate.$dirty && form.repayRate.$error.required) || (form.repayRate.$error.required && formValidate)">还款频率不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">保证金返还方式</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="depositRtnMode" placeholder="请输入保证金返还方式" class="form-control m-b-xs" ng-model="product.depositRtnMode"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.depositRtnMode.$dirty && form.depositRtnMode.$error.required) || (form.depositRtnMode.$error.required && formValidate)">保证金返还方式不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">融资期限</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="finPeriodType" placeholder="请输入融资期限" class="form-control m-b-xs" ng-model="product.finPeriodType"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.finPeriodType.$dirty && form.finPeriodType.$error.required) || (form.finPeriodType.$error.required && formValidate)">融资期限不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">手续费收取方式</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="chargePayMode" placeholder="请输入手续费收取方式" class="form-control m-b-xs" ng-model="product.chargePayMode"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.chargePayMode.$dirty && form.chargePayMode.$error.required) || (form.chargePayMode.$error.required && formValidate)">手续费收取方式不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">首付比例开始</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="initPercFrom" placeholder="请输入首付比例开始" class="form-control m-b-xs" ng-model="product.initPercFrom"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.initPercFrom.$dirty && form.initPercFrom.$error.required) || (form.initPercFrom.$error.required && formValidate)">首付比例开始不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">首付比例结束</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="initPercTo" placeholder="请输入首付比例结束" class="form-control m-b-xs" ng-model="product.initPercTo"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.initPercTo.$dirty && form.initPercTo.$error.required) || (form.initPercTo.$error.required && formValidate)">首付比例结束不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">首付金额开始</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="initAmountFrom" placeholder="请输入首付金额开始" class="form-control m-b-xs" ng-model="product.initAmountFrom"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.initAmountFrom.$dirty && form.initAmountFrom.$error.required) || (form.initAmountFrom.$error.required && formValidate)">首付金额开始不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">首付金额结束</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="initAmountTo" placeholder="请输入首付金额结束" class="form-control m-b-xs" ng-model="product.initAmountTo"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.initAmountTo.$dirty && form.initAmountTo.$error.required) || (form.initAmountTo.$error.required && formValidate)">首付金额结束不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">尾付比例开始</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="finalPercFrom" placeholder="请输入尾付比例开始" class="form-control m-b-xs" ng-model="product.finalPercFrom"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.finalPercFrom.$dirty && form.finalPercFrom.$error.required) || (form.finalPercFrom.$error.required && formValidate)">尾付比例开始不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">尾付比例结束</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="finalPercTo" placeholder="请输入尾付比例结束" class="form-control m-b-xs" ng-model="product.finalPercTo"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.finalPercTo.$dirty && form.finalPercTo.$error.required) || (form.finalPercTo.$error.required && formValidate)">尾付比例结束不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">尾付金额开始</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="finalAmountFrom" placeholder="请输入尾付金额开始" class="form-control m-b-xs" ng-model="product.finalAmountFrom"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.finalAmountFrom.$dirty && form.finalAmountFrom.$error.required) || (form.finalAmountFrom.$error.required && formValidate)">尾付金额开始不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">尾付金额结束</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="finalAmountTo" placeholder="请输入尾付金额结束" class="form-control m-b-xs" ng-model="product.finalAmountTo"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.finalAmountTo.$dirty && form.finalAmountTo.$error.required) || (form.finalAmountTo.$error.required && formValidate)">尾付金额结束不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">保证金开始</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="depositFrom" placeholder="请输入保证金开始" class="form-control m-b-xs" ng-model="product.depositFrom"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.depositFrom.$dirty && form.depositFrom.$error.required) || (form.depositFrom.$error.required && formValidate)">保证金开始不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">保证金结束</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="depositTo" placeholder="请输入保证金结束" class="form-control m-b-xs" ng-model="product.depositTo"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.depositTo.$dirty && form.depositTo.$error.required) || (form.depositTo.$error.required && formValidate)">保证金结束不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">保证金率开始</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="depositPercFrom" placeholder="请输入保证金率开始" class="form-control m-b-xs" ng-model="product.depositPercFrom"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.depositPercFrom.$dirty && form.depositPercFrom.$error.required) || (form.depositPercFrom.$error.required && formValidate)">保证金率开始不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">保证金率结束</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="depositPercTo" placeholder="请输入保证金率结束" class="form-control m-b-xs" ng-model="product.depositPercTo"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.depositPercTo.$dirty && form.depositPercTo.$error.required) || (form.depositPercTo.$error.required && formValidate)">保证金率结束不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">融资总额开始</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="finTotalFrom" placeholder="请输入融资总额开始" class="form-control m-b-xs" ng-model="product.finTotalFrom"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.finTotalFrom.$dirty && form.finTotalFrom.$error.required) || (form.finTotalFrom.$error.required && formValidate)">融资总额开始不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">融资总额结束</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="finTotalTo" placeholder="请输入融资总额结束" class="form-control m-b-xs" ng-model="product.finTotalTo"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.finTotalTo.$dirty && form.finTotalTo.$error.required) || (form.finTotalTo.$error.required && formValidate)">融资总额结束不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">风险融资额开始</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="finRiskFrom" placeholder="请输入风险融资额开始" class="form-control m-b-xs" ng-model="product.finRiskFrom"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.finRiskFrom.$dirty && form.finRiskFrom.$error.required) || (form.finRiskFrom.$error.required && formValidate)">风险融资额开始不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">风险融资额结束</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="finRiskTo" placeholder="请输入风险融资额结束" class="form-control m-b-xs" ng-model="product.finRiskTo"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.finRiskTo.$dirty && form.finRiskTo.$error.required) || (form.finRiskTo.$error.required && formValidate)">风险融资额结束不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">贴息是否差额付款</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="subsidyPayMode" placeholder="请输入贴息是否差额付款" class="form-control m-b-xs" ng-model="product.subsidyPayMode"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.subsidyPayMode.$dirty && form.subsidyPayMode.$error.required) || (form.subsidyPayMode.$error.required && formValidate)">贴息是否差额付款不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">扩展属性1</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="prodAttr1" placeholder="请输入扩展属性1" class="form-control m-b-xs" ng-model="product.prodAttr1"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.prodAttr1.$dirty && form.prodAttr1.$error.required) || (form.prodAttr1.$error.required && formValidate)">扩展属性1不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">扩展属性2</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="prodAttr2" placeholder="请输入扩展属性2" class="form-control m-b-xs" ng-model="product.prodAttr2"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.prodAttr2.$dirty && form.prodAttr2.$error.required) || (form.prodAttr2.$error.required && formValidate)">扩展属性2不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">扩展属性3</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="prodAttr3" placeholder="请输入扩展属性3" class="form-control m-b-xs" ng-model="product.prodAttr3"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.prodAttr3.$dirty && form.prodAttr3.$error.required) || (form.prodAttr3.$error.required && formValidate)">扩展属性3不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+
+        </div>
+    </form>
+</div>
+<div class="modal-footer ng-scope">
+    <button class="btn btn-default" ng-click="close()">取消</button>
+    <button type="submit" class="btn btn-success" ng-disabled="submit" ng-click="modify()">保存</button>
+</div>

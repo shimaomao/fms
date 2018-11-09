@@ -1,0 +1,779 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.com.leadu.fms.data.baseinfo.dao.BasBankInfoDao">
+    <!--关联sys_group表分页查询bas_bank_info-->
+    <select id="selectBasBankInfoFromSysGroupByPage" parameterType="cn.com.leadu.fms.pojo.baseinfo.vo.basbankinfo.BasBankInfoVo" resultType="cn.com.leadu.fms.pojo.baseinfo.vo.basbankinfo.BasBankInfoVo">
+        SELECT
+        basBankInfo.bank_id,
+        basBankInfo.group_code,
+        basBankInfo.organization_type,
+        basBankInfo.account_no_status,
+        basBankInfo.group_bank_no,
+        basBankInfo.ele_account_no,
+        basBankInfo.acc_bank,
+        basBankInfo.acc_branch_bank,
+        basBankInfo.acc_op_bank_prov,
+        basBankInfo.acc_op_bank_city,
+        basBankInfo.account_name,
+        basBankInfo.account_no,
+        basBankInfo.account_code,
+        basBankInfo.acc_default,
+        basBankInfo.finass_subject_cd,
+        basBankInfo.assis_finass_supply_cd,
+        basBankInfo.enable_flag,
+        basBankInfo.present_user,
+        basBankInfo.update_time,
+        basBankInfo.updater,
+        sysGroup1.group_name,
+        sysGroup2.group_name AS organizationId
+        FROM
+        bas_bank_info basBankInfo
+        LEFT JOIN
+        sys_group sysGroup1 ON basBankInfo.group_code=sysGroup1.group_code AND sysGroup1.del_flag =  ${delete_exist}
+        LEFT JOIN
+        sys_group sysGroup2 ON basBankInfo.organization_id=sysGroup2.group_code AND sysGroup2.del_flag =  ${delete_exist}
+        WHERE basBankInfo.del_flag = ${delete_exist}
+        <if test="basBankInfoVo.accBank != null" >
+            AND basBankInfo.acc_bank LIKE #{basBankInfoVo.accBank}
+        </if>
+        <if test="basBankInfoVo.accountName != null" >
+            AND basBankInfo.account_name LIKE #{basBankInfoVo.accountName}
+        </if>
+        <if test="basBankInfoVo.accountNo != null">
+            AND basBankInfo.account_no LIKE #{basBankInfoVo.accountNo}
+        </if>
+        <if test="basBankInfoVo.groupCode != null">
+            AND sysGroup1.group_code = #{basBankInfoVo.groupCode}
+        </if>
+
+        <if test="basBankInfoVo.organizationType != null">
+            AND basBankInfo.organization_type=#{basBankInfoVo.organizationType}
+        </if>
+
+        <if test="basBankInfoVo.enableFlag != null">
+            AND basBankInfo.enable_flag=#{basBankInfoVo.enableFlag}
+        </if>
+
+        <if test="basBankInfoVo.accountNoStatus != null">
+            AND basBankInfo.account_no_status=#{basBankInfoVo.accountNoStatus}
+        </if>
+        <if test="basBankInfoVo.accBranchBank != null" >
+            AND basBankInfo.acc_branch_bank LIKE #{basBankInfoVo.accBranchBank}
+        </if>
+        AND basBankInfo.organization_type='0'
+
+        UNION ALL
+
+        SELECT
+        basBankInfo.bank_id,
+        basBankInfo.group_code,
+        basBankInfo.organization_type,
+        basBankInfo.account_no_status,
+        basBankInfo.group_bank_no,
+        basBankInfo.ele_account_no,
+        basBankInfo.acc_bank,
+        basBankInfo.acc_branch_bank,
+        basBankInfo.acc_op_bank_prov,
+        basBankInfo.acc_op_bank_city,
+        basBankInfo.account_name,
+        basBankInfo.account_no,
+        basBankInfo.account_code,
+        basBankInfo.acc_default,
+        basBankInfo.finass_subject_cd,
+        basBankInfo.assis_finass_supply_cd,
+        basBankInfo.enable_flag,
+        basBankInfo.present_user,
+        basBankInfo.update_time,
+        basBankInfo.updater,
+        sysGroup1.group_name,
+        basSales.sales_name AS organizationId
+        FROM
+        bas_bank_info basBankInfo
+        LEFT JOIN
+        sys_group sysGroup1 ON basBankInfo.group_code=sysGroup1.group_code AND sysGroup1.del_flag =  ${delete_exist}
+        LEFT JOIN
+        bas_sales basSales ON basBankInfo.organization_id=basSales.sales_code AND basSales.del_flag =  ${delete_exist}
+        WHERE basBankInfo.del_flag = ${delete_exist}
+        <if test="basBankInfoVo.accBank != null" >
+            AND basBankInfo.acc_bank LIKE #{basBankInfoVo.accBank}
+        </if>
+        <if test="basBankInfoVo.accountName != null" >
+            AND basBankInfo.account_name LIKE #{basBankInfoVo.accountName}
+        </if>
+        <if test="basBankInfoVo.accountNo != null">
+            AND basBankInfo.account_no LIKE #{basBankInfoVo.accountNo}
+        </if>
+        <if test="basBankInfoVo.groupCode != null">
+            AND sysGroup1.group_code = #{basBankInfoVo.groupCode}
+        </if>
+
+        <if test="basBankInfoVo.organizationType != null">
+            AND basBankInfo.organization_type=#{basBankInfoVo.organizationType}
+        </if>
+
+        <if test="basBankInfoVo.enableFlag != null">
+            AND basBankInfo.enable_flag=#{basBankInfoVo.enableFlag}
+        </if>
+
+        <if test="basBankInfoVo.accountNoStatus != null">
+            AND basBankInfo.account_no_status=#{basBankInfoVo.accountNoStatus}
+        </if>
+        <if test="basBankInfoVo.accBranchBank != null" >
+            AND basBankInfo.acc_branch_bank LIKE #{basBankInfoVo.accBranchBank}
+        </if>
+        AND basBankInfo.organization_type='1'
+
+        UNION ALL
+
+        SELECT
+        basBankInfo.bank_id,
+        basBankInfo.group_code,
+        basBankInfo.organization_type,
+        basBankInfo.account_no_status,
+        basBankInfo.group_bank_no,
+        basBankInfo.ele_account_no,
+        basBankInfo.acc_bank,
+        basBankInfo.acc_branch_bank,
+        basBankInfo.acc_op_bank_prov,
+        basBankInfo.acc_op_bank_city,
+        basBankInfo.account_name,
+        basBankInfo.account_no,
+        basBankInfo.account_code,
+        basBankInfo.acc_default,
+        basBankInfo.finass_subject_cd,
+        basBankInfo.assis_finass_supply_cd,
+        basBankInfo.enable_flag,
+        basBankInfo.present_user,
+        basBankInfo.update_time,
+        basBankInfo.updater,
+        sysGroup1.group_name,
+        basPartner.partner_name AS organizationId
+        FROM
+        bas_bank_info basBankInfo
+        LEFT JOIN
+        sys_group sysGroup1 ON basBankInfo.group_code=sysGroup1.group_code AND sysGroup1.del_flag =  ${delete_exist}
+        LEFT JOIN
+        bas_partner basPartner ON basBankInfo.organization_id=basPartner.partner_code AND basPartner.del_flag =  ${delete_exist}
+        WHERE basBankInfo.del_flag = ${delete_exist}
+        <if test="basBankInfoVo.accBank != null" >
+            AND basBankInfo.acc_bank LIKE #{basBankInfoVo.accBank}
+        </if>
+        <if test="basBankInfoVo.accountName != null" >
+            AND basBankInfo.account_name LIKE #{basBankInfoVo.accountName}
+        </if>
+        <if test="basBankInfoVo.accountNo != null">
+            AND basBankInfo.account_no LIKE #{basBankInfoVo.accountNo}
+        </if>
+        <if test="basBankInfoVo.groupCode != null">
+            AND sysGroup1.group_code = #{basBankInfoVo.groupCode}
+        </if>
+
+        <if test="basBankInfoVo.organizationType != null">
+            AND basBankInfo.organization_type=#{basBankInfoVo.organizationType}
+        </if>
+
+        <if test="basBankInfoVo.enableFlag != null">
+            AND basBankInfo.enable_flag=#{basBankInfoVo.enableFlag}
+        </if>
+
+        <if test="basBankInfoVo.accountNoStatus != null">
+            AND basBankInfo.account_no_status=#{basBankInfoVo.accountNoStatus}
+        </if>
+        <if test="basBankInfoVo.accBranchBank != null" >
+            AND basBankInfo.acc_branch_bank LIKE #{basBankInfoVo.accBranchBank}
+        </if>
+        AND basBankInfo.organization_type='2'
+
+        UNION ALL
+
+        SELECT
+        basBankInfo.bank_id,
+        basBankInfo.group_code,
+        basBankInfo.organization_type,
+        basBankInfo.account_no_status,
+        basBankInfo.group_bank_no,
+        basBankInfo.ele_account_no,
+        basBankInfo.acc_bank,
+        basBankInfo.acc_branch_bank,
+        basBankInfo.acc_op_bank_prov,
+        basBankInfo.acc_op_bank_city,
+        basBankInfo.account_name,
+        basBankInfo.account_no,
+        basBankInfo.account_code,
+        basBankInfo.acc_default,
+        basBankInfo.finass_subject_cd,
+        basBankInfo.assis_finass_supply_cd,
+        basBankInfo.enable_flag,
+        basBankInfo.present_user,
+        basBankInfo.update_time,
+        basBankInfo.updater,
+        sysGroup1.group_name,
+        carCollectComp.car_collect_comp_name AS organizationId
+        FROM
+        bas_bank_info basBankInfo
+        LEFT JOIN
+        sys_group sysGroup1 ON basBankInfo.group_code=sysGroup1.group_code AND sysGroup1.del_flag =  ${delete_exist}
+        LEFT JOIN
+        car_collect_comp carCollectComp ON basBankInfo.organization_id=carCollectComp.car_collect_comp_code AND carCollectComp.del_flag =  ${delete_exist}
+        WHERE basBankInfo.del_flag = ${delete_exist}
+        <if test="basBankInfoVo.accBank != null" >
+            AND basBankInfo.acc_bank LIKE #{basBankInfoVo.accBank}
+        </if>
+        <if test="basBankInfoVo.accountName != null" >
+            AND basBankInfo.account_name LIKE #{basBankInfoVo.accountName}
+        </if>
+        <if test="basBankInfoVo.accountNo != null">
+            AND basBankInfo.account_no LIKE #{basBankInfoVo.accountNo}
+        </if>
+        <if test="basBankInfoVo.groupCode != null">
+            AND sysGroup1.group_code = #{basBankInfoVo.groupCode}
+        </if>
+
+        <if test="basBankInfoVo.organizationType != null">
+            AND basBankInfo.organization_type=#{basBankInfoVo.organizationType}
+        </if>
+
+        <if test="basBankInfoVo.enableFlag != null">
+            AND basBankInfo.enable_flag=#{basBankInfoVo.enableFlag}
+        </if>
+
+        <if test="basBankInfoVo.accountNoStatus != null">
+            AND basBankInfo.account_no_status=#{basBankInfoVo.accountNoStatus}
+        </if>
+        <if test="basBankInfoVo.accBranchBank != null" >
+            AND basBankInfo.acc_branch_bank LIKE #{basBankInfoVo.accBranchBank}
+        </if>
+        AND basBankInfo.organization_type='3'
+
+        UNION ALL
+
+        SELECT
+        basBankInfo.bank_id,
+        basBankInfo.group_code,
+        basBankInfo.organization_type,
+        basBankInfo.account_no_status,
+        basBankInfo.group_bank_no,
+        basBankInfo.ele_account_no,
+        basBankInfo.acc_bank,
+        basBankInfo.acc_branch_bank,
+        basBankInfo.acc_op_bank_prov,
+        basBankInfo.acc_op_bank_city,
+        basBankInfo.account_name,
+        basBankInfo.account_no,
+        basBankInfo.account_code,
+        basBankInfo.acc_default,
+        basBankInfo.finass_subject_cd,
+        basBankInfo.assis_finass_supply_cd,
+        basBankInfo.enable_flag,
+        basBankInfo.present_user,
+        basBankInfo.update_time,
+        basBankInfo.updater,
+        sysGroup1.group_name,
+        basBankInfo.organization_id
+        FROM
+        bas_bank_info basBankInfo
+        LEFT JOIN
+        sys_group sysGroup1 ON basBankInfo.group_code=sysGroup1.group_code AND sysGroup1.del_flag =  ${delete_exist}
+        WHERE basBankInfo.del_flag = ${delete_exist}
+        <if test="basBankInfoVo.accBank != null" >
+            AND basBankInfo.acc_bank LIKE #{basBankInfoVo.accBank}
+        </if>
+        <if test="basBankInfoVo.accountName != null" >
+            AND basBankInfo.account_name LIKE #{basBankInfoVo.accountName}
+        </if>
+        <if test="basBankInfoVo.accountNo != null">
+            AND basBankInfo.account_no LIKE #{basBankInfoVo.accountNo}
+        </if>
+        <if test="basBankInfoVo.groupCode != null">
+            AND sysGroup1.group_code = #{basBankInfoVo.groupCode}
+        </if>
+
+        <if test="basBankInfoVo.organizationType != null">
+            AND basBankInfo.organization_type=#{basBankInfoVo.organizationType}
+        </if>
+
+        <if test="basBankInfoVo.enableFlag != null">
+            AND basBankInfo.enable_flag=#{basBankInfoVo.enableFlag}
+        </if>
+
+        <if test="basBankInfoVo.accountNoStatus != null">
+            AND basBankInfo.account_no_status=#{basBankInfoVo.accountNoStatus}
+        </if>
+        <if test="basBankInfoVo.accBranchBank != null" >
+            AND basBankInfo.acc_branch_bank LIKE #{basBankInfoVo.accBranchBank}
+        </if>
+        AND basBankInfo.organization_type='4'
+
+        UNION ALL
+
+        SELECT
+        basBankInfo.bank_id,
+        basBankInfo.group_code,
+        basBankInfo.organization_type,
+        basBankInfo.account_no_status,
+        basBankInfo.group_bank_no,
+        basBankInfo.ele_account_no,
+        basBankInfo.acc_bank,
+        basBankInfo.acc_branch_bank,
+        basBankInfo.acc_op_bank_prov,
+        basBankInfo.acc_op_bank_city,
+        basBankInfo.account_name,
+        basBankInfo.account_no,
+        basBankInfo.account_code,
+        basBankInfo.acc_default,
+        basBankInfo.finass_subject_cd,
+        basBankInfo.assis_finass_supply_cd,
+        basBankInfo.enable_flag,
+        basBankInfo.present_user,
+        basBankInfo.update_time,
+        basBankInfo.updater,
+        sysGroup1.group_name,
+        basBankInfo.organization_id
+        FROM
+        bas_bank_info basBankInfo
+        LEFT JOIN
+        sys_group sysGroup1 ON basBankInfo.group_code=sysGroup1.group_code AND sysGroup1.del_flag =  ${delete_exist}
+        WHERE basBankInfo.del_flag = ${delete_exist}
+        <if test="basBankInfoVo.accBank != null" >
+            AND basBankInfo.acc_bank LIKE #{basBankInfoVo.accBank}
+        </if>
+        <if test="basBankInfoVo.accountName != null" >
+            AND basBankInfo.account_name LIKE #{basBankInfoVo.accountName}
+        </if>
+        <if test="basBankInfoVo.accountNo != null">
+            AND basBankInfo.account_no LIKE #{basBankInfoVo.accountNo}
+        </if>
+        <if test="basBankInfoVo.groupCode != null">
+            AND sysGroup1.group_code = #{basBankInfoVo.groupCode}
+        </if>
+
+        <if test="basBankInfoVo.organizationType != null">
+            AND basBankInfo.organization_type=#{basBankInfoVo.organizationType}
+        </if>
+
+        <if test="basBankInfoVo.enableFlag != null">
+            AND basBankInfo.enable_flag=#{basBankInfoVo.enableFlag}
+        </if>
+
+        <if test="basBankInfoVo.accountNoStatus != null">
+            AND basBankInfo.account_no_status=#{basBankInfoVo.accountNoStatus}
+        </if>
+        <if test="basBankInfoVo.accBranchBank != null" >
+            AND basBankInfo.acc_branch_bank LIKE #{basBankInfoVo.accBranchBank}
+        </if>
+        AND basBankInfo.organization_type='5'
+
+        UNION ALL
+
+        SELECT
+        basBankInfo.bank_id,
+        basBankInfo.group_code,
+        basBankInfo.organization_type,
+        basBankInfo.account_no_status,
+        basBankInfo.group_bank_no,
+        basBankInfo.ele_account_no,
+        basBankInfo.acc_bank,
+        basBankInfo.acc_branch_bank,
+        basBankInfo.acc_op_bank_prov,
+        basBankInfo.acc_op_bank_city,
+        basBankInfo.account_name,
+        basBankInfo.account_no,
+        basBankInfo.account_code,
+        basBankInfo.acc_default,
+        basBankInfo.finass_subject_cd,
+        basBankInfo.assis_finass_supply_cd,
+        basBankInfo.enable_flag,
+        basBankInfo.present_user,
+        basBankInfo.update_time,
+        basBankInfo.updater,
+        sysGroup1.group_name,
+        basBankInfo.organization_id
+        FROM
+        bas_bank_info basBankInfo
+        LEFT JOIN
+        sys_group sysGroup1 ON basBankInfo.group_code=sysGroup1.group_code AND sysGroup1.del_flag =  ${delete_exist}
+        WHERE basBankInfo.del_flag = ${delete_exist}
+        <if test="basBankInfoVo.accBank != null" >
+            AND basBankInfo.acc_bank LIKE #{basBankInfoVo.accBank}
+        </if>
+        <if test="basBankInfoVo.accountName != null" >
+            AND basBankInfo.account_name LIKE #{basBankInfoVo.accountName}
+        </if>
+        <if test="basBankInfoVo.accountNo != null">
+            AND basBankInfo.account_no LIKE #{basBankInfoVo.accountNo}
+        </if>
+        <if test="basBankInfoVo.groupCode != null">
+            AND sysGroup1.group_code = #{basBankInfoVo.groupCode}
+        </if>
+
+        <if test="basBankInfoVo.organizationType != null">
+            AND basBankInfo.organization_type=#{basBankInfoVo.organizationType}
+        </if>
+
+        <if test="basBankInfoVo.enableFlag != null">
+            AND basBankInfo.enable_flag=#{basBankInfoVo.enableFlag}
+        </if>
+
+        <if test="basBankInfoVo.accountNoStatus != null">
+            AND basBankInfo.account_no_status=#{basBankInfoVo.accountNoStatus}
+        </if>
+        <if test="basBankInfoVo.accBranchBank != null" >
+            AND basBankInfo.acc_branch_bank LIKE #{basBankInfoVo.accBranchBank}
+        </if>
+        AND basBankInfo.organization_type='6'
+
+        UNION ALL
+
+        SELECT
+        basBankInfo.bank_id,
+        basBankInfo.group_code,
+        basBankInfo.organization_type,
+        basBankInfo.account_no_status,
+        basBankInfo.group_bank_no,
+        basBankInfo.ele_account_no,
+        basBankInfo.acc_bank,
+        basBankInfo.acc_branch_bank,
+        basBankInfo.acc_op_bank_prov,
+        basBankInfo.acc_op_bank_city,
+        basBankInfo.account_name,
+        basBankInfo.account_no,
+        basBankInfo.account_code,
+        basBankInfo.acc_default,
+        basBankInfo.finass_subject_cd,
+        basBankInfo.assis_finass_supply_cd,
+        basBankInfo.enable_flag,
+        basBankInfo.present_user,
+        basBankInfo.update_time,
+        basBankInfo.updater,
+        sysGroup1.group_name,
+        basBankInfo.organization_id
+        FROM
+        bas_bank_info basBankInfo
+        LEFT JOIN
+        sys_group sysGroup1 ON basBankInfo.group_code=sysGroup1.group_code AND sysGroup1.del_flag =  ${delete_exist}
+        WHERE basBankInfo.del_flag = ${delete_exist}
+        <if test="basBankInfoVo.accBank != null" >
+            AND basBankInfo.acc_bank LIKE #{basBankInfoVo.accBank}
+        </if>
+        <if test="basBankInfoVo.accountName != null" >
+            AND basBankInfo.account_name LIKE #{basBankInfoVo.accountName}
+        </if>
+        <if test="basBankInfoVo.accountNo != null">
+            AND basBankInfo.account_no LIKE #{basBankInfoVo.accountNo}
+        </if>
+        <if test="basBankInfoVo.groupCode != null">
+            AND sysGroup1.group_code = #{basBankInfoVo.groupCode}
+        </if>
+
+        <if test="basBankInfoVo.organizationType != null">
+            AND basBankInfo.organization_type=#{basBankInfoVo.organizationType}
+        </if>
+
+        <if test="basBankInfoVo.enableFlag != null">
+            AND basBankInfo.enable_flag=#{basBankInfoVo.enableFlag}
+        </if>
+
+        <if test="basBankInfoVo.accountNoStatus != null">
+            AND basBankInfo.account_no_status=#{basBankInfoVo.accountNoStatus}
+        </if>
+        <if test="basBankInfoVo.accBranchBank != null" >
+            AND basBankInfo.acc_branch_bank LIKE #{basBankInfoVo.accBranchBank}
+        </if>
+        AND basBankInfo.organization_type='7'
+
+        ORDER BY update_time DESC
+
+    </select>
+
+    <!--通过主键关联sys_group表查询bas_bank_info-->
+    <select id="selectBasBankInfoFromSysGroupById" parameterType="java.lang.String" resultType="cn.com.leadu.fms.pojo.baseinfo.vo.basbankinfo.BasBankInfoVo">
+        (SELECT
+        basBankInfo.bank_id,
+        basBankInfo.group_code,
+        basBankInfo.organization_type,
+        basBankInfo.account_no_status,
+        basBankInfo.group_bank_no,
+        basBankInfo.ele_account_no,
+        basBankInfo.acc_bank,
+        basBankInfo.acc_branch_bank,
+        basBankInfo.acc_op_bank_prov,
+        basBankInfo.acc_op_bank_city,
+        basBankInfo.account_name,
+        basBankInfo.account_no,
+        basBankInfo.account_code,
+        basBankInfo.acc_default,
+        basBankInfo.enable_flag,
+        basBankInfo.finass_subject_cd,
+        basBankInfo.assis_finass_supply_cd,
+        basBankInfo.update_time,
+        basBankInfo.updater,
+        basBankInfo.bank_task_no,
+        sysGroup1.group_name,
+        sysGroup2.group_name AS organizationId
+        FROM
+        bas_bank_info basBankInfo
+        LEFT JOIN
+        sys_group sysGroup1 ON basBankInfo.group_code=sysGroup1.group_code AND sysGroup1.del_flag =  ${delete_exist}
+        LEFT JOIN
+        sys_group sysGroup2 ON basBankInfo.organization_id=sysGroup2.group_code AND sysGroup2.del_flag =  ${delete_exist}
+        WHERE basBankInfo.del_flag = ${delete_exist}
+        <if test="#{bankId} != null" >
+            AND basBankInfo.bank_id = #{bankId}
+        </if>
+        AND basBankInfo.organization_type='0')
+
+        UNION
+
+        (SELECT
+        basBankInfo.bank_id,
+        basBankInfo.group_code,
+        basBankInfo.organization_type,
+        basBankInfo.account_no_status,
+        basBankInfo.group_bank_no,
+        basBankInfo.ele_account_no,
+        basBankInfo.acc_bank,
+        basBankInfo.acc_branch_bank,
+        basBankInfo.acc_op_bank_prov,
+        basBankInfo.acc_op_bank_city,
+        basBankInfo.account_name,
+        basBankInfo.account_no,
+        basBankInfo.account_code,
+        basBankInfo.acc_default,
+        basBankInfo.enable_flag,
+        basBankInfo.finass_subject_cd,
+        basBankInfo.assis_finass_supply_cd,
+        basBankInfo.update_time,
+        basBankInfo.updater,
+        basBankInfo.bank_task_no,
+        sysGroup1.group_name,
+        basSales.sales_name AS organizationId
+        FROM
+        bas_bank_info basBankInfo
+        LEFT JOIN
+        sys_group sysGroup1 ON basBankInfo.group_code=sysGroup1.group_code AND sysGroup1.del_flag =  ${delete_exist}
+        LEFT JOIN
+        bas_sales basSales ON basBankInfo.organization_id=basSales.sales_code AND basSales.del_flag =  ${delete_exist}
+        WHERE basBankInfo.del_flag = ${delete_exist}
+        <if test="#{bankId} != null" >
+            AND basBankInfo.bank_id = #{bankId}
+        </if>
+        AND basBankInfo.organization_type='1')
+
+        UNION
+
+        (SELECT
+        basBankInfo.bank_id,
+        basBankInfo.group_code,
+        basBankInfo.organization_type,
+        basBankInfo.account_no_status,
+        basBankInfo.group_bank_no,
+        basBankInfo.ele_account_no,
+        basBankInfo.acc_bank,
+        basBankInfo.acc_branch_bank,
+        basBankInfo.acc_op_bank_prov,
+        basBankInfo.acc_op_bank_city,
+        basBankInfo.account_name,
+        basBankInfo.account_no,
+        basBankInfo.account_code,
+        basBankInfo.acc_default,
+        basBankInfo.enable_flag,
+        basBankInfo.finass_subject_cd,
+        basBankInfo.assis_finass_supply_cd,
+        basBankInfo.update_time,
+        basBankInfo.updater,
+        basBankInfo.bank_task_no,
+        sysGroup1.group_name,
+        basPartner.partner_name AS organizationId
+        FROM
+        bas_bank_info basBankInfo
+        LEFT JOIN
+        sys_group sysGroup1 ON basBankInfo.group_code=sysGroup1.group_code AND sysGroup1.del_flag =  ${delete_exist}
+        LEFT JOIN
+        bas_partner basPartner ON basBankInfo.organization_id=basPartner.partner_code AND basPartner.del_flag =  ${delete_exist}
+        WHERE basBankInfo.del_flag = ${delete_exist}
+        <if test="#{bankId} != null" >
+            AND basBankInfo.bank_id = #{bankId}
+        </if>
+        AND basBankInfo.organization_type='2')
+
+        UNION
+
+        (SELECT
+        basBankInfo.bank_id,
+        basBankInfo.group_code,
+        basBankInfo.organization_type,
+        basBankInfo.account_no_status,
+        basBankInfo.group_bank_no,
+        basBankInfo.ele_account_no,
+        basBankInfo.acc_bank,
+        basBankInfo.acc_branch_bank,
+        basBankInfo.acc_op_bank_prov,
+        basBankInfo.acc_op_bank_city,
+        basBankInfo.account_name,
+        basBankInfo.account_no,
+        basBankInfo.account_code,
+        basBankInfo.acc_default,
+        basBankInfo.enable_flag,
+        basBankInfo.finass_subject_cd,
+        basBankInfo.assis_finass_supply_cd,
+        basBankInfo.update_time,
+        basBankInfo.updater,
+        basBankInfo.bank_task_no,
+        sysGroup1.group_name,
+        carCollectComp.car_collect_comp_name AS organizationId
+        FROM
+        bas_bank_info basBankInfo
+        LEFT JOIN
+        sys_group sysGroup1 ON basBankInfo.group_code=sysGroup1.group_code AND sysGroup1.del_flag =  ${delete_exist}
+        LEFT JOIN
+        car_collect_comp carCollectComp ON basBankInfo.organization_id=carCollectComp.car_collect_comp_code AND carCollectComp.del_flag =  ${delete_exist}
+        WHERE basBankInfo.del_flag = ${delete_exist}
+        <if test="#{bankId} != null" >
+            AND basBankInfo.bank_id = #{bankId}
+        </if>
+        AND basBankInfo.organization_type='3')
+
+        UNION
+
+        (SELECT
+        basBankInfo.bank_id,
+        basBankInfo.group_code,
+        basBankInfo.organization_type,
+        basBankInfo.account_no_status,
+        basBankInfo.group_bank_no,
+        basBankInfo.ele_account_no,
+        basBankInfo.acc_bank,
+        basBankInfo.acc_branch_bank,
+        basBankInfo.acc_op_bank_prov,
+        basBankInfo.acc_op_bank_city,
+        basBankInfo.account_name,
+        basBankInfo.account_no,
+        basBankInfo.account_code,
+        basBankInfo.acc_default,
+        basBankInfo.enable_flag,
+        basBankInfo.finass_subject_cd,
+        basBankInfo.assis_finass_supply_cd,
+        basBankInfo.update_time,
+        basBankInfo.updater,
+        basBankInfo.bank_task_no,
+        sysGroup1.group_name,
+        basBankInfo.organization_id
+        FROM
+        bas_bank_info basBankInfo
+        LEFT JOIN
+        sys_group sysGroup1 ON basBankInfo.group_code=sysGroup1.group_code AND sysGroup1.del_flag =  ${delete_exist}
+        WHERE basBankInfo.del_flag = ${delete_exist}
+        <if test="#{bankId} != null" >
+            AND basBankInfo.bank_id = #{bankId}
+        </if>
+        AND basBankInfo.organization_type='4')
+
+        UNION
+
+        (SELECT
+        basBankInfo.bank_id,
+        basBankInfo.group_code,
+        basBankInfo.organization_type,
+        basBankInfo.account_no_status,
+        basBankInfo.group_bank_no,
+        basBankInfo.ele_account_no,
+        basBankInfo.acc_bank,
+        basBankInfo.acc_branch_bank,
+        basBankInfo.acc_op_bank_prov,
+        basBankInfo.acc_op_bank_city,
+        basBankInfo.account_name,
+        basBankInfo.account_no,
+        basBankInfo.account_code,
+        basBankInfo.acc_default,
+        basBankInfo.enable_flag,
+        basBankInfo.finass_subject_cd,
+        basBankInfo.assis_finass_supply_cd,
+        basBankInfo.update_time,
+        basBankInfo.updater,
+        basBankInfo.bank_task_no,
+        sysGroup1.group_name,
+        basBankInfo.organization_id
+        FROM
+        bas_bank_info basBankInfo
+        LEFT JOIN
+        sys_group sysGroup1 ON basBankInfo.group_code=sysGroup1.group_code AND sysGroup1.del_flag =  ${delete_exist}
+        WHERE basBankInfo.del_flag = ${delete_exist}
+        <if test="#{bankId} != null" >
+            AND basBankInfo.bank_id = #{bankId}
+        </if>
+        AND basBankInfo.organization_type='5')
+
+        UNION
+
+        (SELECT
+        basBankInfo.bank_id,
+        basBankInfo.group_code,
+        basBankInfo.organization_type,
+        basBankInfo.account_no_status,
+        basBankInfo.group_bank_no,
+        basBankInfo.ele_account_no,
+        basBankInfo.acc_bank,
+        basBankInfo.acc_branch_bank,
+        basBankInfo.acc_op_bank_prov,
+        basBankInfo.acc_op_bank_city,
+        basBankInfo.account_name,
+        basBankInfo.account_no,
+        basBankInfo.account_code,
+        basBankInfo.acc_default,
+        basBankInfo.enable_flag,
+        basBankInfo.finass_subject_cd,
+        basBankInfo.assis_finass_supply_cd,
+        basBankInfo.update_time,
+        basBankInfo.updater,
+        basBankInfo.bank_task_no,
+        sysGroup1.group_name,
+        basBankInfo.organization_id
+        FROM
+        bas_bank_info basBankInfo
+        LEFT JOIN
+        sys_group sysGroup1 ON basBankInfo.group_code=sysGroup1.group_code AND sysGroup1.del_flag =  ${delete_exist}
+        WHERE basBankInfo.del_flag = ${delete_exist}
+        <if test="#{bankId} != null" >
+            AND basBankInfo.bank_id = #{bankId}
+        </if>
+        AND basBankInfo.organization_type='6')
+
+        UNION
+
+        (SELECT
+        basBankInfo.bank_id,
+        basBankInfo.group_code,
+        basBankInfo.organization_type,
+        basBankInfo.account_no_status,
+        basBankInfo.group_bank_no,
+        basBankInfo.ele_account_no,
+        basBankInfo.acc_bank,
+        basBankInfo.acc_branch_bank,
+        basBankInfo.acc_op_bank_prov,
+        basBankInfo.acc_op_bank_city,
+        basBankInfo.account_name,
+        basBankInfo.account_no,
+        basBankInfo.account_code,
+        basBankInfo.acc_default,
+        basBankInfo.enable_flag,
+        basBankInfo.finass_subject_cd,
+        basBankInfo.assis_finass_supply_cd,
+        basBankInfo.update_time,
+        basBankInfo.updater,
+        basBankInfo.bank_task_no,
+        sysGroup1.group_name,
+        basBankInfo.organization_id
+        FROM
+        bas_bank_info basBankInfo
+        LEFT JOIN
+        sys_group sysGroup1 ON basBankInfo.group_code=sysGroup1.group_code AND sysGroup1.del_flag =  ${delete_exist}
+        WHERE basBankInfo.del_flag = ${delete_exist}
+        <if test="#{bankId} != null" >
+            AND basBankInfo.bank_id = #{bankId}
+        </if>
+        AND basBankInfo.organization_type='7')
+    </select>
+
+</mapper>

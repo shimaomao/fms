@@ -1,0 +1,34 @@
+<div ng-controller="orig_file_archive_detail_controller">
+    <div class="panel panel-default">
+        <div class="row">
+            <div class="col-md-6">
+                <form class="form-inline" role="form">
+                    <div class="panel-body wrapper-sm">
+                        <div class="form-group">
+                            <div class="form-group">
+                                <label class="sr-only" >资料邮寄合同号 </label>
+                                <input class="form-control m-b-xs" ng-model="bizCode" placeholder="资料邮寄合同号">
+                            </div>
+                            <!--<div class="form-group">-->
+                                <!--<label class="sr-only" >资料邮寄业务类型 </label>-->
+                                <!--<input class="form-control m-b-xs" ng-model="bizCodeType" placeholder="资料邮寄业务类型">-->
+                            <!--</div>-->
+                            <div class="btn-group">
+                                <button class="btn btn-default m-b-xs btn-info btn-sm fms-button-margin-bottom" ng-click="searchOrigFile()" ><i class="fa fa-search"></i>查询</button>
+                                <button class="btn btn-default m-b-xs btn-sm fms-button-margin-bottom" ng-click="resetOrigFile()" ><i class="fa  icon-refresh"></i>重置</button>
+                                <!--<button class="btn btn-default m-b-xs" ng-click="fileOperation()">文件操作</button>-->
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="col-md-6">
+                <span ng-if="showTitle" style="text-align: center;font-size: 16px;font-weight: bold;display: block;margin-top: 15px;">归档明细一览</span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6"><table border="1" class="table table-striped m-b-none" id="file_archive_list"></table></div>
+            <div class="col-md-6" ng-show="showTitle"><table border="1" class="table table-striped m-b-none" id="file_archive_detail"></table></div>
+        </div>
+    </div>
+</div>

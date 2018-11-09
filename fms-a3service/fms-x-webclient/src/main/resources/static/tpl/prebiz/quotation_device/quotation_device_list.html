@@ -1,0 +1,54 @@
+<div class="bg-light lter b-b wrapper-md">
+    <h1 class="m-n font-thin h4">报价器一览信息</h1>
+</div>
+<div  ng-controller="quotation_device_list_controller">
+    <div>
+        <toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-body wrapper-sm">
+            <div class="row">
+                <div class="col-lg-12">
+                    <form class="form-inline" role="form">
+                        <div class="form-group">
+                            <label class="sr-only" >客户姓名 </label>
+                            <input class="form-control m-b-xs" ng-model="params.name" placeholder="客户姓名">
+                        </div>
+                        <div class="form-group">
+                            <label class="sr-only" >申请类型 </label>
+                            <select ng-model="params.applyType" class="form-control m-b-xs">
+                                <option value="">---选择申请类型---</option>
+                                <option value="{{applyTypeObj.codeValue}}" ng-repeat="applyTypeObj in applyTypeList">{{applyTypeObj.codeValueName}}</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="sr-only" >录入区分 </label>
+                            <select ng-model="params.quotationEntryDistinction" class="form-control m-b-xs">
+                                <option value="">---选择录入区分---</option>
+                                <option value="{{quotationEntryDistinctionObj.codeValue}}" ng-repeat="quotationEntryDistinctionObj in quotationEntryDistinctionList">{{quotationEntryDistinctionObj.codeValueName}}</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group m-b-sm">
+                            <div class="btn-group">
+                                <button class="btn fms-button-margin-bottom btn-default m-b-xs btn-info" ng-click="searchQuotationDevice()" ><i class="fa fa-search"></i>查询</button>
+                                <button class="btn fms-button-margin-bottom btn-default m-b-xs" ng-click="resetQuotationDevice()" ><i class="fa  icon-refresh"></i>重置</button>
+                            </div>
+                        </div>
+
+                        <div class="form-group pull-right">
+                            <div class="btn-group">
+                                <button class="btn btn-default m-b-xs" ng-click="modifyQuotationDevice()"><i class="fa icon-pencil"></i>修改</button>
+                                <button class="btn btn-default m-b-xs" ng-click="exportExcel()">导出EXCEL</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <table border="1" class="table table-striped m-b-none" id="quotation_device_table">
+        </table>
+    </div>
+</div>
+

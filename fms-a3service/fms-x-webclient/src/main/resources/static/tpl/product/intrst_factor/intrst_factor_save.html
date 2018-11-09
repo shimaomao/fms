@@ -1,0 +1,117 @@
+<div ng-controller="intrst_factor_save_controller">
+    <div>
+        <toaster-container
+                toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+    </div>
+    <div class="panel panel-default">
+        <div class="row" style="margin: 0; padding: 15px; border: 1px solid #dddddd">
+            <h4 class="m-n font-thin h4">{{frameTitle}}</h4>
+        </div>
+        <form name="form" class="form-validation" novalidate>
+            <div class="panel-body wrapper-sm">
+
+
+                <div class="form-group row">
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">因子代码</b><b
+                            class="form-error">*</b>:</label>
+                    <div class="col-sm-3">
+                        <input type="text" name="factorCode" placeholder="请输入因子代码" class="form-control m-b-xs"
+                               ng-model="intrstFactor.factorCode" required>
+                        <p>
+                            <span class="form-info"
+                                  ng-show=" (form.factorCode.$dirty && form.factorCode.$error.required) || (form.factorCode.$error.required && formValidate)">因子代码不能为空</span>
+                        </p>
+                    </div>
+                </div>
+
+
+                <div class="form-group row">
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">因子名称</b><b
+                            class="form-error">*</b>:</label>
+                    <div class="col-sm-3">
+                        <input type="text" name="factorName" placeholder="请输入因子名称" class="form-control m-b-xs"
+                               ng-model="intrstFactor.factorName" required>
+                        <p>
+                            <span class="form-info"
+                                  ng-show=" (form.factorName.$dirty && form.factorName.$error.required) || (form.factorName.$error.required && formValidate)">因子名称不能为空</span>
+                        </p>
+                    </div>
+                </div>
+
+
+                <div class="form-group row">
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">匹配类型</b><b
+                            class="form-error">*</b>:</label>
+                    <div class="col-sm-3">
+                        <select name="factorType" ng-model="intrstFactor.factorType" class="form-control m-b-xs"
+                                required>
+                            <option value="">--请选择匹配类型--</option>
+                            <option value="{{factorTypeObj.codeValue}}" ng-repeat="factorTypeObj in factorTypeList">
+                                {{factorTypeObj.codeValueName}}
+                            </option>
+                        </select>
+                        <p>
+                            <span class="form-info"
+                                  ng-show=" (form.factorType.$dirty && form.factorType.$error.required) || (form.factorType.$error.required && formValidate)">请选择匹配类型</span>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">是否启用</b><b
+                            class="form-error">*</b>:</label>
+                    <div class="col-sm-3">
+                        <select name="enableFlag" ng-model="intrstFactor.enableFlag" class="form-control m-b-xs"
+                                required>
+                            <option value="">--请选择启用状态--</option>
+                            <option value="{{enableFlagObj.codeValue}}" ng-repeat="enableFlagObj in enableFlagList">
+                                {{enableFlagObj.codeValueName}}
+                            </option>
+                        </select>
+                        <p>
+                            <span class="form-info"
+                                  ng-show=" (form.enableFlag.$dirty && form.enableFlag.$error.required) || (form.enableFlag.$error.required && formValidate)">请选择启用状态</span>
+                        </p>
+                    </div>
+                </div>
+
+
+                
+
+                <div class="form-group row">
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">排序</b><b
+                            class="form-error">*</b>:</label>
+                    <div class="col-sm-3">
+                        <input type="text" name="orderNo" placeholder="请输入排序" class="form-control m-b-xs"
+                               ng-model="intrstFactor.orderNo" required>
+                        <p>
+                            <span class="form-info"
+                                  ng-show=" (form.orderNo.$dirty && form.orderNo.$error.required) || (form.orderNo.$error.required && formValidate)">排序不能为空</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="modal-footer ng-scope text-center">
+                <button class="btn btn-default" ng-click="goback()">返回</button>
+                <button type="submit" class="btn btn-success" ng-show="showSave" ng-disabled="submit"
+                        ng-click="save()">新增
+                </button>
+                <button type="submit" class="btn btn-success" ng-show="showUpdate" ng-disabled="submit"
+                        ng-click="modify()">保存
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,113 @@
+<div class="panel panel-default"  ng-controller="retrieve_cars_task_launch_controller">
+    <div>
+        <toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+    </div>
+    <form name="form" class="form-validation" novalidate>
+
+        <div class="row" style="margin: 0; padding: 15px; border: 1px solid #dddddd">
+            <div class="form-inline" role="form">
+                <div class="form-group">
+                    <h4 class="m-n font-thin h4">发起收车任务</h4>
+                </div>
+                <div class="form-group pull-right">
+                    <button class="btn btn-default btn-sm fms-button-margin-top" ng-click="goBack()"  ng-disabled="submit">返回</button>
+                    <button class="btn btn-success m-t-xs m-r-xs btn-sm fms-button-margin-top" ng-click="save()"  ng-disabled="submit">提交</button>
+                </div>
+            </div>
+        </div>
+        <div class="panel-body">
+            <div class="row line-lg" style="font-weight: bold;font-size: 14px;">申请信息</div>
+            <div class="form-group row">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">合同编号</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-2 text-left">
+                    <input type="text" disabled placeholder="请选择合同编号" class="form-control " style="width: auto;display: inline-block" ng-model="retrieveCarsTask.contNo" name="contNo" required>
+                    <p>
+                        <span class="form-info" ng-show=" (form.contNo.$error.pattern && !form.contNo.$error.required) || (form.contNo.$error.required && formValidate)">请选择合同编号</span>
+                    </p>
+                </div>
+                <div class="col-sm-7 text-left">
+                    <button ng-if="!taskId" class="btn btn-success btn-sm fms-margin-bottom-2" ng-click="selectOverdueCont()"  ng-disabled="submit">选择</button>
+                    <button class="btn btn-success btn-sm fms-margin-bottom-2" ng-click="contractDetails()"  ng-disabled="submit">合同详情</button>
+                    <button class="btn btn-success btn-sm fms-margin-bottom-2" ng-click="overdueDetail()"  ng-disabled="submit">逾期详情</button>
+                </div>
+            </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">承租人</b>:</label>
+                    <div class="col-sm-3">
+                        <label class="control-label text-left"><b class="form-text-black">{{retrieveCarsTask.cstmName}}</b></label>
+                    </div>
+                    <label class="col-sm-1 control-label text-right"><b class="form-text-black">出租人</b>:</label>
+                    <div class="col-sm-3">
+                        <label class="control-label text-left"><b class="form-text-black">{{retrieveCarsTask.lessor}}</b></label>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">发动机号</b>:</label>
+                    <div class="col-sm-2">
+                        <label class="control-label text-left"><b class="form-text-black">{{retrieveCarsTask.engineNo}}</b></label>
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">试算金额(元)</b>:</label>
+                    <div class="col-sm-3">
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <label class="control-label text-left"><b class="form-text-black">{{retrieveCarsTask.trialAmount}}</b></label>
+                            </div>
+                            <div class="col-sm-8">
+                                <button type="button" class="btn btn-sm btn-success" ng-click="preCount()">试算详情</button>
+                            </div>
+                        </div>
+                    </div>
+                    <label class="col-sm-1 control-label text-right"><b class="form-text-black">车牌号</b>:</label>
+                    <div class="col-sm-2">
+                        <label class="control-label text-left"><b class="form-text-black">{{retrieveCarsTask.vehicleLicenseNo}}</b></label>
+                    </div>
+                </div>
+            <div class="form-group row">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">车辆残值(元)</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-2">
+                    <!--<label class="control-label text-left"><b class="form-text-black">{{retrieveCarsTask.vehicleLicenseNo}}</b></label>-->
+                    <input type="number" placeholder="请输入车辆残值" limit-number name="salvageValue" title="{{retrieveCarsTask.salvageValue}}" class="form-control" style="width: auto;display: inline-block" ng-change="calculateTrial()" ng-model="retrieveCarsTask.salvageValue" required>
+                    <p>
+                        <span class="form-info" ng-show=" (form.salvageValue.$error.pattern && !form.salvageValue.$error.required) || (form.salvageValue.$error.required && formValidate)">请输入车辆残值</span>
+                    </p>
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">费用差额(元)</b>:</label>
+                <div class="col-sm-2">
+                    <label class="control-label text-left"><b class="form-text-black">{{retrieveCarsTask.costDifference}}</b></label>
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">车架号</b>:</label>
+                <div class="col-sm-2">
+                    <label class="control-label text-left"><b class="form-text-black">{{retrieveCarsTask.overdueContVinNo}}</b></label>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">收车原因</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-8">
+                    <textarea ng-model="retrieveCarsTask.retrieveReason" style="height: 110px;resize: none; " name="retrieveReason" class="form-control" limit-word="1000" required ></textarea>
+                    <p>
+                        <span class="form-info" ng-show=" (form.retrieveReason.$error.pattern && !form.retrieveReason.$error.required) || (form.retrieveReason.$error.required && formValidate)">请输入收车原因</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <!--<div class="panel-body">-->
+            <!---->
+        <!--</div>-->
+        <div class="panel-body">
+            <div class="form-group row">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">备注</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-8">
+                    <textarea ng-model="retrieveCarsTask.memo" name="memo"  class="form-control" limit-word="1000" required ></textarea>
+                    <p>
+                        <span class="form-info" ng-show=" (form.memo.$error.pattern && !form.memo.$error.required) || (form.memo.$error.required && formValidate)">请输入备注</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="panel-body" ng-if="taskId">
+                <process-log-list-directive wf-log-type="$root.bizTypes.retrieveCar" wf-log-no="retrieveCarTaskNo"> </process-log-list-directive>
+        </div>
+
+    </form>
+</div>

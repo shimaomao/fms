@@ -1,0 +1,33 @@
+<div ng-controller="prebiz_cont_payment_controller">
+    <div>
+        <toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-body wrapper-sm">
+            <div class="row">
+                <div class="form-group pull-right">
+                    <div class="btn-group">
+                        <button class="btn btn-success m-t-xs m-r-xs" ng-click="submitContRequestPay()"  ng-disabled="submit">提交 </button>
+                        <button class="btn btn-default m-t-xs" ng-click="goBack()">返回</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <form name="form" class="form-validation" novalidate>
+            <ul id="applyTab" class="nav nav-tabs">
+                <li class="active"><a href="javascript:void(0);" data-toggle="tab" data-id="cont_payment" onclick="switchPageTab(this, 'applyTab')">财务付款</a></li>
+                <li><a href="javascript:void(0);" data-toggle="tab" data-id="cont_request" onclick="switchPageTab(this, 'applyTab')">请款信息</a></li>
+            </ul>
+            <div id="applyTabContent" class="tab-content">
+                <!-- 财务付款 -->
+                <div class="tab-pane fade in active" id="cont_payment">
+                    <div ng-include="'tpl/prebiz/cont_receipt_pay/cont_payment_save.html'" class="row m-xs"></div>
+                </div>
+                <!-- 请款信息 -->
+                <div class="tab-pane fade" id="cont_request">
+                    <div ng-include="'tpl/prebiz/cont_request_pay/cont_request_pay_detail.html'" class="row m-xs"></div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

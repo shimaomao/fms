@@ -1,0 +1,14 @@
+<div class="col-lg-12  panel panel-default" style="padding: 0px" >
+
+
+        <div id="{{treeFileId}}"  style="float: left;margin-right: 15px;max-height: 285px;overflow: auto;"></div>
+        <div style="overflow:auto;">
+                <!-- 虚拟展示层 -->
+                <file-list-directive files="showFiles" detail-flag="$root.yesNoFlag.yes" ng-show="showFilesFlag"></file-list-directive>
+
+                <!-- 真实上传层 -->
+                <file-list-directive ng-repeat="lastNode in lastNodes" zip-file-name="zipFileName" file-type-path="$root.fileTypePaths.bizFiles" second-path="lastNode.id" files="lastNode.files" detail-flag="detailFlag" ng-show="showFileType == lastNode.id" ></file-list-directive>
+        </div>
+
+</div>
+

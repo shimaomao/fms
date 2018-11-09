@@ -1,0 +1,218 @@
+<div class="modal-header">
+    <h4 class="modal-title">编辑prebiz <button type="button" class="close" data-dismiss="modal" aria-hidden="true" ng-click="close()">&times;</button></h4>
+</div>
+<div class="modal-body">
+    <form name="form" class="form-validation" novalidate>
+
+        <div class="panel-body">
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">订单编号</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="applyNo" placeholder="请输入订单编号" class="form-control m-b-xs" ng-model="guaranteeComp.applyNo"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.applyNo.$dirty && form.applyNo.$error.required) || (form.applyNo.$error.required && formValidate)">订单编号不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">序号</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="guarCompNo" placeholder="请输入序号" class="form-control m-b-xs" ng-model="guaranteeComp.guarCompNo"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.guarCompNo.$dirty && form.guarCompNo.$error.required) || (form.guarCompNo.$error.required && formValidate)">序号不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">企业名称</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="name" placeholder="请输入企业名称" class="form-control m-b-xs" ng-model="guaranteeComp.name"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.name.$dirty && form.name.$error.required) || (form.name.$error.required && formValidate)">企业名称不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">担保人关系</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="relation" placeholder="请输入担保人关系" class="form-control m-b-xs" ng-model="guaranteeComp.relation"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.relation.$dirty && form.relation.$error.required) || (form.relation.$error.required && formValidate)">担保人关系不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">统一社会信用代码</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="socialCertifNo" placeholder="请输入统一社会信用代码" class="form-control m-b-xs" ng-model="guaranteeComp.socialCertifNo"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.socialCertifNo.$dirty && form.socialCertifNo.$error.required) || (form.socialCertifNo.$error.required && formValidate)">统一社会信用代码不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">企业电话</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="landlineNo" placeholder="请输入企业电话" class="form-control m-b-xs" ng-model="guaranteeComp.landlineNo"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.landlineNo.$dirty && form.landlineNo.$error.required) || (form.landlineNo.$error.required && formValidate)">企业电话不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">企业性质</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="compType" placeholder="请输入企业性质" class="form-control m-b-xs" ng-model="guaranteeComp.compType"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.compType.$dirty && form.compType.$error.required) || (form.compType.$error.required && formValidate)">企业性质不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">法定代表人</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="compLegalRep" placeholder="请输入法定代表人" class="form-control m-b-xs" ng-model="guaranteeComp.compLegalRep"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.compLegalRep.$dirty && form.compLegalRep.$error.required) || (form.compLegalRep.$error.required && formValidate)">法定代表人不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">法人证件类型</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="certifType" placeholder="请输入法人证件类型" class="form-control m-b-xs" ng-model="guaranteeComp.certifType"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.certifType.$dirty && form.certifType.$error.required) || (form.certifType.$error.required && formValidate)">法人证件类型不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">法人证件号码</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="certifNo" placeholder="请输入法人证件号码" class="form-control m-b-xs" ng-model="guaranteeComp.certifNo"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.certifNo.$dirty && form.certifNo.$error.required) || (form.certifNo.$error.required && formValidate)">法人证件号码不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">法人手机号码</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="mobileNo" placeholder="请输入法人手机号码" class="form-control m-b-xs" ng-model="guaranteeComp.mobileNo"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.mobileNo.$dirty && form.mobileNo.$error.required) || (form.mobileNo.$error.required && formValidate)">法人手机号码不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">企业联系人</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="compContactPers" placeholder="请输入企业联系人" class="form-control m-b-xs" ng-model="guaranteeComp.compContactPers"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.compContactPers.$dirty && form.compContactPers.$error.required) || (form.compContactPers.$error.required && formValidate)">企业联系人不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">企业联系电话</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="compTel" placeholder="请输入企业联系电话" class="form-control m-b-xs" ng-model="guaranteeComp.compTel"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.compTel.$dirty && form.compTel.$error.required) || (form.compTel.$error.required && formValidate)">企业联系电话不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">企业所在省份</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="compProv" placeholder="请输入企业所在省份" class="form-control m-b-xs" ng-model="guaranteeComp.compProv"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.compProv.$dirty && form.compProv.$error.required) || (form.compProv.$error.required && formValidate)">企业所在省份不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">企业所在城市</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="compCity" placeholder="请输入企业所在城市" class="form-control m-b-xs" ng-model="guaranteeComp.compCity"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.compCity.$dirty && form.compCity.$error.required) || (form.compCity.$error.required && formValidate)">企业所在城市不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">企业所在区县</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="compCounty" placeholder="请输入企业所在区县" class="form-control m-b-xs" ng-model="guaranteeComp.compCounty"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.compCounty.$dirty && form.compCounty.$error.required) || (form.compCounty.$error.required && formValidate)">企业所在区县不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">企业详细地址</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="compAddr" placeholder="请输入企业详细地址" class="form-control m-b-xs" ng-model="guaranteeComp.compAddr"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.compAddr.$dirty && form.compAddr.$error.required) || (form.compAddr.$error.required && formValidate)">企业详细地址不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+
+        </div>
+    </form>
+</div>
+<div class="modal-footer ng-scope">
+    <button class="btn btn-default" ng-click="close()">取消</button>
+    <button type="submit" class="btn btn-success" ng-disabled="submit" ng-click="modify()">保存</button>
+</div>

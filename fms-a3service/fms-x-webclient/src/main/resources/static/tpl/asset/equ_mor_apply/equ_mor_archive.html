@@ -1,0 +1,103 @@
+<style>
+    #tabContent {margin:20px 0px 10px 0px;}
+    #tabContent .tab-con{padding: 10px;border:1px solid #dee5e7;border-top: none;}
+    #tabContent .tabs{background-color: #F5F5F5;padding-left: 0;margin-bottom: 0;  list-style: none; height: 40px; display: block;border:1px solid #dee5e7;border-bottom: none;}
+    #tabContent .tabs > li{float:left;}
+    #tabContent .tabs > li > a{border: none;font-weight: bold;margin-right: 2px;line-height: 1.42857143;border-radius: 4px 4px 0 0;display: block;padding: 10px 15px;}
+    #tabContent .selectTab{background-color: #ffffff;}
+    #tabContent .selectTab > a{color: black;}
+    #tabContent .noneTab > a{color: #999;}
+</style>
+
+
+<!--<div class="panel panel-default" ng-controller="equ_mor_archive_controller">-->
+
+
+    <!--<div class="row fms-page-header">
+        <div class="form-inline" role="form">
+            <div class="form-group">
+                <h5 >资方抵押资料归档</h5>
+            </div>
+            <div class="form-group pull-right">
+                <button class="btn btn-default btn-sm fms-button-margin-top" ng-click="goBack()" ng-disabled="submit">返回</button>
+                <button class="btn btn-default btn-sm fms-button-margin-top" ng-click="returnSuperior()"  ng-disabled="submit" ng-if="returnButton">退回</button>
+                <button class="btn btn-success m-t-xs m-r-xs btn-sm fms-button-margin-top" ng-click="save()"  ng-disabled="submit">提交</button>
+                <toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+            </div>
+        </div>
+    </div>-->
+
+    <form name="form" class="form-validation" novalidate>
+        <div class="row fms-div-content">
+            <div class="row fms-div-content">
+                <h4 class="fms-margin-bottom-30"><b>客户信息</b></h4>
+                <div class="col-lg-12">
+                    <div class="dataTables_wrapper form-inline dt-bootstrap no-footer">
+                        <table border="2" class="table m-b-none dataTable no-footer" role="grid" >
+                            <thead>
+                            <tr>
+                                <th class="sorting_disabled text-center">客户姓名</th>
+                                <th class="sorting_disabled text-center">合同编号</th>
+                                <th class="sorting_disabled text-center">车架号</th>
+                                <th class="sorting_disabled text-center">车牌号</th>
+                                <th class="sorting_disabled text-center">融资额</th>
+                                <th class="sorting_disabled text-center">归档编号</th>
+                                <th class="sorting_disabled text-center">抵押地<b class="form-error">*</b></th>
+                                <th class="sorting_disabled text-center">抵押日期<b class="form-error">*</b></th>
+                                <th class="sorting_disabled text-center">抵押权人<b class="form-error">*</b></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr click-tr ng-repeat="equMorDetailObj in equMorDetails">
+                                <td class="text-center">{{equMorDetailObj.lessee}}</td>
+                                <td class="text-center">{{equMorDetailObj.mainContNo}}</td>
+                                <td class="text-center">{{equMorDetailObj.vinNo}}</td>
+                                <td class="text-center">{{equMorDetailObj.vehicleLicenseNo}}</td>
+                                <td class="text-center">{{equMorDetailObj.equFinAmount}}</td>
+                                <td class="text-center">{{equMorDetailObj.fileRecordNo}}</td>
+                                <td class="text-center"><input limit-word="200" title="{{$parent.equMorDetails[$index].mortgageAddr}}" ng-model="$parent.equMorDetails[$index].mortgageAddr" placeholder="请输入抵押地" class="form-control m-b-xs"/></td>
+                                <td class="text-center"><input title="{{$parent.equMorDetails[$index].mortgageDate}}" ng-model="$parent.equMorDetails[$index].mortgageDate" date-picker placeholder="请选择抵押日期" class="form-control m-b-xs"/></td>
+                                <td class="text-center"><input limit-word="50" title="{{$parent.equMorDetails[$index].mortgagee}}" ng-model="$parent.equMorDetails[$index].mortgagee" placeholder="请输入抵押权人" class="form-control m-b-xs"/></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="row" id="tabContent" >
+                <ul class="tabs">
+                    <li ng-repeat="equMorDetailObj in equMorDetails" >
+                        <a data-toggle="tab" id="a_tab_{{equMorDetailObj.equMorDetailId}}"  ng-click="switchTab('{{equMorDetailObj.equMorDetailId}}')">
+                            {{equMorDetailObj.mainContNo}}&nbsp;附件信息<b class="form-error">*</b>
+                        </a>
+                    </li>
+                </ul>
+
+                <div id="div_tab_{{equMorDetailObj.equMorDetailId}}" class="tab-content tab-con clearfix ng-hide" ng-repeat="equMorDetailObj in equMorDetails" repeat-finish >
+                    <tree-file-directive detail-flag="$root.yesNoFlag.no" file-type="$root.basFileTypes.equMorFile" files="equMorDetailObj.bizFilesList" not-upload="equMorDetailObj.notUpload" not-upload-info = "equMorDetailObj.notUploadInfo" not-file-type="equMorDetailObj.notFileType" not-file-type-name="equMorDetailObj.notFileTypeName" >
+                    </tree-file-directive>
+                </div>
+            </div>
+
+            <div class="row fms-div-content">
+
+                <div class="row">
+                    <label class="col-sm-1 control-label text-right"><b class="form-text-black">备注</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-11">
+                        <textarea limit-word style="height: 110px;resize: none; " limit-word="200" name="memo" placeholder="请输入备注" class="form-control m-b-xs" ng-model="equMorArchiveVo.memo"  required ></textarea>
+                        <p>
+                            <span class="form-info" ng-show=" (form.memo.$dirty && form.memo.$error.required) || (form.memo.$error.required && formValidate)">请输入备注</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row fms-div-content">
+                <process-log-list-directive wf-log-type="$root.bizTypes.equMortgage" wf-log-no="equMorTaskNo" wf-log-sub-no="subNo"> </process-log-list-directive>
+            </div>
+        </div>
+    </form>
+
+<!--</div>-->

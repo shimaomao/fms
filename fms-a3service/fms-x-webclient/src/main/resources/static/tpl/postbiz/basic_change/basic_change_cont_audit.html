@@ -1,0 +1,101 @@
+<style>
+    .panel h4{padding: 15px;border-bottom: 1px solid #dedede;color: black;font-weight: 600;margin: 0;font-size: 14px;}
+    .m-t-20{margin-top: 20px;}
+    .checkbox,.radio {display: inline-block;margin: 2px 10px 0 0;}
+    .table > tbody > tr > td, .table > tfoot > tr > td{vertical-align: middle;}
+</style>
+<div  ng-controller="basic_change_cont_audit_controller">
+    <div>
+        <toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-body wrapper-sm" style="position: fixed;width: 100%;background-color: white;z-index: 10;margin-top: -1px;padding-bottom: 0;">
+            <div class="row">
+                <div class="form-group pull-right" style="margin-top: 4px;">
+                    <div class="btn-group ">
+                        <button type="button" class="btn btn-success m-t-xs m-r-xs btn-sm fms-button-margin-bottom" ng-click="save()" ng-disabled="submit">审核通过</button>
+
+                        <button type="button" class="btn btn-success m-t-xs m-r-xs btn-sm fms-button-margin-bottom" ng-click="sendBack()" ng-disabled="submit">退回</button>
+
+                        <button type="button" class="btn btn-default m-t-xs btn-sm fms-button-margin-bottom" ng-click="goBack()">返回</button>
+                    </div>
+                </div>
+                <ul id="applyTab" class="nav nav-tabs">
+                    <li class="active"><a href="javascript:void(0);" data-toggle="tab" data-id="audit" onclick="switchPageTab(this, 'applyTab')">变更承租人合同审核</a></li>
+                    <!--<li><a href="javascript:void(0);" data-toggle="tab" data-id="credit" onclick="switchPageTab(this, 'applyTab')">鹏元征信</a></li>-->
+                    <li><a href="javascript:void(0);" data-toggle="tab" data-id="createCont" onclick="switchPageTab(this, 'applyTab')">合同打印附件</a></li>
+                    <li><a href="javascript:void(0);" data-toggle="tab" data-id="change" onclick="switchPageTab(this, 'applyTab')">变更申请</a></li>
+                    <li><a href="javascript:void(0);" data-toggle="tab" data-id="customer" onclick="switchPageTab(this, 'applyTab')">承租人变更信息</a></li>
+                    <li ng-if="applyType == 1"><a href="javascript:void(0);" data-toggle="tab" data-id="borrower" onclick="switchPageTab(this, 'applyTab')">共同借款人变更信息</a></li>
+                    <li><a href="javascript:void(0);" data-toggle="tab" data-id="guarantee" onclick="switchPageTab(this, 'applyTab')">担保人变更信息</a></li>
+                    <li><a href="javascript:void(0);" data-toggle="tab" data-id="applyFile" onclick="switchPageTab(this, 'applyTab')">附件信息变更信息</a></li>
+                </ul>
+            </div>
+        </div>
+        <form name="form" class="form-validation" novalidate style="margin-top: 70px;">
+            <div id="applyTabContent" class="tab-content">
+                <!-- 风控审核 -->
+                <div class="tab-pane fade in active" id="audit">
+                    <!--<div ng-include="'tpl/prebiz/apply_risk/risk_audit_person_save.html'"></div>-->
+                    <div class="row m-xs">
+                        <div class="row">
+                            <div class="col-lg-12"><label><b class="form-text-black" style="font-weight: bold;">备注</b><b class="form-error">*</b>:</label></div>
+                            <div class="col-lg-12">
+                                <textarea limit-word class="form-control m-b-xs r-none" name="memo" ng-model="changeLesseeTask.memo" required></textarea>
+                                <p>
+                                    <span class="form-info" ng-show=" (form.memo.$dirty && form.memo.$error.required) || (form.memo.$error.required && formValidate)">请输入备注</span>
+                                </p>
+                            </div>
+                        </div>
+                        <!--<div class="panel-body">-->
+                            <!--<tree-file-directive detail-flag="$root.yesNoFlag.no" file-type="$root.basFileTypes.changeContPrintFile" files="changeLesseeTask.contractPrintFileList" not-upload="changeLesseeTask.notUpload" not-upload-info = "changeLesseeTask.notUploadInfo" not-file-type="changeLesseeTask.notFileType" not-file-type-name="changeLesseeTask.notFileTypeName" >-->
+                            <!--</tree-file-directive>-->
+                        <!--</div>-->
+                        <process-log-list-directive wf-log-type="$root.bizTypes.changeLessee" wf-log-no="applyNo"> </process-log-list-directive>
+                    </div>
+                </div>
+                <!-- 生成打印附件 -->
+                <div class="tab-pane fade" id="createCont">
+                    <tree-file-directive detail-flag="$root.yesNoFlag.yes" file-type="$root.basFileTypes.changeContPrintFile" files="applyInput.contPrintFilesList" not-upload="applyInput.notUpload" not-upload-info = "applyInput.notUploadInfo" not-file-type="applyInput.notFileType" not-file-type-name="applyInput.notFileTypeName" >
+                    </tree-file-directive>
+                </div>
+                <!-- 风控报告 -->
+                <!--<div class="tab-pane fade" id="report">-->
+                <!--<div ng-if="applyType == 1" ng-include="'tpl/prebiz/apply_risk/risk_report_person_save.html'"></div>-->
+                <!--<div ng-if="applyType == 2" ng-include="'tpl/prebiz/apply_risk/risk_report_company_save.html'"></div>-->
+                <!--</div>-->
+                <!-- 变更申请 -->
+                <div class="tab-pane fade" id="change">
+                    <div ng-include="'tpl/postbiz/basic_change/basic_change_apply_save.html'" class="row m-xs"></div>
+                </div>
+                <!-- 承租人变更信息 -->
+                <div class="tab-pane fade panel panel-default" id="customer">
+                    <div ng-if="applyType == 1" ng-include="'tpl/prebiz/apply_input/cstm_person_detail.html'" class="row m-xs"></div>
+                    <div ng-if="applyType == 2" ng-include="'tpl/prebiz/apply_input/cstm_company_detail.html'" class="row m-xs"></div>
+                </div>
+                <!--共同借款人变更信息-->
+                <div class="tab-pane fade panel panel-default" id="borrower" ng-if="applyType == 1">
+                    <div ng-include="'tpl/prebiz/apply_input/borrower_info_detail.html'" class="row m-xs"></div>
+                </div>
+                <!--担保人变更信息-->
+                <div class="tab-pane fade panel panel-default" id="guarantee">
+                    <div ng-include="'tpl/prebiz/apply_input/guarantee_info_detail.html'" class="row m-xs"></div>
+                </div>
+                <!--附件信息变更信息-->
+                <div class="tab-pane fade panel panel-default" id="applyFile">
+                    <div class="row m-xs" >
+                        <tree-file-directive
+                                detail-flag="$root.yesNoFlag.yes"
+                                file-type="fileObj.fileType"
+                                files="fileObj.bizFilesList"
+                                not-upload="fileObj.notUpload"
+                                not-upload-info="fileObj.notUploadInfo"
+                                not-file-type="fileObj.notFileType"
+                                not-file-type-name="fileObj.notFileTypeName">
+                        </tree-file-directive>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

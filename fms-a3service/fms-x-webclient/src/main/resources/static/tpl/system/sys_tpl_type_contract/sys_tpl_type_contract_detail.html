@@ -1,0 +1,67 @@
+<div  ng-controller="sys_tpl_type_contract_detail_controller">
+    <div>
+        <toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+    </div>
+    <div class="panel panel-default">
+        <div class="row" style="margin: 0; padding: 15px; border: 1px solid #dddddd">
+            <h4 class="m-n font-thin h4">文件模板详情</h4>
+        </div>
+        <form name="form" class="form-validation" novalidate>
+            <div class="panel-body wrapper-sm">
+                <div class="form-group row no-gutte">
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">文件模板识别</b>:</label>
+                    <div class="col-sm-8">
+                        <label class="col-sm-12 control-label text-left">{{sysTplType.tplTypeKey}}</label>
+                    </div>
+                </div>
+
+                <div class="form-group row no-gutte">
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">文件模板名称</b>:</label>
+                    <div class="col-sm-8">
+                        <label class="col-sm-12 control-label text-left">{{sysTplType.tplTypeName}}</label>
+                    </div>
+                </div>
+
+                <div class="form-group row no-gutte">
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">文件模板页数</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-8">
+                        <label class="col-sm-12 control-label text-left">{{sysTplType.tplPage}}</label>
+                    </div>
+                </div>
+
+                <div class="form-group row no-gutte">
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">文件模板</b>:</label>
+                    <div class="col-sm-7">
+                        <div ng-include="'tpl/common/file/file_list.html'"></div>
+                        <!--<input type="text" name="tplContent" placeholder="请输入合同模板文件" class="form-control m-b-xs" ng-model="sysTplType.tplContent" maxlength="1000"  required />-->
+                        <!--<p>-->
+                        <!--<span class="form-info" ng-show=" (form.tplContent.$dirty && form.tplContent.$error.required) || (form.tplContent.$error.required && formValidate)">合同模板文件</span>-->
+                        <!--</p>-->
+                    </div>
+                </div>
+                <div class="form-group row no-gutte">
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">可设置项目</b>:</label>
+                    <div class="col-sm-6" ng-show="tplItemList.length > 0">
+                        <table class="table table-bordered">
+                            <tbody>
+                            <!--<tr>-->
+                                <!--<th style="width: 30%;">项目key</th>-->
+                                <!--<th style="width: 70%;">项目名称</th>-->
+                            <!--</tr>-->
+                            <tr click-tr ng-repeat="item in tplItemList">
+                                <td style="width: 30%;">{{item.tplItemKey}}</td>
+                                <td style="width: 70%;">{{item.tplItemName}}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="row" style="margin: 10px 0 0 15px;">
+                <div class="col-sm-15 m-b text-center">
+                    <button class="btn btn-default m-r-xs" ng-click="goBack()">返回</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

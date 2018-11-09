@@ -1,0 +1,675 @@
+<style>
+    #product .intrst-data{overflow-x: auto;}
+    #product .table > thead > tr > th{border: none;text-align: center;}
+    #product .table > tbody > tr > td, .table > tfoot > tr > td{border: none;text-align: center;}
+    #product .table{margin-left: 0px;border: 1px solid #EDEDED;}
+    #product .table > thead{background-color: #F7F9FB;border: 1px solid #DDDDDD}
+    #product .checkbox, #product .radio {display: inline-block;margin: 2px 10px 0 0;}
+    #product .line-to{height: 34px;line-height: 34px;color: #dedede; font-weight: bold;}
+    /*#product .form-control{padding: 6px 12px;height: 34px;}
+    #product .control-label{margin-top: 8px;}*/
+    #product.main-content{padding: 20px;background-color: #EDEDED;}
+    #product.main-content .group:not(:last-child){background-color: white;box-shadow: 0 5px 15px rgba(0,0,0,.5)}
+    #product.main-content .group:not(:first-child){margin-top: 20px;}
+    #product.main-content .group .title{padding: 20px;border-bottom: 1px solid #dedede;color: black;font-weight: 600;margin: 0;font-size: 14px;}
+    #product.main-content .title .add{font-size: 14px;background-color: #2685FF;  color: white;  font-weight: normal;  padding: 6px 12px;  float: right;  border-radius: 4px;  cursor: pointer;}
+    #product.main-content .group .group-list{padding: 20px;}
+    #product .btn-ok{border: none;color: white;background-color: #2685FF;padding: 8px 26px;border-radius: 4px;margin-right: 10px;}
+    #product .btn-cancle{border: none;color: black;background-color: white;padding: 8px 26px;border-radius: 4px;margin-right: 10px;}
+</style>
+<div>
+    <toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+</div>
+<div id="product" class="main-content" ng-controller="product_center_controller">
+    <form name="form" class="form-validation" novalidate>
+        <div class="group group-1">
+            <h4 class="title">产品方案信息</h4>
+            <div class="group-list">
+                <div class="row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">产品方案代码</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-4">
+                        <input ng-if="!productId" type="text" name="product" placeholder="请输入产品方案代码" class="form-control m-b-xs" ng-model="product.product"  required >
+                        <input ng-if="productId" type="text" name="product" placeholder="请输入产品方案代码" class="form-control m-b-xs" ng-model="product.product"  required readonly="readonly">
+                        <p>
+                            <span class="form-info" ng-show=" (form.product.$dirty && form.product.$error.required) || (form.product.$error.required && formValidate)">产品方案代码不能为空</span>
+                        </p>
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">产品方案名称</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-4">
+                        <input type="text" name="productName" placeholder="请输入产品方案名称" class="form-control m-b-xs" ng-model="product.productName"  required >
+                        <p>
+                            <span class="form-info" ng-show=" (form.productName.$dirty && form.productName.$error.required) || (form.productName.$error.required && formValidate)">产品方案名称不能为空</span>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">产品大类</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-4">
+                        <select class="form-control m-b-xs" name="productCatg" ng-model="product.productCatg" required>
+                            <option value="">--请选择</option>
+                            <option ng-repeat="a in productCatgList" value="{{a.productCatg}}">{{a.productCatgName}}</option>
+                        </select>
+                        <p>
+                            <span class="form-info" ng-show=" (form.productCatg.$dirty && !product.productCatg) || (!product.productCatg && formValidate)">产品大类不能为空</span>
+                        </p>
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">起止时间</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-4">
+                        <div class="row">
+                            <div class="col-sm-5">
+                                <input type="text" placeholder="请输入开始日期" id="startDate" name="startDate" onfocus="WdatePicker({onpicked: function(){$(this).trigger('change')},dateFmt:'yyyy-MM-dd',skin:'twoer',maxDate:'#F{$dp.$D(\'endDate\')}'})" class="form-control m-b-xs" ng-model="product.startDate"  required >
+                                <p>
+                                    <span class="form-info" ng-show=" (form.startDate.$dirty && form.startDate.$error.required) || (form.startDate.$error.required && formValidate)">开始日期不能为空</span>
+                                </p>
+                            </div>
+                            <div class="col-sm-2 text-center line-to">～</div>
+                            <div class="col-sm-5">
+                                <input type="text" placeholder="请输入结束日期" id="endDate" name="endDate"  onfocus="WdatePicker({onpicked: function(){$(this).trigger('change')},dateFmt:'yyyy-MM-dd',skin:'twoer',minDate:'#F{$dp.$D(\'startDate\')}',startDate:'#F{$dp.$D(\'startDate\',{d:+1})}'})" class="form-control m-b-xs" ng-model="product.endDate"  required >
+                                <p>
+                                    <span class="form-info" ng-show=" (form.endDate.$dirty && form.endDate.$error.required) || (form.endDate.$error.required && formValidate)">结束日期不能为空</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">产品方案描述</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-10">
+                        <input name="productMemo" placeholder="请输入产品方案描述" class="form-control m-b-xs" ng-model="product.productMemo"  required />
+                        <p>
+                            <span class="form-info" ng-show=" (form.productMemo.$dirty && form.productMemo.$error.required) || (form.productMemo.$error.required && formValidate)">产品方案描述不能为空</span>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="line line-solid b-b line-lg pull-in"></div>
+
+                <div class="row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">车辆类型</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-4">
+                        <div class="checkbox" ng-repeat="a in vehicleFormList">
+                            <label>
+                                <input type="checkbox" name="vehicleForm" value="{{a.codeValue}}" ng-model="a.checked" ng-click="checkboxValue(a.codeType,a.codeValue);" ng-checked="product.vehicleForm.indexOf(a.codeValue) != -1">{{a.codeValueName}}
+                            </label>
+                        </div>
+                        <p>
+                            <span class="form-info" ng-show="(form.vehicleForm.$dirty && product.vehicleForm.length<1) || (product.vehicleForm.length<1 && formValidate)">车辆类型不能为空</span>
+                        </p>
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">车辆种类</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-4">
+                        <div class="checkbox" ng-repeat="a in vehicleTypelList">
+                            <label>
+                                <input type="checkbox" name="vehicleType" value="{{a.codeValue}}" ng-model="a.checked" ng-click="checkboxValue(a.codeType,a.codeValue);" ng-checked="product.vehicleType.indexOf(a.codeValue) != -1">{{a.codeValueName}}
+                            </label>
+                        </div>
+                        <p>
+                            <span class="form-info" ng-show="(form.vehicleType.$dirty && product.vehicleType.length<1) || (product.vehicleType.length<1 && formValidate)">车辆种类不能为空</span>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">申请类型</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-4">
+                        <div class="checkbox" ng-repeat="a in applyTypeList">
+                            <label>
+                                <input type="checkbox" name="applyType" value="{{a.codeValue}}" ng-model="a.checked" ng-click="checkboxValue(a.codeType,a.codeValue);" ng-checked="product.applyType.indexOf(a.codeValue) != -1">{{a.codeValueName}}
+                            </label>
+                        </div>
+                        <p>
+                            <span class="form-info" ng-show="(form.applyType.$dirty && product.applyType.length<1) || (product.applyType.length<1 && formValidate)">申请类型不能为空</span>
+                        </p>
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">牌照属性</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-4">
+                        <div class="checkbox" ng-repeat="a in licenseAttrList">
+                            <label>
+                                <input type="checkbox" name="licenseAttr" value="{{a.codeValue}}" ng-model="a.checked" ng-click="checkboxValue(a.codeType,a.codeValue);" ng-checked="product.licenseAttr.indexOf(a.codeValue) != -1">{{a.codeValueName}}
+                            </label>
+                        </div>
+                        <p>
+                            <span class="form-info" ng-show="(form.licenseAttr.$dirty && product.licenseAttr.length<1) || (product.licenseAttr.length<1 && formValidate)">牌照属性不能为空</span>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">融资期限</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-4">
+                        <div class="checkbox" ng-repeat="a in finPeriodTypeList">
+                            <label>
+                                <input type="checkbox" name="finPeriodType" value="{{a.codeValue}}" ng-model="a.checked" ng-click="checkboxValue(a.codeType,a.codeValue);" ng-checked="product.finPeriodType.indexOf(a.codeValue) != -1">{{a.codeValueName}}
+                            </label>
+                        </div>
+                        <p>
+                            <span class="form-info" ng-show="(form.finPeriodType.$dirty && product.finPeriodType.length<1) || (product.finPeriodType.length<1 && formValidate)">融资期限不能为空</span>
+                        </p>
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">手续费收取方式</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-4">
+                        <div class="checkbox" ng-repeat="a in chargePayModeList">
+                            <label>
+                                <input type="checkbox" name="chargePayMode" value="{{a.codeValue}}" ng-model="a.checked" ng-click="checkboxValue(a.codeType,a.codeValue);" ng-checked="product.chargePayMode.indexOf(a.codeValue) != -1">{{a.codeValueName}}
+                            </label>
+                        </div>
+                        <p>
+                            <span class="form-info" ng-show="(form.chargePayMode.$dirty && product.chargePayMode.length<1) || (product.chargePayMode.length<1 && formValidate)">手续费收取方式不能为空</span>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">GPS安装情况</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-4">
+                        <div class="checkbox" ng-repeat="a in gpsInstModeList">
+                            <label>
+                                <input type="checkbox" name="gpsInstMode" value="{{a.codeValue}}" ng-model="a.checked" ng-click="checkboxValue(a.codeType,a.codeValue);" ng-checked="product.gpsInstMode.indexOf(a.codeValue) != -1">{{a.codeValueName}}
+                            </label>
+                        </div>
+                        <p>
+                            <span class="form-info" ng-show="(form.gpsInstMode.$dirty && product.gpsInstMode.length<1) || (product.gpsInstMode.length<1 && formValidate)">GPS安装情况不能为空</span>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="line line-solid b-b line-lg pull-in"></div>
+
+                <div class="row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">租金支付模式</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-4">
+                        <div class="radio" ng-repeat="a in rentPayModeList">
+                            <label>
+                                <input type="radio" name="rentPayMode" value="{{a.codeValue}}" ng-model="product.rentPayMode" required>{{a.codeValueName}}
+                            </label>
+                        </div>
+                        <p>
+                            <span class="form-info" ng-show="(form.rentPayMode.$dirty && form.rentPayMode.$error.required) || (form.rentPayMode.$error.required && formValidate)">租金支付模式不能为空</span>
+                        </p>
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">保证金返还方式</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-4">
+                        <div class="radio" ng-repeat="a in depositRtnModeList">
+                            <label>
+                                <input type="radio" name="depositRtnMode" value="{{a.codeValue}}" ng-model="product.depositRtnMode" required>{{a.codeValueName}}
+                            </label>
+                        </div>
+                        <p>
+                            <span class="form-info" ng-show="(form.depositRtnMode.$dirty && form.depositRtnMode.$error.required) || (form.depositRtnMode.$error.required && formValidate)">保证金返还方式不能为空</span>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">还款方式</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-4">
+                        <div class="radio" ng-repeat="a in repayModeList">
+                            <label>
+                                <input type="radio" name="repayMode" value="{{a.codeValue}}" ng-model="product.repayMode" required>{{a.codeValueName}}
+                            </label>
+                        </div>
+                        <p>
+                            <span class="form-info" ng-show="(form.repayMode.$dirty && form.repayMode.$error.required) || (form.repayMode.$error.required && formValidate)">还款方式不能为空</span>
+                        </p>
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">还款频率</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-4">
+                        <div class="radio" ng-repeat="a in repayRateList">
+                            <label>
+                                <input type="radio" name="repayRate" value="{{a.codeValue}}" ng-model="product.repayRate" required>{{a.codeValueName}}
+                            </label>
+                        </div>
+                        <p>
+                            <span class="form-info" ng-show="(form.repayRate.$dirty && form.repayRate.$error.required) || (form.repayRate.$error.required && formValidate)">还款频率不能为空</span>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="line line-solid b-b line-lg pull-in"></div>
+
+                <div class="row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">融资项目</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-10">
+                        <div class="checkbox" ng-repeat="a in prodFinItemA">
+                            <label>
+                                <input type="checkbox" name="prodFinItems" value="{{a.finItem}}" ng-model="a.checked" ng-click="checkboxValue('prodFinItems',a.finItem);" ng-checked="product.prodFinItems.indexOf(a.finItem) != -1">{{a.finItemName}}
+                            </label>
+                        </div>
+                        <p>
+                            <span class="form-info" ng-show="(form.prodFinItems.$dirty && product.prodFinItems.length<1) || (product.prodFinItems.length<1 && formValidate)">融资项目不能为空</span>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">首付基数</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-10">
+                        <div class="checkbox" ng-repeat="a in prodFinItemB">
+                            <label>
+                                <input type="checkbox" name="prodFinItemsIF" value="{{a.finItem}}" ng-model="a.checked" ng-click="checkboxValue('prodFinItemsIF',a.finItem);" ng-checked="product.prodFinItemsIF.indexOf(a.finItem) != -1">{{a.finItemName}}
+                            </label>
+                        </div>
+                        <p>
+                            <span class="form-info" ng-show="(form.prodFinItemsIF.$dirty && product.prodFinItemsIF.length<1) || (product.prodFinItemsIF.length<1 && formValidate)">首付基数不能为空</span>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">尾付基数</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-10">
+                        <div class="checkbox" ng-repeat="a in prodFinItemC">
+                            <label>
+                                <input type="checkbox" name="prodFinItemsFinal" value="{{a.finItem}}" ng-model="a.checked" ng-click="checkboxValue('prodFinItemsFinal',a.finItem);" ng-checked="product.prodFinItemsFinal.indexOf(a.finItem) != -1">{{a.finItemName}}
+                            </label>
+                        </div>
+                        <p>
+                            <span class="form-info" ng-show="(form.prodFinItemsFinal.$dirty && product.prodFinItemsFinal.length<1) || (product.prodFinItemsFinal.length<1 && formValidate)">尾付基数不能为空</span>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">保证金基数</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-10">
+                        <div class="checkbox" ng-repeat="a in prodFinItemD">
+                            <label>
+                                <input type="checkbox" name="prodFinItemsDep" value="{{a.finItem}}" ng-model="a.checked" ng-click="checkboxValue('prodFinItemsDep',a.finItem);" ng-checked="product.prodFinItemsDep.indexOf(a.finItem) != -1">{{a.finItemName}}
+                            </label>
+                        </div>
+                        <p>
+                            <span class="form-info" ng-show="(form.prodFinItemsDep.$dirty && product.prodFinItemsDep.length<1) || (product.prodFinItemsDep.length<1 && formValidate)">保证金基数不能为空</span>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="line line-solid b-b line-lg pull-in"></div>
+
+                <div class="row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">首付比例区间</b><b class="form-error">%*</b>:</label>
+                    <div class="col-sm-4">
+                        <div class="row">
+                            <div class="col-sm-5">
+                                <input type="number" name="initPercFrom" placeholder="请输入首付比例区间最小值" class="form-control m-b-xs" ng-model="product.initPercFrom"  required >
+                                <p>
+                                    <span class="form-info" ng-show=" (form.initPercFrom.$dirty && form.initPercFrom.$error.required) || (form.initPercFrom.$error.required && formValidate)">首付比例开始不能为空</span>
+                                </p>
+                            </div>
+                            <div class="col-sm-2 control-label text-center">
+                                <span>~</span>
+                            </div>
+                            <div class="col-sm-5">
+                                <input type="number" name="initPercTo" placeholder="请输入首付比例区间最大值" class="form-control m-b-xs" ng-model="product.initPercTo"  required >
+                                <p>
+                                    <span class="form-info" ng-show=" (form.initPercTo.$dirty && form.initPercTo.$error.required) || (form.initPercTo.$error.required && formValidate)">首付比例结束不能为空</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">首付金额区间</b><b class="form-error">(¥)*</b>:</label>
+                    <div class="col-sm-4">
+                        <div class="row">
+                            <div class="col-sm-5">
+                                <input type="number" name="initAmountFrom" placeholder="请输入首付金额区间最小值" class="form-control m-b-xs" ng-model="product.initAmountFrom"  required >
+                                <p>
+                                    <span class="form-info" ng-show=" (form.initAmountFrom.$dirty && form.initAmountFrom.$error.required) || (form.initAmountFrom.$error.required && formValidate)">首付金额开始不能为空</span>
+                                </p>
+                            </div>
+                            <div class="col-sm-2 control-label text-center">
+                                <span>~</span>
+                            </div>
+                            <div class="col-sm-5">
+                                <input type="number" name="initAmountTo" placeholder="请输入首付金额区间最大值" class="form-control m-b-xs" ng-model="product.initAmountTo"  required >
+                                <p>
+                                    <span class="form-info" ng-show=" (form.initAmountTo.$dirty && form.initAmountTo.$error.required) || (form.initAmountTo.$error.required && formValidate)">首付金额结束不能为空</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">尾付比例区间</b><b class="form-error">%*</b>:</label>
+                    <div class="col-sm-4">
+                        <div class="row">
+                            <div class="col-sm-5">
+                                <input type="number" name="finalPercFrom" placeholder="请输入尾付比例区间最小值" class="form-control m-b-xs" ng-model="product.finalPercFrom"  required >
+                                <p>
+                                    <span class="form-info" ng-show=" (form.finalPercFrom.$dirty && form.finalPercFrom.$error.required) || (form.finalPercFrom.$error.required && formValidate)">尾付比例开始不能为空</span>
+                                </p>
+                            </div>
+                            <div class="col-sm-2 control-label text-center">
+                                <span>~</span>
+                            </div>
+                            <div class="col-sm-5">
+                                <input type="number" name="finalPercTo" placeholder="请输入尾付比例区间最大值" class="form-control m-b-xs" ng-model="product.finalPercTo"  required >
+                                <p>
+                                    <span class="form-info" ng-show=" (form.finalPercTo.$dirty && form.finalPercTo.$error.required) || (form.finalPercTo.$error.required && formValidate)">尾付比例结束不能为空</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">尾付金额区间</b><b class="form-error">(¥)*</b>:</label>
+                    <div class="col-sm-4">
+                        <div class="row">
+                            <div class="col-sm-5">
+                                <input type="number" name="finalAmountFrom" placeholder="请输入尾付金额区间最小值" class="form-control m-b-xs" ng-model="product.finalAmountFrom"  required >
+                                <p>
+                                    <span class="form-info" ng-show=" (form.finalAmountFrom.$dirty && form.finalAmountFrom.$error.required) || (form.finalAmountFrom.$error.required && formValidate)">尾付金额开始不能为空</span>
+                                </p>
+                            </div>
+                            <div class="col-sm-2 control-label text-center">
+                                <span>~</span>
+                            </div>
+                            <div class="col-sm-5">
+                                <input type="number" name="finalAmountTo" placeholder="请输入尾付金额区间最大值" class="form-control m-b-xs" ng-model="product.finalAmountTo"  required >
+                                <p>
+                                    <span class="form-info" ng-show=" (form.finalAmountTo.$dirty && form.finalAmountTo.$error.required) || (form.finalAmountTo.$error.required && formValidate)">尾付金额结束不能为空</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">年供比例区间</b><b class="form-error">%*</b>:</label>
+                    <div class="col-sm-4">
+                        <div class="row">
+                            <div class="col-sm-5">
+                                <input type="number" name="annualSupplyRateFrom" placeholder="请输入年供比例区间最小值" class="form-control m-b-xs" ng-model="product.annualSupplyRateFrom"  required >
+                                <p>
+                                    <span class="form-info" ng-show=" (form.annualSupplyRateFrom.$dirty && form.annualSupplyRateFrom.$error.required) || (form.annualSupplyRateFrom.$error.required && formValidate)">年供比例开始不能为空</span>
+                                </p>
+                            </div>
+                            <div class="col-sm-2 control-label text-center">
+                                <span>~</span>
+                            </div>
+                            <div class="col-sm-5">
+                                <input type="number" name="annualSupplyRateTo" placeholder="请输入年供比例区间最大值" class="form-control m-b-xs" ng-model="product.annualSupplyRateTo"  required >
+                                <p>
+                                    <span class="form-info" ng-show=" (form.annualSupplyRateTo.$dirty && form.annualSupplyRateTo.$error.required) || (form.annualSupplyRateTo.$error.required && formValidate)">年供比例结束不能为空</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">年供金额区间</b><b class="form-error">(¥)*</b>:</label>
+                    <div class="col-sm-4">
+                        <div class="row">
+                            <div class="col-sm-5">
+                                <input type="number" name="annualSupplyAmountFrom" placeholder="请输入年供金额区间最小值" class="form-control m-b-xs" ng-model="product.annualSupplyAmountFrom"  required >
+                                <p>
+                                    <span class="form-info" ng-show=" (form.annualSupplyAmountFrom.$dirty && form.annualSupplyAmountFrom.$error.required) || (form.annualSupplyAmountFrom.$error.required && formValidate)">年供金额开始不能为空</span>
+                                </p>
+                            </div>
+                            <div class="col-sm-2 control-label text-center">
+                                <span>~</span>
+                            </div>
+                            <div class="col-sm-5">
+                                <input type="number" name="annualSupplyAmountTo" placeholder="请输入年供金额区间最大值" class="form-control m-b-xs" ng-model="product.annualSupplyAmountTo"  required >
+                                <p>
+                                    <span class="form-info" ng-show=" (form.annualSupplyAmountTo.$dirty && form.annualSupplyAmountTo.$error.required) || (form.annualSupplyAmountTo.$error.required && formValidate)">年供金额结束不能为空</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">保证金率区间</b><b class="form-error">%*</b>:</label>
+                    <div class="col-sm-4">
+                        <div class="row">
+                            <div class="col-sm-5">
+                                <input type="number" name="depositPercFrom" placeholder="请输入保证金率区间最小值" class="form-control m-b-xs" ng-model="product.depositPercFrom"  required >
+                                <p>
+                                    <span class="form-info" ng-show=" (form.depositPercFrom.$dirty && form.depositPercFrom.$error.required) || (form.depositPercFrom.$error.required && formValidate)">保证金率开始不能为空</span>
+                                </p>
+                            </div>
+                            <div class="col-sm-2 control-label text-center">
+                                <span>~</span>
+                            </div>
+                            <div class="col-sm-5">
+                                <input type="number" name="depositPercTo" placeholder="请输入保证金率区间最大值" class="form-control m-b-xs" ng-model="product.depositPercTo"  required >
+                                <p>
+                                    <span class="form-info" ng-show=" (form.depositPercTo.$dirty && form.depositPercTo.$error.required) || (form.depositPercTo.$error.required && formValidate)">保证金率结束不能为空</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">保证金区间</b><b class="form-error">(¥)*</b>:</label>
+                    <div class="col-sm-4">
+                        <div class="row">
+                            <div class="col-sm-5">
+                                <input type="number" name="depositFrom" placeholder="请输入保证金区间最小值" class="form-control m-b-xs" ng-model="product.depositFrom"  required >
+                                <p>
+                                    <span class="form-info" ng-show=" (form.depositFrom.$dirty && form.depositFrom.$error.required) || (form.depositFrom.$error.required && formValidate)">保证金开始不能为空</span>
+                                </p>
+                            </div>
+                            <div class="col-sm-2 control-label text-center">
+                                <span>~</span>
+                            </div>
+                            <div class="col-sm-5">
+                                <input type="number" name="depositTo" placeholder="请输入保证金区间最大值" class="form-control m-b-xs" ng-model="product.depositTo"  required >
+                                <p>
+                                    <span class="form-info" ng-show=" (form.depositTo.$dirty && form.depositTo.$error.required) || (form.depositTo.$error.required && formValidate)">保证金结束不能为空</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">风险融资额区间</b><b class="form-error">(¥)*</b>:</label>
+                    <div class="col-sm-4">
+                        <div class="row">
+                            <div class="col-sm-5">
+                                <input type="number" name="finRiskFrom" placeholder="请输入风险融资额最小值" class="form-control m-b-xs" ng-model="product.finRiskFrom"  required >
+                                <p>
+                                    <span class="form-info" ng-show=" (form.finRiskFrom.$dirty && form.finRiskFrom.$error.required) || (form.finRiskFrom.$error.required && formValidate)">风险融资额开始不能为空</span>
+                                </p>
+                            </div>
+                            <div class="col-sm-2 control-label text-center">
+                                <span>~</span>
+                            </div>
+                            <div class="col-sm-5">
+                                <input type="number" name="finRiskTo" placeholder="请输入风险融资额最大值" class="form-control m-b-xs" ng-model="product.finRiskTo"  required >
+                                <p>
+                                    <span class="form-info" ng-show=" (form.finRiskTo.$dirty && form.finRiskTo.$error.required) || (form.finRiskTo.$error.required && formValidate)">风险融资额结束不能为空</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">融资总额区间</b><b class="form-error">(¥)*</b>:</label>
+                    <div class="col-sm-4">
+                        <div class="row">
+                            <div class="col-sm-5">
+                                <input type="number" name="finTotalFrom" placeholder="请输入融资总额最小值" class="form-control m-b-xs" ng-model="product.finTotalFrom"  required >
+                                <p>
+                                    <span class="form-info" ng-show=" (form.finTotalFrom.$dirty && form.finTotalFrom.$error.required) || (form.finTotalFrom.$error.required && formValidate)">融资总额开始不能为空</span>
+                                </p>
+                            </div>
+                            <div class="col-sm-2 control-label text-center">
+                                <span>~</span>
+                            </div>
+                            <div class="col-sm-5">
+                                <input type="number" name="finTotalTo" placeholder="请输入融资总额最大值" class="form-control m-b-xs" ng-model="product.finTotalTo"  required >
+                                <p>
+                                    <span class="form-info" ng-show=" (form.finTotalTo.$dirty && form.finTotalTo.$error.required) || (form.finTotalTo.$error.required && formValidate)">融资总额结束不能为空</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">irr区间</b><b class="form-error">(¥)*</b>:</label>
+                    <div class="col-sm-4">
+                        <div class="row">
+                            <div class="col-sm-5">
+                                <input type="number" name="irrFrom" placeholder="请输入irr最小值" class="form-control m-b-xs" ng-model="product.irrFrom"  required >
+                                <p>
+                                    <span class="form-info" ng-show=" (form.irrFrom.$dirty && form.irrFrom.$error.required) || (form.irrFrom.$error.required && formValidate)">irr开始不能为空</span>
+                                </p>
+                            </div>
+                            <div class="col-sm-2 control-label text-center">
+                                <span>~</span>
+                            </div>
+                            <div class="col-sm-5">
+                                <input type="number" name="irrTo" placeholder="请输入irr最大值" class="form-control m-b-xs" ng-model="product.irrTo"  required >
+                                <p>
+                                    <span class="form-info" ng-show=" (form.irrTo.$dirty && form.irrTo.$error.required) || (form.irrTo.$error.required && formValidate)">irr结束不能为空</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="group group-2">
+            <h4 class="title">配置利率方案<span class="add" ng-click="add();"><span>+</span><span>添加方案</span></span></h4>
+            <div class="group-list">
+                <div class="intrst-data line-lg">
+                    <table border="1" class="table m-b-none dataTable no-footer" role="grid">
+                        <thead>
+                            <tr role="row">
+                                <th class="sorting_disabled" rowspan="1" colspan="1">序号</th>
+                                <th class="sorting_disabled" rowspan="1" colspan="1">客户利率</th>
+                                <th class="sorting_disabled" rowspan="1" colspan="1">结算利率</th>
+                                <th class="sorting_disabled" rowspan="1" colspan="1">手续费率</th>
+                                <th class="sorting_disabled" rowspan="1" colspan="1">结算手续费率</th>
+                                <th class="sorting_disabled" rowspan="1" colspan="1">一次性手续费</th>
+                                <th class="sorting_disabled" rowspan="1" colspan="1">利率方式</th>
+                                <th class="sorting_disabled" rowspan="1" colspan="1" ng-repeat="a in factorData">{{a.factorName}}</th>
+                                <th class="sorting_disabled" rowspan="1" colspan="1"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-show="product.prodIntrstVoList | intrstShow">
+                                <td colspan="{{factorData.length + 8}}" style="padding: 30px 0;">
+                                    当前项目下利率方案列表为空，您可以<a class="a-click" href="javascript: void(0);" ng-click="add();">添加</a>一条方案
+                                </td>
+                            </tr>
+                            <tr click-tr ng-show="product.prodIntrstVoList != 0 && a.intrstDelFlag != 1" role="row" ng-repeat="a in product.prodIntrstVoList track by $index">
+                                <td>{{$index + 1}}</td>
+                                <td>{{a.intrstRate}}</td>
+                                <td>{{a.settleIntrstRate}}</td>
+                                <td>{{a.chargeRate}}</td>
+                                <td>{{a.settleChargeRate}}</td>
+                                <td>{{a.onetimeCharge}}</td>
+                                <td>{{a.intrstRateMode | getName:'intrstRateMode'}}</td>
+                                <td ng-repeat="b in a.prodIntrstFactorVoList">{{b.factorValueFrom | getCodeName:b.factorCode:factorData[$index].factorType:b}}</td>
+                                <td>
+                                    <a class="a-click" href="javascript: void(0);" ng-click="edit($index,a);">修改</a>
+                                    <a class="a-click" href="javascript: void(0);" ng-click="delete($index,'prodIntrstVoList');">删除</a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="group group-3">
+            <h4 class="title">用户组输入辅助<span class="add" ng-click="addUser();"><span>+</span><span>添加辅助</span></span></h4>
+            <div class="group-list">
+                <div class="intrst-data line-lg">
+                    <table border="1" class="table m-b-none dataTable no-footer" role="grid">
+                        <thead>
+                        <tr role="row">
+                            <th class="sorting_disabled" rowspan="1" colspan="1">机构代码</th>
+                            <th class="sorting_disabled" rowspan="1" colspan="1">机构名称</th>
+                            <th class="sorting_disabled" rowspan="1" colspan="1">机构层级代码</th>
+                            <th class="sorting_disabled" rowspan="1" colspan="1">机构层级名称</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-show="product.prodGroupVoList == 0">
+                                <td colspan="{{factorData.length + 8}}" style="padding: 30px 0;">
+                                    当前项目下用户组输入辅助列表为空，您可以<a class="a-click" href="javascript: void(0);" ng-click="addUser();">添加</a>一条方案
+                                </td>
+                            </tr>
+                            <tr click-tr ng-show="product.prodGroupVoList != 0" role="row" ng-repeat="a in product.prodGroupVoList">
+                                <td>{{a.groupCode}}</td>
+                                <td>{{a.groupName}}</td>
+                                <td>{{a.groupLev}}</td>
+                                <td>{{a.groupLevName}}</td>
+                                <td><a class="a-click" href="javascript: void(0);" ng-click="delete($index,'prodGroupVoList');">删除</a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="group group-4">
+            <div class="row">
+                <div class="col-sm-6">
+                    <h4 class="title">车型输入辅助<span class="add" ng-click="addCarModels();"><span>+</span><span>添加辅助</span></span></h4>
+                    <div class="group-list">
+                        <div class="intrst-data line-lg">
+                            <table border="1" class="table m-b-none dataTable no-footer" role="grid">
+                                <thead>
+                                <tr role="row">
+                                    <th class="sorting_disabled" rowspan="1" colspan="1">车辆信息级别</th>
+                                    <th class="sorting_disabled" rowspan="1" colspan="1">车型信息名称</th>
+                                    <th>操作</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr ng-show="product.prodVehicleVopList == 0">
+                                    <td colspan="3" style="padding: 30px 0;">
+                                        当前项目下车型输入辅助列表为空，您可以<a class="a-click" href="javascript: void(0);" ng-click="addCarModels();">添加</a>一条方案
+                                    </td>
+                                </tr>
+                                <tr click-tr ng-show="product.prodVehicleVopList != 0" role="row" ng-repeat="a in product.prodVehicleVopList">
+                                    <td>{{a.vehicleLevel}}</td>
+                                    <td>{{a.vehicleName}}</td>
+                                    <td><a class="a-click" href="javascript: void(0);" ng-click="delete($index,'prodVehicleVopList');">删除</a></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <h4 class="title">产品附件输入辅助<span class="add" ng-click="addInputAuxiliary();"><span>+</span><span>添加辅助</span></span></h4>
+                    <div class="group-list">
+                        <div class="intrst-data line-lg">
+                            <table border="1" class="table m-b-none dataTable no-footer" role="grid">
+                                <thead>
+                                    <tr role="row">
+                                        <th class="sorting_disabled" rowspan="1" colspan="1">附件类型</th>
+                                        <th>操作</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-show="product.prodFileVoList == 0">
+                                        <td colspan="2" style="padding: 30px 0;">
+                                            当前项目下产品附件输入辅助列表为空，您可以<a class="a-click" href="javascript: void(0);" ng-click="addInputAuxiliary();">添加</a>一条方案
+                                        </td>
+                                    </tr>
+                                    <tr click-tr ng-show="product.prodFileVoList != 0" role="row" ng-repeat="a in product.prodFileVoList">
+                                        <td>{{a.fileTypeName}}</td>
+                                        <td><a class="a-click" href="javascript: void(0);" ng-click="delete($index,'prodFileVoList');">删除</a></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="group group-5">
+            <div class="text-center">
+                <button ng-if="productId" type="submit" class="btn-ok" ng-disabled="submit" ng-click="save()">提交</button>
+                <button ng-if="!productId" type="submit" class="btn-ok" ng-disabled="submit" ng-click="save()">新增</button>
+                <button class="btn-cancle" ng-click="close()">取消</button>
+            </div>
+        </div>
+    </form>
+</div>

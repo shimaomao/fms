@@ -1,0 +1,39 @@
+<div  ng-controller="financial_voucher_data_list_controller">
+    <div>
+        <toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-body wrapper-sm">
+            <div class="row">
+                <div class="col-lg-12">
+                    <form class="form-inline" role="form">
+                        <div class="form-group">
+                            <label class="sr-only" >凭证号 </label>
+                            <input class="form-control m-b-xs" ng-model="voucherNo" placeholder="凭证号">
+                        </div>
+                        <div class="form-group">
+                            <label class="sr-only" >业务号 </label>
+                            <input class="form-control m-b-xs" ng-model="voucherBizCode" placeholder="业务号">
+                        </div>
+
+                        <div class="form-group m-b-sm">
+                            <div class="btn-group">
+                                <button class="btn btn-success m-b-xs btn-sm fms-button-margin-bottom" ng-click="searchFinancialVoucherData()" ><i class="fa fa-search"></i>查询</button>
+                                <button class="btn btn-default m-b-xs btn-sm fms-button-margin-bottom" ng-click="resetFinancialVoucherData()" ><i class="fa  icon-refresh"></i>重置</button>
+                            </div>
+                        </div>
+
+                        <div class="form-group pull-right">
+                            <div class="btn-group">
+                                <button class="btn btn-default m-b-xs btn-sm" ng-click="exportExcel()">导出excel</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <table border="1" class="table table-striped m-b-none" id="financial_voucher_data_table">
+        </table>
+    </div>
+</div>
+

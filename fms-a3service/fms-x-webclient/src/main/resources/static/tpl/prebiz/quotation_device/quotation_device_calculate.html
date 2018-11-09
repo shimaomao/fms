@@ -1,0 +1,404 @@
+<div class="bg-light lter b-b wrapper-md">
+    <h1 class="m-n font-thin h4">报价器</h1>
+</div>
+<div  ng-controller="quotation_device_calculate_controller">
+    <div>
+        <toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+    </div>
+    <div class="panel panel-default">
+        <form name="form" class="form-validation" novalidate>
+            <div class="panel-body wrapper-sm">
+                <div class="row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">客户姓名</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <input type="text" name="name" placeholder="客户姓名" class="form-control m-b-xs" ng-model="quotationDeviceVo.name" required>
+                        <p>
+                            <span class="form-info" ng-show=" (form.name.$dirty && form.name.$error.required) || (form.name.$error.required && formValidate)">客户姓名不能为空</span>
+                        </p>
+                    </div>
+                    <label ng-if="!detailFlag" class="col-sm-2 control-label text-right"><b class="form-text-black">出租人</b>:</label>
+                    <label ng-if="detailFlag" class="col-sm-2 control-label text-right"><b class="form-text-black">出租人</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-4">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <input ng-if="!detailFlag" title="{{quotationDeviceVo.lessor}}" type="text" name="lessor" placeholder="请输入出租人" class="form-control m-b-xs" ng-model="quotationDeviceVo.lessor">
+                                <input ng-if="detailFlag" title="{{quotationDeviceVo.groupName}}" type="text" name="groupName" placeholder="请选择出租人" class="form-control m-b-xs" ng-model="quotationDeviceVo.groupName" disabled required>
+                                <input ng-if="detailFlag" type="text" name="groupCode" ng-model="quotationDeviceVo.groupCode" class="hidden"/>
+                                <input ng-if="detailFlag" type="text" name="registeredAddr" ng-model="quotationDeviceVo.registeredAddr" class="hidden"/>
+                                <p ng-if="detailFlag">
+                                    <span class="form-info" ng-show=" (form.groupName.$dirty && form.groupName.$error.required) || (form.groupName.$error.required && formValidate)">出租人不能为空</span>
+                                </p>
+                            </div>
+                            <div ng-if="detailFlag" class="col-sm-5">
+                                <button class="btn btn-primary btn-sm m-b-xs" ng-click="addUser()"><i class="fa fa-pencil-square-o m-r-xs"></i>选择</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">产品方案</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <select name="product" ng-model="quotationDeviceVo.product" class="form-control m-b-xs"required>
+                            <option value="">---请选择---</option>
+                            <option ng-repeat="data in productList" ng-value="data.product" ng-selected="data.product == quotationDeviceVo.product">{{data.productName}}</option>
+                        </select>
+                        <p>
+                            <span class="form-info" ng-show=" (form.product.$dirty && form.product.$error.required) || (form.product.$error.required && formValidate)">产品方案不能为空</span>
+                        </p>
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">申请类型</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <select name="applyType"  ng-model="quotationDeviceVo.applyType" class="form-control m-b-xs" ng-options="a.codeValue as a.codeValueName for a in applyTypeList" required>
+                            <option value="">---请选择---</option>
+                        </select>
+                        <p>
+                            <span class="form-info" ng-show=" (form.applyType.$dirty && form.applyType.$error.required) || (form.applyType.$error.required && formValidate)">申请类型不能为空</span>
+                        </p>
+                    </div>
+                </div>
+                <div class="row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">业务类型</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <select name="quotationType"  ng-model="quotationDeviceVo.quotationType" ng-options="a.codeValue as a.codeValueName for a in quotationTypeList" class="form-control m-b-xs" required>
+                            <option value="">---请选择---</option>
+                        </select>
+                        <p>
+                            <span class="form-info" ng-show=" (form.quotationType.$dirty && form.quotationType.$error.required) || (form.quotationType.$error.required && formValidate)">业务类型不能为空</span>
+                        </p>
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">车型</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-4">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <input ng-if="!detailFlag" title="{{quotationDeviceVo.models}}" type="text" name="models" placeholder="请输入车型" class="form-control m-b-xs" ng-model="quotationDeviceVo.models" required>
+                                <input ng-if="detailFlag" title="{{quotationDeviceVo.vehicleName}}" type="text" name="vehicleName" placeholder="请选择车型" class="form-control m-b-xs" ng-model="quotationDeviceVo.vehicleName" disabled required>
+                                <input ng-if="detailFlag" type="text" name="vehicleCode" ng-model="quotationDeviceVo.vehicleCode" class="hidden" disabled/>
+                                <p ng-if="detailFlag">
+                                    <span class="form-info" ng-show=" (form.vehicleName.$dirty && form.vehicleName.$error.required) || (form.vehicleName.$error.required && formValidate)">车型不能为空</span>
+                                </p>
+                                <p ng-if="!detailFlag">
+                                    <span class="form-info" ng-show=" (form.models.$dirty && form.models.$error.required) || (form.models.$error.required && formValidate)">车型不能为空</span>
+                                </p>
+                            </div>
+                            <div ng-if="detailFlag" class="col-sm-5">
+                                <button class="btn btn-primary btn-sm m-b-xs" ng-click="selectBasVehicle()"><i class="fa fa-pencil-square-o m-r-xs"></i>选择</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">融资期限(月)</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <select name="loanTerm" ng-model="quotationDeviceVo.loanTerm" class="form-control m-b-xs" required>
+                            <option value="">---请选择---</option>
+                            <option value="{{a.codeValue}}" ng-repeat="a in 'finPeriodType' | getList" ng-selected="a.codeValue==quotationDeviceVo.loanTerm">{{a.codeValueName}}</option>
+                        </select>
+                        <p>
+                            <span class="form-info" ng-show=" (form.loanTerm.$dirty && form.loanTerm.$error.required) || (form.loanTerm.$error.required && formValidate)">融资期限(月)不能为空</span>
+                        </p>
+                    </div>
+
+                    <!--<label ng-if="!detailFlag" class="col-sm-2 control-label text-right"><b class="form-text-black">车辆标签价</b>:</label>-->
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">车辆标签价</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <!--<input ng-if="!detailFlag" type="number" name="cehicleLabelPrice" placeholder="车辆标签价" class="form-control m-b-xs" ng-model="quotationDeviceVo.cehicleLabelPrice" required>-->
+                        <input  type="number" name="cehicleLabelPrice" placeholder="车辆标签价" class="form-control m-b-xs" ng-model="quotationDeviceVo.cehicleLabelPrice" required>
+                        <p>
+                            <span class="form-info" ng-show=" (form.cehicleLabelPrice.$dirty && form.cehicleLabelPrice.$error.required) || (form.cehicleLabelPrice.$error.required && formValidate)">车辆标签价不能为空</span>
+                        </p>
+                    </div>
+                </div>
+                <div class="row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">车辆成交价</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <input type="number" name="cehicleTransactionPrice" placeholder="车辆成交价" class="form-control m-b-xs" ng-model="quotationDeviceVo.cehicleTransactionPrice" ng-change="changeTracsactionPrice()"  required>
+                        <p>
+                            <span class="form-info" ng-show=" (form.cehicleTransactionPrice.$dirty && form.cehicleTransactionPrice.$error.required) || (form.cehicleTransactionPrice.$error.required && formValidate)">车辆成交价不能为空</span>
+                        </p>
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">车辆采购价</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <input type="number" name="cehiclePurchasingPrice" placeholder="车辆采购价" class="form-control m-b-xs" ng-model="quotationDeviceVo.cehiclePurchasingPrice" required>
+                        <p>
+                            <span class="form-info" ng-show=" (form.cehiclePurchasingPrice.$dirty && form.cehiclePurchasingPrice.$error.required) || (form.cehiclePurchasingPrice.$error.required && formValidate)">车辆采购价不能为空</span>
+                        </p>
+                    </div>
+                </div>
+                <div class="row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">购置税</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <input type="number" name="purchaseTax" placeholder="购置税" class="form-control m-b-xs" ng-model="quotationDeviceVo.purchaseTax" ng-change="changeFinItemAmount()" required>
+                        <p>
+                            <span class="form-info" ng-show=" (form.purchaseTax.$dirty && form.purchaseTax.$error.required) || (form.purchaseTax.$error.required && formValidate)">购置税不能为空</span>
+                        </p>
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">商业保险</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <input type="number" name="commercialInsurance" placeholder="商业保险" class="form-control m-b-xs" ng-model="quotationDeviceVo.commercialInsurance" ng-change="changeFinItemAmount()" required>
+                        <p>
+                            <span class="form-info" ng-show=" (form.commercialInsurance.$dirty && form.commercialInsurance.$error.required) || (form.commercialInsurance.$error.required && formValidate)">商业保险不能为空</span>
+                        </p>
+                    </div>
+                </div>
+                <div class="row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">上牌综合服务</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <input type="number" name="boardServiceCharge" placeholder="上牌综合服务" class="form-control m-b-xs" ng-model="quotationDeviceVo.boardServiceCharge" ng-change="changeFinItemAmount()" required>
+                        <p>
+                            <span class="form-info" ng-show=" (form.boardServiceCharge.$dirty && form.boardServiceCharge.$error.required) || (form.boardServiceCharge.$error.required && formValidate)">上牌综合服务不能为空</span>
+                        </p>
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">交强险车船税</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <input type="number" name="highRiskVehicleTax" placeholder="交强险车船税" class="form-control m-b-xs" ng-model="quotationDeviceVo.highRiskVehicleTax" ng-change="changeFinItemAmount()" required>
+                        <p>
+                            <span class="form-info" ng-show=" (form.highRiskVehicleTax.$dirty && form.highRiskVehicleTax.$error.required) || (form.highRiskVehicleTax.$error.required && formValidate)">交强险车船税不能为空</span>
+                        </p>
+                    </div>
+                </div>
+                <div class="row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">精品/选装</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <input type="number" name="fineQuality" placeholder="精品/选装" class="form-control m-b-xs" ng-model="quotationDeviceVo.fineQuality" ng-change="changeFinItemAmount()" required>
+                        <p>
+                            <span class="form-info" ng-show=" (form.fineQuality.$dirty && form.fineQuality.$error.required) || (form.fineQuality.$error.required && formValidate)">精品/选装不能为空</span>
+                        </p>
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">申请金额</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <input type="number" name="applicationAmount" placeholder="申请金额" class="form-control m-b-xs" ng-model="quotationDeviceVo.applicationAmount" disabled required>
+                        <p>
+                            <span class="form-info" ng-show=" (form.applicationAmount.$dirty && form.applicationAmount.$error.required) || (form.applicationAmount.$error.required && formValidate)">申请金额不能为空</span>
+                        </p>
+                    </div>
+                </div>
+                <div class="row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">手续费</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <input type="number" name="serviceCharge" placeholder="手续费" class="form-control m-b-xs" ng-model="quotationDeviceVo.serviceCharge" required>
+                        <p>
+                            <span class="form-info" ng-show=" (form.serviceCharge.$dirty && form.serviceCharge.$error.required) || (form.serviceCharge.$error.required && formValidate)">手续费不能为空</span>
+                        </p>
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">融资额（计息）</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <input type="number" name="financingAmount" placeholder="融资额（计息）" class="form-control m-b-xs" ng-model="quotationDeviceVo.financingAmount" disabled required>
+                        <p>
+                            <span class="form-info" ng-show=" (form.financingAmount.$dirty && form.financingAmount.$error.required) || (form.financingAmount.$error.required && formValidate)">融资额（计息）不能为空</span>
+                        </p>
+                    </div>
+                </div>
+                <div class="row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">代收手续费</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <input type="number" name="restitutionFee" placeholder="代收手续费" class="form-control m-b-xs" ng-model="quotationDeviceVo.restitutionFee" required>
+                        <p>
+                            <span class="form-info" ng-show=" (form.restitutionFee.$dirty && form.restitutionFee.$error.required) || (form.restitutionFee.$error.required && formValidate)">代收手续费不能为空</span>
+                        </p>
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">续保押金</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <input type="number" name="renewDeposit" placeholder="续保押金" class="form-control m-b-xs" ng-model="quotationDeviceVo.renewDeposit" required>
+                        <p>
+                            <span class="form-info" ng-show=" (form.renewDeposit.$dirty && form.renewDeposit.$error.required) || (form.renewDeposit.$error.required && formValidate)">续保押金不能为空</span>
+                        </p>
+                    </div>
+                </div>
+                <div class="row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">渠道佣金</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <input type="number" name="channelCommission" placeholder="渠道佣金" class="form-control m-b-xs" ng-model="quotationDeviceVo.channelCommission" required>
+                        <p>
+                            <span class="form-info" ng-show=" (form.channelCommission.$dirty && form.channelCommission.$error.required) || (form.channelCommission.$error.required && formValidate)">渠道佣金不能为空</span>
+                        </p>
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">现金奖励</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <input type="number" name="cashReward" placeholder="现金奖励" class="form-control m-b-xs" ng-model="quotationDeviceVo.cashReward" required>
+                        <p>
+                            <span class="form-info" ng-show=" (form.cashReward.$dirty && form.cashReward.$error.required) || (form.cashReward.$error.required && formValidate)">现金奖励不能为空</span>
+                        </p>
+                    </div>
+                </div>
+                <div class="row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">内部提成</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <input type="number" name="internalFormation" placeholder="内部提成" class="form-control m-b-xs" ng-model="quotationDeviceVo.internalFormation" required>
+                        <p>
+                            <span class="form-info" ng-show=" (form.internalFormation.$dirty && form.internalFormation.$error.required) || (form.internalFormation.$error.required && formValidate)">内部提成不能为空</span>
+                        </p>
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">回购价</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <input type="number" name="backPurchase" placeholder="回购价" class="form-control m-b-xs" ng-model="quotationDeviceVo.backPurchase">
+                        <p>
+                            <span class="form-info" ng-show=" (form.backPurchase.$dirty && form.backPurchase.$error.required) || (form.backPurchase.$error.required && formValidate)">回购价不能为空</span>
+                        </p>
+                    </div>
+
+                </div>
+                <!--<div class="row">-->
+                    <!--<label class="col-sm-2 control-label text-right"><b class="form-text-black">大客户补贴比例</b><b class="form-error">*</b>:</label>-->
+                    <!--<div class="col-sm-2">-->
+                        <!--<input type="number" name="customerSubsidyRatio" placeholder="大客户补贴比例" class="form-control m-b-xs" ng-model="quotationDeviceVo.customerSubsidyRatio" required>-->
+                        <!--<p>-->
+                            <!--<span class="form-info" ng-show=" (form.customerSubsidyRatio.$dirty && form.customerSubsidyRatio.$error.required) || (form.customerSubsidyRatio.$error.required && formValidate)">大客户补贴比例不能为空</span>-->
+                        <!--</p>-->
+                    <!--</div>-->
+                    <!--<label class="col-sm-2 control-label text-right"><b class="form-text-black">大客户补贴金额</b><b class="form-error">*</b>:</label>-->
+                    <!--<div class="col-sm-2">-->
+                        <!--<input type="number" name="customerSubsidyAmount" placeholder="大客户补贴金额" class="form-control m-b-xs" ng-model="quotationDeviceVo.customerSubsidyAmount" disabled required>-->
+                        <!--<p>-->
+                            <!--<span class="form-info" ng-show=" (form.customerSubsidyAmount.$dirty && form.customerSubsidyAmount.$error.required) || (form.customerSubsidyAmount.$error.required && formValidate)">大客户补贴金额不能为空</span>-->
+                        <!--</p>-->
+                    <!--</div>-->
+                <!--</div>-->
+                <div class="row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">首付款比例</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <input type="number" limit-number="3" name="downPaymentRatio" placeholder="首付款比例" class="form-control m-b-xs" ng-model="quotationDeviceVo.downPaymentRatio" ng-change="downPaymentRatioChange()" required>
+                        <p>
+                            <span class="form-info" ng-show=" (form.downPaymentRatio.$dirty && form.downPaymentRatio.$error.required) || (form.downPaymentRatio.$error.required && formValidate)">首付款比例不能为空</span>
+                        </p>
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">首付款</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <input type="number" limit-number="10" name="firstPayment" placeholder="首付款" class="form-control m-b-xs" ng-model="quotationDeviceVo.firstPayment" ng-change="firstPaymentChange()" required>
+                        <p>
+                            <span class="form-info" ng-show=" (form.firstPayment.$dirty && form.firstPayment.$error.required) || (form.firstPayment.$error.required && formValidate)">首付款不能为空</span>
+                        </p>
+                    </div>
+                </div>
+                <div class="row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">保证金比例</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <input type="number" limit-number="3" name="marginLevel" placeholder="保证金比例" class="form-control m-b-xs" ng-model="quotationDeviceVo.marginLevel" ng-change="marginLevelChange()" required>
+                        <p>
+                            <span class="form-info" ng-show=" (form.marginLevel.$dirty && form.marginLevel.$error.required) || (form.marginLevel.$error.required && formValidate)">保证金比例不能为空</span>
+                        </p>
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">保证金</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <input type="number" limit-number="10" name="bond" placeholder="保证金" class="form-control m-b-xs" ng-model="quotationDeviceVo.bond"  ng-change="bondChange()" required>
+                        <p>
+                            <span class="form-info" ng-show=" (form.bond.$dirty && form.bond.$error.required) || (form.bond.$error.required && formValidate)">保证金不能为空</span>
+                        </p>
+                    </div>
+                </div>
+                <div class="row" ng-if="quotationDeviceVo.quotationType != 3">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">尾款比例</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <input type="number" limit-number="3" name="tailProportion" placeholder="尾款比例" class="form-control m-b-xs" ng-model="quotationDeviceVo.tailProportion" ng-change="tailProportionChange()">
+                        <p>
+                            <span class="form-info" ng-show=" (form.tailProportion.$dirty && form.tailProportion.$error.required) || (form.tailProportion.$error.required && formValidate)">尾款比例不能为空</span>
+                        </p>
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">尾款金额</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <input type="number" limit-number="10" name="tailMoney" placeholder="尾款金额" class="form-control m-b-xs" ng-model="quotationDeviceVo.tailMoney" ng-change="tailMoneyChange()">
+                        <p>
+                            <span class="form-info" ng-show=" (form.tailMoney.$dirty && form.tailMoney.$error.required) || (form.tailMoney.$error.required && formValidate)">尾款金额不能为空</span>
+                        </p>
+                    </div>
+                </div>
+                <div class="row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">客户利率(%)</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <input type="number" limit-number="3" name="customerInterestRate" placeholder="客户利率" class="form-control m-b-xs" ng-model="quotationDeviceVo.customerInterestRate" required>
+                        <p>
+                            <span class="form-info" ng-show=" (form.customerInterestRate.$dirty && form.customerInterestRate.$error.required) || (form.customerInterestRate.$error.required && formValidate)">客户利率不能为空</span>
+                        </p>
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">月供</b>:</label>
+                    <div class="col-sm-2">
+                        <input type="text" name="monthlySupply" placeholder="月供" class="form-control m-b-xs" ng-model="quotationDeviceVo.monthlySupply" disabled>
+                    </div>
+                </div>
+                <div class="row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">年供比例</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <input type="number" limit-number="3" name="annualSupplyRate" placeholder="年供比例" class="form-control m-b-xs" ng-model="quotationDeviceVo.annualSupplyRate" ng-change="annualSupplyRateChange()">
+                        <p>
+                            <span class="form-info" ng-show=" (form.annualSupplyRate.$dirty && form.annualSupplyRate.$error.required) || (form.annualSupplyRate.$error.required && formValidate)">年供比例不能为空</span>
+                        </p>
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">年供金额</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <input type="number" limit-number="10" name="annualSupplyAmount" placeholder="年供金额" class="form-control m-b-xs" ng-model="quotationDeviceVo.annualSupplyAmount" ng-change="annualSupplyAmountChange()" disabled>
+                        <p>
+                            <span class="form-info" ng-show=" (form.annualSupplyAmount.$dirty && form.annualSupplyAmount.$error.required) || (form.annualSupplyAmount.$error.required && formValidate)">年供金额不能为空</span>
+                        </p>
+                    </div>
+                </div>
+                <div class="row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">备注</b>:</label>
+                    <div class="col-sm-6">
+                        <textarea limit-word type="text" name="remarks" placeholder="备注" class="form-control m-b-xs" ng-model="quotationDeviceVo.remarks"></textarea>
+                        <p>
+                            <!--<span class="form-info" ng-show=" (form.remarks.$dirty && form.remarks.$error.required) || (form.remarks.$error.required && formValidate)">备注不能为空</span>-->
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        <div class="panel-body wrapper-sm">
+            <div class="row">
+                <div class="col-sm-6 text-center">
+                    <button type="submit" class="btn btn-success" ng-disabled="submit" ng-click="calculate()">计算</button>
+                    <button type="submit" class="btn btn-success" ng-disabled="submit" ng-click="printQuotationDevice()">生成pdf</button>
+                    <button type="submit" class="btn btn-success" ng-disabled="submit" ng-click="jump()">跳转</button>
+                    <button ng-if="quotationDeviceId" class="btn btn-success" ng-click="backUp()">返回</button>
+                </div>
+            </div>
+        </div>
+        <div class="panel-body wrapper-sm">
+            <div class="row">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">贸易收入</b>:</label>
+                <div class="col-sm-2">
+                    <input type="text" name="tradeIncome" placeholder="贸易收入" class="form-control m-b-xs" ng-model="quotationDeviceVo.tradeIncome" disabled>
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">项目粗利</b>:</label>
+                <div class="col-sm-2">
+                    <input type="text" name="projectCoarseProfit" placeholder="项目粗利" class="form-control m-b-xs" ng-model="quotationDeviceVo.projectCoarseProfit" disabled>
+                </div>
+            </div>
+            <div class="row">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">贷款利息</b>:</label>
+                <div class="col-sm-2">
+                    <input type="text" name="loanInterest" placeholder="贷款利息" class="form-control m-b-xs" ng-model="quotationDeviceVo.loanInterest" disabled>
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">静态收益率(%)</b>:</label>
+                <div class="col-sm-2">
+                    <input type="text" name="staticRateOfReturn" placeholder="静态收益率" class="form-control m-b-xs" ng-model="quotationDeviceVo.staticRateOfReturn" disabled>
+                </div>
+            </div>
+            <div class="row">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">增值税节税</b>:</label>
+                <div class="col-sm-2">
+                    <input type="text" name="vatTaxSaving" placeholder="增值税节税" class="form-control m-b-xs" ng-model="quotationDeviceVo.vatTaxSaving" disabled>
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">所得税节税</b>:</label>
+                <div class="col-sm-2">
+                    <input type="text" name="incomeTaxSaving" placeholder="所得税节税" class="form-control m-b-xs" ng-model="quotationDeviceVo.incomeTaxSaving" disabled>
+                </div>
+            </div>
+            <div class="row">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">需动用资金</b>:</label>
+                <div class="col-sm-2">
+                    <input type="text" name="needToUseFunds" placeholder="需动用资金" class="form-control m-b-xs" ng-model="quotationDeviceVo.needToUseFunds" disabled>
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">IRR(%)</b>:</label>
+                <div class="col-sm-2">
+                    <input type="text" name="irr" placeholder="IRR" class="form-control m-b-xs" ng-model="quotationDeviceVo.irr" disabled>
+                </div>
+            </div>
+            <div class="row">
+                <input type="hidden" name="tax" placeholder="月供" class="form-control m-b-xs" ng-model="quotationDeviceVo.tax">
+
+
+            </div>
+        </div>
+    </div>
+</div>
+

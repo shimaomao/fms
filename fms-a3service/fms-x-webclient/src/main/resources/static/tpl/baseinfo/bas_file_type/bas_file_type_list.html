@@ -1,0 +1,50 @@
+<div  ng-controller="bas_file_type_list_controller">
+    <div>
+        <toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-body wrapper-sm">
+            <div class="row">
+                <div class="col-lg-12">
+                    <form class="form-inline" role="form">
+                        <div class="form-group">
+                            <label class="sr-only" >附件类型名称 </label>
+                            <input class="form-control m-b-xs" ng-model="fileTypeName" placeholder="请输入附件类型名称">
+                        </div>
+
+                        <div class="form-group m-b-sm">
+                            <div class="btn-group">
+                                <button class="btn btn-success m-b-xs btn-info btn-sm fms-button-margin-bottom" ng-click="searchBasFileType()" ><i class="fa fa-search"></i>查询</button>
+                                <button class="btn btn-default m-b-xs btn-sm fms-button-margin-bottom" ng-click="resetBasFileType()" ><i class="fa  icon-refresh"></i>重置</button>
+                            </div>
+                        </div>
+
+                        <div class="form-group pull-right">
+                            <div class="btn-group">
+                                <button class="btn btn-default m-b-xs btn-sm fms-button-margin-bottom" ng-click="exportExcel()">导出excel</button>
+                                <button class="btn btn-default m-b-xs btn-sm fms-button-margin-bottom" ng-click="saveBasFileType()"><i class="fa fa-plus"></i>添加</button>
+                                <button class="btn btn-default m-b-xs btn-sm fms-button-margin-bottom" ng-click="modifyBasFileType()"><i class="fa icon-pencil"></i>修改</button>
+                                <button class="btn btn-default m-b-xs btn-sm fms-button-margin-bottom" ng-click="deleteBasFileType()"><i class="fa fa-trash-o"></i>删除</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-lg-12 form-inline panel panel-default" style="padding: 0">
+                <div class="col-lg-2 " style="padding-left: 0; padding-right: 0" >
+                    <div id="bas_file_type_tree" style="max-height: 400px;overflow-y:auto;white-space:nowrap;font-size: 6px"></div>
+                </div>
+
+            <div class="col-lg-10 ">
+                <table border="1" class="table table-striped m-b-none" id="bas_file_type_table">
+                </table>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+

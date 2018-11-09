@@ -1,0 +1,73 @@
+<div class="modal-header">
+    <h4 class="modal-title">共同承租人<button type="button" class="close" data-dismiss="modal" aria-hidden="true" ng-click="close()">&times;</button></h4>
+</div>
+<div class="modal-body">
+    <form name="form" class="form-validation" novalidate>
+        <div class="panel-body">
+            <div class="row">
+                <label class="col-sm-2  text-right"><b class="form-text-black">共同承租人姓名</b>:</label>
+                <div class="col-sm-4">
+                    {{commonBorrower.name}}
+                </div>
+                <label class="col-sm-2  text-right"><b class="form-text-black">证件类型</b>:</label>
+                <div class="col-sm-4">
+                    {{commonBorrower.certifType | getName:'certifType'}}
+                </div>
+            </div>
+            <div class="row">
+                <label class="col-sm-2  text-right"><b class="form-text-black">证件号码</b>:</label>
+                <div class="col-sm-4">
+                    {{commonBorrower.certifNo}}
+                </div>
+                <label class="col-sm-2  text-right"><b class="form-text-black">手机号码</b>:</label>
+                <div class="col-sm-4">
+                    {{commonBorrower.mobileNo}}
+                </div>
+            </div>
+            <div class="row">
+                <label class="col-sm-2  text-right"><b class="form-text-black">单位名称</b>:</label>
+                <div class="col-sm-4">
+                    {{commonBorrower.compName}}
+                </div>
+                <label class="col-sm-2  text-right"><b class="form-text-black">单位电话</b>:</label>
+                <div class="col-sm-4">
+                    {{commonBorrower.compTel}}
+                </div>
+            </div>
+            <div class="row">
+                <label class="col-sm-2  text-right"><b class="form-text-black">共同承租人职位</b>:</label>
+                <div class="col-sm-4">
+                    {{commonBorrower.position | getName:'positionType'}}
+                </div>
+                <label class="col-sm-2  text-right"><b class="form-text-black">税后年薪(万元)</b>:</label>
+                <div class="col-sm-4">
+                    {{commonBorrower.salary}}
+                </div>
+            </div>
+            <div class="row">
+                <label class="col-sm-2  text-right"><b class="form-text-black">单位所在省份</b>:</label>
+                <div class="col-sm-4">
+                    {{commonBorrower.compProv | getAreaName}}
+                </div>
+                <label class="col-sm-2  text-right"><b class="form-text-black">单位所在城市</b>:</label>
+                <div class="col-sm-4">
+                    {{commonBorrower.compCity | getAreaName}}
+                </div>
+            </div>
+            <div class="row">
+                <label class="col-sm-2  text-right"><b class="form-text-black">单位所在区县</b>:</label>
+                <div class="col-sm-4">
+                    {{commonBorrower.compCounty | getAreaName}}
+                </div>
+                <label class="col-sm-2  text-right"><b class="form-text-black">单位详细地址</b>:</label>
+                <div class="col-sm-4">
+                    {{commonBorrower.compAddr}}
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<!--<div class="modal-footer ng-scope text-center">
+    <button class="btn btn-default" ng-click="close()">取消</button>
+    <button type="submit" class="btn btn-success" ng-disabled="submit" ng-click="save()">保存</button>
+</div>-->

@@ -1,0 +1,65 @@
+<div  ng-controller="annual_inspection_detail_controller">
+    <div>
+        <toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+    </div>
+    <div class="panel panel-default">
+
+        <div class="row" style="margin: 0; padding: 15px; border: 1px solid #dddddd">
+            <h4 class="m-n font-thin h4">年检详情</h4>
+        </div>
+        <form name="form" class="form-validation" novalidate>
+            <div class="panel-body ">
+
+
+                <div class="form-group row">
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">合同号</b>:</label>
+                    <div class="col-sm-8">
+                        <label class="col-sm-12 control-label text-left">{{annualInspection.contNo}}</label>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">承租人</b>:</label>
+                    <div class="col-sm-8">
+                        <label class="col-sm-12 control-label text-left">{{annualInspection.annualInspecUser}}</label>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">车架号</b>:</label>
+                    <div class="col-sm-8">
+                        <label class="col-sm-12 control-label text-left">{{annualInspection.annualInspecVinNo}}</label>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">车辆行驶证书注册日期</b>:</label>
+                    <div class="col-sm-8">
+                        <label class="col-sm-12 control-label text-left">{{annualInspection.annualInspecDrivingLicenseRegisterDate}}</label>
+                    </div>
+                </div>
+
+
+                <div class="form-group row">
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">年检日期</b>:</label>
+                    <div class="col-sm-8">
+                        <label class="col-sm-12 control-label text-left">{{annualInspection.annualInspectDate}}</label>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">年检状态</b>:</label>
+                    <div class="col-sm-8">
+                        <label class="col-sm-12 control-label text-left">{{annualInspection.annualInspectStatusVal}}</label>
+                    </div>
+                </div>
+
+                <div class="text-center">
+                    <div class="col-sm-15 m-b">
+                        <button class="btn btn-default" ng-click="goBack()">返回</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

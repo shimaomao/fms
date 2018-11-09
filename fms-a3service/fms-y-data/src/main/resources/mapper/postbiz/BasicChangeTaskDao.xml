@@ -1,0 +1,478 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.com.leadu.fms.data.postbiz.dao.BasicChangeTaskDao">
+
+
+    <select id="selectContractListByPage" resultType="cn.com.leadu.fms.pojo.prebiz.vo.contract.ContractListVo">
+        SELECT DISTINCT
+            contract.contract_id,contract.apply_type,contract.vin_no,contract.cont_no,contract.apply_no,
+            contract.payment_sts, contract.contract_valid_date, vehicle.vehicle_form,
+            finance.product,finance.license_attr,finance.fin_period_type,finance.charge_pay_mode,finance.loan_interest,
+            finance.init_amount,finance.invest_total,
+            finance.fin_total,finance.rent,finance.deposit,finance.final_amount,finance.annual_supply_amount,
+            IFNULL(cstm_person.name,cstm_company.name) name,
+            IFNULL(cstm_person.certif_no,cstm_company.social_certif_no) certifNo,
+            sysGroup.group_name,
+            product.product_name,
+            vehMakerCode.vehicle_name AS vehMakerCodeName,
+            vehBrandCode.vehicle_name AS vehBrandCodeName,
+            vehicleCode.vehicle_name AS vehicleCodeName,
+            vehSeriesCode.vehicle_name AS vehSeriesCodeName
+        FROM contract contract
+        LEFT JOIN contract_vehicle vehicle ON contract.cont_no=vehicle.cont_no AND vehicle.del_flag = ${delete_exist}
+        LEFT JOIN contract_finance finance ON contract.cont_no=finance.cont_no AND finance.del_flag = ${delete_exist}
+        LEFT JOIN apply apply ON contract.apply_no=apply.apply_no AND apply.del_flag = ${delete_exist}
+        LEFT JOIN cstm_person  ON contract.apply_no=cstm_person.apply_no AND cstm_person.del_flag = ${delete_exist}
+        LEFT JOIN cstm_company  ON contract.apply_no=cstm_company.apply_no AND cstm_company.del_flag = ${delete_exist}
+        LEFT JOIN sys_group sysGroup ON finance.belong_group=sysGroup.group_code AND sysGroup.del_flag = ${delete_exist}
+        LEFT JOIN product product ON finance.product=product.product AND product.del_flag = ${delete_exist}
+        LEFT JOIN bas_vehicle vehMakerCode ON vehicle.veh_maker_code=vehMakerCode.vehicle_code AND vehMakerCode.del_flag = ${delete_exist}
+        LEFT JOIN bas_vehicle vehBrandCode ON vehicle.veh_brand_code=vehBrandCode.vehicle_code AND vehBrandCode.del_flag = ${delete_exist}
+        LEFT JOIN bas_vehicle vehicleCode ON vehicle.vehicle_code=vehicleCode.vehicle_code AND vehicleCode.del_flag = ${delete_exist}
+        LEFT JOIN bas_vehicle vehSeriesCode ON vehicle.veh_series_code=vehSeriesCode.vehicle_code AND vehSeriesCode.del_flag = ${delete_exist}
+        WHERE contract.del_flag = ${delete_exist}
+        and contract.biz_status = #{validContractChangeVo.bizStatus}
+        and contract.payment_sts = #{validContractChangeVo.paymentSts}
+        <if test="validContractChangeVo.applyNo != null" >
+            AND contract.apply_no LIKE #{validContractChangeVo.applyNo}
+        </if>
+        <if test="validContractChangeVo.contNo != null">
+            AND contract.cont_no LIKE #{validContractChangeVo.contNo}
+        </if>
+        <if test="validContractChangeVo.name != null">
+            AND (cstm_person.name LIKE #{validContractChangeVo.name} OR cstm_company.name LIKE #{validContractChangeVo.name})
+        </if>
+        <if test="validContractChangeVo.applyType != null">
+            AND contract.apply_type = #{validContractChangeVo.applyType}
+        </if>
+        <if test="validContractChangeVo.vinNo != null" >
+            AND contract.vin_no LIKE #{validContractChangeVo.vinNo}
+        </if>
+        <if test="validContractChangeVo.productName != null" >
+            AND product.product_name LIKE #{validContractChangeVo.productName}
+        </if>
+        <!-- 合同生效日开始时间 -->
+        <if test="validContractChangeVo.validStartTime != null">
+            AND contract.contract_valid_date &gt;= #{validContractChangeVo.validStartTime}
+        </if>
+        <!-- 合同生效日结束时间 -->
+        <if test="validContractChangeVo.validEndTime != null">
+            AND contract.contract_valid_date &lt;= #{validContractChangeVo.validEndTime}
+        </if>
+        <if test="validContractChangeVo.licenseAttr != null">
+            AND finance.license_attr = #{validContractChangeVo.licenseAttr}
+        </if>
+        ORDER BY contract.contract_valid_date desc,contract.update_time desc
+    </select>
+    <select id="selectBasicChangeTaskListByPage" resultType="cn.com.leadu.fms.pojo.postbiz.vo.basicchangetask.BasicChangeTaskVo">
+        select temp.* from (
+            (select DISTINCT
+            bcTask.apply_no,
+            apply.apply_type,
+            ifnull(cstmPerson.name, cstmCompany.name) name,
+            bcTask.basic_task_no taskNo,
+            bcTask.basic_task_status taskStatus,
+            bcTask.present_user,
+            bcTask.submit_user,
+            bcTask.submit_date,
+            "1" changeType,
+            contract.cont_no contNo,
+            contract.vin_no vinNo,
+            "" deferMaturity,
+            "" deferAmount,
+            "" supplementDeposit,
+            "" newName,
+            bcTask.update_time updateTime
+            from basic_change_task bcTask
+            left join apply apply on apply.apply_no = bcTask.apply_no and apply.del_flag = ${delete_exist}
+            left join contract contract on apply.apply_no = contract.apply_no and contract.del_flag = ${delete_exist}
+            left join cstm_person cstmPerson on bcTask.apply_no = cstmPerson.apply_no and cstmPerson.del_flag = ${delete_exist}
+            left join cstm_company cstmCompany on bcTask.apply_no = cstmCompany.apply_no and cstmCompany.del_flag = ${delete_exist}
+            where bcTask.del_flag = ${delete_exist}
+            and bcTask.apply_no in (select apply_no from contract where del_flag= ${delete_exist} and biz_status = #{basicChangeTaskVo.bizStatus}
+            and payment_sts = #{basicChangeTaskVo.paymentSts})
+            <if test="basicChangeTaskVo.taskNo != null">
+                and bcTask.basic_task_no like #{basicChangeTaskVo.taskNo}
+            </if>
+            <if test="basicChangeTaskVo.name != null">
+                and cstmPerson.name like #{basicChangeTaskVo.name}
+                or cstmCompany.name like #{basicChangeTaskVo.name}
+            </if>
+            <!--<if test="basicChangeTaskVo.userList != null">-->
+                <!--AND  bcTask.submit_user IN-->
+                <!--<foreach collection="basicChangeTaskVo.userList" item="groupCode" open="(" close=")" separator="," >-->
+                    <!--#{groupCode}-->
+                <!--</foreach>-->
+            <!--</if>-->
+            )
+            UNION
+            (SELECT DISTINCT
+            apply.apply_no,
+            apply.apply_type,
+            ifnull(cstm_person.name, cstm_company.name) name,
+            defer_task.defer_task_no,
+            defer_task.defer_task_status,
+            defer_task.present_user,
+            defer_task.defer_submit_user,
+            defer_task.defer_submit_date,
+            '2' changeType,
+            contract.cont_no contNo,
+            contract.vin_no vinNo,
+            defer_task.defer_maturity deferMaturity,
+            defer_task.defer_amount deferAmount,
+            '' supplementDeposit,
+            '' newName,
+            defer_task.update_time updateTime
+            FROM
+            defer_task
+            LEFT JOIN contract ON defer_task.cont_no = contract.cont_no AND contract.del_flag = ${delete_exist}
+            LEFT JOIN apply ON contract.apply_no = apply.apply_no AND apply.del_flag = ${delete_exist}
+            LEFT JOIN cstm_person ON cstm_person.apply_no = apply.apply_no
+            AND cstm_person.del_flag = ${delete_exist}
+            LEFT JOIN cstm_company ON cstm_company.apply_no = apply.apply_no
+            AND cstm_company.del_flag = ${delete_exist}
+            LEFT JOIN contract_finance ON contract.cont_no = contract_finance.cont_no
+            AND contract_finance.del_flag = ${delete_exist}
+            LEFT JOIN sys_group ON contract_finance.belong_group = sys_group.group_code
+            AND sys_group.del_flag = ${delete_exist}
+            where defer_task.del_flag = ${delete_exist}
+            and contract.payment_sts = #{basicChangeTaskVo.paymentSts}
+            <if test="basicChangeTaskVo.taskNo != null">
+                and defer_task.defer_task_no like #{basicChangeTaskVo.taskNo}
+            </if>
+            <if test="basicChangeTaskVo.name != null">
+                and cstm_person.name like #{basicChangeTaskVo.name}
+                or cstm_company.name like #{basicChangeTaskVo.name}
+            </if>
+            <!--<if test="basicChangeTaskVo.userList != null">-->
+                <!--AND  defer_task.defer_submit_user IN-->
+                <!--<foreach collection="basicChangeTaskVo.userList" item="groupCode" open="(" close=")" separator="," >-->
+                    <!--#{groupCode}-->
+                <!--</foreach>-->
+            <!--</if>-->
+            )
+            UNION
+            (SELECT DISTINCT
+            apply.apply_no,
+            apply.apply_type,
+            ifnull(cstm_person.name, cstm_company.name) name,
+            deposit_change_task.deposit_task_no,
+            deposit_change_task.deposit_task_status,
+            deposit_change_task.present_user,
+            deposit_change_task.submit_user,
+            deposit_change_task.submit_date,
+            '3' changeType,
+            contract.cont_no contNo,
+            contract.vin_no vinNo,
+            '' deferMaturity,
+            '' deferAmount,
+            deposit_change_task.supplement_deposit supplementDeposit,
+            '' newName,
+            deposit_change_task.update_time updateTime
+            FROM
+            deposit_change_task
+            LEFT JOIN contract ON deposit_change_task.cont_no = contract.cont_no AND contract.del_flag = ${delete_exist}
+            LEFT JOIN apply ON contract.apply_no = apply.apply_no AND apply.del_flag = ${delete_exist}
+            LEFT JOIN cstm_person ON cstm_person.apply_no = apply.apply_no
+            AND cstm_person.del_flag = ${delete_exist}
+            LEFT JOIN cstm_company ON cstm_company.apply_no = apply.apply_no
+            AND cstm_company.del_flag = ${delete_exist}
+            LEFT JOIN contract_finance ON contract.cont_no = contract_finance.cont_no
+            AND contract_finance.del_flag = ${delete_exist}
+            LEFT JOIN sys_group ON contract_finance.belong_group = sys_group.group_code
+            AND sys_group.del_flag = ${delete_exist}
+            where deposit_change_task.del_flag = ${delete_exist}
+            and contract.payment_sts = #{basicChangeTaskVo.paymentSts}
+            <if test="basicChangeTaskVo.taskNo != null">
+                and deposit_change_task.deposit_task_no like #{basicChangeTaskVo.taskNo}
+            </if>
+            <if test="basicChangeTaskVo.name != null">
+                and cstm_person.name like #{basicChangeTaskVo.name}
+                or cstm_company.name like #{basicChangeTaskVo.name}
+            </if>
+            <!--<if test="basicChangeTaskVo.userList != null">-->
+                <!--AND  deposit_change_task.submit_user IN-->
+                <!--<foreach collection="basicChangeTaskVo.userList" item="groupCode" open="(" close=")" separator="," >-->
+                    <!--#{groupCode}-->
+                <!--</foreach>-->
+            <!--</if>-->
+            )
+          UNION
+          (SELECT DISTINCT
+            apply.apply_no,
+            apply.apply_type,
+            ifnull(
+            cstm_person. NAME,
+            cstm_company. NAME
+            ) NAME,
+            change_lessee_task.task_no,
+            change_lessee_task.task_status,
+            change_lessee_task.present_user,
+            change_lessee_task.submit_user,
+            change_lessee_task.submit_date,
+            '4' changeType,
+            contract.cont_no contNo,
+            contract.vin_no vinNo,
+            '' deferMaturity,
+            '' deferAmount,
+            '' supplementDeposit,
+            ifnull(
+            cstmPerson.NAME,
+            cstmCompany.NAME
+            ) newName,
+            change_lessee_task.update_time updateTime
+            FROM
+            change_lessee_task
+            LEFT JOIN contract ON change_lessee_task.cont_no = contract.cont_no
+            AND contract.del_flag = ${delete_exist}
+            LEFT JOIN apply ON contract.apply_no = apply.apply_no
+            AND apply.del_flag = ${delete_exist}
+            LEFT JOIN cstm_person ON cstm_person.apply_no = apply.apply_no
+            AND cstm_person.del_flag = ${delete_exist}
+            LEFT JOIN cstm_company ON cstm_company.apply_no = apply.apply_no
+            AND cstm_company.del_flag = ${delete_exist}
+            LEFT JOIN cstm_person cstmPerson ON cstmPerson.apply_no = change_lessee_task.task_no
+            AND cstmPerson.del_flag = ${delete_exist}
+            LEFT JOIN cstm_company cstmCompany ON cstmCompany.apply_no = change_lessee_task.task_no
+            AND cstmCompany.del_flag = ${delete_exist}
+            WHERE change_lessee_task.del_flag = ${delete_exist}
+            and contract.payment_sts = #{basicChangeTaskVo.paymentSts}
+            <if test="basicChangeTaskVo.taskNo != null">
+                and change_lessee_task.task_no like #{basicChangeTaskVo.taskNo}
+            </if>
+            <if test="basicChangeTaskVo.name != null">
+                and cstm_person.name like #{basicChangeTaskVo.name}
+                or cstm_company.name like #{basicChangeTaskVo.name}
+            </if>
+            <!--<if test="basicChangeTaskVo.userList != null">-->
+                <!--AND  change_lessee_task.submit_user IN-->
+                <!--<foreach collection="basicChangeTaskVo.userList" item="groupCode" open="(" close=")" separator="," >-->
+                    <!--#{groupCode}-->
+                <!--</foreach>-->
+            <!--</if>-->
+        )
+        ) temp
+        where 1=1
+        <if test="basicChangeTaskVo.applyNo != null">
+            and temp.apply_no like #{basicChangeTaskVo.applyNo}
+        </if>
+        <if test="basicChangeTaskVo.contNo != null">
+            and temp.contNo like #{basicChangeTaskVo.contNo}
+        </if>
+        <if test="basicChangeTaskVo.vinNo != null">
+            and temp.vinNo like #{basicChangeTaskVo.vinNo}
+        </if>
+        <if test="basicChangeTaskVo.changeType != null">
+            and temp.changeType = #{basicChangeTaskVo.changeType}
+        </if>
+        <if test="basicChangeTaskVo.userList != null">
+        AND  temp.submit_user IN
+        <foreach collection="basicChangeTaskVo.userList" item="groupCode" open="(" close=")" separator="," >
+        #{groupCode}
+        </foreach>
+        </if>
+        order by temp.updateTime desc
+
+    </select>
+    <select id="selectBasicCompChangeHistorListByPage" resultType="cn.com.leadu.fms.pojo.postbiz.vo.basicchangetask.BasicChangeCompHistoryVo">
+        select
+        bcTask.basic_task_no taskNo,
+        bcTask.basic_task_status,
+        bcTask.submit_user,
+        bcTask.submit_date,
+        bcTask.remark,
+        basicChangeNew.name,
+        basicChangeNew.contact_name,
+        basicChangeNew.contact_mobno,
+        basicChangeNew.comp_prov,
+        basicChangeNew.comp_city,
+        basicChangeNew.comp_county,
+        basicChangeNew.comp_addr,
+        basicChangeNew.invoice_type,
+        basicChangeNew.ticket_opening,
+        basicChangeNew.duty_paragraph,
+        basicChangeNew.invoice_addr,
+        basicChangeNew.account_number,
+        basicChangeNew.invoice_mail_addr,
+        basicChangeNew.invoice_contact_per,
+        basicChangeNew.invoice_contact_no,
+        basicChangeNew.bank_name,
+        basicChangeOld.name nameOld,
+        basicChangeOld.contact_name contactNameOld,
+        basicChangeOld.contact_mobno contactMobnoOld
+        from basic_change_task bcTask
+        left join company_basic_change basicChangeNew on bcTask.basic_task_no = basicChangeNew.company_task_no
+        and basicChangeNew.solve_type = '1' and basicChangeNew.del_flag = ${delete_exist}
+        left join company_basic_change basicChangeOld on bcTask.basic_task_no = basicChangeOld.company_task_no
+        and basicChangeOld.solve_type = '0' and basicChangeOld.del_flag = ${delete_exist}
+        where bcTask.del_flag = ${delete_exist}
+        and bcTask.apply_no = #{basicChangeCompHistoryVo.applyNo}
+        order by bcTask.update_time desc
+    </select>
+
+
+
+
+    <select id="selectBasicPersChangeHistorListByPage" resultMap="persChangeHistoryMap">
+        select
+        bcTask.basic_task_no taskNo,
+        bcTask.basic_task_status basicTaskStatus,
+        bcTask.submit_user submitUser ,
+        bcTask.submit_date submitDate,
+        bcTask.remark,
+        basicChangeNew.name,
+        basicChangeNew.reside_prov resideProv,
+        basicChangeNew.reside_city resideCity,
+        basicChangeNew.reside_county resideCounty,
+        basicChangeNew.reside_addr resideAddr,
+        basicChangeNew.mobile_no mobileNo,
+        basicChangeOld.name nameOld,
+        basicChangeOld.reside_prov resideProvOld,
+        basicChangeOld.reside_city resideCityOld,
+        basicChangeOld.reside_county resideCountyOld,
+        basicChangeOld.reside_addr resideAddrOld,
+        basicChangeOld.mobile_no mobileNoOld
+        from basic_change_task bcTask
+        left join person_basic_change basicChangeNew on bcTask.basic_task_no = basicChangeNew.person_task_no
+        and basicChangeNew.solve_type = '1' and basicChangeNew.del_flag = ${delete_exist}
+        left join person_basic_change basicChangeOld on bcTask.basic_task_no = basicChangeOld.person_task_no
+        and basicChangeOld.solve_type = '0' and basicChangeOld.del_flag = ${delete_exist}
+        where bcTask.del_flag = ${delete_exist}
+        and bcTask.apply_no = #{basicChangePersHistoryVo.applyNo}
+        order by bcTask.update_time desc
+    </select>
+
+    <resultMap id="persChangeHistoryMap" type="cn.com.leadu.fms.pojo.postbiz.vo.basicchangetask.BasicChangePersHistoryVo">
+        <id column="taskNo" javaType="java.lang.String" property="taskNo" />
+        <result column="basicTaskStatus" javaType="java.lang.String" property="basicTaskStatus" />
+        <result column="submitUser" javaType="java.lang.String" property="submitUser" />
+        <result column="submitDate" javaType="java.util.Date" property="submitDate" />
+        <result column="remark" javaType="java.lang.String" property="remark" />
+        <result column="name" javaType="java.lang.String" property="name" />
+        <result column="mobileNo" javaType="java.lang.String" property="mobileNo" />
+        <result column="resideProv" javaType="java.lang.String" property="resideProv" />
+        <result column="resideCity" javaType="java.lang.String" property="resideCity" />
+        <result column="resideCounty" javaType="java.lang.String" property="resideCounty" />
+        <result column="resideAddr" javaType="java.lang.String" property="resideAddr" />
+        <result column="nameOld" javaType="java.lang.String" property="nameOld" />
+        <result column="mobileNoOld" javaType="java.lang.String" property="mobileNoOld" />
+        <result column="resideProvOld" javaType="java.lang.String" property="resideProvOld" />
+        <result column="resideCityOld" javaType="java.lang.String" property="resideCityOld" />
+        <result column="resideCountyOld" javaType="java.lang.String" property="resideCountyOld" />
+        <result column="resideAddrOld" javaType="java.lang.String" property="resideAddrOld" />
+        <collection property="contactsList" ofType="cn.com.leadu.fms.pojo.postbiz.vo.basicchangetask.PersContactsVo"
+                    javaType="java.util.ArrayList" select="getContactsList" column="taskNo">
+        </collection>
+    </resultMap>
+
+    <select id="getContactsList" resultType="cn.com.leadu.fms.pojo.postbiz.vo.basicchangetask.PersContactsVo">
+        select
+        name contactName,
+        solve_type solveType
+        from contacts_change
+        where del_flag = ${delete_exist}
+        and contacts_task_no = #{taskNo}
+    </select>
+
+    <!--<select id="selectBasicPersChangeHistorListByPage" resultType="cn.com.leadu.fms.pojo.postbiz.vo.basicchangetask.BasicChangePersHistoryVo">-->
+        <!--select-->
+        <!--bcTask.basic_task_no taskNo,-->
+        <!--bcTask.basic_task_status,-->
+        <!--bcTask.submit_user,-->
+        <!--bcTask.submit_date,-->
+        <!--bcTask.remark,-->
+        <!--basicChangeNew.name,-->
+        <!--basicChangeNew.reside_prov,-->
+        <!--basicChangeNew.reside_city,-->
+        <!--basicChangeNew.reside_county,-->
+        <!--basicChangeNew.reside_addr,-->
+        <!--basicChangeNew.mobile_no,-->
+        <!--basicChangeOld.name nameOld,-->
+        <!--basicChangeOld.reside_prov resideProvOld,-->
+        <!--basicChangeOld.reside_city resideCityOld,-->
+        <!--basicChangeOld.reside_county resideCountyOld,-->
+        <!--basicChangeOld.reside_addr resideAddrOld,-->
+        <!--basicChangeOld.mobile_no mobileNoOld-->
+        <!--from basic_change_task bcTask-->
+        <!--left join person_basic_change basicChangeNew on bcTask.basic_task_no = basicChangeNew.person_task_no-->
+        <!--and basicChangeNew.solve_type = '1' and basicChangeNew.del_flag = ${delete_exist}-->
+        <!--left join person_basic_change basicChangeOld on bcTask.basic_task_no = basicChangeOld.person_task_no-->
+        <!--and basicChangeOld.solve_type = '0' and basicChangeOld.del_flag = ${delete_exist}-->
+        <!--where bcTask.del_flag = ${delete_exist}-->
+        <!--and bcTask.apply_no = #{basicChangePersHistoryVo.applyNo}-->
+        <!--order by bcTask.update_time desc-->
+    <!--</select>-->
+
+    <select id="selectBasicChangeCancelVo" resultType="cn.com.leadu.fms.pojo.postbiz.vo.basicchangetask.BasicChangeTaskCancelVo">
+        /*基本信息变更数据*/
+        select DISTINCT
+          task.basic_task_no,
+          task.basic_task_status,
+          IFNULL(perChange.name, comChange.name) cstmName
+        from basic_change_task task
+        left join person_basic_change perChange on task.basic_task_no = perChange.person_task_no
+        and perChange.del_flag = ${delete_exist}
+        left join company_basic_change comChange on task.basic_task_no = comChange.company_task_no
+        and comChange.del_flag = ${delete_exist}
+        where task.del_flag = ${delete_exist}
+        and task.present_user = #{basicChangeTaskCancelVo.presentUser}
+        <if test="basicChangeTaskCancelVo.basicTaskNo != null">
+            and task.basic_task_no = #{basicChangeTaskCancelVo.basicTaskNo}
+        </if>
+        union
+        /*保证金变更数据*/
+        select
+            task.deposit_task_no basicTaskNo,
+            task.deposit_task_status basicTaskStatus,
+            IFNULL(person.name, company.name) cstmName
+        from deposit_change_task task
+        left join contract on task.cont_no = contract.cont_no and contract.del_flag = ${delete_exist}
+        left join cstm_person person on contract.apply_no = person.apply_no and person.del_flag = ${delete_exist}
+        left join cstm_company company on contract.apply_no = company.apply_no and company.del_flag = ${delete_exist}
+        where task.del_flag = ${delete_exist}
+        and task.present_user = #{basicChangeTaskCancelVo.presentUser}
+        <if test="basicChangeTaskCancelVo.basicTaskNo != null">
+            and task.deposit_task_no = #{basicChangeTaskCancelVo.basicTaskNo}
+        </if>
+        union
+        /*展期数据*/
+        SELECT
+            defer_task.defer_task_no basicTaskNo,
+            defer_task.defer_task_status basicTaskStatus,
+            IFNULL(
+                cstm_person.`name`,
+                cstm_company.`name`
+            ) cstmName
+        FROM defer_task
+        LEFT JOIN contract ON defer_task.cont_no = contract.cont_no AND contract.del_flag = ${delete_exist}
+        LEFT JOIN apply ON contract.apply_no = apply.apply_no AND apply.del_flag = ${delete_exist}
+        LEFT JOIN cstm_person ON apply.apply_no = cstm_person.apply_no AND cstm_person.del_flag = ${delete_exist}
+        LEFT JOIN cstm_company ON apply.apply_no = cstm_company.apply_no AND cstm_company.del_flag = ${delete_exist}
+        WHERE defer_task.del_flag = ${delete_exist}
+        and defer_task.present_user = #{basicChangeTaskCancelVo.presentUser}
+        <if test="basicChangeTaskCancelVo.basicTaskNo != null">
+            and defer_task.defer_task_no = #{basicChangeTaskCancelVo.basicTaskNo}
+        </if>
+        union
+        /*承租人变更数据*/
+        SELECT
+            change_lessee_task.task_no basicTaskNo,
+            change_lessee_task.task_status basicTaskStatus,
+            IFNULL(
+                cstm_person.`name`,
+                cstm_company.`name`
+            ) cstmName
+        FROM change_lessee_task
+        LEFT JOIN contract ON change_lessee_task.cont_no = contract.cont_no AND contract.del_flag = ${delete_exist}
+        LEFT JOIN apply ON contract.apply_no = apply.apply_no AND apply.del_flag = ${delete_exist}
+        LEFT JOIN cstm_person ON apply.apply_no = cstm_person.apply_no AND cstm_person.del_flag = ${delete_exist}
+        LEFT JOIN cstm_company ON apply.apply_no = cstm_company.apply_no AND cstm_company.del_flag = ${delete_exist}
+        WHERE change_lessee_task.del_flag = ${delete_exist}
+        and change_lessee_task.present_user = #{basicChangeTaskCancelVo.presentUser}
+        <if test="basicChangeTaskCancelVo.basicTaskNo != null">
+            and change_lessee_task.task_no = #{basicChangeTaskCancelVo.basicTaskNo}
+        </if>
+    </select>
+</mapper>

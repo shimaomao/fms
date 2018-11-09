@@ -1,0 +1,9 @@
+spring:
+  application:
+    name: fms-c-oauth2
+  profiles:
+    active: ${leadu-profiles-active:dev}
+
+management:
+  security:
+    enabled: false

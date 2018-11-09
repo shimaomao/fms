@@ -1,0 +1,19 @@
+eureka:
+  instance:
+    statusPageUrlPath: /info
+    healthCheckUrlPath: /health
+    prefer-ip-address: true
+    ip-address: ${server-ip}
+    instance-id: ${server-ip}:${server.port}
+  client:
+    serviceUrl:
+      defaultZone: ${eureka-list}
+
+spring:
+  cloud:
+    config:
+      name: fms
+      profile: g-common-${spring.profiles.active},z-file-${spring.profiles.active}
+      discovery:
+        enabled: true
+        service-id: fms-b-config

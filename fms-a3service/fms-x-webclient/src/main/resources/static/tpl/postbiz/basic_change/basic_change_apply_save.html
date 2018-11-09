@@ -1,0 +1,71 @@
+<style>
+    .basicChangeApply .sub-title-t{font-weight: bold;line-height: 30px;}
+    .basicChangeApply .sub-title{background-color: #fff;}
+    .basicChangeApply .sub-title span{width: auto;font-size: 14px;}
+</style>
+<div ng-controller="basic_change_apply_save_controller" class="basicChangeApply">
+    <div class="sub-main">
+        <div class="sub-title-t clearfix">
+            <span class="pull-left">变更前信息</span>
+        </div>
+        <div class="sub-body">
+            <div class="row">
+                <label class="col-sm-1 text-right"><b class="form-text-black">承租人</b>:</label>
+                <div class="col-sm-2">
+                    {{name}}
+                </div>
+                <div ng-show="applyTypeOld == 1">
+                    <label class="col-sm-1 text-right"><b class="form-text-black">证件类型</b>:</label>
+                    <div class="col-sm-2">
+                        {{certifType | getName:'certifType'}}
+                    </div>
+                    <label class="col-sm-1 text-right"><b class="form-text-black">证件号码</b>:</label>
+                    <div class="col-sm-2">
+                        {{certifNo}}
+                    </div>
+                </div>
+                <div ng-show="applyTypeOld == 2">
+                    <label class="col-sm-2 text-right"><b class="form-text-black">统一社会信用代码</b>:</label>
+                    <div class="col-sm-2">
+                        {{socialCertifNo}}
+                    </div>
+                </div>
+
+                <div class="col-sm-3">
+                    <button type="button" class="btn btn-sm btn-default fms-button-margin-bottom" ng-click="detailContract();">合同详情</button>
+                </div>
+            </div>
+            <div class="row">
+                <label class="col-sm-1 text-right"><b class="form-text-black">出租人</b>:</label>
+                <div class="col-sm-2">
+                    {{groupName}}
+                </div>
+                <label class="col-sm-1 text-right"><b class="form-text-black">车架号</b>:</label>
+                <div class="col-sm-2">
+                    {{vinNo}}
+                </div>
+                <label class="col-sm-1 text-right"><b class="form-text-black">合同号</b>:</label>
+                <div class="col-sm-2">
+                    {{contNo}}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="sub-main">
+        <div class="sub-title-t clearfix">
+            <span class="pull-left">变更原因说明<b ng-if="!taskId" class="form-error">*</b></span>
+        </div>
+        <div class="sub-body">
+            <div class="row">
+                <div class="col-sm-12">
+                    <textarea name="changeReason" ng-model="changeReason" class="form-control r-none" cols="30" rows="3" required ng-disabled="applyDisabled"></textarea>
+                    <p>
+                        <span class="form-info" ng-show=" (form.changeReason.$dirty && form.changeReason.$error.required) || (form.changeReason.$error.required && formValidate)">变更原因说明不能为空</span>
+                    </p>
+                </div>
+            </div>
+            <process-log-list-directive wf-log-type="$root.bizTypes.changeLessee" wf-log-no="applyNo" ng-if="taskDefinitionKey == 'change_task_apply' || taskDefinitionKey == 'change_task_detail'"> </process-log-list-directive>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.leadu.fms.data.activiti.dao.ActIdGroupDao">
+
+    <!--
+     /**
+     * @Title:
+     * @Description: 根据用户查询到用户所在的组id
+     * @param user
+     * @return
+     * @throws
+     * @author qiaomengnan
+     * @date 2018/06/19 03:57:20
+     */
+     -->
+    <select id="selectActIdGroupIdsByUser" resultType="java.lang.String">
+        select g.ID_ `id` from ACT_ID_GROUP g, ACT_ID_MEMBERSHIP membership
+         where g.ID_ = membership.GROUP_ID_ and membership.USER_ID_ = #{user}
+    </select>
+
+</mapper>

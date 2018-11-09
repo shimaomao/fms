@@ -1,0 +1,221 @@
+<style>
+    .transferApply .sub-main{overflow: hidden;}
+    .transferApply .sub-body{padding: 10px 40px 0 0;border: 1px solid #eaeeea;border-top: none;}
+    .transferApply .sub-title{padding: 5px;font-size: 14px;cursor: pointer;background-color: #f5f5f5;border-bottom: 1px solid #eaeeea;}
+    .transferApply .sub-title span:first-child{font-weight: bold;color: black;}
+    .transferApply .sub-title span:last-child{display: inline-block;width: 20px;height: 20px;}
+</style>
+<div class="bg-light lter b-b wrapper-md">
+    <h1 class="m-n font-thin h4">过户申请</h1>
+</div>
+<div  ng-controller="transfer_apply_controller" class="transferApply" style="padding: 10px;">
+    <div>
+        <toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+    </div>
+    <div class="panel panel-default" >
+        <div class="panel-body">
+            <div class="row m-b-xs">
+                <div class="form-group pull-right">
+                    <div class="btn-group ">
+                        <button class="btn btn-success m-b-xs btn-sm fms-button-margin-bottom" ng-click="downLoadLetter()" ng-disabled="submit"><i class=""></i>确认书下载</button>
+                        <button class="btn btn-success m-b-xs btn-sm fms-button-margin-bottom" ng-click="saveInfo()" ng-disabled="submit"><i class=""></i>暂存</button>
+                        <button class="btn btn-success m-b-xs btn-sm fms-button-margin-bottom" ng-click="submitInfo()" ng-disabled="submit"><i class=""></i>提交</button>
+                        <button class="btn btn-default m-b-xs btn-sm fms-button-margin-bottom" ng-click="backUp()"><i class=""></i>返回</button>
+                    </div>
+                </div>
+            </div>
+            <form name="form" class="form-validation" novalidate>
+                <!-- 客户信息 -->
+                <div class="sub-main">
+                    <div class="sub-title clearfix" click-hide>
+                        <span class="pull-left">客户信息</span>
+                        <span class="pull-right"><i class="glyphicon glyphicon-chevron-down"></i></span>
+                    </div>
+                    <div class="sub-body">
+                        <div class="row">
+                            <div class="form-group row">
+                                <label class="col-sm-2 control-label text-right"><b class="form-text-black">承租人</b>:</label>
+                                <div class="col-sm-4">
+                                    <input type="text" name="cstmName" placeholder="请输入承租人" class="form-control m-b-xs" ng-model="transferInfoVo.cstmName" disabled/>
+                                </div>
+                                <label class="col-sm-1 control-label text-right"><b class="form-text-black">出租人</b>:</label>
+                                <div class="col-sm-4">
+                                    <input type="text" name="belongGroup" placeholder="请输入出租人" class="form-control m-b-xs" ng-model="transferInfoVo.belongGroup" disabled/>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 control-label text-right"><b class="form-text-black">合同编号</b>:</label>
+                                <div class="col-sm-2">
+                                    <input type="text" name="contNo" placeholder="请输入合同编号" class="form-control m-b-xs" ng-model="transferInfoVo.contNo" disabled/>
+                                </div>
+                                <label class="col-sm-1 control-label text-right"><b class="form-text-black">车架号</b>:</label>
+                                <div class="col-sm-2">
+                                    <input type="text" name="vinNo" placeholder="请输入车架号" class="form-control m-b-xs" ng-model="transferInfoVo.vinNo" disabled/>
+                                </div>
+                                <div class="col-sm-1">
+                                    <button type="button" class="btn btn-info btn-sm" ng-click="violationInquiry()">违章查询</button>
+                                </div>
+                                <label class="col-sm-1 control-label text-right"><b class="form-text-black">结清状态</b>:</label>
+                                <div class="col-sm-2">
+                                    <input type="text" name="paymentSts" placeholder="请输入结清状态" class="form-control m-b-xs" ng-model="transferInfoVo.paymentStsVal" disabled/>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 control-label text-right"><b class="form-text-black">合同生效日期</b>:</label>
+                                <div class="col-sm-2">
+                                    <input type="text" name="finTotal" placeholder="请输入合同生效日期" class="form-control m-b-xs" ng-model="transferInfoVo.contractValidDate" disabled/>
+                                </div>
+                                <label class="col-sm-1 control-label text-right"><b class="form-text-black">车牌号</b>:</label>
+                                <div class="col-sm-2">
+                                    <input type="text" name="vehicleLicenseNo" placeholder="请输入车牌号" class="form-control m-b-xs" ng-model="transferInfoVo.vehicleLicenseNo" disabled/>
+                                </div>
+                                <label class="col-sm-2 control-label text-right"><b class="form-text-black">发动机号</b>:</label>
+                                <div class="col-sm-2">
+                                    <input type="text" name="engineNo" placeholder="请输入发动机号" class="form-control m-b-xs" ng-model="transferInfoVo.engineNo" disabled/>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 control-label text-right"><b class="form-text-black">融资额</b>:</label>
+                                <div class="col-sm-2">
+                                    <input type="text" name="finTotal" placeholder="请输入融资额" class="form-control m-b-xs" ng-model="transferInfoVo.finTotal" disabled/>
+                                </div>
+                                <label class="col-sm-1 control-label text-right"><b class="form-text-black">已还金额</b>:</label>
+                                <div class="col-sm-2">
+                                    <input type="text" name="paidAmount" placeholder="请输入已还金额" class="form-control m-b-xs" ng-model="transferInfoVo.paidAmount" disabled/>
+                                </div>
+                                <div class="col-sm-1">
+                                    <button type="button" class="btn btn-info btn-sm" ng-click="overdueSales()">还款计划</button>
+                                </div>
+                                <label class="col-sm-1 control-label text-right"><b class="form-text-black">融资期限</b>:</label>
+                                <div class="col-sm-2">
+                                    <input type="text" name="finPeriodType" placeholder="请输入融资期限" class="form-control m-b-xs" ng-model="transferInfoVo.finPeriodType" disabled/>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 control-label text-right"><b class="form-text-black">行驶证登记日期</b>:</label>
+                                <div class="col-sm-2">
+                                    <input type="text" name="vehicleDrivingLicenseRegisterDate" placeholder="请输入行驶证登记日期" class="form-control m-b-xs" ng-model="transferInfoVo.vehicleDrivingLicenseRegisterDate" disabled/>
+                                </div>
+                                <label class="col-sm-1 control-label text-right"><b class="form-text-black">保险失效日</b>:</label>
+                                <div class="col-sm-2">
+                                    <input type="text" name="validEndDay" placeholder="请输入保险失效日" class="form-control m-b-xs" ng-model="transferInfoVo.validEndDay" disabled/>
+                                </div>
+                                <label class="col-sm-2 control-label text-right"><b class="form-text-black">登记证文件状态 </b>:</label>
+                                <div class="col-sm-3 form-inline">
+                                    <input type="text" name="origFileStatus" placeholder="请输入登记证文件状态 " class="form-control m-b-xs" ng-model="transferInfoVo.origFileDetailStatusVal" disabled/>
+                                    <button type="button" class="btn btn-info btn-sm" ng-click="borrowApply()">借阅申请</button>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 control-label text-right"><b class="form-text-black">抵押状态 </b>:</label>
+                                <div class="col-sm-2">
+                                    <input type="text" name="mortgageStatus" placeholder="请输入抵押状态" class="form-control m-b-xs" ng-model="transferInfoVo.mortgageStatusVal" disabled/>
+                                </div>
+                                <label class="col-sm-1 control-label text-right"><b class="form-text-black">资方</b>:</label>
+                                <div class="col-sm-2">
+                                    <input type="text" name="management" placeholder="请输入资方" class="form-control m-b-xs" ng-model="transferInfoVo.managementVal" disabled/>
+                                </div>
+                                <label class="col-sm-2 control-label text-right"><b class="form-text-black">提前还款状态</b>:</label>
+                                <div class="col-sm-2">
+                                    <input type="text" name="prepaymentSts" class="form-control m-b-xs" ng-model="transferInfoVo.prepaymentStsVal" disabled/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- 过户申请信息 -->
+                <div class="sub-main">
+                    <div class="sub-title clearfix" click-hide>
+                        <span class="pull-left">过户申请信息</span>
+                        <span class="pull-right"><i class="glyphicon glyphicon-chevron-down"></i></span>
+                    </div>
+                    <div class="sub-body">
+                        <div class="row">
+                            <div class="form-group row">
+                                <label class="col-sm-2 control-label text-right"><b class="form-text-black">所有权转移人 </b><b class="form-error">*</b>:</label>
+                                <div class="col-sm-2">
+                                    <input type="text" name="ownershipPerson" placeholder="请输入所有权转移人" class="form-control m-b-xs" ng-model="transferInfoVo.ownershipPerson" required/>
+                                    <p>
+                                    <span class="form-info" ng-show=" (transferInfoVo.ownershipPerson == null || transferInfoVo.ownershipPerson == '')
+                                    && ((form.ownershipPerson.$dirty && form.ownershipPerson.$error.required) || (form.ownershipPerson.$error.required && formValidate))">所有权转移人不能为空</span>
+                                    </p>
+                                </div>
+                                <label class="col-sm-1 control-label text-right"><b class="form-text-black">证件号码 </b><b class="form-error">*</b>:</label>
+                                <div class="col-sm-2">
+                                    <input type="text" name="certifNo" placeholder="请输入证件号码" class="form-control m-b-xs" ng-model="transferInfoVo.certifNo" ng-pattern="/^[0-9a-zA-Z]+$/" required/>
+                                    <p>
+                                    <span class="form-info" ng-show=" (transferInfoVo.certifNo == null || transferInfoVo.certifNo == '')
+                                    && ((form.certifNo.$dirty && form.certifNo.$error.required) || (form.certifNo.$error.required && formValidate))">证件号码不能为空</span>
+                                    <span class="form-info" ng-show=" (form.certifNo.$error.pattern && !form.certifNo.$error.required) || (form.certifNo.$error.pattern && formValidate && !form.certifNo.$error.required)">请输入合法的证件号</span>
+                                    </p>
+                                </div>
+                                <label class="col-sm-2 control-label text-right"><b class="form-text-black">联系电话 </b><b class="form-error">*</b>:</label>
+                                <div class="col-sm-2">
+                                    <input type="text" name="contactMobile" placeholder="请输入联系电话" class="form-control m-b-xs" ng-model="transferInfoVo.contactMobile" ng-pattern="/^1[345789]\d{9}$/" required/>
+                                    <p>
+                                    <span class="form-info" ng-show=" (transferInfoVo.contactMobile == null || transferInfoVo.contactMobile == '')
+                                    && ((form.contactMobile.$dirty && form.contactMobile.$error.required) || (form.contactMobile.$error.required && formValidate))">联系电话不能为空</span>
+                                        <span class="form-info" ng-show=" (form.contactMobile.$error.pattern && !form.contactMobile.$error.required)
+                                        || (form.contactMobile.$error.pattern && formValidate && !form.contactMobile.$error.required)">请输入正确的手机号</span>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 control-label text-right"><b class="form-text-black">联系地址 </b><b class="form-error">*</b>:</label>
+                                <div class="col-sm-9">
+                                    <input type="text" name="contactAddr" placeholder="请输入联系地址" class="form-control m-b-xs" ng-model="transferInfoVo.contactAddr" ng-maxlength='200' required/>
+                                    <p>
+                                        <span class="form-info" ng-show=" (form.contactAddr.$dirty && form.contactAddr.$error.required) || (form.contactAddr.$error.required && formValidate)">联系地址不能为空</span>
+                                        <span class="form-info" ng-show="(form.contactAddr.$dirty && form.contactAddr.$error.maxlength) || (form.contactAddr.$error.maxlength && formValidate)">联系地址长度不超过200</span>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 control-label text-right"><b class="form-text-black">过户申请日期 </b><b class="form-error">*</b>:</label>
+                                <div class="col-sm-2">
+                                    <input type="text" name="transferApplyDate" placeholder="请输入过户申请日期" class="form-control m-b-xs" ng-model="transferInfoVo.transferApplyDate" required date-picker>
+                                    <p>
+                                    <span class="form-info" ng-show=" (transferInfoVo.transferApplyDate == null || transferInfoVo.transferApplyDate == '')
+                                    && ((form.transferApplyDate.$dirty && form.transferApplyDate.$error.required) || (form.transferApplyDate.$error.required && formValidate))">过户申请日期不能为空</span>
+                                    </p>
+                                </div>
+                                <label class="col-sm-1 control-label text-right"><b class="form-text-black">保险处置 </b><b class="form-error">*</b>:</label>
+                                <div class="col-sm-2">
+                                    <select name="insurancDealType" ng-model="transferInfoVo.insurancDealType" class="form-control m-b-xs" required>
+                                        <option value="">---请选择---</option>
+                                        <option ng-repeat="dealType in insurancDealTypeList" value="{{dealType.codeValue}}" ng-selected="transferInfoVo.insurancDealType==dealType.codeValue">{{dealType.codeValueName}}</option>
+                                    </select>
+                                    <p>
+                                    <span class="form-info" ng-show=" (transferInfoVo.insurancDealType == null || transferInfoVo.insurancDealType == '')
+                                    && ((form.insurancDealType.$dirty && form.insurancDealType.$error.required) || (form.insurancDealType.$error.required && formValidate))">保险处置不能为空</span>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 control-label text-right"><b class="form-text-black">备注 </b><b class="form-error">*</b>:</label>
+                                <div class="col-sm-9">
+                                    <textarea limit-word name="remark" ng-model="transferInfoVo.remark" class="form-control r-none" cols="25" rows="6" ng-maxlength='1000' required></textarea>
+                                    <p>
+                                        <span class="form-info" ng-show=" (form.remark.$dirty && form.remark.$error.required) || (form.remark.$error.required && formValidate)">备注不能为空</span>
+                                        <span class="form-info" ng-show="(form.remark.$dirty && form.remark.$error.maxlength) || (form.remark.$error.maxlength && formValidate)">备注长度不超过1000</span>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <!--过户申请附件信息-->
+        <div class="panel-body">
+            <div class="row" style="font-weight: bold;font-size: 16px;padding-left: 10px;">过户申请附件信息</div>
+            <tree-file-directive detail-flag="$root.yesNoFlag.no" file-type="$root.basFileTypes.transferApplyFile" files="transferInfoVo.applyBizFilesList" not-upload="transferInfoVo.notUpload" not-upload-info="$parent.msgInfo"   not-file-type="$parent.notFileType" not-file-type-name="transferInfoVo.notFileTypeName">
+            </tree-file-directive>
+        </div>
+        <!-- 流程日志 -->
+        <div class="panel-body" ng-show="processLogShow" >
+            <process-log-list-directive wf-log-type="$root.bizTypes.transfer" wf-log-no="transferNo" wf-log-sub-no="wfLogSubNo" > </process-log-list-directive>
+        </div>
+
+    </div>
+</div>

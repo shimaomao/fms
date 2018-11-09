@@ -1,0 +1,165 @@
+<style>
+    .applyInput .sub-main{overflow: hidden;}
+    .applyInput .sub-body{padding: 10px 40px 0 0;border: 1px solid #eaeeea;border-top: none}
+    .applyInput .sub-title{padding: 5px;font-size: 14px;cursor: pointer;background-color: #f5f5f5;border-bottom: 1px solid #eaeeea;}
+    .applyInput .sub-title span:first-child{font-weight: bold;color: black;}
+    .applyInput .sub-title span:last-child{display: inline-block;width: 20px;height: 20px;}
+</style>
+<div ng-controller="invoice_change_save_controller" class="applyInput">
+    <div>
+        <toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+    </div>
+    <form name="form" class="form-validation" novalidate>
+        <div class="panel panel-default">
+
+            <div class="panel-body wrapper-sm">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="form-group pull-right">
+                            <div class="btn-group">
+                                <button class="btn btn-sm fms-button-margin-bottom btn-default m-b-xs" ng-click="save()" ng-disabled="submit"><i class=""></i>提交</button>
+                                <button class="btn btn-sm fms-button-margin-bottom btn-default m-b-xs" ng-click="close()" ng-disabled="submit"><i class=""></i>返回</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-body">
+                <div class="sub-main">
+                    <div class="sub-title clearfix" click-hide>
+                        <span class="pull-left">客户基本信息</span>
+                        <span class="pull-right"><i class="glyphicon glyphicon-chevron-down"></i></span>
+                    </div>
+                    <div class="sub-body">
+                        <div class="form-group row">
+                            <label class="col-sm-2 control-label text-right"><b class="form-text-black">承租人</b>:</label>
+                            <div class="col-sm-3">
+                                <label class="control-label text-left"><b class="form-text-black">{{oldCstmCompany.name}}</b></label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="sub-main">
+                    <div class="sub-title clearfix" click-hide>
+                        <span class="pull-left">变更前发票信息</span>
+                        <span class="pull-right"><i class="glyphicon glyphicon-chevron-down"></i></span>
+                    </div>
+                    <div class="sub-body">
+                        <div class="form-group row">
+                            <label class="col-sm-2 control-label text-right"><b class="form-text-black">发票类型</b>:</label>
+                            <div class="col-sm-2">
+                                <label class="control-label text-left"><b class="form-text-black">{{oldCstmCompany.invoiceTypeName}}</b></label>
+                            </div>
+                            <label class="col-sm-2 control-label text-right"><b class="form-text-black">开票名</b>:</label>
+                            <div class="col-sm-3">
+                                <label class="control-label text-left"><b class="form-text-black">{{oldCstmCompany.ticketOpening}}</b></label>
+                            </div>
+                            <label class="col-sm-1 control-label text-right"><b class="form-text-black">税号</b>:</label>
+                            <div class="col-sm-2">
+                                <label class="control-label text-left"><b class="form-text-black">{{oldCstmCompany.dutyParagraph}}</b></label>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 control-label text-right"><b class="form-text-black">地址、电话</b>:</label>
+                            <div class="col-sm-6">
+                                <label class="control-label text-left"><b class="form-text-black">{{oldCstmCompany.invoiceAddr}}</b></label>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 control-label text-right"><b class="form-text-black">账号</b>:</label>
+                            <div class="col-sm-2">
+                                <label class="control-label text-left"><b class="form-text-black">{{oldCstmCompany.accountNumber}}</b></label>
+                            </div>
+                            <label class="col-sm-2 control-label text-right"><b class="form-text-black">开户行</b>:</label>
+                            <div class="col-sm-3">
+                                <label class="control-label text-left"><b class="form-text-black">{{oldCstmCompany.bankName}}</b></label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="sub-main">
+                    <div class="sub-title clearfix" click-hide>
+                        <span class="pull-left">变更后发票信息</span>
+                        <span class="pull-right"><i class="glyphicon glyphicon-chevron-down"></i></span>
+                    </div>
+                    <div class="sub-body">
+                        <div class="form-group row">
+                            <label class="col-sm-2 control-label text-right"><b class="form-text-black">发票类型</b><b class="form-error">*</b>:</label>
+                            <div class="col-sm-2">
+                                <select name="invoiceType" ng-model="cstmCompany.invoiceType" class="form-control m-b-xs" ng-options="a.codeValue as a.codeValueName for a in 'invoiceType' | getList" required>
+                                    <option value="">---请选择---</option>
+                                </select>
+                                <p>
+                                    <span class="form-info" ng-show=" (form.invoiceType.$dirty && form.invoiceType.$error.required) || (form.invoiceType.$error.required && formValidate)">发票类型不能为空</span>
+                                </p>
+                            </div>
+                            <label class="col-sm-2 control-label text-right"><b class="form-text-black">开票名</b><b class="form-error">*</b>:</label>
+                            <div class="col-sm-3">
+                                <input name="ticketOpening" type="text" title="{{cstmCompany.ticketOpening}}" placeholder="请输入开票名" ng-model="cstmCompany.ticketOpening" class="form-control m-b-xs" required>
+                                <p>
+                                    <span class="form-info" ng-show=" (form.ticketOpening.$dirty && form.ticketOpening.$error.required) || (form.ticketOpening.$error.required && formValidate)">开票名不能为空</span>
+                                </p>
+                            </div>
+                            <label class="col-sm-1 control-label text-right"><b class="form-text-black">税号</b><b class="form-error">*</b>:</label>
+                            <div class="col-sm-2">
+                                <input name="dutyParagraph" type="text" placeholder="请输入税号" title="{{cstmCompany.dutyParagraph}}" ng-model="cstmCompany.dutyParagraph" class="form-control m-b-xs" ng-pattern="/^[0-9a-zA-Z]+$/" required>
+                                <p>
+                                    <span class="form-info" ng-show=" (form.dutyParagraph.$dirty && form.dutyParagraph.$error.required) || (form.dutyParagraph.$error.required && formValidate)">税号不能为空</span>
+                                    <span class="form-info" ng-show=" (form.dutyParagraph.$error.pattern && !form.dutyParagraph.$error.required) || (form.dutyParagraph.$error.pattern && formValidate && !form.dutyParagraph.$error.required)">请输入正确的税号</span>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 control-label text-right"><b class="form-text-black">地址、电话</b><b ng-show="cstmCompany.invoiceType != 1" class="form-error">*</b>:</label>
+                            <div class="col-sm-7">
+                                <input name="invoiceAddr" type="text" placeholder="请输入地址、电话" title="{{cstmCompany.invoiceAddr}}" ng-model="cstmCompany.invoiceAddr" class="form-control m-b-xs" ng-required="cstmCompany.invoiceType != 1">
+                                <p>
+                                    <span class="form-info" ng-show=" (form.invoiceAddr.$dirty && form.invoiceAddr.$error.required) || (form.invoiceAddr.$error.required && formValidate)">地址、电话不能为空</span>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 control-label text-right"><b class="form-text-black">账号</b><b ng-show="cstmCompany.invoiceType != 1" class="form-error">*</b>:</label>
+                            <div class="col-sm-2">
+                                <input name="accountNumber" type="text" placeholder="请输入账号" title="{{cstmCompany.accountNumber}}" ng-model="cstmCompany.accountNumber" class="form-control m-b-xs" ng-pattern="/^[0-9]+([.]{1}[0-9]+){0,1}$/" ng-required="cstmCompany.invoiceType != 1">
+                                <p>
+                                    <span class="form-info" ng-show=" (form.accountNumber.$dirty && form.accountNumber.$error.required) || (form.accountNumber.$error.required && formValidate)">账号不能为空</span>
+                                    <span class="form-info ng-hide" ng-show=" (form.accountNumber.$error.pattern && !form.accountNumber.$error.required) || (form.accountNumber.$error.pattern && formValidate && !form.accountNumber.$error.required)">请输入合法的数值</span>
+                                </p>
+                            </div>
+                            <label class="col-sm-2 control-label text-right"><b class="form-text-black">开户行</b><b ng-show="cstmCompany.invoiceType != 1" class="form-error">*</b>:</label>
+                            <div class="col-sm-3">
+                                <input name="bankName" type="text" placeholder="请输入开户行" title="{{cstmCompany.bankName}}" ng-model="cstmCompany.bankName" class="form-control m-b-xs" ng-required="cstmCompany.invoiceType != 1">
+                                <p>
+                                    <span class="form-info" ng-show=" (form.bankName.$dirty && form.bankName.$error.required) || (form.bankName.$error.required && formValidate)">开户行不能为空</span>
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-sm-2 control-label text-right"><b class="form-text-black">备注</b>:</label>
+                            <div class="col-sm-7">
+                                <textarea name="remark" type="text" placeholder="请输入备注" title="{{cstmCompany.remark}}" ng-model="cstmCompany.remark" class="form-control m-b-xs"></textarea>
+                                <p>
+                                    <span class="form-info" ng-show=" (form.remark.$dirty && form.remark.$error.required) || (form.remark.$error.required && formValidate)">备注不能为空</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!--附件信息-->
+                <div class="panel-body wrapper-sm">
+                    <tree-file-directive detail-flag="$root.yesNoFlag.no" file-type="fileType" files="bizFilesList" not-upload="notUpload" not-upload-info = "notUploadInfo" not-file-type="notFileType" not-file-type-name="notFileTypeName">
+                    </tree-file-directive>
+                </div>
+                <!--流程日志-->
+                <div class="panel-body wrapper-sm">
+                    <div ng-include="'tpl/common/process_log/process_log_list.html'"></div>
+                </div>
+            </div>
+        </div>
+
+    </form>
+</div>

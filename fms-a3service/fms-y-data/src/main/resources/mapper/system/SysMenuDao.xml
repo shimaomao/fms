@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.com.leadu.fms.data.system.dao.SysMenuDao">
+    <select id="selectSysMenuVosByPage"  resultType="cn.com.leadu.fms.pojo.system.vo.sysmenu.SysMenuVo">
+        SELECT
+        sys_menu.* ,
+        sysMenuParent.menu_name parMenuName
+        FROM `sys_menu`
+        LEFT JOIN sys_menu sysMenuParent
+        on sys_menu.par_menu_id = sysMenuParent.menu_id
+        where sys_menu.del_flag = ${delete_exist}
+        <if test="sysMenuVo.menuName != null " >
+            and sys_menu.menu_name LIKE #{sysMenuVo.menuName}
+        </if>
+        <if test="sysMenuVo.menuLevel != null " >
+            and sys_menu.menu_level = #{sysMenuVo.menuLevel}
+        </if>
+        <if test="sysMenuVo.parMenuName != null " >
+            and sysMenuParent.menu_name LIKE #{sysMenuVo.parMenuName}
+        </if>
+        order by update_time desc
+    </select>
+
+    <!--根据角色id获取菜单-->
+    <select id="selectSysMenusByRoleId" parameterType="java.lang.String" resultType="cn.com.leadu.fms.pojo.system.entity.SysMenu">
+        select sysMenu.*  from sys_role_menu sysRoleMenu
+        inner join sys_role sysRole on sysRole.role_id = sysRoleMenu.role_id and sysRole.del_flag = ${delete_exist}
+        inner join sys_menu sysMenu on sysMenu.menu_id = sysRoleMenu.menu_id
+        and sysMenu.del_flag = ${delete_exist}
+        where
+        sysRoleMenu.role_id =#{roleId}
+        and sysRoleMenu.del_flag = ${delete_exist}
+        order by sysMenu.order_no
+    </select>
+
+    <select id="selectSysMenusByUserId" parameterType="java.lang.String" resultType="cn.com.leadu.fms.pojo.system.entity.SysMenu">
+        select sysMenu.*  from sys_user_menu sysUserMenu
+        inner join sys_user sysUser on sysUser.user_id = sysUserMenu.user_id and sysUser.del_flag = ${delete_exist}
+        inner join sys_menu sysMenu on sysMenu.menu_id = sysUserMenu.menu_id
+        and sysMenu.del_flag = ${delete_exist}
+        where
+        sysUserMenu.user_id =#{userId}
+        and sysUserMenu.del_flag = ${delete_exist}
+        order by sysMenu.order_no
+    </select>
+
+    <!-- 根据角色id集合获取对应菜单信息 author: qiaomengnan -->
+    <select id="selectSysMenusByRoleIds" parameterType="java.util.List" resultType="cn.com.leadu.fms.pojo.system.entity.SysMenu">
+        select sysMenu.menu_id ,sysMenu.menu_name,sysMenu.par_menu_id,
+        sysMenu.menu_level,sysMenu.menu_link,sysMenu.order_no from sys_menu sysMenu
+        inner join sys_role_menu sysRoleMenu on sysRoleMenu.menu_id = sysMenu.menu_id and sysRoleMenu.del_flag = ${delete_exist}
+        inner join sys_role sysRole on sysRole.role_id = sysRoleMenu.role_id and sysRole.del_flag = ${delete_exist}
+        where sysMenu.del_flag = ${delete_exist}
+        and sysRole.role_id in
+        <foreach collection="roleIds" item="item" index="index" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        order by sysMenu.order_no
+    </select>
+
+</mapper>

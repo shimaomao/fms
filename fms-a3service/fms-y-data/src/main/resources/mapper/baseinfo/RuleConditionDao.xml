@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.leadu.fms.data.baseinfo.dao.RuleConditionDao">
+
+    <!--
+     /**
+     * @Title:
+     * @Description:   根据规则id查询规则条件列表
+     * @param ruleConditionVo
+     * @return
+     * @throws
+     * @author qiaomengnan
+     * @date 2018/05/21 12:41:42
+     */
+     -->
+    <select id="selectRuleConditionVosByRuleId" parameterType="java.lang.String" resultType="cn.com.leadu.fms.pojo.baseinfo.vo.rulecondition.RuleConditionVo">
+         select
+         ruleCondition.rule_cond_id,ruleCondition.rule_id ,
+         ruleCondition.rule_no,ruleCondition.cond_item_key,
+         ruleItem.rule_item_name condItemKeyName,
+         ruleCondition.cond_logic_type,
+         ruleCondition.cond_logic_value1,
+         ruleCondition.cond_logic_value2,
+         ruleCondition.order_no
+         from rule_condition ruleCondition
+         left join rule rule on rule.rule_id = ruleCondition.rule_id
+         left join rule_item ruleItem on  ruleItem.del_flag = ${delete_exist}
+         and ruleItem.rule_item_key = ruleCondition.cond_item_key
+         and ruleItem.rule_type = rule.rule_type
+         and ruleItem.item_type = #{ruleConditionVo.ruleItemType}
+         where ruleCondition.del_flag = ${delete_exist}
+         and ruleCondition.rule_id = #{ruleConditionVo.ruleId}
+         order by ruleCondition.rule_no ,ruleCondition.order_no asc
+    </select>
+
+     <!--
+          /**
+          * @Title:
+          * @Description:   查询规则条件列表
+          * @param ruleConditionVo
+          * @return
+          * @throws
+          * @author qiaomengnan
+          * @date 2018/05/21 12:41:42
+          */
+          -->
+     <select id="selectRuleConditionVos"  resultType="cn.com.leadu.fms.pojo.baseinfo.vo.rulecondition.RuleConditionVo">
+          select
+          ruleCondition.rule_cond_id,ruleCondition.rule_id ,
+          ruleCondition.rule_no,ruleCondition.cond_item_key,
+          ruleItem.rule_item_name condItemKeyName,
+          ruleCondition.cond_logic_type,
+          ruleCondition.cond_logic_value1,
+          ruleCondition.cond_logic_value2,
+          ruleCondition.order_no,
+          sysCode.code_value_name condLogicTypeName
+          from rule_condition ruleCondition
+          left join rule_item ruleItem on  ruleItem.del_flag = ${delete_exist}
+          and ruleItem.rule_item_key = ruleCondition.cond_item_key
+          and ruleItem.rule_type = #{ruleConditionVo.ruleType}
+          and ruleItem.item_type = #{ruleConditionVo.ruleItemType}
+          left join sys_code sysCode on sysCode.del_flag = ${delete_exist}
+          and sysCode.code_type = #{ruleConditionVo.condLogicTypeKey}
+          and sysCode.code_value = ruleCondition.cond_logic_type
+          where ruleCondition.del_flag = ${delete_exist}
+          <if test="ruleConditionVo.ruleId != null">
+              and ruleCondition.rule_id = #{ruleConditionVo.ruleId}
+          </if>
+          order by ruleCondition.rule_no ,ruleCondition.order_no asc
+     </select>
+
+</mapper>

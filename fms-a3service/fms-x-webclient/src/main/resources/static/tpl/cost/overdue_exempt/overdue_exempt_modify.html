@@ -1,0 +1,105 @@
+<div ng-controller="overdue_exempt_modify_controller">
+    <div>
+        <toaster-container
+                toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+    </div>
+    <div class="panel panel-default">
+        <div class="row" style="margin: 0; padding: 15px; border: 1px solid #dddddd">
+            <h4 class="m-n font-thin h4">{{frameTitle}}</h4>
+        </div>
+        <form name="form" class="form-validation" novalidate>
+            <div class="panel-body wrapper-sm">
+                
+                <div class="form-group row">
+                    <div class="col-sm-6">
+                        <div class="row">
+                            <label class="col-sm-4 control-label text-right"><b class="form-text-black">承租人</b><b
+                                    class="form-error"></b>:</label>
+                            <div class="col-sm-4">
+                                <input type="text" title="{{contOverdueOneVo.cstmName}}" name="cstmName" placeholder="请输入承租人" class="form-control m-b-xs" ng-model="contOverdueOneVo.cstmName"  required disabled>
+                                <p>
+                                    <span class="form-info" ng-show=" (form.cstmName.$dirty && form.cstmName.$error.required) || (form.cstmName.$error.required && formValidate)">承租人不能为空</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="row">
+                            <label class="col-sm-4 control-label text-right"><b class="form-text-black">申请编号</b><b
+                                    class="form-error"></b>:</label>
+                            <div class="col-sm-4">
+                                <input type="text" title="{{contOverdueOneVo.applyNo}}" name="applyNo" placeholder="请输入申请编号" class="form-control m-b-xs" ng-model="contOverdueOneVo.applyNo"  required disabled>
+                                <p>
+                                    <span class="form-info" ng-show=" (form.applyNo.$dirty && form.applyNo.$error.required) || (form.applyNo.$error.required && formValidate)">申请编号不能为空</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-sm-6">
+                        <div class="row">
+                            <label class="col-sm-4 control-label text-right"><b class="form-text-black">合同编号</b><b
+                                    class="form-error"></b>:</label>
+                            <div class="col-sm-4">
+                                <input type="text" title="{{contOverdueOneVo.contNo}}" name="contNo" placeholder="请输入合同编号" class="form-control m-b-xs" ng-model="contOverdueOneVo.contNo"  required disabled>
+                                <p>
+                                    <span class="form-info" ng-show=" (form.contNo.$dirty && form.contNo.$error.required) || (form.contNo.$error.required && formValidate)">合同编号不能为空</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="row">
+                            <label class="col-sm-4 control-label text-right"><b class="form-text-black">车架号</b><b
+                                    class="form-error"></b>:</label>
+                            <div class="col-sm-4">
+                                <input type="text" title="{{contOverdueOneVo.vinNo}}" name="vinNo" placeholder="请输入车架号" class="form-control m-b-xs" ng-model="contOverdueOneVo.vinNo"  required disabled>
+                                <p>
+                                    <span class="form-info" ng-show=" (form.vinNo.$dirty && form.vinNo.$error.required) || (form.vinNo.$error.required && formValidate)">车架号不能为空</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel-body wrapper-sm" style="margin: 0; padding: 15px; border: 1px solid #dddddd">
+
+                    <div class="form-group row">
+                        <div class="col-sm-12">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <table border="1" class="table table-striped m-b-none" id="overdueExempt_table"></table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel-body wrapper-sm" style="margin: 0; padding: 15px; border: 1px solid #dddddd">
+                    <div class="form-group row">
+                        <label class="col-sm-2 control-label text-right"><b class="form-text-black">备注</b><b class="form-error">*</b>:</label>
+                        <div class="col-sm-3">
+                            <textarea limit-word style="width: 824px" name="remark1" ng-model="overdueExempt.remark1" required></textarea>
+                            <p>
+                                <span class="form-info" ng-show=" (form.remark1.$dirty && form.remark1.$error.required) || (form.remark1.$error.required && formValidate)">请输入审批意见备注</span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+
+            <div class="modal-footer ng-scope text-center">
+                <button class="btn btn-default" ng-click="goback()">返回</button>
+                <button type="submit" class="btn btn-success" ng-disabled="submit" ng-click="modify()">提交
+                </button>
+            </div>
+        </form>
+        <div ng-show="serviceId!=null&&serviceId!=Undefined">
+            <div ng-include="'tpl/common/process_log/process_log_list.html'"></div>
+        </div>
+    </div>
+</div>

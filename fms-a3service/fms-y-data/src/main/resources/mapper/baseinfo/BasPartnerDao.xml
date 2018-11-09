@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.com.leadu.fms.data.baseinfo.dao.BasPartnerDao">
+    <select id="findBasPartnerByPartnerId" parameterType="java.lang.String" resultType="cn.com.leadu.fms.pojo.baseinfo.vo.baspartner.BasPartnerVo">
+        select distinct
+        p.*,
+        g.group_lev as group_lev,
+        gl.group_lev_name as group_lev_name,
+        gp.parent_group as parent_group_code,
+        sg.group_name as parent_group_name,
+        u.user_name as area_manager_name
+        from bas_partner p
+        left join  sys_group g on p.partner_code=g.group_code
+        left join sys_group_parent gp on g.group_code=gp.group_code and gp.parent_type=#{parentType}
+        left join sys_group_level gl on gl.group_lev=g.group_lev
+        LEFT JOIN sys_group sg ON gp.parent_group = sg.group_code
+        LEFT JOIN sys_user u ON u.user=p.area_manager
+        where p.del_flag=${delete_exist} and p.partner_id=#{partnerId}
+    </select>
+</mapper>

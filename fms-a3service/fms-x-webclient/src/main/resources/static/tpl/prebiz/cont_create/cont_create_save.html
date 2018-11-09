@@ -1,0 +1,251 @@
+<ul type="none" style="padding-left:20px">
+    <div class="row" style="margin: 5px; padding-right: 50px;">
+        <div class="row line-lg" style="font-weight: bold;font-size: 14px;">融资信息</div>
+        <!--<div class="form-group row">-->
+        <!--<label class="col-sm-2 control-label text-right"><b class="form-text-black">taskId</b><b class="form-error"></b>:</label>-->
+        <!--<div class="col-sm-4 form-inline">-->
+        <!--<input type="text" class="form-control m-b-xs"  ng-model="contCreate.taskId">-->
+        <!--</div>-->
+        <!--</div>-->
+        <div class="form-group row">
+            <label class="col-sm-2 control-label text-right"><b class="form-text-black">首付比例（%）</b><b
+                    class="form-error"></b>:</label>
+            <div class="col-sm-2">
+                <input type="text" class="form-control m-b-xs" ng-disabled="true" ng-model="contCreate.initPerc">
+            </div>
+
+            <label class="col-sm-2 control-label text-right"><b class="form-text-black">首付金额（元）</b><b
+                    class="form-error"></b>:</label>
+            <div class="col-sm-2">
+                <input type="text" class="form-control m-b-xs" ng-disabled="true" ng-model="contCreate.initAmount">
+            </div>
+            <label class="col-sm-2 control-label text-right"><b class="form-text-black">融资额（元）</b><b
+                    class="form-error"></b>:</label>
+            <div class="col-sm-2">
+                <input type="text" class="form-control m-b-xs" ng-disabled="true" ng-model="contCreate.finTotal">
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="col-sm-2 control-label text-right"><b class="form-text-black">保证金比例（%）</b><b
+                    class="form-error"></b>:</label>
+            <div class="col-sm-2">
+                <input type="text" class="form-control m-b-xs" ng-disabled="true" ng-model="contCreate.depositPerc">
+            </div>
+            <label class="col-sm-2 control-label text-right"><b class="form-text-black">保证金额（元）</b><b
+                    class="form-error"></b>:</label>
+            <div class="col-sm-2">
+                <input type="text" class="form-control m-b-xs" ng-disabled="true" ng-model="contCreate.deposit">
+            </div>
+            <label class="col-sm-2 control-label text-right"><b class="form-text-black">投资总额(元)</b><b
+                    class="form-error"></b>:</label>
+            <div class="col-sm-2">
+                <input type="text" class="form-control m-b-xs" ng-disabled="true" ng-model="contCreate.investTotal">
+            </div>
+        </div>
+        <!--第二个表单-->
+        <div>
+            <div class="row line-lg" style="font-weight: bold;font-size: 14px;">车辆信息</div>
+            <div class="form-group row">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">车架号</b><b
+                        class="form-error">*</b>:</label>
+                <div class="col-sm-2">
+                    <input type="text" title="{{contCreate.vinNo}}" name="vinNo" placeholder="请输入车架号" class="form-control m-b-xs"
+                           ng-model="contCreate.vinNo" ng-pattern="/^(?![0-9]+$)(?![a-zA-Z]+$)[a-zA-Z0-9]{17}$/" required>
+                    <p>
+                        <span class="form-info"
+                              ng-show=" (form.vinNo.$dirty && form.vinNo.$error.required) || (form.vinNo.$error.required && formValidate)">车架号不能为空</span>
+                        <span class="form-info" ng-show=" (form.vinNo.$error.pattern && !form.vinNo.$error.required) || (form.vinNo.$error.pattern && formValidate && !form.vinNo.$error.required)">请输入正确车架号</span>
+
+                    </p>
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">发动机号</b><b
+                        class="form-error">*</b>:</label>
+                <div class="col-sm-2">
+                    <input type="text" title="{{contCreate.engineNo}}" name="engineNo" placeholder="请输入发动机号" class="form-control m-b-xs"
+                           ng-model="contCreate.engineNo" required>
+                    <p>
+                        <span class="form-info"
+                              ng-show=" (form.engineNo.$dirty && form.engineNo.$error.required) || (form.engineNo.$error.required && formValidate)">发动机号不能为空</span>
+                    </p>
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">车辆颜色</b><b
+                        class="form-error">*</b>:</label>
+                <div class="col-sm-2">
+                    <input type="text" name="color" placeholder="请输入车辆颜色" class="form-control m-b-xs"
+                           ng-model="contCreate.color" required>
+                    <p>
+                        <span class="form-info"
+                              ng-show=" (form.color.$dirty && form.color.$error.required) || (form.color.$error.required && formValidate)">车辆颜色不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">实际销售方</b><b
+                        class="form-error"></b>:</label>
+                <div class="col-sm-2">
+                    <input type="text" title="{{contCreate.saleGroupName}}" name="workYear" class="form-control m-b-xs" ng-disabled="true"
+                           ng-model="contCreate.saleGroupName">
+                </div>
+                <div ng-if="contCreate.syspambelonGroup!=null && contCreate.licenseFee>0">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">指标编号</b><b
+                            class="form-error"></b>:</label>
+                    <div class="col-sm-2">
+                        <input type="text" title="{{contCreate.licenseIdxNo}}" name="workYear" class="form-control m-b-xs" ng-disabled="true"
+                               ng-model="contCreate.licenseIdxNo">
+                    </div>
+                    <button class=" btn btn-sm btn-primary m-b-xs m-l-sm" ng-click="selectLicenseIdx()"><i class="fa fa-pencil-square-o m-r-xs"></i>选择</button>
+                </div>
+            </div>
+
+            <div>
+                <div class="row line-lg" style="font-weight: bold;font-size: 14px;">客户还款信息</div>
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">还款借记卡户名</b><b
+                            class="form-error"></b>:</label>
+                    <div class="col-sm-2">
+                        <input type="text" title="{{contCreate.accountName}}" name="accountName" placeholder="请输入还款借记卡户名" class="form-control m-b-xs"
+                               ng-model="contCreate.accountName" >
+                        <p>
+                            <span class="form-info"
+                                  ng-show=" (form.accountName.$dirty && form.accountName.$error.required) || (form.accountName.$error.required && formValidate)">还款借记卡户名不能为空</span>
+                        </p>
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">还款借记卡开户证件号</b><b
+                            class="form-error"></b>:</label>
+                    <div class="col-sm-2">
+                        <input type="text" title="{{contCreate.certifNo}}" name="certifNo" placeholder="请输入还款借记卡开户证件号" class="form-control m-b-xs"
+                               ng-model="contCreate.certifNo" >
+                        <p>
+                            <span class="form-info"
+                                  ng-show=" (form.certifNo.$dirty && form.certifNo.$error.required) || (form.certifNo.$error.required && formValidate)">还款借记卡开户证件号不能为空</span>
+                        </p>
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">还款卡绑定手机号</b><b
+                            class="form-error"></b>:</label>
+                    <div class="col-sm-2">
+                        <input type="text" name="accMobileNo" placeholder="请输入还款卡绑定手机号" class="form-control m-b-xs"
+                               ng-model="contCreate.accMobileNo" ng-pattern="/^1[345789]\d{9}$/" >
+                        <p>
+                            <span class="form-info"
+                                  ng-show=" (form.accMobileNo.$dirty && form.accMobileNo.$error.required) || (form.accMobileNo.$error.required && formValidate)">还款卡绑定手机号不能为空</span>
+                            <span class="form-info" ng-show=" (form.accMobileNo.$error.pattern && !form.accMobileNo.$error.required) || (form.accMobileNo.$error.pattern && formValidate && !form.accMobileNo.$error.required)">请输入正确的手机号</span>
+                        </p>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">还款借记卡开户行</b><b
+                            class="form-error"></b>:</label>
+                    <div class="col-sm-2">
+                        <select name="accBank"  ng-model="contCreate.accBank" class="form-control m-b-xs" >
+                            <option value="">--请选择开户行--</option>
+                            <option value="{{accBankObj.codeValue}}" ng-repeat="accBankObj in accBankList">{{accBankObj.codeValueName}}</option>
+                        </select>
+                        <p>
+                            <span class="form-info"
+                                  ng-show=" (form.accBank.$dirty && form.accBank.$error.required) || (form.accBank.$error.required && formValidate)">还款借记卡开户行不能为空</span>
+                        </p>
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">还款借记卡账号</b><b
+                            class="form-error"></b>:</label>
+                    <div class="col-sm-2">
+                        <input type="text" title="{{contCreate.accountNo}}" name="accountNo" placeholder="请输入还款借记卡账号" class="form-control m-b-xs"
+                               ng-model="contCreate.accountNo" >
+                        <p>
+                            <span class="form-info"
+                                  ng-show=" (form.accountNo.$dirty && form.accountNo.$error.required) || (form.accountNo.$error.required && formValidate)">还款借记卡账号不能为空</span>
+                        </p>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">订金金额</b><b
+                            class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <input type="number" limit-number="12" name="vehDeposit" placeholder="请输入订金金额" class="form-control m-b-xs"
+                               ng-model="contCreate.vehDeposit" ng-change="judgeDeposit();" required>
+                        <p>
+                            <span class="form-info"
+                                  ng-show=" (form.vehDeposit.$dirty && form.vehDeposit.$error.required) || (form.vehDeposit.$error.required && formValidate)">订金金额不能为空</span>
+                        </p>
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">订金是否抵扣车款</b><b
+                            class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <select name="deductibleFees" ng-model="contCreate.deductibleFees" ng-change="judgeDeposit();" class="form-control m-b-xs" ng-options="a.codeValue as a.codeValueName for a in 'deductibleFees' | getList" required>
+                            <option value="">---请选择是否抵扣---</option>
+                        </select>
+                        <p>
+                            <span class="form-info" ng-show=" (form.deductibleFees.$dirty && form.deductibleFees.$error.required) || (form.deductibleFees.$error.required && formValidate)">请选择是否抵扣车款</span>
+                        </p>
+                        <!--<div class="radio" ng-repeat="deductibleFeesObj in deductibleFeesList">-->
+                            <!--<label>-->
+                                <!--<input type="radio" name="deductibleFees" ng-model="contCreate.deductibleFees"  ng-value="deductibleFeesObj.codeValue" >-->
+                                <!--{{deductibleFeesObj.codeValueName}}-->
+                            <!--</label>-->
+                        <!--</div>-->
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">还款日</b><b
+                            class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <select name="repayDay"  ng-model="contCreate.repayDay" class="form-control m-b-xs" required>
+                            <option value="">--请选择还款日--</option>
+                            <option value="{{repayDayObj.codeValue}}" ng-repeat="repayDayObj in 'repayDay' | getList">{{repayDayObj.codeValueName}}</option>
+                        </select>
+                        <p>
+                            <span class="form-info"
+                                  ng-show=" (form.repayDay.$dirty && form.repayDay.$error.required) || (form.repayDay.$error.required && formValidate)">还款日不能为空</span>
+                        </p>
+                    </div>
+                </div>
+
+               <!-- <div class="form-group row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">经销商收款银行</b><b
+                            class="form-error">*</b>:</label>
+                    <div class="col-sm-4 form-inline">
+                        <input type="text" name="recAccBank" placeholder="请输入经销商收款银行" class="form-control m-b-xs"
+                               ng-disabled="true" ng-model="contCreate.recAccBank" required>
+                        <input type="hidden" name="groupCode" ng-model="contCreate.groupCode">
+                        <input type="hidden" name="groupBankNo" ng-model="contCreate.groupBankNo">
+                        <button class="btn btn-info m-b-xs m-l-sm  btn-sm" ng-click="selectBasBankInfo()"><i
+                                class="fa fa-pencil-square-o m-r-xs"></i>选择
+                        </button>
+                        <p>
+                            <span class="form-info"
+                                  ng-show=" (form.recAccBank.$dirty && form.recAccBank.$error.required) || (form.recAccBank.$error.required && formValidate)">经销商收款银行不能为空</span>
+                        </p>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">经销商收款银行支行</b><b
+                            class="form-error"></b>:</label>
+                    <div class="col-sm-2">
+                        <input type="text" name="recAccBranchBank" class="form-control m-b-xs" ng-disabled="true"
+                               ng-model="contCreate.recAccBranchBank">
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">经销商收款银行户名</b><b
+                            class="form-error"></b>:</label>
+                    <div class="col-sm-2">
+                        <input type="text" name="recAccountName" class="form-control m-b-xs" ng-disabled="true"
+                               ng-model="contCreate.recAccountName">
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">经销商收款账号</b><b
+                            class="form-error"></b>:</label>
+                    <div class="col-sm-2">
+                        <input type="text" name="recAccountNo" class="form-control m-b-xs" ng-disabled="true"
+                               ng-model="contCreate.recAccountNo">
+                    </div>
+                </div>-->
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">审批备注</b><b
+                            class="form-error"></b>:</label>
+                    <div class="col-sm-5">
+                        <textarea limit-word class="form-control m-b-xs"
+                                  ng-model="contCreate.memo"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div ng-include="'tpl/common/process_log/process_log_list.html'"></div>
+    </div>
+</ul>

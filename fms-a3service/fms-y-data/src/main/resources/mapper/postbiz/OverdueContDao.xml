@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.com.leadu.fms.data.postbiz.dao.OverdueContDao">
+    <!--分页查询逾期合同信息-->
+    <select id="selectOverdueContsByPage" parameterType="cn.com.leadu.fms.pojo.postbiz.vo.overduecont.OverdueContVo" resultType="cn.com.leadu.fms.pojo.postbiz.vo.overduecont.OverdueContVo">
+        SELECT
+        overdueCont.overdue_cont_id,
+        overdueCstm.cstm_name,
+        overdueCont.apply_no,
+        overdueCont.cont_no,
+        overdueCont.vin_no
+        FROM
+        overdue_cont overdueCont
+        LEFT JOIN
+        overdue_cstm overdueCstm ON overdueCont.overdue_cstm_id = overdueCstm.overdue_cstm_id AND overdueCstm.del_flag =  ${delete_exist}
+        WHERE
+        overdueCont.del_flag = ${delete_exist}
+        <if test="overdueContVo.overdueFlag != null" >
+            AND overdueCont.overdue_flag = ${overdueContVo.overdueFlag}
+        </if>
+        ORDER BY overdueCont.update_time DESC
+    </select>
+
+    <!--根据contNo获取逾期合同信息-->
+    <select id="selectOverdueContByContNo" parameterType="java.lang.String" resultType="cn.com.leadu.fms.pojo.postbiz.vo.overduecont.OverdueContVo">
+        SELECT
+        overdueCont.overdue_cont_id,
+        overdueCstm.cstm_name,
+        overdueCont.apply_no,
+        overdueCont.cont_no,
+        overdueCont.vin_no
+        FROM
+        overdue_cont overdueCont
+        LEFT JOIN
+        overdue_cstm overdueCstm ON overdueCont.overdue_cstm_id = overdueCstm.overdue_cstm_id AND overdueCstm.del_flag =  ${delete_exist}
+        WHERE
+        overdueCont.del_flag = ${delete_exist}
+        <if test="#{contNo} != null" >
+            AND overdueCont.cont_no = #{contNo}
+        </if>
+
+    </select>
+
+    <!-- 获取合同的历史最高逾期天数和历史逾期次数 -->
+    <select id="selectOverdueDaysHisAndOverdueTimes" parameterType="java.lang.String" resultType="cn.com.leadu.fms.pojo.postbiz.vo.overduecont.OverdueContVo">
+        SELECT overdueCont.cont_no
+        ,MAX(overdueCont.overdue_days_his) as overdueDaysHis
+        ,COUNT(overdueCont.overdue_times) as overdueTimes
+        FROM overdue_cont overdueCont
+        WHERE overdueCont.overdue_flag = '0' AND overdueCont.del_flag = ${delete_exist}
+        GROUP BY overdueCont.cont_no
+    </select>
+
+    <!-- 获取逾期客户电话信息表中全部的申请编号 -->
+    <select id="selectAllApplyNosByOverdue" parameterType="java.lang.String" resultType="java.lang.String">
+        SELECT DISTINCT overdueCstmTel.apply_no
+        FROM overdue_cstm_tel overdueCstmTel
+        WHERE overdueCstmTel.del_flag = ${delete_exist}
+    </select>
+
+    <!--
+     /**
+     * @Title:
+     * @Description:
+     * @param overdueContVo 查询逾期合同vo数据
+     * @return
+     * @throws
+     * @author qiaomengnan
+     * @date 2018/09/14 05:45:06
+     */
+     -->
+    <select id="selectOverdueContVos" resultType="cn.com.leadu.fms.pojo.postbiz.vo.overduecont.OverdueContVo">
+        select
+        overdueCont.*,
+        apply.apply_type,
+        <!-- 承租人 -->
+        overdueCstm.cstm_name,
+        <!-- 出租人 -->
+        sysGroup.group_name lessor,
+        <!-- 联系方式 -->
+        IF(apply.apply_type = #{overdueContVo.applyTypePerson},cstmPerson.mobile_no,cstmCompany.mobile_no) mobileNo ,
+        <!-- 车型名称-->
+        basVehicle.vehicle_name vehicleCodeName
+        <!-- 逾期合同表 -->
+        from overdue_cont overdueCont
+        <!-- 关联合同融资信息 -->
+        left join contract_finance contractFinance on contractFinance.del_flag = ${delete_exist}
+        and contractFinance.cont_no = overdueCont.cont_no and contractFinance.apply_no = overdueCont.apply_no
+        <!-- 使用出租人关联用户组表 -->
+        left join sys_group sysGroup on sysGroup.del_flag = ${delete_exist}
+        and sysGroup.group_code = contractFinance.belong_group
+        <!-- 关联申请表 使用申请号 -->
+        left join apply apply on apply.del_flag = ${delete_exist}
+        and apply.apply_no = overdueCont.apply_no
+        <!-- 个人客户信息 -->
+        left join cstm_person cstmPerson on cstmPerson.del_flag = ${delete_exist}
+        and cstmPerson.apply_no = overdueCont.apply_no
+        <!-- 企业客户信息 -->
+        left join cstm_company cstmCompany on cstmCompany.del_flag = ${delete_exist}
+        and cstmCompany.apply_no = overdueCont.apply_no
+        <!-- 逾期客户表 -->
+        left join overdue_cstm overdueCstm on overdueCstm.del_flag =  ${delete_exist}
+        and overdueCont.overdue_cstm_id = overdueCstm.overdue_cstm_id
+        <!-- 关联车型表 -->
+        left join bas_vehicle basVehicle on basVehicle.del_flag =  ${delete_exist}
+        and basVehicle.vehicle_code = overdueCont.vehicle_code
+        <!-- 查询条件 -->
+        where overdueCont.del_flag = ${delete_exist}
+        <!-- 申请编号 -->
+        <if test="overdueContVo.applyNo != null">
+            and overdueCont.apply_no like #{overdueContVo.applyNo}
+        </if>
+        <!-- 合同编号  -->
+        <if test="overdueContVo.contNo != null">
+            and overdueCont.cont_no like #{overdueContVo.contNo}
+        </if>
+        <!-- 承租人  -->
+        <if test="overdueContVo.cstmName != null">
+            and overdueCstm.cstm_name like #{overdueContVo.cstmName}
+        </if>
+        <!-- 承租人联系方式  -->
+        <if test="overdueContVo.mobileNo != null">
+            and ( cstmPerson.mobile_no like #{overdueContVo.mobileNo} or  cstmCompany.comp_tel like #{overdueContVo.mobileNo} )
+        </if>
+        <!-- 车架号  -->
+        <if test="overdueContVo.vinNo != null">
+            and overdueCont.vin_no like #{overdueContVo.vinNo}
+        </if>
+        <!-- 车牌号  -->
+        <if test="overdueContVo.vehicleLicenseNo != null">
+            and overdueCont.vehicle_license_no like #{overdueContVo.vehicleLicenseNo}
+        </if>
+        <!-- 发动机号 -->
+        <if test="overdueContVo.engineNo != null">
+            and overdueCont.engine_no like #{overdueContVo.engineNo}
+        </if>
+        <!-- 当前是否逾期 -->
+        <if test="overdueContVo.overdueFlag != null">
+            and overdueCont.overdue_flag like #{overdueContVo.overdueFlag}
+        </if>
+    </select>
+
+    <!--
+     /**
+     * @Title:
+     * @Description:   根据合同号获取逾期合同号
+     * @param overdueContVo
+     * @return
+     * @throws
+     * @author qiaomengnan
+     * @date 2018/09/17 04:14:21
+     */
+     -->
+    <select id="selectOverdueContVoByContNo" resultType="cn.com.leadu.fms.pojo.postbiz.vo.overduecont.OverdueContVo">
+        select
+        overdueCont.*,
+        <!-- 承租人 -->
+        overdueCstm.cstm_name,
+        <!-- 申请类型 -->
+        overdueCstm.apply_type,
+        <!-- 出租人 -->
+        sysGroup.group_name lessor,
+        <!-- 联系方式 -->
+        IF(apply.apply_type = #{overdueContVo.applyTypePerson},cstmPerson.mobile_no,cstmCompany.mobile_no) mobileNo ,
+        <!-- 车型名称-->
+        basVehicle.vehicle_name vehicleCodeName
+        <!-- 逾期合同表 -->
+        from overdue_cont overdueCont
+        <!-- 关联合同融资信息 -->
+        left join contract_finance contractFinance on contractFinance.del_flag = ${delete_exist}
+        and contractFinance.cont_no = overdueCont.cont_no and contractFinance.apply_no = overdueCont.apply_no
+        <!-- 使用出租人关联用户组表 -->
+        left join sys_group sysGroup on sysGroup.del_flag = ${delete_exist}
+        and sysGroup.group_code = contractFinance.belong_group
+        <!-- 关联申请表 使用申请号 -->
+        left join apply apply on apply.del_flag = ${delete_exist}
+        and apply.apply_no = overdueCont.apply_no
+        <!-- 个人客户信息 -->
+        left join cstm_person cstmPerson on cstmPerson.del_flag = ${delete_exist}
+        and cstmPerson.apply_no = overdueCont.apply_no
+        <!-- 企业客户信息 -->
+        left join cstm_company cstmCompany on cstmCompany.del_flag = ${delete_exist}
+        and cstmCompany.apply_no = overdueCont.apply_no
+        <!-- 逾期客户表 -->
+        left join overdue_cstm overdueCstm on overdueCstm.del_flag =  ${delete_exist}
+        and overdueCont.overdue_cstm_id = overdueCstm.overdue_cstm_id
+        <!-- 关联车型表 -->
+        left join bas_vehicle basVehicle on basVehicle.del_flag =  ${delete_exist}
+        and basVehicle.vehicle_code = overdueCont.vehicle_code
+        <!-- 查询条件 -->
+        where overdueCont.del_flag = ${delete_exist}
+        and overdueCont.overdue_cont_id = #{overdueContVo.overdueContId}
+    </select>
+
+    <!-- 获取逾期合同表中全部的逾期ID -->
+    <select id="selectOverdueContIdsByOverdueFlag" parameterType="java.lang.String" resultType="java.lang.String">
+        SELECT DISTINCT overdueCont.overdue_cont_id
+        FROM overdue_cont overdueCont
+        <!-- 当前是否逾期为“1：是” -->
+        WHERE overdueCont.del_flag = ${delete_exist} and overdueCont.overdue_flag = '1'
+    </select>
+
+</mapper>

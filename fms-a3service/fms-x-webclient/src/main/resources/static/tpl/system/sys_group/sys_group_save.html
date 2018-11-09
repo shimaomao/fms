@@ -1,0 +1,234 @@
+<div  ng-controller="sys_group_save_controller">
+    <div>
+        <toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+    </div>
+    <div class="panel panel-default">
+        <div class="row" style="margin: 0; padding: 15px; border: 1px solid #dddddd">
+            <h4 class="m-n font-thin h4">添加用户组</h4>
+        </div>
+        <form name="form" class="form-validation" novalidate>
+            <div class="panel-body wrapper-sm">
+                <div class="form-group row">
+                    <div class="col-sm-6">
+                        <label class="col-sm-4 control-label text-right"><b class="form-text-black">用户组代码</b><b class="form-error">*</b>:</label>
+                        <div class="col-sm-4">
+                            <input type="text" name="groupCode" placeholder="请输入用户组代码" class="form-control m-b-xs" ng-model="sysGroup.groupCode" required >
+                            <p>
+                                <span class="form-info" ng-show=" (form.groupCode.$dirty && form.groupCode.$error.required) || (form.groupCode.$error.required && formValidate)">用户组代码不能为空</span>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <label class="col-sm-4 control-label text-right"><b class="form-text-black">用户组全称</b><b class="form-error">*</b>:</label>
+                        <div class="col-sm-4">
+                            <input type="text" name="groupName" placeholder="请输入用户组全称" class="form-control m-b-xs" ng-model="sysGroup.groupName" required >
+                            <p>
+                                <span class="form-info" ng-show=" (form.groupName.$dirty && form.groupName.$error.required) || (form.groupName.$error.required && formValidate)">用户组全称不能为空</span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-sm-6">
+                        <label class="col-sm-4 control-label text-right"><b class="form-text-black">用户组简称</b><b class="form-error" >*</b>:</label>
+                        <div class="col-sm-4">
+                            <input type="text" name="groupNameShort" placeholder="请输入用户组简称" class="form-control m-b-xs" ng-model="sysGroup.groupNameShort" required >
+                            <p>
+                                <span class="form-info" ng-show=" (form.groupNameShort.$dirty && form.groupNameShort.$error.required) || (form.groupNameShort.$error.required && formValidate)">用户组简称不能为空</span>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <label class="col-sm-4 control-label text-right"><b class="form-text-black">用户组英文简称</b><b class="form-error">*</b>:</label>
+                        <div class="col-sm-4">
+                            <input type="text" name="groupNameEng" placeholder="请输入用户组英文简称" class="form-control m-b-xs" ng-model="sysGroup.groupNameEng" required >
+                            <p>
+                                <span class="form-info" ng-show=" (form.groupNameEng.$dirty && form.groupNameEng.$error.required) || (form.groupNameEng.$error.required && formValidate)">用户组英文简称不能为空</span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-sm-6">
+                        <label class="col-sm-4 control-label text-right"><b class="form-text-black">层级代码</b><b class="form-error" >*</b>:</label>
+                        <div class="col-sm-8 form-inline">
+                            <input type="text" name="groupLev" placeholder="请选择用户组层级" class="form-control m-b-xs" ng-model="sysGroup.groupLev" disabled required >
+                            <button class="btn btn-primary btn-sm m-b-xs" ng-click="selectGroupLev()"><i class="fa fa-pencil-square-o m-r-xs"></i>选择</button>
+                            <p>
+                                <span class="form-info" ng-show=" (form.groupLev.$dirty && form.groupLev.$error.required) || (form.groupLev.$error.required && formValidate)">层级代码不能为空</span>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <label class="col-sm-4 control-label text-right"><b class="form-text-black">层级名称</b><b class="form-error">*</b>:</label>
+                        <div class="col-sm-4">
+                            <input type="text" name="groupLevName" placeholder="请选择用户组层级" class="form-control m-b-xs" ng-model="sysGroup.groupLevName" disabled required >
+                            <p>
+                                <span class="form-info" ng-show=" (form.groupLevName.$dirty && form.groupLevName.$error.required) || (form.groupLevName.$error.required && formValidate)">层级名称不能为空</span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-sm-6">
+                        <label class="col-sm-4 control-label text-right"><b class="form-text-black">统一社会信用代码</b><b class="form-error">*</b>:</label>
+                        <div class="col-sm-4">
+                            <input type="text" name="socialCertifNo" placeholder="请输入统一社会信用代码" class="form-control m-b-xs" ng-model="sysGroup.socialCertifNo" required >
+                            <p>
+                                <span class="form-info" ng-show=" (form.socialCertifNo.$dirty && form.socialCertifNo.$error.required) || (form.socialCertifNo.$error.required && formValidate)">统一社会信用代码不能为空</span>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <label class="col-sm-4 control-label text-right"><b class="form-text-black">负责人</b><b class="form-error">*</b>:</label>
+                        <div class="col-sm-4">
+                            <input type="text" name="head" placeholder="请输入负责人" class="form-control m-b-xs" ng-model="sysGroup.head" required >
+                            <p>
+                                <span class="form-info" ng-show=" (form.head.$dirty && form.head.$error.required) || (form.head.$error.required && formValidate)">负责人不能为空</span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-sm-6">
+                        <label class="col-sm-4 control-label text-right"><b class="form-text-black">注册地址</b><b class="form-error">*</b>:</label>
+                        <div class="col-sm-4">
+                            <input type="text" name="registeredAddr" placeholder="请输入注册地址" class="form-control m-b-xs" ng-model="sysGroup.registeredAddr" required >
+                            <p>
+                                <span class="form-info" ng-show=" (form.head.$dirty && form.head.$error.required) || (form.head.$error.required && formValidate)">注册地址不能为空</span>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <label class="col-sm-4 control-label text-right"><b class="form-text-black">启用标志</b><b class="form-error">*</b>:</label>
+                        <div class="col-sm-4">
+                            <select ng-model="sysGroup.enableFlag" class="form-control m-b-xs" style="width: 130px;" required>
+                                <option value="{{enableFlagObj.codeValue}}" ng-repeat="enableFlagObj in enableFlagList">{{enableFlagObj.codeValueName}}</option>
+                            </select>
+                            <p>
+                                <span class="form-info" ng-show=" (form.enableFlag.$dirty && form.enableFlag.$error.required) || (form.enableFlag.$error.required && formValidate)">启用标志不能为空</span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-sm-6">
+                        <label class="col-sm-4 control-label text-right"><b class="form-text-black">区域</b><b class="form-error">*</b>:</label>
+                        <div class="col-sm-4">
+                            <input type="text" name="groupDistrict" placeholder="请输入区域" class="form-control m-b-xs" ng-model="sysGroup.groupDistrict" required >
+                            <p>
+                                <span class="form-info" ng-show=" (form.head.$dirty && form.head.$error.required) || (form.head.$error.required && formValidate)">区域不能为空</span>
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6">
+                        <label class="col-sm-4 control-label text-right"><b class="form-text-black">财务辅助核算代码</b><b
+                                class="form-error">*</b>:</label>
+                        <div class="col-sm-4">
+                            <input type="text" name="finassGroupCode" placeholder="请输入财务辅助核算代码" class="form-control m-b-xs" ng-model="sysGroup.finassGroupCode"  required >
+                            <p>
+                                <span class="form-info" ng-show=" (form.finassGroupCode.$dirty && form.finassGroupCode.$error.required) || (form.finassGroupCode.$error.required && formValidate)">财务辅助核算代码不能为空</span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <!-- 行政组织 -->
+                <div class="row" style="margin: 0; border: 1px solid #dddddd" >
+                    <label class="col-sm-12 control-label text-left"><b class="form-text-black">上级用户组信息</b></label>
+                    <br/>
+                    <div class="form-group row" style="margin:0;">
+                        <div class="col-sm-6 m-b-xs">
+                            <label class="col-sm-4 control-label text-right"><b class="form-text-black">用户组代码</b>:</label>
+                            <div class="col-sm-8 form-inline">
+                                <input type="text" name="adminParentGroup" placeholder="请选择上级用户组" class="form-control m-b-xs" ng-model="sysGroup.adminParentGroup" disabled >
+                                <button class="btn btn-primary btn-sm m-b-xs" ng-click="selectGroup('1')"><i class="fa fa-pencil-square-o m-r-xs"></i>选择</button>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 m-b-xs">
+                            <label class="col-sm-4 control-label text-right"><b class="form-text-black">用户组名称</b>:</label>
+                            <div class="col-sm-4">
+                                <input type="text" name="adminParentGroupName" placeholder="请选择上级用户组" class="form-control m-b-xs" ng-model="sysGroup.adminParentGroupName" disabled>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- 财务组织 -->
+                <!--
+                <div class="row" style="margin: 0; border: 1px solid #dddddd">
+                    <label class="col-sm-12 control-label text-left"><b class="form-text-black">上级用户组信息【财务组织】</b></label>
+                    <br/>
+                    <div class="form-group row" style="margin:0;">
+                        <div class="col-sm-6 m-b-xs">
+                            <label class="col-sm-4 control-label text-right"><b class="form-text-black">用户组代码</b>:</label>
+                            <div class="col-sm-8 form-inline">
+                                <input type="text" name="financeParentGroup" placeholder="请选择上级用户组" class="form-control m-b-xs" ng-model="sysGroup.financeParentGroup" disabled >
+                                <button class="btn btn-primary" ng-click="selectGroup('2')"><i class="fa fa-pencil-square-o m-r-xs"></i>选择</button>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 m-b-xs">
+                            <label class="col-sm-4 control-label text-right"><b class="form-text-black">用户组名称</b>:</label>
+                            <div class="col-sm-4">
+                                <input type="text" name="financeParentGroupName" placeholder="请选择上级用户组" class="form-control m-b-xs" ng-model="sysGroup.financeParentGroupName" disabled >
+                            </div>
+                        </div>
+                    </div>
+                </div> -->
+                <!-- 销售组织 -->
+                <!--
+                <div class="m-t-xs row" style="margin: 0; border: 1px solid #dddddd" >
+                    <label class="col-sm-12 control-label text-left"><b class="form-text-black">上级用户组信息【销售组织】</b></label>
+                    <br/>
+                    <div class="form-group row" style="margin:0;">
+                        <div class="col-sm-6 m-b-xs">
+                            <label class="col-sm-4 control-label text-right"><b class="form-text-black">用户组代码</b>:</label>
+                            <div class="col-sm-8 form-inline">
+                                <input type="text" name="sellParentGroup" placeholder="请选择上级用户组" class="form-control m-b-xs" ng-model="sysGroup.sellParentGroup" disabled>
+                                <button class="btn btn-primary" ng-click="selectGroup('3')"><i class="fa fa-pencil-square-o m-r-xs"></i>选择</button>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 m-b-xs">
+                            <label class="col-sm-4 control-label text-right"><b class="form-text-black">用户组名称</b>:</label>
+                            <div class="col-sm-4">
+                                <input type="text" name="sellParentGroupName" placeholder="请选择上级用户组" class="form-control m-b-xs" ng-model="sysGroup.sellParentGroupName" disabled>
+                            </div>
+                        </div>
+                    </div>
+                </div> -->
+                <!-- 运营组织 -->
+                <!--
+                <div class="m-t-xs row" style="margin: 0; border: 1px solid #dddddd" >
+                    <label class="col-sm-12 control-label text-left"><b class="form-text-black">上级用户组信息【运营组织】</b></label>
+                    <br/>
+                    <div class="form-group row" style="margin: 0;">
+                        <div class="col-sm-6 m-b-xs">
+                            <label class="col-sm-4 control-label text-right"><b class="form-text-black">用户组代码</b>:</label>
+                            <div class="col-sm-8 form-inline">
+                                <input type="text" name="operateParentGroup" placeholder="请选择上级用户组" class="form-control m-b-xs" ng-model="sysGroup.operateParentGroup" disabled>
+                                <button class="btn btn-primary" ng-click="selectGroup('4')"><i class="fa fa-pencil-square-o m-r-xs"></i>选择</button>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 m-b-xs">
+                            <label class="col-sm-4 control-label text-right"><b class="form-text-black">用户组名称</b>:</label>
+                            <div class="col-sm-4">
+                                <input type="text" name="operateParentGroupName" placeholder="请选择上级用户组" class="form-control m-b-xs" ng-model="sysGroup.operateParentGroupName" disabled>
+                            </div>
+                        </div>
+                    </div>
+                </div> -->
+
+            </div>
+            <div class="row" style="margin: 10px 0 0 15px;">
+                <div class="col-sm-15 m-b text-center">
+                    <button class="btn btn-default" ng-click="goback()">返回</button>
+                    <button type="submit" class="btn btn-success" ng-disabled="submit" ng-click="save()">新增</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

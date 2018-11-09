@@ -1,0 +1,16 @@
+<div class="modal-header">
+    <h4 class="modal-title">选择上级用户组 {{parentTypeName}}<button type="button" class="close" data-dismiss="modal" aria-hidden="true" ng-click="close()">&times;</button></h4>
+</div>
+<div ng-init="init()">
+<div class="panel-body">
+    <div class="panel panel-default" style="border: 0">
+        <div id="sys_group_select_tree" style="max-height: 400px;overflow-y:auto;white-space:nowrap;font-size: 6px"></div>
+    </div>
+</div>
+</div>
+<div class="modal-footer ng-scope text-center">
+    <div class="text-center">
+        <button class="btn btn-default" ng-click="close()">关闭</button>
+        <button class="btn btn-default" ng-click="confirm('none')">无上级用户组</button>
+    </div>
+</div>

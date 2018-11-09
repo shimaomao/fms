@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.com.leadu.fms.data.postbiz.dao.RetrieveCarsTaskDao">
+
+    <select id="selectRetrieveCarsTaskVos" resultType="cn.com.leadu.fms.pojo.postbiz.vo.retrievecarstask.RetrieveCarsTaskVo">
+        select
+        <!-- 收车任务信息 -->
+        retrieveCarsTask.* ,
+        <!-- 承租人 -->
+        overdueCstm.cstm_name,
+        <!-- 出租人 -->
+        sysGroup.group_name lessor,
+        <!-- 车架号 -->
+        overdueCont.vin_no overdueContVinNo,
+        <!-- 车牌号 -->
+        overdueCont.vehicle_license_no,
+        <!-- 发动机号 -->
+        overdueCont.engine_no,
+        <!-- GPS厂商 -->
+        gpsDispatch.gps_seller,
+        <!-- 申请编号 -->
+        overdueCont.apply_no
+        <!-- 收车任务表 -->
+        from retrieve_cars_task retrieveCarsTask
+        <!-- 使用逾期合同id关联逾期合同表 -->
+        left join overdue_cont overdueCont on overdueCont.del_flag = ${delete_exist}
+        and retrieveCarsTask.overdue_cont_id = overdueCont.overdue_cont_id
+        <!-- 逾期客户表 -->
+        left join overdue_cstm overdueCstm on overdueCstm.del_flag =  ${delete_exist}
+        and overdueCont.overdue_cstm_id = overdueCstm.overdue_cstm_id
+        <!-- 关联合同融资信息 -->
+        left join contract_finance contractFinance on contractFinance.del_flag = ${delete_exist}
+        and contractFinance.cont_no = overdueCont.cont_no and contractFinance.apply_no = overdueCont.apply_no
+        <!-- 使用出租人关联用户组表 -->
+        left join sys_group sysGroup on sysGroup.del_flag = ${delete_exist}
+        and sysGroup.group_code = contractFinance.belong_group
+        <!-- 关联GPS派单表 -->
+        left join gps_dispatch gpsDispatch on gpsDispatch.del_flag = ${delete_exist}
+        and gpsDispatch.cont_no = overdueCont.cont_no
+        <!-- 查询条件 -->
+        where retrieveCarsTask.del_flag = ${delete_exist}
+        <!-- 申请编号 -->
+        <if test="retrieveCarsTaskVo.applyNo != null">
+          and overdueCont.apply_no like #{retrieveCarsTaskVo.applyNo}
+        </if>
+        <!-- 合同编号 -->
+        <if test="retrieveCarsTaskVo.contNo != null">
+          and overdueCont.cont_no like #{retrieveCarsTaskVo.contNo}
+        </if>
+        <!-- 车架号 -->
+        <if test="retrieveCarsTaskVo.overdueContVinNo != null">
+          and overdueCont.vin_no like #{retrieveCarsTaskVo.overdueContVinNo}
+        </if>
+        <!-- 车牌号 -->
+        <if test="retrieveCarsTaskVo.vehicleLicenseNo != null">
+          and overdueCont.vehicle_license_no like #{retrieveCarsTaskVo.vehicleLicenseNo}
+        </if>
+        <!-- 承租人 -->
+        <if test="retrieveCarsTaskVo.cstmName != null">
+          and overdueCstm.cstm_name like #{retrieveCarsTaskVo.cstmName}
+        </if>
+        <!-- 发起人 -->
+        <if test="retrieveCarsTaskVo.submitUser != null">
+          and retrieveCarsTask.submit_user like #{retrieveCarsTaskVo.submitUser}
+        </if>
+        <!-- 任务状态 -->
+        <if test="retrieveCarsTaskVo.taskStatus != null">
+          and retrieveCarsTask.task_status = #{retrieveCarsTaskVo.taskStatus}
+        </if>
+        <!-- 派单类型 -->
+        <if test="retrieveCarsTaskVo.dispachType != null">
+          and retrieveCarsTask.dispach_type = #{retrieveCarsTaskVo.dispachType}
+        </if>
+        <!-- 登记人 -->
+        <if test="retrieveCarsTaskVo.registerPeople != null">
+          and retrieveCarsTask.register_people like #{retrieveCarsTaskVo.registerPeople}
+        </if>
+        order by retrieveCarsTask.update_time desc
+    </select>
+
+    <!--
+     /**
+     * @Title:
+     * @Description:   根据收车任务Id查询收车任务vo
+     * @param retrieveCarId
+     * @return
+     * @throws
+     * @author qiaomengnan
+     * @date 2018/09/15 02:52:48
+     */
+     -->
+    <select id="selectRetrieveCarsTaskVoById" resultType="cn.com.leadu.fms.pojo.postbiz.vo.retrievecarstask.RetrieveCarsTaskVo">
+        select
+        <!-- 收车任务信息 -->
+        retrieveCarsTask.* ,
+        <!-- 承租人 -->
+        overdueCstm.cstm_name,
+        <!-- 出租人 -->
+        sysGroup.group_name lessor,
+        <!-- 车架号 -->
+        overdueCont.vin_no overdueContVinNo,
+        <!-- 车牌号 -->
+        overdueCont.vehicle_license_no,
+        <!-- 发动机号 -->
+        overdueCont.engine_no,
+        <!-- 申请编号 -->
+        overdueCont.apply_no,
+        <!-- 申请类型 -->
+        overdueCstm.apply_type applyType
+        <!-- 收车任务表 -->
+        from retrieve_cars_task retrieveCarsTask
+        <!-- 使用逾期合同id关联逾期合同表 -->
+        left join overdue_cont overdueCont on overdueCont.del_flag = ${delete_exist}
+        and retrieveCarsTask.overdue_cont_id = overdueCont.overdue_cont_id
+        <!-- 逾期客户表 -->
+        left join overdue_cstm overdueCstm on overdueCstm.del_flag =  ${delete_exist}
+        and overdueCont.overdue_cstm_id = overdueCstm.overdue_cstm_id
+        <!-- 关联合同融资信息 -->
+        left join contract_finance contractFinance on contractFinance.del_flag = ${delete_exist}
+        and contractFinance.cont_no = overdueCont.cont_no and contractFinance.apply_no = overdueCont.apply_no
+        <!-- 使用出租人关联用户组表 -->
+        left join sys_group sysGroup on sysGroup.del_flag = ${delete_exist}
+        and sysGroup.group_code = contractFinance.belong_group
+        <!-- 查询条件 -->
+        where retrieveCarsTask.del_flag = ${delete_exist}
+        <!-- 收车任务id -->
+        and retrieveCarsTask.retrieve_car_id = #{retrieveCarId}
+    </select>
+
+    <!--
+     /**
+     * @Title:
+     * @Description:   根据收车任务Id查询收车任务vo
+     * @param retrieveCarId
+     * @return
+     * @throws
+     * @author qiaomengnan
+     * @date 2018/09/15 02:52:48
+     */
+     -->
+    <select id="selectRetrieveCarsTaskVoByTaskNo" resultType="cn.com.leadu.fms.pojo.postbiz.vo.retrievecarstask.RetrieveCarsTaskVo">
+        select
+        <!-- 收车任务信息 -->
+        retrieveCarsTask.* ,
+        <!-- 承租人 -->
+        overdueCstm.cstm_name,
+        <!-- 出租人 -->
+        sysGroup.group_name lessor,
+        <!-- 车架号 -->
+        overdueCont.vin_no overdueContVinNo,
+        <!-- 车牌号 -->
+        overdueCont.vehicle_license_no,
+        <!-- 发动机号 -->
+        overdueCont.engine_no,
+        <!-- 申请编号 -->
+        overdueCont.apply_no,
+        <!-- 登记人用户名 -->
+        sysUserRegisterPeople.user_name registerPeopleName,
+        <!-- 派单人用户名 -->
+        sysUserDispachPeople.user_name dispachPeopleName,
+        <!-- 申请类型 -->
+        overdueCstm.apply_type applyType,
+        orig_file.biz_code_type bizCodeType,
+        orig_file.biz_code_type origFileType,
+        orig_file.file_record_no fileRecordNo,
+        orig_file_detail.borrow_task_no borrowTaskNo,
+        orig_file_detail.borrow_back_task_no borrowBackTaskNo
+        <!-- 收车任务表 -->
+        from retrieve_cars_task retrieveCarsTask
+        <!-- 使用逾期合同id关联逾期合同表 -->
+        left join overdue_cont overdueCont on overdueCont.del_flag = ${delete_exist}
+        and retrieveCarsTask.overdue_cont_id = overdueCont.overdue_cont_id
+        <!-- 逾期客户表 -->
+        left join overdue_cstm overdueCstm on overdueCstm.del_flag =  ${delete_exist}
+        and overdueCont.overdue_cstm_id = overdueCstm.overdue_cstm_id
+        <!-- 关联合同融资信息 -->
+        left join contract_finance contractFinance on contractFinance.del_flag = ${delete_exist}
+        and contractFinance.cont_no = overdueCont.cont_no and contractFinance.apply_no = overdueCont.apply_no
+        <!-- 使用出租人关联用户组表 -->
+        left join sys_group sysGroup on sysGroup.del_flag = ${delete_exist}
+        and sysGroup.group_code = contractFinance.belong_group
+        <!-- 登记人用户名 -->
+        left join sys_user sysUserRegisterPeople on sysUserRegisterPeople.del_flag =  ${delete_exist}
+        and retrieveCarsTask.register_people = sysUserRegisterPeople.user
+        <!-- 派单人用户名 -->
+        left join sys_user sysUserDispachPeople on sysUserDispachPeople.del_flag =  ${delete_exist}
+        and retrieveCarsTask.dispach_people = sysUserDispachPeople.user
+        left join orig_file on overdueCont.cont_no = orig_file.biz_code
+        AND orig_file.del_flag = ${delete_exist}
+        LEFT  JOIN orig_file_detail on orig_file.biz_code = orig_file_detail.biz_code
+        AND orig_file.biz_code_type = orig_file_detail.biz_code_type
+        AND  orig_file_detail.file_type = 'carkey1'
+        AND orig_file_detail.del_flag = ${delete_exist}
+        <!-- 查询条件 -->
+        where retrieveCarsTask.del_flag = ${delete_exist}
+        <!-- 收车任务id -->
+        and retrieveCarsTask.retrieve_car_task_no = #{retrieveCarTaskNo}
+    </select>
+
+    <!-- 获取收车任务表中全部的逾期合同ID -->
+    <select id="selectAllOverdueContIds" resultType="java.lang.String">
+        SELECT DISTINCT overdue_cont_id FROM retrieve_cars_task WHERE del_flag = ${delete_exist} and overdue_cont_id is not null
+    </select>
+
+    <!--获取当前客户所有合同生成委托书需要的数据-->
+    <select id="selectproxyDownloadInfo" resultType="cn.com.leadu.fms.pojo.postbiz.vo.overduecstm.CollectionLetterVo">
+        select DISTINCT
+            cstm.cstm_name,
+            cont.cont_no,
+            cont.vehicle_license_no,
+            sysGroup.group_name,
+            cont.vin_no
+        from retrieve_cars_task task
+        left join overdue_cont cont on task.overdue_cont_id = cont.overdue_cont_id and cont.del_flag = ${delete_exist}
+        left join contract_finance contractFinance on contractFinance.cont_no = cont.cont_no and contractFinance.apply_no = cont.apply_no
+        and contractFinance.del_flag = ${delete_exist}
+        left join sys_group sysGroup on sysGroup.del_flag = ${delete_exist} and sysGroup.group_code = contractFinance.belong_group
+        left join overdue_cstm cstm on cont.overdue_cstm_id = cstm.overdue_cstm_id and cstm.del_flag = ${delete_exist}
+        where task.del_flag = ${delete_exist}
+        <if test="retrieveCarTaskNo != null">
+            and task.retrieve_car_task_no = #{retrieveCarTaskNo}
+        </if>
+    </select>
+
+</mapper>

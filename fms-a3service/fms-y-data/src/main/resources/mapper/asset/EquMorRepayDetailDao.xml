@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.com.leadu.fms.data.asset.dao.EquMorRepayDetailDao">
+    <select id="selectEquMorRepayDetailVosByEquTaskNo"  resultType="cn.com.leadu.fms.pojo.asset.vo.equmorrepaydetail.EquMorRepayDetailVo">
+        SELECT equ_mor_repay.rent  AS rent,
+        equ_mor_repay.lease_period AS leasePeriod,
+        equ_mor_repay.client_cont_no AS clientContNo,
+        equ_mor_repay.equ_mor_task_no AS equMorTaskNo,
+        equ_mor_repay.vin_no AS vinNo,
+        equ_mor_charge.equ_start_date AS equStartDate,
+        equ_mor_charge.equ_end_date AS equEndDate
+        FROM equ_mor_repay
+        LEFT JOIN equ_mor_charge ON  equ_mor_charge.equ_mor_task_no =  equ_mor_repay.equ_mor_task_no
+        AND equ_mor_charge.client_cont_no =  equ_mor_repay.client_cont_no
+        and equ_mor_charge.del_flag = ${delete_exist}
+        WHERE  equ_mor_repay.equ_mor_task_no =  #{equMorTaskNo}
+        AND equ_mor_repay.del_flag = ${delete_exist}
+    </select>
+
+    <select id="selectEquMorRepayDetailVosByPage" parameterType="java.lang.String" resultType="cn.com.leadu.fms.pojo.asset.vo.equmorrepaydetail.EquMorRepayDetailVo">
+        SELECT
+        equmorrepaydetail.equ_mor_repay_detail_id ,
+        equmorrepaydetail.equ_mor_task_no ,
+        equmorrepaydetail.client_cont_no ,
+        equmorrepaydetail.vin_no ,
+        equmorrepaydetail.period ,
+        equmorrepaydetail.repay_date ,
+        equmorrepaydetail.rent ,
+        equmorrepaydetail.equ_repay_status ,
+        equmorrepaydetail.pay_update_date ,
+        equ_mor_task.management AS management,
+        IFNULL(cstm_person.`name`,cstm_company.`name`) AS tenantUser
+
+        FROM equ_mor_repay_detail AS equmorrepaydetail
+        LEFT JOIN contract ON equmorrepaydetail.client_cont_no = contract.cont_no
+        and  contract.del_flag = ${delete_exist}
+        LEFT JOIN cstm_company ON  contract.apply_no = cstm_company.apply_no
+        and  cstm_company.del_flag = ${delete_exist}
+        LEFT JOIN cstm_person ON 	contract.apply_no = cstm_person.apply_no
+        and  cstm_person.del_flag = ${delete_exist}
+        left join equ_mor_task on equ_mor_task.equ_mor_task_no =  equmorrepaydetail.equ_mor_task_no
+        and  equ_mor_task.del_flag = ${delete_exist}
+        WHERE equmorrepaydetail.del_flag = ${delete_exist}
+        <if test="equMorRepayDetailVo.equRepayStatus !=null">
+            AND equmorrepaydetail.`equ_repay_status` = #{equMorRepayDetailVo.equRepayStatus}
+        </if>
+        <if test="equMorRepayDetailVo.vinNo != null">
+            AND equmorrepaydetail.vin_no LIKE #{equMorRepayDetailVo.vinNo}
+        </if>
+        <if test="equMorRepayDetailVo.clientContNo != null">
+            AND equmorrepaydetail.client_cont_no LIKE #{equMorRepayDetailVo.clientContNo}
+        </if>
+        <if test="equMorRepayDetailVo.tenantUser != null">
+            AND (cstm_person.`name` LIKE #{equMorRepayDetailVo.tenantUser} or cstm_company.`name` LIKE #{equMorRepayDetailVo.tenantUser})
+        </if>
+        <if test="equMorRepayDetailVo.management != null">
+            AND equ_mor_task.management LIKE #{equMorRepayDetailVo.management}
+        </if>
+        <if test="equMorRepayDetailVo.repaySatrtStr != null">
+            and TIMESTAMPDIFF(DAY,#{equMorRepayDetailVo.repaySatrtStr},equmorrepaydetail.repay_date) &gt;= ${delete_exist}
+        </if>
+        <if test="equMorRepayDetailVo.repayEndStr != null">
+            and TIMESTAMPDIFF(DAY,#{equMorRepayDetailVo.repayEndStr},equmorrepaydetail.repay_date) &lt;= ${delete_exist}
+        </if>
+        ORDER BY  equmorrepaydetail.repay_date asc
+    </select>
+
+</mapper>

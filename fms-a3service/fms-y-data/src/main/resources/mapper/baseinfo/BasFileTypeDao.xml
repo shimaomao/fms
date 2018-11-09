@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.com.leadu.fms.data.baseinfo.dao.BasFileTypeDao">
+
+    <!--查询附件类型管理树-->
+    <select id="selectBasFileTypeByTree" resultType="cn.com.leadu.fms.pojo.baseinfo.vo.basfiletype.BasFileTypeVo">
+        SELECT
+            bas_file_type.create_time,
+            bas_file_type.creator,
+            bas_file_type.del_flag,
+            bas_file_type.file_attr,
+            bas_file_type.file_chk_flag,
+            bas_file_type.file_edit_flag,
+            bas_file_type.file_flag,
+            bas_file_type.file_qty_limit,
+            bas_file_type.file_type,
+            bas_file_type.file_type_alias,
+            bas_file_type.file_type_expr,
+            bas_file_type.file_type_id,
+            bas_file_type.file_type_memo,
+            bas_file_type.file_type_name,
+            bas_file_type.file_type_suff,
+            bas_file_type.order_no,
+            bas_file_type.sub_type,
+            bas_file_type.updater,
+            bas_file_type.update_time,
+            bas_file_group.file_type_par parentFileType
+    FROM
+        bas_file_type
+    LEFT JOIN bas_file_group ON bas_file_type.file_type = bas_file_group.file_type_chi
+    AND bas_file_group.del_flag = ${delete_exist}
+    WHERE
+	bas_file_type.del_flag = ${delete_exist}
+    </select>
+
+    <!--通过一个上级类型代码查询旗下所有层级节点的上级类型代码-->
+    <select id="selectAllNodesFromBasFileType" parameterType="java.lang.String" resultType="cn.com.leadu.fms.pojo.baseinfo.vo.basfiletype.BasFileTypeVo">
+        SELECT * FROM bas_file_type basFileType
+        WHERE basFileType.del_flag = ${delete_exist}
+        <if test="#{parentFileType} != null " >
+            AND basFileType.parent_file_type = #{parentFileType}
+        </if>
+    </select>
+
+    <!--通过上级类型代码获得下一级子节点集合-->
+    <select id="selectNextBasFileTypeVosByParentFileType" parameterType="java.lang.String" resultType="cn.com.leadu.fms.pojo.baseinfo.vo.basfiletype.BasFileTypeVo">
+        <!--SELECT * FROM bas_file_type basFileType-->
+        <!--WHERE basFileType.del_flag = ${delete_exist}-->
+        <!--<if test="#{parentFileType} != null " >-->
+             <!--AND basFileType.parent_file_type = #{parentFileType}-->
+        <!--</if>-->
+        SELECT
+        bas_file_type.*
+        FROM
+        bas_file_group
+        LEFT JOIN bas_file_type ON bas_file_group.file_type_chi = bas_file_type.file_type
+        AND bas_file_type.del_flag = ${delete_exist}
+        WHERE
+        bas_file_group.del_flag = ${delete_exist}
+        <if test="#{parentFileType} != null " >
+        AND bas_file_group.file_type_par = #{parentFileType}
+        </if>
+    </select>
+
+    <!--根据fileTypeId获取BasFileTypeVo-->
+    <select id="selectBasFileTypeVoByPrimaryKey" parameterType="java.lang.String" resultType="cn.com.leadu.fms.pojo.baseinfo.vo.basfiletype.BasFileTypeVo">
+        SELECT basFileType1.* FROM
+        bas_file_type basFileType1
+        WHERE basFileType1.del_flag = ${delete_exist}
+        <if test="#{fileTypeId} != null " >
+            AND basFileType1.file_type_id = #{fileTypeId}
+        </if>
+    </select>
+
+    <!--根据产品代码取得获取BasFileTypeVo -->
+    <select id="selectBasFileTypeVoByProduct" parameterType="java.lang.String" resultType="cn.com.leadu.fms.pojo.baseinfo.vo.basfiletype.BasFileTypeVo">
+        select basFileType.* from bas_file_type basFileType
+        left join prod_file prodFile on prodFile.file_type = basFileType.file_type and prodFile.del_flag = ${delete_exist}
+        where basFileType.del_flag = ${delete_exist}
+        <if test="product != null " >
+            and prodFile.product = #{product}
+        </if>
+        order by basFileType.order_no ASC
+    </select>
+
+    <select id="selectAllBasFileTypeList" resultType="cn.com.leadu.fms.pojo.baseinfo.entity.BasFileType">
+
+        <!--SELECT * FROM bas_file_type
+        WHERE del_flag = ${delete_exist}
+        ORDER BY order_no-->
+        SELECT
+            bas_file_type.create_time,
+            bas_file_type.creator,
+            bas_file_type.del_flag,
+            bas_file_type.file_attr,
+            bas_file_type.file_chk_flag,
+            bas_file_type.file_edit_flag,
+            bas_file_type.file_flag,
+            bas_file_type.file_qty_limit,
+            bas_file_type.file_type,
+            bas_file_type.file_type_alias,
+            bas_file_type.file_type_expr,
+            bas_file_type.file_type_id,
+            bas_file_type.file_type_memo,
+            bas_file_type.file_type_name,
+            bas_file_type.file_type_suff,
+            bas_file_type.order_no,
+            bas_file_type.sub_type,
+            bas_file_type.updater,
+            bas_file_type.update_time,
+            bas_file_group.file_type_par parentFileType
+    FROM
+        bas_file_type
+    LEFT JOIN bas_file_group ON bas_file_type.file_type = bas_file_group.file_type_chi
+    AND bas_file_group.del_flag = ${delete_exist}
+    WHERE
+	bas_file_type.del_flag = ${delete_exist}
+        ORDER BY bas_file_type.order_no
+    </select>
+
+</mapper>

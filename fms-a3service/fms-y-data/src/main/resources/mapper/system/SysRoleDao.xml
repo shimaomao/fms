@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.com.leadu.fms.data.system.dao.SysRoleDao">
+
+    <select id="selectSysRolesBySysUserId" parameterType="java.lang.String" resultType="cn.com.leadu.fms.pojo.system.entity.SysRole">
+        select sysRole.* from sys_role sysRole
+        left join sys_user_role sysUserRole on sysUserRole.role_id = sysRole.role_id
+        and sysUserRole.del_flag = ${delete_exist}
+        where sysUserRole.user_id = #{_parameter} and sysUserRole.user_id is not null
+        and sysRole.del_flag = ${delete_exist}
+    </select>
+
+    <select id="selectSysRoleIdsBySysUserId" parameterType="java.lang.String" resultType="java.lang.String" >
+        select sysUserRole.role_id from sys_user_role sysUserRole
+        inner join sys_role sysRole on sysRole.role_id = sysUserRole.role_id and sysRole.del_flag = ${delete_exist}
+        inner join sys_user sysUser on sysUser.user_id = sysUserRole.user_id and sysUser.del_flag = ${delete_exist}
+        where
+        sysUserRole.user_id = #{_parameter}
+        and sysUserRole.del_flag = ${delete_exist}
+    </select>
+
+</mapper>

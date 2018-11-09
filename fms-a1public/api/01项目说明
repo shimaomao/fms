@@ -1,0 +1,9 @@
+1.一定最先在当前终端目录下执行 mvn clean install
+
+2.执行完毕后请核查路径,是否存在以下jar
+
+xx/.m2/cn/com/leadu/fms/g-common/g-common*.jar  xx/.m2/cn/com/leadu/fms/g-extend/g-extend*.jar
+
+3.本项目下无配置文件，无需在配置中心中注册
+
+4.是公共依赖包，不是微服务，无需在服务发现中心中注册

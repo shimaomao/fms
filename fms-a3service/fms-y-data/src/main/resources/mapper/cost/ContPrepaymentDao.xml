@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.com.leadu.fms.data.cost.dao.ContPrepaymentDao">
+
+    <!-- 查询提前还款一览信息 -->
+    <select id="selectContPrepaymentListByPage"
+            parameterType="cn.com.leadu.fms.pojo.cost.vo.contprepayment.ContPrepaymentVo"
+            resultType="cn.com.leadu.fms.pojo.cost.vo.contprepayment.ContPrepaymentVo">
+        SELECT
+        contract.vin_no,contract.update_time,contract.cont_no,contract.apply_no,
+        contract.contract_valid_date,contract.payment_sts as paymentStsForSer,
+        prepayment.prepayment_sts,prepayment.cont_prepayment_id,prepayment.prepayment_type,prepayment.cont_prepayment_no,
+        prepayment.prepayment_date,prepayment.prepay_trial_amount,prepayment.prepay_actual_amount,
+        prepayment.present_user,
+        finance.rent,finance.fin_period_type,finance.repay_day,
+        IF(isnull(cstmCompany.name),cstmPerson.name,cstmCompany.name) as name,
+        IF(isnull(cstmCompany.social_certif_no),cstmPerson.certif_no,cstmCompany.social_certif_no) as certifNo,
+        product.product_name,
+        vehicleCode.vehicle_name AS vehicleCodeName,
+        sysGroup.group_name AS rentPerson
+        FROM
+        contract contract
+        LEFT JOIN
+        cont_prepayment prepayment ON contract.cont_no=prepayment.cont_no AND prepayment.del_flag =  ${delete_exist}
+        LEFT JOIN
+        contract_vehicle vehicle ON contract.cont_no=vehicle.cont_no AND vehicle.del_flag =  ${delete_exist}
+        LEFT JOIN
+        contract_finance finance ON contract.cont_no=finance.cont_no AND finance.del_flag = ${delete_exist}
+        LEFT JOIN
+        sys_group sysGroup ON finance.belong_group = sysGroup.group_code AND sysGroup.del_flag =  ${delete_exist}
+        LEFT JOIN
+        cstm_person cstmPerson ON contract.apply_no=cstmPerson.apply_no AND cstmPerson.del_flag = ${delete_exist}
+        LEFT JOIN
+        cstm_company cstmCompany on cstmCompany.apply_no = contract.apply_no AND cstmCompany.del_flag = ${delete_exist}
+        LEFT JOIN
+        product product ON finance.product=product.product AND product.del_flag = ${delete_exist}
+        LEFT JOIN
+        bas_vehicle vehicleCode ON vehicle.vehicle_code=vehicleCode.vehicle_code AND vehicleCode.del_flag = ${delete_exist}
+        WHERE contract.del_flag = ${delete_exist}
+        AND contract.biz_status = #{contPrepaymentVo.bizStatus}
+        <if test="contPrepaymentVo.contNo != null">
+            AND contract.cont_no LIKE #{contPrepaymentVo.contNo}
+        </if>
+        <if test="contPrepaymentVo.name != null">
+            AND (cstmPerson.name LIKE #{contPrepaymentVo.name} OR cstmCompany.name LIKE #{contPrepaymentVo.name})
+        </if>
+        <if test="contPrepaymentVo.paymentSts != null">
+            AND (contract.payment_sts != #{contPrepaymentVo.paymentSts} or contract.payment_sts is null)
+        </if>
+        <if test="contPrepaymentVo.groupDistrict != null" >
+            AND sysGroup.group_district LIKE #{contPrepaymentVo.groupDistrict}
+        </if>
+        <if test="contPrepaymentVo.vinNo != null" >
+            AND contract.vin_no LIKE #{contPrepaymentVo.vinNo}
+        </if>
+        <if test="contPrepaymentVo.paymentStsForSer != null">
+            AND contract.payment_sts = #{contPrepaymentVo.paymentStsForSer}
+        </if>
+        ORDER BY prepayment.create_time DESC
+    </select>
+
+
+    <!-- 查询提前还款信息 -->
+    <select id="selectContPrepaymentByContNo"
+            parameterType="cn.com.leadu.fms.pojo.cost.vo.contprepayment.ContPrepaymentVo"
+            resultType="cn.com.leadu.fms.pojo.cost.vo.contprepayment.ContPrepaymentVo">
+        SELECT
+        contract.vin_no,contract.cont_no,contract.apply_no,
+        contract.vehicle_license_no,contract.engine_no,
+        contract.contract_valid_date,
+        prepayment.prepayment_sts,prepayment.cont_prepayment_id,prepayment.prepayment_type,prepayment.cont_prepayment_no,
+        prepayment.prepayment_date,prepayment.prepay_trial_amount,prepayment.prepay_actual_amount,
+        prepayment.validity_date,
+        prepayment.already_repay_nper,prepayment.already_repay_amount,prepayment.residue_amount,
+        prepayment.update_time,
+        finance.rent,finance.fin_period_type,finance.deposit,finance.fin_total,finance.license_attr,
+        IF(isnull(cstmCompany.name),cstmPerson.name,cstmCompany.name) as name,
+        IF(isnull(cstmCompany.social_certif_no),cstmPerson.certif_no,cstmCompany.social_certif_no) as certifNo,
+        product.product_name,
+        vehicle.renewal_deposit,
+        vehicleCode.vehicle_name AS vehicleCodeName,
+        vehBrandCode.vehicle_name AS vehBrandCodeName,
+        sysGroup.group_name AS rentPerson,sysGroup.registered_addr
+        FROM
+        contract contract
+        LEFT JOIN
+        cont_prepayment prepayment ON contract.cont_no=prepayment.cont_no AND prepayment.del_flag =  ${delete_exist}
+        /*如果有作废状态，排除作废状态*/
+        <if test="contPrepaymentVo.prepaymentSts != null">
+            AND prepayment.prepayment_sts != #{contPrepaymentVo.prepaymentSts}
+        </if>
+        LEFT JOIN
+        contract_vehicle vehicle ON contract.cont_no=vehicle.cont_no AND vehicle.del_flag =  ${delete_exist}
+        LEFT JOIN
+        contract_finance finance ON contract.cont_no=finance.cont_no AND finance.del_flag = ${delete_exist}
+        LEFT JOIN
+        cstm_person cstmPerson on cstmPerson.apply_no = contract.apply_no AND cstmPerson.del_flag = ${delete_exist}
+        LEFT JOIN
+        cstm_company cstmCompany on cstmCompany.apply_no = contract.apply_no AND cstmCompany.del_flag = ${delete_exist}
+        LEFT JOIN
+        product product ON finance.product=product.product AND product.del_flag = ${delete_exist}
+        LEFT JOIN
+        bas_vehicle vehicleCode ON vehicle.vehicle_code=vehicleCode.vehicle_code AND vehicleCode.del_flag = ${delete_exist}
+        LEFT JOIN
+        bas_vehicle vehBrandCode ON vehicle.veh_brand_code=vehBrandCode.vehicle_code AND vehBrandCode.del_flag = ${delete_exist}
+        LEFT JOIN
+        sys_group sysGroup ON finance.belong_group=sysGroup.group_code AND sysGroup.del_flag = ${delete_exist}
+        WHERE contract.del_flag = ${delete_exist}
+        AND contract.biz_status = #{contPrepaymentVo.bizStatus}
+        <if test="contPrepaymentVo.prepaymentSts != null">
+            AND contract.biz_status != #{contPrepaymentVo.prepaymentSts}
+        </if>
+        <if test="contPrepaymentVo.contNo != null">
+            AND contract.cont_no = #{contPrepaymentVo.contNo}
+        </if>
+        /* 如果有业务号，查询相关业务号对应的数据*/
+        <if test="contPrepaymentVo.contPrepaymentNo != null">
+            AND prepayment.cont_prepayment_no = #{contPrepaymentVo.contPrepaymentNo}
+        </if>
+    </select>
+
+
+    <!-- 查找当日>提前还款失效日 且 合同未结清的提前还款 -->
+    <select id="selectInValidContPrepayment" parameterType="java.lang.String"
+            resultType="cn.com.leadu.fms.pojo.cost.vo.contprepayment.ContPrepaymentVo">
+        SELECT
+        prepayment.cont_no,prepayment.cont_prepayment_id,prepayment.cont_prepayment_no,prepayment.update_time
+        FROM
+        cont_prepayment prepayment
+        LEFT JOIN
+        contract contract ON contract.cont_no=prepayment.cont_no AND contract.del_flag =  ${delete_exist}
+        WHERE contract.del_flag = ${delete_exist}
+        /*如果有作废状态，排除作废状态*/
+        AND prepayment.prepayment_sts != #{prepaymentInvalid}
+        /*排除生效状态*/
+        AND prepayment.prepayment_sts != #{prepaymentValid}
+        /* 合同状态=未结清*/
+        AND contract.payment_sts = #{uncleared}
+        /*当日>提前还款失效日*/
+        AND CURDATE()>DATE(validity_date)
+    </select>
+
+</mapper>

@@ -1,0 +1,176 @@
+<div  ng-controller="orig_file_borrow_detail_controller">
+    <div>
+        <toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+    </div>
+    <div class="panel panel-default">
+        <form name="form" class="form-validation" novalidate>
+            <div class="panel-body wrapper-sm">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="form-group"><h1 class="m-n font-thin h4">借阅申请</h1></div>
+                        <div class="form-group pull-right">
+                            <div class="btn-group">
+                                <button class="btn btn-sm fms-button-margin-bottom btn-default m-b-xs" ng-click="backUp()" ng-if="backShow"><i class=""></i>返回</button>
+                                <button class="btn btn-sm fms-button-margin-bottom btn-success m-b-xs" ng-click="submitOrigFileBorrow()" ng-disabled="submit"><i class=""></i>提交</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <table border="1" class="table table-striped m-b-none" id="orig_file_borrow_table">
+            </table>
+
+            <!--借阅信息-->
+            <div class="panel-body wrapper-sm">
+                <!--归档信息-->
+                <div class="panel-body wrapper-sm">
+                    <div class="form-group row">
+                        <label class="col-sm-2 control-label text-right"><b class="form-text-black">归档编号</b>:</label>
+                        <div class="col-sm-2">
+                            <input type="text" name="fileRecordNo" placeholder="归档编号" class="form-control m-b-xs" ng-model="OrigFileBorrowPostVo.fileRecordNo" disabled>
+                        </div>
+
+                        <label class="col-sm-2 control-label text-right"><b class="form-text-black">领取方式</b><b class="form-error">*</b>:</label>
+                        <div class="col-sm-2">
+                            <select name="borrowGetWay" ng-model="OrigFileBorrowPostVo.borrowGetWay" ng-options="a.codeValue as a.codeValueName for a in 'borrowGetWay' | getList" class="form-control m-b-xs" required>
+                                <option value="">--请选择--</option>
+                            </select>
+                            <p>
+                                <span class="form-info" ng-show=" (form.borrowGetWay.$dirty && form.borrowGetWay.$error.required) || (form.borrowGetWay.$error.required && formValidate)">领取方式不能为空</span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">申请人</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <input type="text" name="borrowUser" placeholder="申请人" class="form-control m-b-xs" ng-model="OrigFileBorrowPostVo.borrowUser" required>
+                        <p>
+                            <span class="form-info" ng-show=" (form.borrowUser.$dirty && form.borrowUser.$error.required) || (form.borrowUser.$error.required && formValidate)">申请人不能为空</span>
+                        </p>
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">申请人联系方式</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <input type="text" name="borrowUserTel" placeholder="申请人联系方式" class="form-control m-b-xs" ng-model="OrigFileBorrowPostVo.borrowUserTel" ng-pattern="/^1[345789]\d{9}$/" required>
+                        <p>
+                            <span class="form-info" ng-show=" (form.borrowUserTel.$dirty && form.borrowUserTel.$error.required) || (form.borrowUserTel.$error.required && formValidate)">申请人联系方式不能为空</span>
+                            <span class="form-info" ng-show=" (form.borrowUserTel.$error.pattern && !form.borrowUserTel.$error.required) || (form.borrowUserTel.$error.pattern && formValidate && !form.borrowUserTel.$error.required)">请输入正确的联系方式</span>
+                        </p>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div ng-if="OrigFileBorrowPostVo.borrowPurpose == '02'">
+                        <label class="col-sm-2 control-label text-right"><b class="form-text-black">预计归还时间</b>:</label>
+                        <div class="col-sm-2">
+                            <input type="text" name="expectedReturnDate" placeholder="预计归还时间" class="form-control m-b-xs" ng-model="OrigFileBorrowPostVo.expectedReturnDate" date-picker>
+                        </div>
+                    </div>
+                    <div ng-if="OrigFileBorrowPostVo.borrowPurpose != '02'">
+                        <label class="col-sm-2 control-label text-right"><b class="form-text-black">预计归还时间</b><b class="form-error">*</b>:</label>
+                        <div class="col-sm-2">
+                            <input type="text" name="expectedReturnDate" placeholder="预计归还时间" class="form-control m-b-xs" ng-model="OrigFileBorrowPostVo.expectedReturnDate" date-picker required>
+                            <p>
+                                <span class="form-info" ng-show=" (form.expectedReturnDate.$dirty && form.expectedReturnDate.$error.required) || (form.expectedReturnDate.$error.required && formValidate)">预计归还时间不能为空</span>
+                            </p>
+                        </div>
+                    </div>
+
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">借阅用途</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <select name="borrowPurpose" ng-model="OrigFileBorrowPostVo.borrowPurpose" ng-options="a.codeValue as a.codeValueName for a in 'borrowPurpose' | getList"
+                                ng-selected="OrigFileBorrowPostVo.borrowPurpose == a.codeValue" class="form-control m-b-xs" required>
+                            <option value="">--请选择--</option>
+                        </select>
+                        <p>
+                            <span class="form-info" ng-show=" (form.borrowPurpose.$dirty && form.borrowPurpose.$error.required) || (form.borrowPurpose.$error.required && formValidate)">借阅用途不能为空</span>
+                        </p>
+                    </div>
+                </div>
+                <div ng-if="OrigFileBorrowPostVo.borrowPurpose == '02'" class="form-group row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">过户状态</b>:</label>
+                    <div class="col-sm-2">
+                        <input type="text" name="transferSts" placeholder="过户状态" class="form-control m-b-xs" ng-value="OrigFileBorrowPostVo.transferSts | getName:'transferSts'" disabled>
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">收款状态</b>:</label>
+                    <div class="col-sm-2">
+                        <input type="text" name="paymentSts" placeholder="收款状态" class="form-control m-b-xs" ng-value="OrigFileBorrowPostVo.paymentSts | getName:'paymentSts'" disabled>
+                    </div>
+                </div>
+                <div ng-if="OrigFileBorrowPostVo.borrowGetWay == '0'" class="form-group row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">邮寄详细地址</b>:</label>
+                    <div class="col-sm-6">
+                        <textarea type="text" name="postDetailAddress" placeholder="邮寄详细地址" class="form-control m-b-xs" ng-model="OrigFileBorrowPostVo.postDetailAddress"></textarea>
+                    </div>
+                </div>
+                <div ng-if="OrigFileBorrowPostVo.borrowGetWay != '0'" class="form-group row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">邮寄详细地址</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-6">
+                        <textarea type="text" name="postDetailAddress" placeholder="邮寄详细地址" class="form-control m-b-xs" ng-model="OrigFileBorrowPostVo.postDetailAddress" required></textarea>
+                        <p>
+                            <span class="form-info" ng-show=" (form.postDetailAddress.$dirty && form.postDetailAddress.$error.required) || (form.postDetailAddress.$error.required && formValidate)">邮寄详细地址不能为空</span>
+                        </p>
+                    </div>
+                </div>
+                <div class="form-group row" ng-if="OrigFileBorrowPostVo.flag == '1'">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">是否交押金</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <select name="depositFlag" ng-model="OrigFileBorrowPostVo.depositFlag" class="form-control m-b-xs" required>
+                            <option value="">---请选择---</option>
+                            <option ng-repeat="depositFlagObj in depositFlagList" value="{{depositFlagObj.codeValue}}" ng-selected="depositFlagObj.codeValue == OrigFileBorrowPostVo.depositFlag">{{depositFlagObj.codeValueName}}</option>
+                        </select>
+                        <p>
+                            <span class="form-info" ng-show=" (form.depositFlag.$dirty && form.depositFlag.$error.required) || (form.depositFlag.$error.required && formValidate)">是否交押金不能为空</span>
+                        </p>
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">押金金额</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-2" ng-if="!OrigFileBorrowPostVo.depositAmountFlag">
+                        <input type="number" name="depositAmount" placeholder="押金金额" class="form-control m-b-xs" ng-model="OrigFileBorrowPostVo.depositAmount" disabled>
+                    </div>
+                    <div class="col-sm-2" ng-if="OrigFileBorrowPostVo.depositAmountFlag">
+                        <input type="number" name="depositAmount" placeholder="押金金额" class="form-control m-b-xs" ng-model="OrigFileBorrowPostVo.depositAmount" required>
+                        <p>
+                            <span class="form-info" ng-show=" (form.depositAmount.$dirty && form.depositAmount.$error.required) || (form.depositAmount.$error.required && formValidate)">押金金额不能为空</span>
+                        </p>
+                    </div>
+                </div>
+                <div class="form-group row" ng-if="OrigFileBorrowPostVo.flag == '2'">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">是否交押金</b>:</label>
+                    <div class="col-sm-2">
+                        <select name="depositFlag" ng-model="OrigFileBorrowPostVo.depositFlag" class="form-control m-b-xs" disabled>
+                            <option value="">---请选择---</option>
+                            <option ng-repeat="depositFlagObj in depositFlagList" value="{{depositFlagObj.codeValue}}" ng-selected="depositFlagObj.codeValue == OrigFileBorrowPostVo.depositFlag">{{depositFlagObj.codeValueName}}</option>
+                        </select>
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">押金金额</b>:</label>
+                    <div class="col-sm-2">
+                        <input type="number" name="depositAmount" placeholder="押金金额" class="form-control m-b-xs" ng-model="OrigFileBorrowPostVo.depositAmount" disabled>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">备注</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-6">
+                        <textarea limit-word type="text" name="remark" placeholder="备注" class="form-control m-b-xs" ng-model="OrigFileBorrowPostVo.remark" required></textarea>
+                        <p>
+                            <span class="form-info" ng-show=" (form.remark.$dirty && form.remark.$error.required) || (form.remark.$error.required && formValidate)">备注不能为空</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!--&lt;!&ndash;附件信息&ndash;&gt;-->
+            <!--<div class="panel-body wrapper-sm">-->
+            <!--<div ng-include="'tpl/common/tree_file/tree_file.html'"></div>-->
+            <!--</div>-->
+            <!--附件信息-->
+            <div class="panel-body wrapper-sm" ng-if="httpData">
+                <tree-file-directive detail-flag="$root.yesNoFlag.yes" file-type="$parent.bizFileType" files="$parent.bizFilesList" not-upload="$parent.notUpload" not-upload-info="$parent.msgInfo"   not-file-type="$parent.notFileType" not-file-type-name="$parent.notFileTypeName">
+                </tree-file-directive>
+            </div>
+
+            <!--流程日志-->
+            <div ng-include="'tpl/common/process_log/process_log_list.html'"></div>
+        </form>
+    </div>
+</div>
+

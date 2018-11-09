@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.com.leadu.fms.data.finance.dao.ContOverdueDao">
+
+    <select id="selectOverdueInterestSum"
+            parameterType="cn.com.leadu.fms.pojo.finance.vo.contoverdue.ContOverdueVo"
+            resultType="java.math.BigDecimal">
+        select
+          sum(rest_overdue_amount)
+        FROM
+            cont_overdue
+        WHERE
+          del_flag = ${delete_exist}
+        AND  cont_no = #{contOverdueVo.contNo}
+        AND repay_status != #{contOverdueVo.repayStatus}
+    </select>
+
+    <select id="selectCountOverDueByContNo" parameterType="java.lang.String" resultType="java.lang.Integer">
+        SELECT count(1) FROM `cont_overdue` WHERE `cont_overdue`.repay_status != '2' AND `cont_overdue`.cont_no = #{contNo}
+        AND `cont_overdue`.del_flag = ${delete_exist} ;
+    </select>
+
+
+    <!-- 根据合同编号，查询逾期罚息总额 -->
+    <select id="selectContOverdueAmountByContNo" parameterType="java.lang.String" resultType="java.math.BigDecimal">
+        SELECT SUM(`cont_overdue`.overdue_amount) overdueAmount FROM `cont_overdue`
+        WHERE `cont_overdue`.cont_no = #{contNo}
+        <!-- 扣款状态不等于“2：成功”-->
+        AND `cont_overdue`.repay_status != '2'
+        AND `cont_overdue`.del_flag = ${delete_exist};
+    </select>
+
+    <select id="selectContOverdueAmountByApplyNo" parameterType="java.lang.String" resultType="java.math.BigDecimal">
+        SELECT SUM(cont_overdue.overdue_amount) FROM cont_overdue RIGHT JOIN contract
+        ON contract.cont_no = cont_overdue.cont_no
+        WHERE contract.apply_no = #{applyNo}
+        AND cont_overdue.del_flag = ${delete_exist};
+    </select>
+
+    <!--根据合同号关联查询逾期罚息表和还款计划表-->
+    <select id="selectContOverdueByCont" parameterType="java.lang.String" resultType="cn.com.leadu.fms.pojo.finance.vo.contoverdue.ContOverdueVo">
+        SELECT
+        contOverdue.*,
+        contRepaySked.rent eachRent,
+        contRepaySked.repay_date
+        FROM
+        cont_overdue contOverdue
+        LEFT JOIN
+        cont_repay_sked contRepaySked ON contOverdue.period = contRepaySked.period
+        AND contOverdue.cont_no = contRepaySked.cont_no
+        AND contRepaySked.del_flag = ${delete_exist}
+        WHERE contOverdue.del_flag = ${delete_exist}
+        <if test="#{contNo} != null" >
+            AND contOverdue.cont_no = #{contNo}
+        </if>
+        ORDER BY contOverdue.period
+    </select>
+</mapper>

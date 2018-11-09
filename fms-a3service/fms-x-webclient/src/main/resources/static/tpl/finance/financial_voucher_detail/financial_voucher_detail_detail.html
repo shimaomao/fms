@@ -1,0 +1,169 @@
+<div  ng-controller="financial_voucher_detail_detail_controller">
+    <div>
+        <toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+    </div>
+    <div class="panel panel-default">
+        <div class="row" style="margin: 0; padding: 10px; border: 1px solid #dddddd">
+            <div class="form-group pull-right">
+                <div class="btn-group">
+                    <!--<button class="btn btn-primary m-b-xs btn-sm fms-button-margin-bottom" ng-click="modify()"><i class="fa"></i>保存</button>-->
+                    <button class="btn btn-default m-b-xs btn-sm fms-button-margin-bottom" ng-click="goBack()"><i class="fa"></i>返回</button>
+                </div>
+            </div>
+        </div>
+
+        <form name="form" class="form-validation" novalidate>
+            <div class="panel-body">
+
+                <div class="form-group row">
+                    <div class="col-sm-6">
+                        <label class="col-sm-4 control-label text-right"><b class="form-text-black">凭证类型</b>:</label>
+                        <div class="col-sm-4">
+                            <!--<input type="text" name="voucherType" placeholder="请输入凭证类型" class="form-control m-b-xs" ng-model="financialVoucherDetail.voucherType"  required disabled>-->
+                            <!--<button class="btn btn-primary btn-sm m-b-xs fms-button-margin-bottom" ng-click="selectVoucherType()"><i class="fa fa-pencil-square-o m-r-xs"></i>选择</button>-->
+                            <!--<p>-->
+                                <!--<span class="form-info" ng-show=" (form.voucherType.$dirty && form.voucherType.$error.required) || (form.voucherType.$error.required && formValidate)">凭证类型不能为空</span>-->
+                            <!--</p>-->
+                            <label class="col-sm-12 control-label text-left">{{financialVoucherDetail.voucherType}}</label>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <label class="col-sm-4 control-label text-right"><b class="form-text-black">分录号</b>:</label>
+                        <div class="col-sm-4">
+                            <!--<input type="text" name="voucherDetailNo" placeholder="分录号" class="form-control m-b-xs" ng-model="financialVoucherDetail.voucherDetailNo"  required >-->
+                            <!--<p>-->
+                                <!--<span class="form-info" ng-show=" (form.voucherDetailNo.$dirty && form.voucherDetailNo.$error.required) || (form.voucherDetailNo.$error.required && formValidate)">分录号不能为空</span>-->
+                            <!--</p>-->
+                            <label class="col-sm-12 control-label text-left">{{financialVoucherDetail.voucherDetailNo}}</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-sm-6">
+                        <label class="col-sm-4 control-label text-right"><b class="form-text-black">核算账簿</b>:</label>
+                        <div class="col-sm-4">
+                            <!--<input type="text" name="voucherAccountNo" placeholder="核算账簿" class="form-control m-b-xs" ng-model="financialVoucherDetail.voucherAccountNo"  required >-->
+                            <!--<p>-->
+                                <!--<span class="form-info" ng-show=" (form.voucherAccountNo.$dirty && form.voucherAccountNo.$error.required) || (form.voucherAccountNo.$error.required && formValidate)">核算账簿不能为空</span>-->
+                            <!--</p>-->
+                            <label class="col-sm-12 control-label text-left">{{financialVoucherDetail.voucherAccountNo}}</label>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <label class="col-sm-4 control-label text-right"><b class="form-text-black">附单据数</b>:</label>
+                        <div class="col-sm-4">
+                            <!--<input type="text" name="attachCount" placeholder="附单据数" class="form-control m-b-xs" ng-model="financialVoucherDetail.attachCount"  required >-->
+                            <!--<p>-->
+                                <!--<span class="form-info" ng-show=" (form.attachCount.$dirty && form.attachCount.$error.required) || (form.attachCount.$error.required && formValidate)">附单据数不能为空</span>-->
+                            <!--</p>-->
+                            <label class="col-sm-12 control-label text-left">{{financialVoucherDetail.attachCount}}</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-sm-6">
+                        <label class="col-sm-4 control-label text-right"><b class="form-text-black">科目代码</b>:</label>
+                        <div class="col-sm-4 ">
+                            <!--<input type="text" name="subjectCd" placeholder="请输入科目代码" class="form-control m-b-xs" ng-model="financialVoucherDetail.subjectCd"  required disabled>-->
+                            <!--<button class="btn btn-primary btn-sm m-b-xs fms-button-margin-bottom" ng-click="selectSubjectCd()"><i class="fa fa-pencil-square-o m-r-xs"></i>选择</button>-->
+                            <!--<p>-->
+                                <!--<span class="form-info" ng-show=" (form.subjectCd.$dirty && form.subjectCd.$error.required) || (form.subjectCd.$error.required && formValidate)">科目代码不能为空</span>-->
+                            <!--</p>-->
+                            <label class="col-sm-12 control-label text-left">{{financialVoucherDetail.subjectCd}}</label>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <label class="col-sm-4 control-label text-right"><b class="form-text-black">摘要格式</b>:</label>
+                        <div class="col-sm-4">
+                            <!--<input type="text" name="summary" placeholder="请输入摘要格式" class="form-control m-b-xs" ng-model="financialVoucherDetail.summary"  required >-->
+                            <!--<p>-->
+                                <!--<span class="form-info" ng-show=" (form.summary.$dirty && form.summary.$error.required) || (form.summary.$error.required && formValidate)">摘要格式不能为空</span>-->
+                            <!--</p>-->
+                            <label class="col-sm-12 control-label text-left">{{financialVoucherDetail.summary}}</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-sm-6">
+                        <label class="col-sm-4 control-label text-right"><b class="form-text-black">借贷方向</b>:</label>
+                        <div class="col-sm-4">
+                            <!--<input type="text" name="crdrFlag" placeholder="借贷方向" class="form-control m-b-xs" ng-model="financialVoucherDetail.crdrFlag"  required >-->
+                            <!--<p>-->
+                                <!--<span class="form-info" ng-show=" (form.crdrFlag.$dirty && form.crdrFlag.$error.required) || (form.crdrFlag.$error.required && formValidate)">借贷方向不能为空</span>-->
+                            <!--</p>-->
+                            <label class="col-sm-12 control-label text-left">{{financialVoucherDetail.crdrFlagName}}</label>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <label class="col-sm-4 control-label text-right"><b class="form-text-black">借方金额</b>:</label>
+                        <div class="col-sm-4">
+                            <!--<input type="text" name="debitAmountItem" placeholder="借方金额" class="form-control m-b-xs" ng-model="financialVoucherDetail.debitAmountItem"  required >-->
+                            <!--<p>-->
+                                <!--<span class="form-info" ng-show=" (form.debitAmountItem.$dirty && form.debitAmountItem.$error.required) || (form.debitAmountItem.$error.required && formValidate)">借方金额不能为空</span>-->
+                            <!--</p>-->
+                            <label class="col-sm-12 control-label text-left">{{financialVoucherDetail.debitAmountItem}}</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-sm-6">
+                        <label class="col-sm-4 control-label text-right"><b class="form-text-black">贷方金额</b>:</label>
+                        <div class="col-sm-4">
+                            <!--<input type="text" name="creditAmountItem" placeholder="贷方金额" class="form-control m-b-xs" ng-model="financialVoucherDetail.creditAmountItem"  required >-->
+                            <!--<p>-->
+                                <!--<span class="form-info" ng-show=" (form.creditAmountItem.$dirty && form.creditAmountItem.$error.required) || (form.creditAmountItem.$error.required && formValidate)">贷方金额不能为空</span>-->
+                            <!--</p>-->
+                            <label class="col-sm-12 control-label text-left">{{financialVoucherDetail.creditAmountItem}}</label>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <label class="col-sm-4 control-label text-right"><b class="form-text-black">是否循环</b>:</label>
+                        <div class="col-sm-4">
+                            <!--<input type="text" name="cycleFlag" placeholder="请输入是否循环" class="form-control m-b-xs" ng-model="financialVoucherDetail.cycleFlag"  required >-->
+                            <!--<select name="cycleFlag" ng-model="financialVoucherDetail.cycleFlag" class="form-control m-b-xs" required>-->
+                                <!--<option value="">-&#45;&#45;请选择-&#45;&#45;</option>-->
+                                <!--<option ng-repeat="cycleFlag in yesNoFlagList" value="{{cycleFlag.codeValue}}">{{cycleFlag.codeValueName}}</option>-->
+                            <!--</select>-->
+                            <!--<p>-->
+                                <!--<span class="form-info" ng-show=" (form.cycleFlag.$dirty && form.cycleFlag.$error.required) || (form.cycleFlag.$error.required && formValidate)">是否循环不能为空</span>-->
+                            <!--</p>-->
+                            <label class="col-sm-12 control-label text-left">{{financialVoucherDetail.cycleFlagName}}</label>
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <div class="form-group row">
+                    <div class="col-sm-6">
+                        <label class="col-sm-4 control-label text-right"><b class="form-text-black">循环对象</b>:</label>
+                        <div class="col-sm-4">
+                            <!--<input type="text" name="cycleList" placeholder="请输入循环对象" class="form-control m-b-xs" ng-model="financialVoucherDetail.cycleList"  required >-->
+                            <!--<p>-->
+                                <!--<span class="form-info" ng-show=" (form.cycleList.$dirty && form.cycleList.$error.required) || (form.cycleList.$error.required && formValidate)">循环对象不能为空</span>-->
+                            <!--</p>-->
+                            <label class="col-sm-12 control-label text-left">{{financialVoucherDetail.cycleList}}</label>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <label class="col-sm-4 control-label text-right"><b class="form-text-black">备注</b>:</label>
+                        <div class="col-sm-4">
+                            <!--<input type="text" name="voucherDetailMemo" placeholder="请输入备注" class="form-control m-b-xs" ng-model="financialVoucherDetail.voucherDetailMemo"  required >-->
+                            <!--<p>-->
+                                <!--<span class="form-info" ng-show=" (form.voucherDetailMemo.$dirty && form.voucherDetailMemo.$error.required) || (form.voucherDetailMemo.$error.required && formValidate)">备注不能为空</span>-->
+                            <!--</p>-->
+                            <label class="col-sm-12 control-label text-left">{{financialVoucherDetail.voucherDetailMemo}}</label>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+
+        </form>
+    </div>
+</div>

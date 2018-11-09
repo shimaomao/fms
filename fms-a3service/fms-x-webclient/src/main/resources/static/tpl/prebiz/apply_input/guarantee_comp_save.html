@@ -1,0 +1,303 @@
+<style>
+    .modal-dialog{
+        width: 1150px;
+    }
+</style>
+<div class="modal-header">
+    <h4 class="modal-title">添加担保企业信息</h4>
+</div>
+<div class="modal-body">
+    <form name="form" class="form-validation" novalidate>
+            <div class="row" style="margin: 5px; padding-right: 50px;">
+                <div class="row line-lg" style="font-weight: bold;font-size: 14px;">担保企业信息</div>
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">企业名称</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <input type="text" title="{{guaranteeComp.name}}" name="name" placeholder="请输入企业名称" class="form-control m-b-xs" ng-model="guaranteeComp.name"  required >
+                        <p>
+                            <span class="form-info" ng-show=" (form.name.$dirty && form.name.$error.required) || (form.name.$error.required && formValidate)">企业名称不能为空</span>
+                        </p>
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">企业性质</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <select name="compType" ng-model="guaranteeComp.compType" class="form-control m-b-xs" required>
+                            <option value="">---请选择---</option>
+                            <option ng-repeat="compType in compTypeList" value="{{compType.codeValue}}" ng-selected="guaranteeComp.compType==compType.codeValue">{{compType.codeValueName}}</option>
+                        </select>
+                        <p>
+                            <span class="form-info" ng-show=" (form.compType.$dirty && form.compType.$error.required) || (form.compType.$error.required && formValidate)">企业性质不能为空</span>
+                        </p>
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">单位行业类别</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <select name="industry" ng-model="guaranteeComp.industry" ng-options="a.codeValue as a.codeValueName for a in 'industryType' | getList" class="form-control m-b-xs" required>
+                            <option value="">--请选择--</option>
+                        </select>
+                        <p>
+                            <span class="form-info" ng-show=" (form.industry.$dirty && form.industry.$error.required) || (form.industry.$error.required && formValidate)">单位行业类别不能为空</span>
+                        </p>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">统一社会信用代码</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-3">
+                        <div class="row">
+                            <div class="col-sm-8">
+                                <input type="text" title="{{guaranteeComp.socialCertifNo}}" name="socialCertifNo" placeholder="请输入统一社会信用代码" class="form-control m-b-xs" ng-model="guaranteeComp.socialCertifNo" ng-pattern="/^[0-9a-zA-Z]+$/" required >
+                                <p>
+                                    <span class="form-info" ng-show=" (form.socialCertifNo.$dirty && form.socialCertifNo.$error.required) || (form.socialCertifNo.$error.required && formValidate)">统一社会信用代码不能为空</span>
+                                    <span class="form-info" ng-show=" (form.socialCertifNo.$error.pattern && !form.socialCertifNo.$error.required) || (form.socialCertifNo.$error.pattern && formValidate && !form.socialCertifNo.$error.required)">请输入合法的代码</span>
+                                </p>
+                            </div>
+                            <div class="col-sm-4">
+                                <button style="margin-left: -30px;" type="button" class="btn btn-sm btn-default" ng-click="selectSocialCertifNo();">选择</button>
+                            </div>
+                        </div>
+                    </div>
+                    <label style="white-space: nowrap" class="col-sm-1 control-label text-right"><b class="form-text-black">成立日期</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <input type="text" name="establDate" placeholder="请输入成立日期" class="form-control m-b-xs" ng-model="guaranteeComp.establDate" date-picker  required >
+                        <p>
+                            <span class="form-info" ng-show=" (form.establDate.$dirty && form.establDate.$error.required) || (form.establDate.$error.required && formValidate)">成立日期不能为空</span>
+                        </p>
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">成立年限</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <input type="text" name="establYear" placeholder="请输入成立年限" class="form-control m-b-xs" ng-model="guaranteeComp.establYear" required >
+                        <p>
+                            <span class="form-info" ng-show=" (form.establYear.$dirty && form.establYear.$error.required) || (form.establYear.$error.required && formValidate)">成立年限不能为空</span>
+                        </p>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">法定代表人</b>:</label>
+                    <div class="col-sm-2">
+                        <input type="text" name="compLegalRep" placeholder="请输入法定代表人" class="form-control m-b-xs" ng-model="guaranteeComp.compLegalRep" >
+                        <p>
+                            <!--
+                                                        <span class="form-info" ng-show=" (form.compLegalRep.$dirty && form.compLegalRep.$error.required) || (form.compLegalRep.$error.required && formValidate)">法定代表人不能为空</span>
+                            -->
+                        </p>
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">法人证件类型</b>:</label>
+                    <div class="col-sm-2">
+                        <select name="certifType" ng-model="guaranteeComp.certifType" ng-change="guaranteeCompValidate()" class="form-control m-b-xs">
+                            <option value="">---请选择---</option>
+                            <option ng-repeat="certifType in certifTypeList" value="{{certifType.codeValue}}" ng-selected="guaranteeComp.certifType==certifType.codeValue">{{certifType.codeValueName}}</option>
+                        </select>
+                        <p>
+                            <!--
+                                                        <span class="form-info" ng-show=" (form.certifType.$dirty && form.certifType.$error.required) || (form.certifType.$error.required && formValidate)">法人证件类型不能为空</span>
+                            -->
+                        </p>
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">法人证件号码</b>:</label>
+                    <div class="col-sm-2">
+                        <input type="text" title="{{guaranteeComp.certifNo}}" id="guaranteeCompCertiNo" name="certifNo" placeholder="请输入法人证件号码" class="form-control m-b-xs"  ng-model="guaranteeComp.certifNo" ng-pattern="guaranteeCompCertiNo" >
+                        <p>
+                            <!--
+                                                        <span class="form-info" ng-show=" (form.certifNo.$dirty && form.certifNo.$error.required) || (form.certifNo.$error.required && formValidate)">法人证件号码不能为空</span>
+                            -->
+                            <span class="form-info" ng-show=" (form.certifNo.$error.pattern && !form.certifNo.$error.required) || (form.certifNo.$error.pattern && certifNo && !form.certifNo.$error.required)">请输入合法的证件号</span>
+                        </p>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">法人手机号码</b>:</label>
+                    <div class="col-sm-2">
+                        <input type="text" name="mobileNo" placeholder="请输入法人手机号码" class="form-control m-b-xs" ng-model="guaranteeComp.mobileNo" ng-pattern="/^1[345789]\d{9}$/" >
+                        <p>
+                            <!--
+                                                        <span class="form-info" ng-show=" (form.mobileNo.$dirty && form.mobileNo.$error.required) || (form.mobileNo.$error.required && formValidate)">手机号不能为空</span>
+                            -->
+                            <span class="form-info" ng-show=" (form.mobileNo.$error.pattern && !form.mobileNo.$error.required) || (form.mobileNo.$error.pattern && formValidate && !form.mobileNo.$error.required)">请输入正确的手机号</span>
+                        </p>
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">企业联系人</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <input type="text" name="compContactPers" placeholder="请输入企业联系人" class="form-control m-b-xs" ng-model="guaranteeComp.compContactPers"  required >
+                        <p>
+                            <span class="form-info" ng-show=" (form.compContactPers.$dirty && form.compContactPers.$error.required) || (form.compContactPers.$error.required && formValidate)">企业联系人不能为空</span>
+                        </p>
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">联系人手机号码</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <input type="text" name="contactMobno" placeholder="请输入联系人手机号码" class="form-control m-b-xs" ng-model="guaranteeComp.contactMobno" ng-pattern="/^1[345789]\d{9}$/" required >
+                        <p>
+                            <span class="form-info" ng-show=" (form.contactMobno.$dirty && form.contactMobno.$error.required) || (form.contactMobno.$error.required && formValidate)">联系人手机号码不能为空</span>
+                            <span class="form-info" ng-show=" (form.contactMobno.$error.pattern && !form.contactMobno.$error.required) || (form.contactMobno.$error.pattern && formValidate && !form.contactMobno.$error.required)">请输入正确的电话号码</span>
+                        </p>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">企业联系电话</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <input type="text" name="compTel" placeholder="请输入企业联系电话" class="form-control m-b-xs" ng-model="guaranteeComp.compTel" ng-pattern="/^0\d{2,3}-\d{7,8}$/"  required >
+                        <p>
+                            <span class="form-info" ng-show=" (form.compTel.$dirty && form.compTel.$error.required) || (form.compTel.$error.required && formValidate)">电话不能为空</span>
+                            <span class="form-info" ng-show=" (form.compTel.$error.pattern && !form.compTel.$error.required) || (form.compTel.$error.pattern && formValidate && !form.compTel.$error.required)">请输入正确的电话号码</span>
+                        </p>
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">注册省份</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <select name="registerProv"  ng-model="guaranteeComp.registerProv" class="form-control m-b-xs" ng-change="changeRegisterProv()" required>
+                            <option value="">---请选择---</option>
+                            <option value="{{provinceObj.areaCode}}" ng-repeat="provinceObj in provinceList" ng-selected="guaranteeComp.registerProv==provinceObj.areaCode">{{provinceObj.areaName}}</option>
+                        </select>
+                        <p>
+                            <span class="form-info" ng-show=" (form.registerProv.$dirty && form.registerProv.$error.required) || (form.registerProv.$error.required && formValidate)">注册省份不能为空</span>
+                        </p>
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">注册城市</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <select name="registerCity" ng-model="guaranteeComp.registerCity" class="form-control m-b-xs" ng-change="changeRegisterCity()" required>
+                            <option value="">---请选择---</option>
+                            <option value="{{cityObj.areaCode}}" ng-selected="cityObj.areaCode==guaranteeComp.registerCity?1:0" ng-repeat="cityObj in registerCityList[guaranteeComp.registerProv]">{{cityObj.areaName}}</option>
+                        </select>
+                        <p>
+                            <span class="form-info" ng-show=" (form.registerCity.$dirty && form.registerCity.$error.required) || (form.registerCity.$error.required && formValidate)">注册城市不能为空</span>
+                        </p>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">注册区县</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <select name="registerCounty"  ng-model="guaranteeComp.registerCounty" class="form-control m-b-xs" required>
+                            <option value="" >---请选择---</option>
+                            <option value="{{areaObj.areaCode}}" ng-selected="areaObj.areaCode==guaranteeComp.registerCounty?1:0" ng-repeat="areaObj in registerCountyList[guaranteeComp.registerCity]">{{areaObj.areaName}}</option>
+                        </select>
+                        <p>
+                            <span class="form-info" ng-show=" (form.registerCounty.$dirty && form.registerCounty.$error.required) || (form.registerCounty.$error.required && formValidate)">注册区县不能为空</span>
+                        </p>
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">注册地址</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-6">
+                        <input type="text" name="registerAddr" placeholder="请输入经营详细地址" class="form-control m-b-xs" ng-model="guaranteeComp.registerAddr"  required >
+                        <p>
+                            <span class="form-info" ng-show=" (form.registerAddr.$dirty && form.registerAddr.$error.required) || (form.registerAddr.$error.required && formValidate)">经营详细地址不能为空</span>
+                        </p>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">经营省份</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <select name="compProv"  ng-model="guaranteeComp.compProv" class="form-control m-b-xs" ng-change="changeCountry()" required>
+                            <option value="">---请选择---</option>
+                            <option value="{{provinceObj.areaCode}}" ng-repeat="provinceObj in provinceList" ng-selected="guaranteeComp.compProv==provinceObj.areaCode">{{provinceObj.areaName}}</option>
+                        </select>
+                        <p>
+                            <span class="form-info" ng-show=" (form.compProv.$dirty && form.compProv.$error.required) || (form.compProv.$error.required && formValidate)">经营省份不能为空</span>
+                        </p>
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">经营城市</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <select name="compCity" ng-model="guaranteeComp.compCity" class="form-control m-b-xs" ng-change="changeCity()" required>
+                            <option value="">---请选择---</option>
+                            <option value="{{cityObj.areaCode}}" ng-selected="cityObj.areaCode==guaranteeComp.compCity?1:0" ng-repeat="cityObj in cityList[guaranteeComp.compProv]">{{cityObj.areaName}}</option>
+                        </select>
+                        <p>
+                            <span class="form-info" ng-show=" (form.compCity.$dirty && form.compCity.$error.required) || (form.compCity.$error.required && formValidate)">经营城市不能为空</span>
+                        </p>
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">经营区县</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <select name="compCounty"  ng-model="guaranteeComp.compCounty" class="form-control m-b-xs" required>
+                            <option value="" >---请选择---</option>
+                            <option value="{{areaObj.areaCode}}" ng-selected="areaObj.areaCode==guaranteeComp.compCounty?1:0" ng-repeat="areaObj in areaList[guaranteeComp.compCity]">{{areaObj.areaName}}</option>
+                        </select>
+                        <p>
+                            <span class="form-info" ng-show=" (form.compCounty.$dirty && form.compCounty.$error.required) || (form.compCounty.$error.required && formValidate)">经营区县不能为空</span>
+                        </p>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">经营地址</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-6">
+                        <input type="text" title="{{guaranteeComp.compAddr}}" name="compAddr" placeholder="请输入经营详细地址" class="form-control m-b-xs" ng-model="guaranteeComp.compAddr"  required >
+                        <p>
+                            <span class="form-info" ng-show=" (form.compAddr.$dirty && form.compAddr.$error.required) || (form.compAddr.$error.required && formValidate)">经营详细地址不能为空</span>
+                        </p>
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">经营地址类型</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <select name="compAddrType" ng-model="guaranteeComp.compAddrType" ng-options="a.codeValue as a.codeValueName for a in 'compAddrType' | getList" class="form-control m-b-xs" required>
+                            <option value="">--请选择--</option>
+                        </select>
+                        <p>
+                            <span class="form-info" ng-show=" (form.compAddrType.$dirty && form.compAddrType.$error.required) || (form.compAddrType.$error.required && formValidate)">经营地址类型不能为空</span>
+                        </p>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">承租人与担保人关系</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <select name="relation" ng-model="guaranteeComp.relation" class="form-control m-b-xs" required>
+                            <option value="">---请选择---</option>
+                            <option ng-repeat="relation in relationTypeCompList" value="{{relation.codeValue}}" ng-selected="guaranteeComp.relation==relation.codeValue">{{relation.codeValueName}}</option>
+                        </select>
+                        <p>
+                            <span class="form-info" ng-show=" (form.relation.$dirty && form.relation.$error.required) || (form.relation.$error.required && formValidate)">承租人与担保人关系不能为空</span>
+                        </p>
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">担保人与担保人关系</b><b ng-show="isRequire" class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <select name="guaRelation" ng-model="guaranteeComp.guaRelation" class="form-control m-b-xs" ng-required="isRequire">
+                            <option value="">---请选择---</option>
+                            <option ng-repeat="relation in relationTypeCompList2" value="{{relation.codeValue}}" ng-selected="guaranteeComp.guaRelation==relation.codeValue">{{relation.codeValueName}}</option>
+                        </select>
+                        <p>
+                            <span class="form-info" ng-show=" (form.guaRelation.$dirty && form.guaRelation.$error.required) || (form.guaRelation.$error.required && formValidate)">担保人与担保人关系不能为空</span>
+                        </p>
+                    </div>
+                </div>
+                <div class="form-group row" ng-if="guaranteeComp.compAddrType==0">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">购买时间</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <input type="text" name="buyTime" placeholder="请输入购买时间" class="form-control m-b-xs" ng-model="guaranteeComp.buyTime" date-picker  required >
+                        <p>
+                            <span class="form-info" ng-show=" (form.buyTime.$dirty && form.buyTime.$error.required) || (form.buyTime.$error.required && formValidate)">购买时间不能为空</span>
+                        </p>
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">建筑面积</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <input type="text" name="constructionArea" placeholder="请输入建筑面积" class="form-control m-b-xs" ng-model="guaranteeComp.constructionArea" ng-pattern="/^[0-9]+([.]{1}[0-9]+){0,1}$/"  required >
+                        <p>
+                            <span class="form-info" ng-show=" (form.constructionArea.$dirty && form.constructionArea.$error.required) || (form.constructionArea.$error.required && formValidate)">建筑面积不能为空</span>
+                            <span class="form-info" ng-show=" (form.constructionArea.$error.pattern && !form.constructionArea.$error.required) || (form.constructionArea.$error.pattern && formValidate && !form.constructionArea.$error.required)">请输入合法的数值</span>
+                        </p>
+                    </div>
+                </div>
+                <div class="form-group row" ng-if="guaranteeComp.compAddrType==1">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">租赁时间</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <input type="text" name="leaseTime" placeholder="请输入租赁时间" class="form-control m-b-xs" ng-model="guaranteeComp.leaseTime" date-picker  required >
+                        <p>
+                            <span class="form-info" ng-show=" (form.leaseTime.$dirty && form.leaseTime.$error.required) || (form.leaseTime.$error.required && formValidate)">租赁时间不能为空</span>
+                        </p>
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">面积</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <input type="text" name="leaseArea" placeholder="请输入面积" class="form-control m-b-xs" ng-model="guaranteeComp.leaseArea" ng-pattern="/^[0-9]+([.]{1}[0-9]+){0,1}$/"  required >
+                        <p>
+                            <span class="form-info" ng-show=" (form.leaseArea.$dirty && form.leaseArea.$error.required) || (form.leaseArea.$error.required && formValidate)">面积不能为空</span>
+                            <span class="form-info" ng-show=" (form.leaseArea.$error.pattern && !form.leaseArea.$error.required) || (form.leaseArea.$error.pattern && formValidate && !form.leaseArea.$error.required)">请输入合法的数值</span>
+                        </p>
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">租金(元/月)</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <input type="text" name="rent" placeholder="请输入租金" class="form-control m-b-xs" ng-model="guaranteeComp.rent" ng-pattern="/^[0-9]+([.]{1}[0-9]+){0,1}$/"  required >
+                        <p>
+                            <span class="form-info" ng-show=" (form.rent.$dirty && form.rent.$error.required) || (form.rent.$error.required && formValidate)">租金不能为空</span>
+                            <span class="form-info" ng-show=" (form.rent.$error.pattern && !form.rent.$error.required) || (form.rent.$error.pattern && formValidate && !form.rent.$error.required)">请输入合法的数值</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+    </form>
+</div>
+<div class="modal-footer ng-scope">
+    <div class="text-center">
+    <button type="button" class="btn btn-default" ng-click="close()">取消</button>
+    <button type="submit" class="btn btn-success" ng-disabled="submit" ng-click="save()">新增</button>
+    </div>
+    </div>

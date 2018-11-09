@@ -1,0 +1,209 @@
+
+<div  ng-controller="contract_list_controller">
+    <div>
+        <toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-body wrapper-sm">
+            <div class="keyUp">
+                <div class="row">
+                    <div class="col-sm-2">
+                        <div class="form-group">
+                            <label class="sr-only" >合同编号 </label>
+                            <input class="form-control m-b-xs" ng-model="params.contNo" placeholder="请输入合同编号">
+                        </div>
+                    </div>
+                    <div class="col-sm-2">
+                        <div class="form-group">
+                            <label class="sr-only" >申请编号 </label>
+                            <input class="form-control m-b-xs" ng-model="params.applyNo" placeholder="请输入申请编号">
+                        </div>
+                    </div>
+                    <div class="col-sm-2">
+                        <div class="form-group">
+                            <label class="sr-only" >承租人 </label>
+                            <input class="form-control m-b-xs" ng-model="params.name" placeholder="请输入承租人">
+                        </div>
+                    </div>
+                    <div class="col-sm-2">
+                        <div class="form-group">
+                            <label class="sr-only" >出租人区域 </label>
+                            <input class="form-control m-b-xs" ng-model="params.groupDistrict" placeholder="请输入出租人区域">
+                        </div>
+                    </div>
+                    <div class="col-sm-2">
+                        <div class="form-group">
+                            <select ng-model="params.companyType1" class="form-control m-b-xs">
+                                <option value="">---选择申请类型---</option>
+                                <option value="{{companyTypeObj.codeValue}}" ng-repeat="companyTypeObj in companyTypeList" ng-selected="params.companyType == companyTypeObj.codeValue">{{companyTypeObj.codeValueName}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-sm-2">
+                        <div class="form-group">
+                            <select ng-model="params.bizStatus" class="form-control m-b-xs">
+                                <option value="">---选择申请状态---</option>
+                                <option value="{{bizStatusObj.codeValue}}" ng-if="bizStatusObj.codeValue.startsWith($root.bizTypes.contract)" ng-repeat="bizStatusObj in bizStatusList" ng-selected="params.bizStatus == bizStatusObj.codeValue">{{bizStatusObj.codeValueName}}</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-2">
+                        <div class="form-group">
+                            <label class="sr-only" >车架号 </label>
+                            <input class="form-control m-b-xs" ng-model="params.vinNo" placeholder="请输入车架号">
+                        </div>
+                    </div>
+                    <div class="col-sm-2">
+                        <div class="form-group">
+                            <label class="sr-only" >产品名称 </label>
+                            <input class="form-control m-b-xs" ng-model="params.productName" placeholder="请输入产品名称">
+                        </div>
+                    </div>
+                    <div class="col-sm-2">
+                        <div class="form-group">
+                            <label class="sr-only" >担保人 </label>
+                            <input class="form-control m-b-xs" ng-model="params.guarantee" placeholder="请输入担保人">
+                        </div>
+                    </div>
+                    <div class="col-sm-2">
+                        <div class="form-group">
+                            <label class="sr-only" >起始时间 </label>
+                            <input id="validStartDate" type="text" name="validStartDate" placeholder="请输入合同生效起始日"
+                                   class="form-control m-b-xs" ng-model="params.validStartTime" date-picker="{{maxDate}}">
+                        </div>
+                    </div>
+                    <div class="col-sm-2">
+                        <div class="form-group">
+                            <label class="sr-only" >结束时间 </label>
+                            <input id="validEndDate" type="text" name="validEndDate" placeholder="请输入合同生效结束日"
+                                   class="form-control m-b-xs" ng-model="params.validEndTime" date-picker="{{minDate}}">
+                        </div>
+                    </div>
+                    <div class="col-sm-2">
+                        <div class="form-group">
+                            <select ng-model="params.licenseAttr" class="form-control m-b-xs">
+                                <option value="">---选择业务类型---</option>
+                                <option value="{{licenseAttrObj.codeValue}}" ng-repeat="licenseAttrObj in licenseAttrList" ng-selected="params.licenseAttr == licenseAttrObj.codeValue">{{licenseAttrObj.codeValueName}}</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-2">
+                        <div class="form-group">
+                            <select ng-model="params.paymentSts" class="form-control m-b-xs">
+                                <option value="">---选择还款状态---</option>
+                                <option value="{{paymentStsObj.codeValue}}" ng-repeat="paymentStsObj in paymentStsList" ng-selected="params.paymentSts == paymentStsObj.codeValue">{{paymentStsObj.codeValueName}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-sm-2">
+                        <div class="form-group">
+                            <label class="sr-only" >起始时间 </label>
+                            <!--<input class="form-control m-b-xs" ng-model="startTime" placeholder="起始时间">-->
+                            <input id="validStartDate2" type="text" name="validStartDate2" placeholder="请输入合同生成起始日"
+                                   class="form-control m-b-xs" ng-model="params.validStartTime2"
+                                   onfocus="WdatePicker({onpicked: function(){$(this).trigger('change')},dateFmt:'yyyy-MM-dd',skin:'twoer',maxDate:'#F{$dp.$D(\'validEndDate2\')}'})"
+                                   autocomplete="off">
+                        </div>
+                    </div>
+                    <div class="col-sm-2">
+                        <div class="form-group">
+                            <label class="sr-only" >结束时间 </label>
+                            <!--<input class="form-control m-b-xs" ng-model="endTime" placeholder="结束时间">-->
+                            <input id="validEndDate2" type="text" name="validEndDate2" placeholder="请输入合同生成结束日"
+                                   class="form-control m-b-xs"
+                                   ng-model="params.validEndTime2"
+                                   onfocus="WdatePicker({onpicked: function(){$(this).trigger('change')},dateFmt:'yyyy-MM-dd',skin:'twoer',minDate:'#F{$dp.$D(\'validStartDate2\')}',validStartDate2:'#F{$dp.$D(\'validStartDate2\',{d:+1})}'})"
+                                   autocomplete="off">
+                        </div>
+                    </div>
+
+                    <div class="col-sm-2">
+                        <div class="form-group">
+                            <label class="sr-only" >还款日 </label>
+                            <input class="form-control m-b-xs" ng-model="params.repayDay" placeholder="请输入还款日">
+                        </div>
+                    </div>
+
+                    <!--<div class="col-lg-2">
+                        <div class="form-group">
+                            <label class="sr-only" >租赁期限开始日 </label>
+                            <input class="form-control m-b-xs" ng-model="params.leaseTermStartDate" placeholder="请输入租赁期限开始日" date-picker  onchange="">
+                        </div>
+                    </div>
+
+
+                    <div class="col-lg-2">
+                        <div class="form-group">
+                            <label class="sr-only" >租赁期限结束日 </label>
+                            <input class="form-control m-b-xs" ng-model="params.leaseTermEndDate" placeholder="请输入租赁期限结束日" date-picker  onchange="">
+                        </div>
+                    </div>-->
+
+                    <div class="col-lg-2">
+                        <div class="form-group">
+                            <label class="sr-only" >起始时间</label>
+                            <input id="validStartDateLeaseTermEnd" type="text" name="validStartDateLeaseTermEnd" placeholder="请输入止租日期起始日"
+                                   class="form-control m-b-xs" ng-model="params.startTimeLeaseTermEnd" date-picker="{{maxDateLeaseTermEnd}}">
+                        </div>
+                    </div>
+                    <div class="col-lg-2">
+                        <div class="form-group">
+                            <label class="sr-only" >结束时间</label>
+                            <input id="validEndDateLeaseTermEnd" type="text" name="validEndDateLeaseTermEnd" placeholder="请输入止租日期终止日"
+                                   class="form-control m-b-xs"  ng-model="params.endTimeLeaseTermEnd" date-picker="{{minDateLeaseTermEnd}}">
+                        </div>
+                    </div>
+
+
+                    <div class="col-lg-2">
+                        <div class="form-group">
+                            <label class="sr-only" >车牌号 </label>
+                            <input class="form-control m-b-xs" ng-model="params.vehicleLicenseNo" placeholder="请输入车牌号">
+                        </div>
+                    </div>
+
+                    <div class="col-sm-2">
+                        <div class="form-group">
+                            <select ng-model="params.fundStatus" class="form-control m-b-xs">
+                                <option value="">---选择款项状态---</option>
+                                <option value="{{fundStatusObj.codeValue}}" ng-repeat="fundStatusObj in fundStatusObjList" ng-selected="params.fundStatus == fundStatusObj.codeValue">{{fundStatusObj.codeValueName}}</option>
+                            </select>
+                        </div>
+                    </div>
+
+
+                    <div class="col-lg-4">
+                        <div class="form-group m-b-sm pull-left">
+                            <div class="btn-group">
+                                <button class="btn btn-sm fms-button-margin-bottom btn-default m-b-xs btn-info" ng-click="searchContractList()" press-enter><i class="fa fa-search"></i>查询</button>
+                                <button class="btn btn-sm fms-button-margin-bottom btn-default m-b-xs" ng-click="resetContractList()" ><i class="fa  icon-refresh"></i>重置</button>
+                                <button class="btn btn-default m-b-xs btn-sm fms-button-margin-bottom" ng-click="preCount()">提前还款试算</button>
+                            </div>
+                        </div>
+
+                        <div class="form-group pull-left" ng-if="exportFlag">
+                            <div class="btn-group">
+                                <button class="btn btn-default m-b-xs btn-sm fms-button-margin-bottom" ng-click="exportExcel()">导出EXCEL</button>
+                                <!--<button class="btn btn-default m-b-xs btn-sm fms-button-margin-bottom" ng-click="receipt()"><i class="glyphicon glyphicon-check"></i>勾稽</button>-->
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <table border="1" class="table table-striped m-b-none" id="contract_table">
+        </table>
+    </div>
+</div>
+
+<!--<div class="form-group">-->
+<!--<label class="sr-only" >合同生效日期 </label>-->
+<!--<input placeholder="请输入合同生效日期"-->
+<!--class="form-control m-b-xs" ng-model="contractValidDate"-->
+<!--onfocus="WdatePicker({onpicked: function(){$(this).trigger('change')},dateFmt:'yyyy-MM-dd',skin:'twoer'})">-->
+<!--</div>-->

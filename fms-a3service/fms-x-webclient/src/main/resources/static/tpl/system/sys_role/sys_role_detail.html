@@ -1,0 +1,59 @@
+<div  ng-controller="sys_role_handler_controller">
+    <div>
+        <toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="row" style="margin: 0; padding: 15px; border: 1px solid #dddddd">
+            <h4 class="m-n font-thin h4">角色详情</h4>
+        </div>
+        <form name="form" class="form-validation" novalidate>
+            <div class="panel-body ">
+            <!--角色代码-->
+            <div class="form-group row">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black" >角色代码</b>:</label>
+                <!--项目不可编辑-->
+                <div class="col-sm-3">
+                    <label class="col-sm-12 control-label text-left">{{sysRole.role}}</label>
+                </div>
+            </div>
+
+
+            <!--角色名称-->
+            <div class="form-group row">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black" >角色名称</b>:</label>
+                <!--项目不可编辑-->
+                <div class="col-sm-3">
+                    <label class="col-sm-12 control-label text-left">{{sysRole.roleName}}</label>
+                </div>
+            </div>
+
+
+            <!--启用标识-->
+            <div class="form-group row">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">启用标识</b>:</label>
+                <!--项目不可编辑-->
+                <div class="col-sm-3">
+                    <label class="col-sm-12 control-label text-left">{{sysRole.enableFlagVal}}</label>
+                </div>
+            </div>
+
+
+            <!--排序-->
+            <div class="form-group row" >
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">排序</b>:</label>
+                <!--项目不可编辑-->
+                <div class="col-sm-3" >
+                    <label class="col-sm-12 control-label text-left">{{sysRole.orderNo}}</label>
+                </div>
+            </div>
+                </div>
+
+            <div class="text-center">
+                <div class="col-sm-15 m-b">
+                    <button class="btn btn-default" ng-click="goBack()">返回</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

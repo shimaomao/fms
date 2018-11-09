@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.com.leadu.fms.data.postbiz.dao.InvoiceChangeDao">
+
+    <select id="selectApplyInvoiceVosBySocialCertifNo" resultType="cn.com.leadu.fms.pojo.postbiz.vo.invoicechange.InvoiceChangeVo">
+        select
+            crmCompany.invoice_type,
+            crmCompany.ticket_opening,
+            crmCompany.duty_paragraph,
+            crmCompany.invoice_addr,
+            crmCompany.bank_name,
+            crmCompany.account_number,
+            crmCompany.name,
+            crmCompany.social_certif_no
+        from crm_company crmCompany
+        where crmCompany.del_flag = ${delete_exist}
+        <if test="socialCertifNo != null">
+            and crmCompany.social_certif_no = #{socialCertifNo}
+        </if>
+        limit 1
+    </select>
+
+    <select id="selectInvoiceChangeVosByInvoiceTaskNo" resultType="cn.com.leadu.fms.pojo.postbiz.vo.invoicechange.InvoiceChangeVo">
+        select
+            invoiceChange.*,
+            crmCompany.name
+        from invoice_change invoiceChange
+        left join crm_company crmCompany on invoiceChange.social_certif_no = crmCompany.social_certif_no and crmCompany.del_flag = ${delete_exist}
+        where invoiceChange.del_flag = ${delete_exist}
+        <if test="invoiceTaskNo != null">
+          and invoiceChange.invoice_task_no = #{invoiceTaskNo}
+        </if>
+    </select>
+
+    <update id="updateCstmCompany">
+        update cstm_company
+        set invoice_type = #{invoiceChangeSearchVo.invoiceType}
+        , ticket_opening = #{invoiceChangeSearchVo.ticketOpening}
+        , duty_paragraph = #{invoiceChangeSearchVo.dutyParagraph}
+        , invoice_addr = #{invoiceChangeSearchVo.invoiceAddr}
+        , bank_name = #{invoiceChangeSearchVo.bankName}
+        , account_number = #{invoiceChangeSearchVo.accountNumber}
+        , updater = #{invoiceChangeSearchVo.user}
+        , update_time = #{invoiceChangeSearchVo.date}
+        where del_flag = ${delete_exist}
+        <if test="invoiceChangeSearchVo.socialCertifNo != null">
+            and social_certif_no = #{invoiceChangeSearchVo.socialCertifNo}
+        </if>
+        and apply_no in (
+            select temp.apply_no from (
+                select DISTINCT
+                    contract.apply_no
+                from contract contract
+                left join apply apply on contract.apply_no = apply.apply_no and apply.del_flag = ${delete_exist}
+                left join cstm_company cstmCompany on apply.apply_no = cstmCompany.apply_no and cstmCompany.del_flag = ${delete_exist}
+                where contract.del_flag = ${delete_exist}
+                and contract.payment_sts = #{invoiceChangeSearchVo.paymentSts} /*未结清*/
+                <if test="invoiceChangeSearchVo.socialCertifNo != null">
+                    and cstmCompany.social_certif_no = #{invoiceChangeSearchVo.socialCertifNo}
+                </if>
+            )temp
+        )
+    </update>
+
+</mapper>

@@ -1,0 +1,83 @@
+<div class="modal-header">
+    <div class="form-group">
+        <h4 class="modal-title">资方抵押还款计划详情 <button type="button" class="close" data-dismiss="modal" aria-hidden="true" ng-click="close()">&times;</button></h4>
+    </div>
+</div>
+<div class="modal-body">
+    <form name="form" class="form-validation" novalidate>
+
+            <div class="form-group row">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">资方抵押任务号</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-8">
+                    <label class="col-sm-12 control-label text-left">{{equMorRepayDetail.equMorTaskNo}}</label>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group row">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">客户合同编号</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-8">
+                    <label class="col-sm-12 control-label text-left">{{equMorRepayDetail.clientContNo}}</label>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group row">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">车架号</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-8">
+                    <label class="col-sm-12 control-label text-left">{{equMorRepayDetail.vinNo}}</label>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group row">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">期数</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-8">
+                    <label class="col-sm-12 control-label text-left">{{equMorRepayDetail.period}}</label>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group row">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">应还日期</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-8">
+                    <label class="col-sm-12 control-label text-left">{{equMorRepayDetail.repayDate}}</label>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group row">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">租金</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-8">
+                    <label class="col-sm-12 control-label text-left">{{equMorRepayDetail.rent}}</label>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group row">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">还款状态</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-8">
+                    <label class="col-sm-12 control-label text-left">{{equMorRepayDetail.equRepayStatus}}</label>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group row">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">还款日期</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-8">
+                    <label class="col-sm-12 control-label text-left">{{equMorRepayDetail.payUpdateDate}}</label>
+                </div>
+            </div>
+
+    </form>
+</div>
+<div class="modal-footer ng-scope">
+    <button class="btn btn-default" ng-click="close()">关闭</button>
+</div>

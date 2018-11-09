@@ -1,0 +1,107 @@
+<div  ng-controller="orig_file_borrow_back_send_examine_controller">
+    <form name="form" class="form-validation" novalidate>
+        <div class="panel panel-default">
+            <div class="panel-body wrapper-sm">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="form-group"><h1 class="m-n font-thin h4">资管确认</h1></div>
+                        <div class="form-group pull-right">
+                            <div class="btn-group">
+                                <button class="btn btn-default m-b-xs btn-sm fms-button-margin-bottom" ng-click="backHome()"><i class=""></i>返回</button>
+                                <button class="btn btn-success m-b-xs btn-sm fms-button-margin-bottom" ng-click="submitOrigFileBorrow()" ng-disabled="submit"><i class=""></i>提交</button>
+                                <!--<button class="btn btn-success m-b-xs btn-sm fms-button-margin-bottom" ng-click="backUp()" ng-disabled="submit"><i class=""></i>退回</button>-->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!--邮寄明细一览-->
+            <table border="1" class="table table-striped m-b-none" id="orig_file_borrow_mail_table">
+            </table>
+
+            <div class="panel-body wrapper-sm">
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">押金金额</b>:</label>
+                    <div class="col-sm-2">
+                        <input type="text" name="depositAmount" placeholder="押金金额" class="form-control m-b-xs" ng-model="borrowTaskVo.depositAmount" disabled>
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">快递公司</b>:</label>
+                    <div class="col-sm-2">
+                        <input type="text" name="postComp" placeholder="快递公司" class="form-control m-b-xs" ng-model="borrowTaskVo.postComp" disabled>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">快递编号</b>:</label>
+                    <div class="col-sm-2">
+                        <input type="text" name="postNo" placeholder="快递编号" class="form-control m-b-xs" ng-model="borrowTaskVo.postNo" disabled>
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">邮寄日期</b>:</label>
+                    <div class="col-sm-2">
+                        <input name="postDate" placeholder="邮寄日期" class="form-control m-b-xs" ng-model="borrowTaskVo.postDate" date-picker disabled/>
+                    </div>
+                </div>
+                <div class="form-group row" ng-if="borrowTaskVo.depositFlag == '1'">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">是否抵扣租金</b>:</label>
+                    <div class="col-sm-2">
+                        <select name="deductFlag" ng-model="borrowTaskVo.deductFlag" ng-selected = "a.codeValue == borrowTaskVo.deductFlag" class="form-control m-b-xs" ng-options="a.codeValue as a.codeValueName for a in 'deductFlag' | getList" disabled>
+                            <option value="">---请选择---</option>
+                            <!--<option ng-repeat="deductFlagObj in deductFlagList" value="{{deductFlagObj.codeValue}}">{{deductFlagObj.codeValueName}}</option>-->
+                        </select>
+                        <!--<p>-->
+                        <!--<span class="form-info" ng-show=" (form.deductFlag.$dirty && form.deductFlag.$error.required) || (form.deductFlag.$error.required && formValidate)">是否抵扣租金不能为空</span>-->
+                        <!--</p>-->
+                    </div>
+                </div>
+                <div class="form-group row" ng-if="borrowTaskVo.deductFlag == '0'">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">收款银行</b>:</label>
+                    <div class="col-sm-2">
+                        <input type="text" name="payAccBank" placeholder="选择收款银行" class="form-control m-b-xs" ng-model="borrowTaskVo.recAccBank" disabled>
+                        <!--<p>-->
+                        <!--<span class="form-info" ng-show=" (form.payAccBank.$dirty && form.payAccBank.$error.required) || (form.payAccBank.$error.required && formValidate)">收款银行不能为空</span>-->
+                        <!--</p>-->
+                        <input type="hidden" name="groupCode" ng-model="borrowTaskVo.groupCode">
+                        <input type="hidden" name="groupBankNo" ng-model="borrowTaskVo.groupBankNo">
+                    </div>
+                    <!--<div class="col-sm-1"><button class="btn btn-success m-b-xs m-l-sm  btn-sm" ng-click="selectBasBankInfo()"><i class="fa fa-pencil-square-o m-r-xs"></i>选择</button></div>-->
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">收款银行支行</b>:</label>
+                    <div class="col-sm-2">
+                        <input type="text" name="recAccBranch" class="form-control m-b-xs" ng-model="borrowTaskVo.recAccBranch" disabled>
+                        <!--<p>-->
+                        <!--<span class="form-info" ng-show=" (form.recAccBranch.$dirty && form.recAccBranch.$error.required) || (form.recAccBranch.$error.required && formValidate)">收款银行支行不能为空</span>-->
+                        <!--</p>-->
+                    </div>
+                </div>
+                <div class="from-group row" ng-if="borrowTaskVo.deductFlag == '0'">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">收款银行户名</b>:</label>
+                    <div class="col-sm-2">
+                        <input type="text" name="recAccountName" class="form-control m-b-xs" ng-model="borrowTaskVo.recAccountName" disabled>
+                        <p>
+                            <span class="form-info" ng-show=" (form.recAccountName.$dirty && form.recAccountName.$error.required) || (form.recAccountName.$error.required && formValidate)">收款银行户名不能为空</span>
+                        </p>
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">收款账号</b>:</label>
+                    <div class="col-sm-2">
+                        <input type="text" name="recAccountNo" class="form-control m-b-xs" ng-model="borrowTaskVo.recAccountNo" disabled>
+                        <p>
+                            <span class="form-info" ng-show=" (form.recAccountNo.$dirty && form.recAccountNo.$error.required) || (form.recAccountNo.$error.required && formValidate)">收款账号不能为空</span>
+                        </p>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">备注</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-6">
+                        <textarea limit-word type="text" name="remark" placeholder="备注" class="form-control m-b-xs" ng-model="borrowTaskVo.remark" required></textarea>
+                        <p>
+                            <span class="form-info" ng-show=" (form.remark.$dirty && form.remark.$error.required) || (form.remark.$error.required && formValidate)">备注不能为空</span>
+                        </p>
+                    </div>
+                </div>
+
+                <!--流程日志-->
+                <div ng-include="'tpl/common/process_log/process_log_list.html'"></div>
+            </div>
+        </div>
+    </form>
+</div>
+

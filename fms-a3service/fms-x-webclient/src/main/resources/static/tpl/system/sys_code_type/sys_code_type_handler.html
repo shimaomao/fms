@@ -1,0 +1,85 @@
+<div class="panel panel-default wrapper-md" ng-controller="sys_code_type_handler_controller">
+<div class="modal-header">
+    <h4 class="modal-title">{{frameTitle}}</h4>
+</div>
+<form name="form" class="form-validation" novalidate>
+    <div class="panel-body wrapper-sm" ng-show="!showDetail">
+        <div class="form-group row">
+            <label class="col-sm-3 control-label text-right"><b class="form-text-black">字典类型代码</b><b class="form-error">*</b>:</label>
+            <div  class="col-sm-3">
+                <input type="text" name="codeType"  ng-disabled="showUpdate" placeholder="请输入字典类型代码" class="form-control m-b-xs" ng-model="sysCodeType.codeType" required>
+                <p>
+                    <span class="form-info" ng-show=" (form.codeType.$dirty && form.codeType.$error.required) || (form.codeType.$error.required && formValidate)">字典类型代码不能为空</span>
+                </p>
+            </div>
+        </div>
+
+
+        <div class="form-group row">
+            <label  class="col-sm-3 control-label text-right"><b class="form-text-black">字典类型名称</b><b class="form-error">*</b>:</label>
+            <div  class="col-sm-3">
+                <input type="text" name="codeTypeName" placeholder="请输入字典类型名称" class="form-control m-b-xs" ng-model="sysCodeType.codeTypeName"  required>
+                <p>
+                    <span class="form-info" ng-show=" (form.codeTypeName.$dirty && form.codeTypeName.$error.required) || (form.codeTypeName.$error.required && formValidate)">字典类型名称不能为空</span>
+                </p>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="col-sm-3 control-label text-right"><b class="form-text-black">使用说明</b><b class="form-error">*</b>:</label>
+            <div class="col-sm-3">
+                <textarea type="text" name="memo" placeholder="使用说明" class="form-control m-b-xs" ng-model="sysCodeType.memo" required></textarea>
+                <p>
+                    <span class="form-info" ng-show=" (form.memo.$dirty && form.memo.$error.required) || (form.memo.$error.required && formValidate)">字典类型名称不能为空</span>
+                </p>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-3 control-label text-right"><b class="form-text-black">启用标志</b><b class="form-error">*</b>:</label>
+            <div class="col-sm-1">
+                <select  ng-model="sysCodeType.enableFlag" class="form-control m-b-xs" required>
+                    <option value="{{enableFlagObj.codeValue}}" ng-repeat="enableFlagObj in enableFlagList">{{enableFlagObj.codeValueName}}</option>
+                </select>
+                <p>
+                    <span class="form-info" ng-show=" (form.enableFlag.$dirty && form.enableFlag.$error.required) || (form.enableFlag.$error.required && formValidate)">请选择启用标志</span>
+                </p>
+            </div>
+        </div>
+    </div>
+     <!--查看详情-->
+    <div class="panel-body wrapper-sm" ng-show="showDetail">
+        <div class="form-group row">
+            <label class="col-sm-3 control-label text-right"><b class="form-text-black">字典类型代码</b>:</label>
+            <div class="col-sm-9">
+                <label class="control-label text-left" ng-bind="sysCodeType.codeType"></label>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label  class="col-sm-3 control-label text-right"><b class="form-text-black">字典类型名称</b>:</label>
+            <div class="col-sm-9">
+                <label class="control-label text-left" ng-bind="sysCodeType.codeTypeName"></label>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="col-sm-3 control-label text-right"><b class="form-text-black">使用说明</b>:</label>
+            <div class="col-sm-9">
+                <label class="control-label text-left" ng-bind="sysCodeType.memo"></label>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-3 control-label text-right"><b class="form-text-black">启用标志</b>:</label>
+            <div class="col-sm-9">
+                <label class="control-label text-left" ng-bind="sysCodeType.enableFlagName"></label>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-15 m-b text-center">
+        <button class="btn btn-default" ng-click="goback()">取消</button>
+        <button type="submit" class="btn btn-success ng-scope" ng-show="showSave" ng-disabled="submit" ng-click="save()">新增</button>
+        <button type="submit" class="btn btn-success ng-scope" ng-show="showUpdate" ng-disabled="submit" ng-click="modify()">保存</button>
+    </div>
+</form>
+    </div>
+</div>

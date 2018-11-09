@@ -1,0 +1,134 @@
+<div class="modal-header">
+    <h4 class="modal-title">编辑prebiz <button type="button" class="close" data-dismiss="modal" aria-hidden="true" ng-click="close()">&times;</button></h4>
+</div>
+<div class="modal-body">
+    <form name="form" class="form-validation" novalidate>
+
+        <div class="panel-body">
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">资料邮寄业务号</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="bizCode" placeholder="请输入资料邮寄业务号" class="form-control m-b-xs" ng-model="origFileDetail.bizCode"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.bizCode.$dirty && form.bizCode.$error.required) || (form.bizCode.$error.required && formValidate)">资料邮寄业务号不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">资料邮寄业务类型</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="bizCodeType" placeholder="请输入资料邮寄业务类型" class="form-control m-b-xs" ng-model="origFileDetail.bizCodeType"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.bizCodeType.$dirty && form.bizCodeType.$error.required) || (form.bizCodeType.$error.required && formValidate)">资料邮寄业务类型不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">文件类型</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="fileType" placeholder="请输入文件类型" class="form-control m-b-xs" ng-model="origFileDetail.fileType"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.fileType.$dirty && form.fileType.$error.required) || (form.fileType.$error.required && formValidate)">文件类型不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">文件数量</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="fileCount" placeholder="请输入文件数量" class="form-control m-b-xs" ng-model="origFileDetail.fileCount"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.fileCount.$dirty && form.fileCount.$error.required) || (form.fileCount.$error.required && formValidate)">文件数量不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">资料邮寄ID</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="filePostId" placeholder="请输入资料邮寄ID" class="form-control m-b-xs" ng-model="origFileDetail.filePostId"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.filePostId.$dirty && form.filePostId.$error.required) || (form.filePostId.$error.required && formValidate)">资料邮寄ID不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">归档编号</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="fileRecordNo" placeholder="请输入归档编号" class="form-control m-b-xs" ng-model="origFileDetail.fileRecordNo"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.fileRecordNo.$dirty && form.fileRecordNo.$error.required) || (form.fileRecordNo.$error.required && formValidate)">归档编号不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">文件状态</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="origFileStatus" placeholder="请输入文件状态" class="form-control m-b-xs" ng-model="origFileDetail.origFileStatus"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.origFileStatus.$dirty && form.origFileStatus.$error.required) || (form.origFileStatus.$error.required && formValidate)">文件状态不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">文件补充信息1</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="fileInfo1" placeholder="请输入文件补充信息1" class="form-control m-b-xs" ng-model="origFileDetail.fileInfo1"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.fileInfo1.$dirty && form.fileInfo1.$error.required) || (form.fileInfo1.$error.required && formValidate)">文件补充信息1不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">文件补充信息2</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="fileInfo2" placeholder="请输入文件补充信息2" class="form-control m-b-xs" ng-model="origFileDetail.fileInfo2"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.fileInfo2.$dirty && form.fileInfo2.$error.required) || (form.fileInfo2.$error.required && formValidate)">文件补充信息2不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">文件补充信息3</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="fileInfo3" placeholder="请输入文件补充信息3" class="form-control m-b-xs" ng-model="origFileDetail.fileInfo3"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.fileInfo3.$dirty && form.fileInfo3.$error.required) || (form.fileInfo3.$error.required && formValidate)">文件补充信息3不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+
+        </div>
+    </form>
+</div>
+<div class="modal-footer ng-scope">
+    <button class="btn btn-default" ng-click="close()">取消</button>
+    <button type="submit" class="btn btn-success" ng-disabled="submit" ng-click="modify()">保存</button>
+</div>

@@ -1,0 +1,254 @@
+<div ng-controller="bas_sales_detail_controller">
+    <div>
+        <toaster-container
+                toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+    </div>
+    <div class="panel panel-default">
+        <div class="row">
+            <div class="btn-group m-r-lg pull-left" style="margin-left: 25px">
+                <h4>{{frameTitle}}</h4>
+            </div>
+            <div class="btn-group m-r-lg pull-right" style="margin-left: 25px">
+                <button class="btn btn-default m-t-xs" ng-click="goback()">返回</button>
+            </div>
+        </div>
+
+        <form name="form" class="form-validation" novalidate>
+
+            <div class="panel-body wrapper-sm">
+                <ul id="applyTab" class="nav nav-tabs">
+                    <li class="active"><a href="javascript:void(0);" data-toggle="tab" data-id="message"
+                                          onclick="switchPageTab(this, 'applyTab')">实际销售方基本信息</a></li>
+                    <li><a href="javascript:void(0);" data-toggle="tab" data-id="fjmessage"
+                           onclick="switchPageTab(this, 'applyTab')">附件信息</a></li>
+                </ul>
+                <div  class="tab-content"  style="margin-top: 25px">
+
+            <div class="tab-pane fade in active"  id="message">
+
+                <div class="form-group row">
+                    <div class="col-sm-6">
+                        <div class="row">
+                            <label class="col-sm-4 control-label text-right"><b class="form-text-black">实际销售方代码</b><b
+                                    class="form-error"></b>:</label>
+                            <div class="col-sm-4">
+                                <label class="col-sm-12 control-label text-left">{{basSales.salesCode}}</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="row">
+                            <label class="col-sm-4 control-label text-right"><b class="form-text-black">实际销售方全称</b><b
+                                    class="form-error"></b>:</label>
+                            <div class="col-sm-4">
+                                <label class="col-sm-12 control-label text-left">{{basSales.salesName}}</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+
+                <div class="form-group row">
+                    <div class="col-sm-6">
+                        <div class="row">
+                            <label class="col-sm-4 control-label text-right"><b class="form-text-black">店面属性</b><b
+                                    class="form-error"></b>:</label>
+                            <div class="col-sm-4">
+                                <label class="col-sm-12 control-label text-left">{{basSales.salesTypeName}}</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="row">
+                            <label class="col-sm-4 control-label text-right"><b class="form-text-black">经营省份</b><b
+                                    class="form-error"></b>:</label>
+                            <div class="col-sm-4">
+                                <label class="col-sm-12 control-label text-left">{{areaName[basSales.addrProv]}}</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="form-group row">
+                    <div class="col-sm-6">
+                        <div class="row">
+                            <label class="col-sm-4 control-label text-right"><b class="form-text-black">经营城市</b><b
+                                    class="form-error"></b>:</label>
+                            <div class="col-sm-4">
+                                <label class="col-sm-12 control-label text-left">{{areaName[basSales.addrCity]}}</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="row">
+                            <label class="col-sm-4 control-label text-right"><b class="form-text-black">经营区县</b><b
+                                    class="form-error"></b>:</label>
+                            <div class="col-sm-4">
+                                <label class="col-sm-12 control-label text-left">{{areaName[basSales.addrCounty]}}</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="form-group row">
+                    <div class="col-sm-6">
+                        <div class="row">
+                            <label class="col-sm-4 control-label text-right"><b class="form-text-black">经营地址</b><b
+                                    class="form-error"></b>:</label>
+                            <div class="col-sm-4">
+                                <label class="col-sm-12 control-label text-left">{{basSales.address}}</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6">
+                        <div class="row">
+                            <label class="col-sm-4 control-label text-right"><b class="form-text-black">联系人员</b><b
+                                    class="form-error"></b>:</label>
+                            <div class="col-sm-4">
+                                <label class="col-sm-12 control-label text-left">{{basSales.contact}}</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="form-group row">
+                    <div class="col-sm-6">
+                        <div class="row">
+                            <label class="col-sm-4 control-label text-right"><b class="form-text-black">联系电话</b><b
+                                    class="form-error"></b>:</label>
+                            <div class="col-sm-4">
+                                <label class="col-sm-12 control-label text-left">{{basSales.contactTel1}}</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="row">
+                            <label class="col-sm-4 control-label text-right"><b class="form-text-black">所属集团</b><b
+                                    class="form-error"></b>:</label>
+                            <div class="col-sm-4">
+                                <label class="col-sm-12 control-label text-left">{{basSales.withinGroupName}}</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="form-group row">
+                    <div class="col-sm-6">
+                        <div class="row">
+                            <label class="col-sm-4 control-label text-right"><b class="form-text-black">注册省份</b><b
+                                    class="form-error"></b>:</label>
+                            <div class="col-sm-4">
+                                <label class="col-sm-12 control-label text-left">{{areaName[basSales.registerProv]}}</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6">
+                        <div class="row">
+                            <label class="col-sm-4 control-label text-right"><b class="form-text-black">注册城市</b><b
+                                    class="form-error"></b>:</label>
+                            <div class="col-sm-4">
+                                <label class="col-sm-12 control-label text-left">{{areaName[basSales.registerCity]}}</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-sm-6">
+                        <div class="row">
+                            <label class="col-sm-4 control-label text-right"><b class="form-text-black">注册区县</b><b
+                                    class="form-error"></b>:</label>
+                            <div class="col-sm-4">
+                                <label class="col-sm-12 control-label text-left">{{areaName[basSales.registerCounty]}}</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6">
+                        <div class="row">
+                            <label class="col-sm-4 control-label text-right"><b class="form-text-black">注册地址</b><b
+                                    class="form-error"></b>:</label>
+                            <div class="col-sm-4">
+                                <label class="col-sm-12 control-label text-left">{{basSales.registerAddress}}</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="form-group row">
+                    <div class="col-sm-6">
+                        <div class="row">
+                            <label class="col-sm-4 control-label text-right"><b class="form-text-black">担保期限</b><b
+                                    class="form-error"></b>:</label>
+                            <div class="col-sm-4">
+                                <label class="col-sm-12 control-label text-left">{{basSales.guaranteePeriod}}</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="row">
+                            <label class="col-sm-4 control-label text-right"><b class="form-text-black">实际销售方状态</b><b
+                                    class="form-error"></b>:</label>
+                            <div class="col-sm-4">
+                                <label class="col-sm-12 control-label text-left">{{basSales.salesTaskStatusName}}</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-sm-6">
+                        <div class="row">
+                            <label class="col-sm-4 control-label text-right"><b class="form-text-black">财务辅助核算代码</b><b
+                                    class="form-error"></b>:</label>
+                            <div class="col-sm-4">
+                                <label class="col-sm-12 control-label text-left">{{basSales.finassSalesCode}}</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="row">
+                            <label class="col-sm-4 control-label text-right"><b class="form-text-black">车辆类型</b>:</label>
+                                <div class="checkbox"  ng-repeat="vehicleFormObj in vehicleFormList" >
+                                    <label><input type="checkbox" name="vehicleForm" disabled ng-checked="basSales.vehicleForm.indexOf(vehicleFormObj.codeValue)!=-1?'checked':''" ng-true-value="{{vehicleFormObj.codeValue}}">{{vehicleFormObj.codeValueName}}</label>
+                                </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+                    <!--附件信息-->
+                    <div class="tab-pane fade" id="fjmessage">
+                        <ul type="none" style="padding-left: 20px;">
+                            <div class="panel-body wrapper-sm" ng-if="httpData">
+                                <tree-file-directive detail-flag="$root.yesNoFlag.yes" file-type="$root.basFileTypes.salesFile" files="$parent.bizFilesList" not-upload="$parent.notUpload" not-upload-info="$parent.msgInfo"   not-file-type="$parent.notFileType" not-file-type-name="$parent.notFileTypeName">
+                                </tree-file-directive>
+                            </div>
+                        </ul>
+                    </div>
+
+                    <!--附件信息-->
+                  <!--  <div class="panel-body wrapper-sm" ng-if="httpData">
+                        <tree-file-directive detail-flag="$root.yesNoFlag.yes" file-type="$root.basFileTypes.salesFile" files="$parent.bizFilesList" not-upload="$parent.notUpload" not-upload-info="$parent.msgInfo"   not-file-type="$parent.notFileType" not-file-type-name="$parent.notFileTypeName">
+                        </tree-file-directive>
+                    </div>-->
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+
+
+
+

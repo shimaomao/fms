@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.com.leadu.fms.data.postbiz.dao.PersonBasicChangeDao">
+
+    <select id="selectPersonBasicChangeByApplyNo" resultType="cn.com.leadu.fms.pojo.postbiz.vo.personbasicchange.PersonBasicChangeVo">
+        select DISTINCT
+            cstmPerson.apply_no,
+            cstmPerson.name,
+            cstmPerson.mobile_no,
+            addr.reside_prov,
+            addr.reside_city,
+            addr.reside_county,
+            addr.reside_addr
+        from cstm_person cstmPerson
+        left join cstm_pers_addr addr on cstmPerson.apply_no = addr.apply_no and addr.del_flag = ${delete_exist}
+        where cstmPerson.del_flag = ${delete_exist}
+        <if test="applyNo != null">
+          and cstmPerson.apply_no = #{applyNo}
+        </if>
+    </select>
+</mapper>

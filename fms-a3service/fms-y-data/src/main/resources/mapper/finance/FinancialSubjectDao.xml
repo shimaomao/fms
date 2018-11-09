@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.com.leadu.fms.data.finance.dao.FinancialSubjectDao">
+
+    <resultMap id="financialSubject" type="cn.com.leadu.fms.pojo.finance.vo.financialsubject.FinancialSubjectVo">
+        <id property="subjectId" column="subject_id" javaType="java.lang.String"/>
+        <result property="subjectCd" column="subject_cd" javaType="java.lang.String"/>
+        <result property="subjectName" column="subject_name" javaType="java.lang.String"/>
+        <result property="subjectMemo" column="subject_memo" javaType="java.lang.String"/>
+        <result property="updateTime" column="update_time" javaType="java.util.Date"/>
+        <result property="updater" column="updater" javaType="java.lang.String"/>
+        <collection property="assisAccountTypeVos" ofType="cn.com.leadu.fms.pojo.finance.vo.assisaccounttype.AssisAccountTypeVo"
+                    javaType="java.util.ArrayList" select="getAssisAccount"
+                    column="subject_cd">
+        </collection>
+    </resultMap>
+    <select id="selectFinancialSubjectsByPage" resultMap="financialSubject">
+        SELECT
+            *
+        FROM
+            `financial_subject`
+        WHERE
+            financial_subject.del_flag = ${delete_exist}
+        <if test="financialSubjectVo.subjectCd != null">
+           AND financial_subject.subject_cd LIKE #{financialSubjectVo.subjectCd}
+        </if>
+        <if test="financialSubjectVo.subjectName != null">
+            AND financial_subject.subject_name LIKE #{financialSubjectVo.subjectName}
+        </if>
+        ORDER BY
+            financial_subject.update_time
+        DESC
+    </select>
+
+    <select id="getAssisAccount" resultType="cn.com.leadu.fms.pojo.finance.vo.assisaccounttype.AssisAccountTypeVo">
+        SELECT
+            *
+        FROM
+            assis_account_type
+        LEFT JOIN subject_assis_account ON assis_account_type.assis_account_type = subject_assis_account.assis_account_type
+        AND subject_assis_account.del_flag = ${delete_exist}
+        WHERE
+            assis_account_type.del_flag = ${delete_exist}
+        AND subject_assis_account.subject_cd = #{subject_cd}
+        ORDER BY subject_assis_account.assis_account_order
+    </select>
+
+    <select id="selectFinancialSubjectVoByPrimaryKey" resultMap="financialSubject">
+        SELECT
+            *
+        FROM
+            `financial_subject`
+        WHERE
+            financial_subject.del_flag = ${delete_exist}
+        AND financial_subject.subject_id = #{subjectId}
+    </select>
+</mapper>

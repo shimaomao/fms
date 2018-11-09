@@ -1,0 +1,206 @@
+<div class="modal-header">
+    <h4 class="modal-title">添加prebiz <button type="button" class="close" data-dismiss="modal" aria-hidden="true" ng-click="close()">&times;</button></h4>
+</div>
+<div class="modal-body">
+    <form name="form" class="form-validation" novalidate>
+
+        <div class="panel-body">
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">订单编号</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="applyNo" placeholder="请输入订单编号" class="form-control m-b-xs" ng-model="cstmPersAddr.applyNo"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.applyNo.$dirty && form.applyNo.$error.required) || (form.applyNo.$error.required && formValidate)">订单编号不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">居住状况</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="resideCond" placeholder="请输入居住状况" class="form-control m-b-xs" ng-model="cstmPersAddr.resideCond"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.resideCond.$dirty && form.resideCond.$error.required) || (form.resideCond.$error.required && formValidate)">居住状况不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">居住年份</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="resideYear" placeholder="请输入居住年份" class="form-control m-b-xs" ng-model="cstmPersAddr.resideYear"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.resideYear.$dirty && form.resideYear.$error.required) || (form.resideYear.$error.required && formValidate)">居住年份不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">居住省份</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="resideProv" placeholder="请输入居住省份" class="form-control m-b-xs" ng-model="cstmPersAddr.resideProv"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.resideProv.$dirty && form.resideProv.$error.required) || (form.resideProv.$error.required && formValidate)">居住省份不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">居住城市</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="resideCity" placeholder="请输入居住城市" class="form-control m-b-xs" ng-model="cstmPersAddr.resideCity"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.resideCity.$dirty && form.resideCity.$error.required) || (form.resideCity.$error.required && formValidate)">居住城市不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">居住区县</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="resideCounty" placeholder="请输入居住区县" class="form-control m-b-xs" ng-model="cstmPersAddr.resideCounty"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.resideCounty.$dirty && form.resideCounty.$error.required) || (form.resideCounty.$error.required && formValidate)">居住区县不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">居住详细地址</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="resideAddr" placeholder="请输入居住详细地址" class="form-control m-b-xs" ng-model="cstmPersAddr.resideAddr"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.resideAddr.$dirty && form.resideAddr.$error.required) || (form.resideAddr.$error.required && formValidate)">居住详细地址不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">户籍省份</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="censusProv" placeholder="请输入户籍省份" class="form-control m-b-xs" ng-model="cstmPersAddr.censusProv"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.censusProv.$dirty && form.censusProv.$error.required) || (form.censusProv.$error.required && formValidate)">户籍省份不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">户籍城市</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="censusCity" placeholder="请输入户籍城市" class="form-control m-b-xs" ng-model="cstmPersAddr.censusCity"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.censusCity.$dirty && form.censusCity.$error.required) || (form.censusCity.$error.required && formValidate)">户籍城市不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">户籍区县</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="censusCounty" placeholder="请输入户籍区县" class="form-control m-b-xs" ng-model="cstmPersAddr.censusCounty"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.censusCounty.$dirty && form.censusCounty.$error.required) || (form.censusCounty.$error.required && formValidate)">户籍区县不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">户籍详细地址</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="censusAddr" placeholder="请输入户籍详细地址" class="form-control m-b-xs" ng-model="cstmPersAddr.censusAddr"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.censusAddr.$dirty && form.censusAddr.$error.required) || (form.censusAddr.$error.required && formValidate)">户籍详细地址不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">房产类型</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="propertyType" placeholder="请输入房产类型" class="form-control m-b-xs" ng-model="cstmPersAddr.propertyType"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.propertyType.$dirty && form.propertyType.$error.required) || (form.propertyType.$error.required && formValidate)">房产类型不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">房产省份</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="propertyProv" placeholder="请输入房产省份" class="form-control m-b-xs" ng-model="cstmPersAddr.propertyProv"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.propertyProv.$dirty && form.propertyProv.$error.required) || (form.propertyProv.$error.required && formValidate)">房产省份不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">房产城市</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="propertyCity" placeholder="请输入房产城市" class="form-control m-b-xs" ng-model="cstmPersAddr.propertyCity"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.propertyCity.$dirty && form.propertyCity.$error.required) || (form.propertyCity.$error.required && formValidate)">房产城市不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">房产区县</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="propertyCounty" placeholder="请输入房产区县" class="form-control m-b-xs" ng-model="cstmPersAddr.propertyCounty"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.propertyCounty.$dirty && form.propertyCounty.$error.required) || (form.propertyCounty.$error.required && formValidate)">房产区县不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">房产详细地址</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="propertyAddr" placeholder="请输入房产详细地址" class="form-control m-b-xs" ng-model="cstmPersAddr.propertyAddr"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.propertyAddr.$dirty && form.propertyAddr.$error.required) || (form.propertyAddr.$error.required && formValidate)">房产详细地址不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+
+        </div>
+
+    </form>
+</div>
+<div class="modal-footer ng-scope">
+    <button class="btn btn-default" ng-click="close()">取消</button>
+    <button type="submit" class="btn btn-success" ng-disabled="submit" ng-click="save()">新增</button>
+</div>

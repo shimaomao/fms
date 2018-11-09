@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.com.leadu.fms.data.product.dao.ProdIntrstDao">
+    <!-- 根据产品代码 获取产品的有权限的组织结构 -->
+    <select id="selectIntrstNoMax" parameterType="java.lang.String" resultType="java.lang.String">
+        select max(intrst_no)
+        from prod_intrst prodIntrst
+        where prodIntrst.del_flag = ${delete_exist}
+        <if test="product != null">
+            and prodIntrst.product =  #{product}
+        </if>
+    </select>
+</mapper>

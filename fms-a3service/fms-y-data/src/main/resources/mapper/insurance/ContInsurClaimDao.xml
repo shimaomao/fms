@@ -1,0 +1,307 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.com.leadu.fms.data.insurance.dao.ContInsurClaimDao">
+    <!--分页查询保险理赔一览-->
+    <select id="selectContInsurClaimsByPage" parameterType="cn.com.leadu.fms.pojo.insurance.vo.continsurclaim.ContInsurClaimVo" resultType="cn.com.leadu.fms.pojo.insurance.vo.continsurclaim.ContInsurClaimVo">
+        SELECT
+        contract.cont_no,
+        contract.vin_no,
+        contract.engine_no,
+        contract.vehicle_license_no,
+        contInsurClaim.update_time,
+        contInsurClaim.updater,
+        IFNULL(person.name,cstmCompany.name) as name,
+        contInsur.ins_comp_name,
+        contInsur.ins_policy_no,
+        contInsur.valid_start_day,
+        contInsur.valid_end_day,
+        contInsur.cont_vehins_id,
+        contInsur.insurance_years,
+        contInsurClaim.cont_insur_claim_id,
+        contInsurClaim.cont_insur_claim_no,
+        contInsurClaim.accident_time,
+        contInsurClaim.accident_repno,
+        contInsurClaim.claim_amount,
+        contInsurClaim.insur_claim_status,
+        contInsurClaim.insur_claim_date,
+        contInsurClaim.present_user,
+        vehicleCode.vehicle_name AS vehicleCodeName,
+        sysGroup.group_name
+        FROM
+        contract contract
+        LEFT JOIN cont_insurance contInsur ON contInsur.cont_no = contract.cont_no AND contInsur.del_flag =  ${delete_exist}
+        LEFT JOIN cont_insur_claim contInsurClaim  ON contInsur.cont_vehins_id = contInsurClaim.cont_vehins_id AND contInsurClaim.del_flag =  ${delete_exist}
+        LEFT JOIN contract_vehicle contractVehicle ON contract.cont_no=contractVehicle.cont_no AND contractVehicle.del_flag =  ${delete_exist}
+        LEFT JOIN bas_vehicle vehicleCode ON contractVehicle.vehicle_code=vehicleCode.vehicle_code AND vehicleCode.del_flag = ${delete_exist}
+        LEFT JOIN contract_finance contractFinance ON contract.cont_no = contractFinance.cont_no AND contractFinance.del_flag = ${delete_exist}
+        LEFT JOIN sys_group sysGroup ON contractFinance.belong_group = sysGroup.group_code AND sysGroup.del_flag =  ${delete_exist}
+        LEFT JOIN cstm_person person ON contract.apply_no=person.apply_no AND person.del_flag = ${delete_exist}
+        LEFT JOIN cstm_company cstmCompany on contract.apply_no = cstmCompany.apply_no and cstmCompany.del_flag = ${delete_exist}
+        WHERE contract.del_flag = ${delete_exist}
+        <if test="contInsurClaimVo.bizStatus != null" >
+            AND contract.biz_status=#{contInsurClaimVo.bizStatus}
+        </if>
+        <if test="contInsurClaimVo.contNo != null" >
+            AND contract.cont_no LIKE #{contInsurClaimVo.contNo}
+        </if>
+        <if test="contInsurClaimVo.name != null" >
+            AND (cstmCompany.name LIKE #{contInsurClaimVo.name} or person.name LIKE #{contInsurClaimVo.name})
+        </if>
+        <if test="contInsurClaimVo.groupDistrict != null" >
+            AND sysGroup.group_district LIKE #{contInsurClaimVo.groupDistrict}
+        </if>
+        <if test="contInsurClaimVo.vinNo != null" >
+            AND contract.vin_no LIKE #{contInsurClaimVo.vinNo}
+        </if>
+        <if test="contInsurClaimVo.vehicleLicenseNo != null" >
+            AND contract.vehicle_license_no LIKE #{contInsurClaimVo.vehicleLicenseNo}
+        </if>
+        <if test="contInsurClaimVo.engineNo != null" >
+            AND contract.engine_no LIKE #{contInsurClaimVo.engineNo}
+        </if>
+        ORDER BY update_time DESC ,contInsur.valid_end_day DESC
+    </select>
+
+    <!--保险理赔excel导出-->
+    <select id="selectContInsurClaimsByPageSelect2" parameterType="cn.com.leadu.fms.pojo.insurance.vo.continsurclaim.ContInsurClaimVo" resultType="cn.com.leadu.fms.pojo.insurance.vo.continsurclaim.ContInsurClaimVo">
+        SELECT
+        contract.cont_no,
+        contract.vin_no,
+        contract.vehicle_license_no,
+        IFNULL(person.name,cstmCompany.name) as name,
+        contInsur.ins_comp_name,
+        contInsur.ins_policy_no,
+        contInsur.valid_start_day,
+        contInsur.valid_end_day,
+        contInsur.cont_vehins_id,
+        contInsurClaim.accident_time,
+        contInsurClaim.accident_repno,
+        contInsurClaim.claim_amount,
+        contInsurClaim.insur_claim_status,
+        contInsurClaim.insur_claim_date,
+        vehicleCode.vehicle_name AS vehicleCodeName,
+        sysGroup.group_name
+        FROM
+        cont_insur_claim contInsurClaim
+        LEFT JOIN contract contract ON contract.cont_no = contInsurClaim.cont_no AND contInsurClaim.del_flag =  ${delete_exist}
+        LEFT JOIN cont_insurance contInsur ON contInsur.cont_vehins_id = contInsurClaim.cont_vehins_id AND contInsur.del_flag =  ${delete_exist}
+        LEFT JOIN contract_vehicle contractVehicle ON contract.cont_no=contractVehicle.cont_no AND contractVehicle.del_flag =  ${delete_exist}
+        LEFT JOIN bas_vehicle vehicleCode ON contractVehicle.vehicle_code=vehicleCode.vehicle_code AND vehicleCode.del_flag = ${delete_exist}
+        LEFT JOIN contract_finance contractFinance ON contract.cont_no = contractFinance.cont_no AND contractFinance.del_flag = ${delete_exist}
+        LEFT JOIN sys_group sysGroup ON contractFinance.belong_group = sysGroup.group_code AND sysGroup.del_flag =  ${delete_exist}
+        LEFT JOIN cstm_person person ON contract.apply_no=person.apply_no AND person.del_flag = ${delete_exist}
+        LEFT JOIN cstm_company cstmCompany on contract.apply_no = cstmCompany.apply_no and cstmCompany.del_flag = ${delete_exist}
+        WHERE contract.del_flag = ${delete_exist}
+        <if test="contInsurClaimVo.bizStatus != null" >
+            AND contract.biz_status=#{contInsurClaimVo.bizStatus}
+        </if>
+        <if test="contInsurClaimVo.contNo != null" >
+            AND contract.cont_no LIKE #{contInsurClaimVo.contNo}
+        </if>
+        <if test="contInsurClaimVo.name != null" >
+            AND (cstmCompany.name LIKE #{contInsurClaimVo.name} or person.name LIKE #{contInsurClaimVo.name})
+        </if>
+        <if test="contInsurClaimVo.groupDistrict != null" >
+            AND sysGroup.group_district LIKE #{contInsurClaimVo.groupDistrict}
+        </if>
+        <if test="contInsurClaimVo.vinNo != null" >
+            AND contract.vin_no LIKE #{contInsurClaimVo.vinNo}
+        </if>
+        <if test="contInsurClaimVo.vehicleLicenseNo != null" >
+            AND contract.vehicle_license_no LIKE #{contInsurClaimVo.vehicleLicenseNo}
+        </if>
+        <if test="contInsurClaimVo.engineNo != null" >
+            AND contract.engine_no LIKE #{contInsurClaimVo.engineNo}
+        </if>
+        ORDER BY contInsurClaim.update_time DESC ,contInsur.valid_end_day DESC
+    </select>
+
+    <!--分页查询保险理赔查询页面-->
+    <select id="selectContInsurClaimsByPageSelect" parameterType="cn.com.leadu.fms.pojo.insurance.vo.continsurclaim.ContInsurClaimVo" resultType="cn.com.leadu.fms.pojo.insurance.vo.continsurclaim.ContInsurClaimVo">
+        SELECT
+        contract.cont_no,
+        contract.vin_no,
+        contract.vehicle_license_no,
+        IFNULL(person.name,cstmCompany.name) as name,
+        contInsur.ins_comp_name,
+        contInsur.ins_policy_no,
+        contInsur.valid_start_day,
+        contInsur.valid_end_day,
+        contInsur.cont_vehins_id,
+        contInsurClaim.accident_time,
+        contInsurClaim.accident_repno,
+        contInsurClaim.claim_amount,
+        contInsurClaim.insur_claim_status,
+        contInsurClaim.insur_claim_date,
+        vehicleCode.vehicle_name AS vehicleCodeName,
+        sysGroup.group_name
+        FROM
+        cont_insur_claim contInsurClaim
+        LEFT JOIN contract contract ON contract.cont_no = contInsurClaim.cont_no AND contInsurClaim.del_flag =  ${delete_exist}
+        LEFT JOIN cont_insurance contInsur ON contInsur.cont_vehins_id = contInsurClaim.cont_vehins_id AND contInsur.del_flag =  ${delete_exist}
+        LEFT JOIN contract_vehicle contractVehicle ON contract.cont_no=contractVehicle.cont_no AND contractVehicle.del_flag =  ${delete_exist}
+        LEFT JOIN bas_vehicle vehicleCode ON contractVehicle.vehicle_code=vehicleCode.vehicle_code AND vehicleCode.del_flag = ${delete_exist}
+        LEFT JOIN contract_finance contractFinance ON contract.cont_no = contractFinance.cont_no AND contractFinance.del_flag = ${delete_exist}
+        LEFT JOIN sys_group sysGroup ON contractFinance.belong_group = sysGroup.group_code AND sysGroup.del_flag =  ${delete_exist}
+        LEFT JOIN cstm_person person ON contract.apply_no=person.apply_no AND person.del_flag = ${delete_exist}
+        LEFT JOIN cstm_company cstmCompany on contract.apply_no = cstmCompany.apply_no and cstmCompany.del_flag = ${delete_exist}
+        WHERE contract.del_flag = ${delete_exist}
+        <if test="contInsurClaimVo.bizStatus != null" >
+            AND contract.biz_status=#{contInsurClaimVo.bizStatus}
+        </if>
+        <if test="contInsurClaimVo.contNo != null" >
+            AND contract.cont_no LIKE #{contInsurClaimVo.contNo}
+        </if>
+        <if test="contInsurClaimVo.name != null" >
+            AND (cstmCompany.name LIKE #{contInsurClaimVo.name} or person.name LIKE #{contInsurClaimVo.name})
+        </if>
+        ORDER BY contInsurClaim.update_time DESC
+    </select>
+
+    <!--保险理赔状态为退回时查询一条明细-->
+   <!-- <select id="selectDetailedByReturn" parameterType="java.lang.String" resultType="cn.com.leadu.fms.pojo.insurance.vo.continsurclaim.ContInsurClaimVo">
+        SELECT
+        contInsurClaim.*,
+        contract.vin_no,
+        contract.vehicle_license_no,
+        person.name,
+        contInsur.ins_comp_name,
+        contInsur.ins_policy_no
+        FROM
+        contract contract
+        LEFT JOIN cont_insur_claim contInsurClaim ON contract.cont_no = contInsurClaim.cont_no AND contInsurClaim.del_flag =  ${delete_exist}
+        LEFT JOIN cont_insurance contInsur ON contInsur.cont_vehins_id = contInsurClaim.cont_vehins_id AND contInsur.del_flag =  ${delete_exist}
+        LEFT JOIN cstm_person person ON contract.apply_no=person.apply_no AND person.del_flag = ${delete_exist}
+        WHERE contract.del_flag = ${delete_exist}
+        <if test="#{contInsurClaimId} != null" >
+            AND contInsurClaim.cont_insur_claim_id = #{contInsurClaimId}
+        </if>
+    </select>-->
+
+    <!--根据保险信息id查询合同车辆保险信息-->
+    <select id="selectContInsuranceByContVehinsId" parameterType="java.lang.String" resultType="cn.com.leadu.fms.pojo.insurance.vo.continsurclaim.ContInsurClaimVo">
+        (SELECT
+        contract.vin_no,
+        contract.vehicle_license_no,
+        contract.engine_no,
+        person.name,
+        sysGroup.group_name,
+        contInsur.*
+        FROM
+        contract contract
+        LEFT JOIN cont_insurance contInsur ON contInsur.cont_no = contract.cont_no AND contInsur.del_flag =  ${delete_exist}
+        LEFT JOIN cstm_person person ON contract.apply_no=person.apply_no AND person.del_flag = ${delete_exist}
+        LEFT JOIN contract_vehicle contractVehicle ON contract.cont_no=contractVehicle.cont_no AND contractVehicle.del_flag =  ${delete_exist}
+        LEFT JOIN contract_finance contractFinance ON contract.cont_no = contractFinance.cont_no AND contractFinance.del_flag = ${delete_exist}
+        LEFT JOIN sys_group sysGroup ON contractFinance.belong_group = sysGroup.group_code AND sysGroup.del_flag =  ${delete_exist}
+        WHERE contract.del_flag = ${delete_exist}
+        <if test="#{contVehinsId} != null" >
+            AND contInsur.cont_vehins_id = #{contVehinsId}
+        </if>
+        AND contract.apply_type='1')
+        UNION
+
+        (SELECT
+        contract.vin_no,
+        contract.vehicle_license_no,
+        contract.engine_no,
+        person.name,
+        sysGroup.group_name,
+        contInsur.*
+        FROM
+        contract contract
+        LEFT JOIN cont_insurance contInsur ON contInsur.cont_no = contract.cont_no AND contInsur.del_flag =  ${delete_exist}
+        LEFT JOIN cstm_company person ON contract.apply_no=person.apply_no AND person.del_flag = ${delete_exist}
+        LEFT JOIN contract_vehicle contractVehicle ON contract.cont_no=contractVehicle.cont_no AND contractVehicle.del_flag =  ${delete_exist}
+        LEFT JOIN contract_finance contractFinance ON contract.cont_no = contractFinance.cont_no AND contractFinance.del_flag = ${delete_exist}
+        LEFT JOIN sys_group sysGroup ON contractFinance.belong_group = sysGroup.group_code AND sysGroup.del_flag =  ${delete_exist}
+        WHERE contract.del_flag = ${delete_exist}
+        <if test="#{contVehinsId} != null" >
+            AND contInsur.cont_vehins_id = #{contVehinsId}
+        </if>
+        AND contract.apply_type='2')
+    </select>
+
+    <!--根据contInsurClaimId和contVehinsId查询保险理赔表和合同车辆信息表-->
+    <select id="selectContInsurClaimAndContInsurance" parameterType="java.lang.String" resultType="cn.com.leadu.fms.pojo.insurance.vo.continsurclaim.ContInsurClaimVo">
+        (SELECT
+        contract.vin_no,
+        contract.vehicle_license_no,
+        contract.engine_no,
+        person.name,
+        sysGroup.group_name,
+        contInsurClaim.*,
+        contInsur.ins_comp_name,
+        contInsur.ins_policy_no,
+        contInsur.valid_start_day,
+        contInsur.valid_end_day,
+        contInsur.ins_fee,
+        contInsur.insurance_type,
+        contInsur.insurance_select_info
+        FROM
+        contract contract
+        LEFT JOIN cont_insur_claim contInsurClaim ON contract.cont_no = contInsurClaim.cont_no AND contInsurClaim.del_flag =  ${delete_exist}
+        LEFT JOIN cont_insurance contInsur ON contInsur.cont_vehins_id = contInsurClaim.cont_vehins_id AND contInsur.del_flag =  ${delete_exist}
+        LEFT JOIN cstm_person person ON contract.apply_no=person.apply_no AND person.del_flag = ${delete_exist}
+        LEFT JOIN contract_vehicle contractVehicle ON contract.cont_no=contractVehicle.cont_no AND contractVehicle.del_flag =  ${delete_exist}
+        LEFT JOIN contract_finance contractFinance ON contract.cont_no = contractFinance.cont_no AND contractFinance.del_flag = ${delete_exist}
+        LEFT JOIN sys_group sysGroup ON contractFinance.belong_group = sysGroup.group_code AND sysGroup.del_flag =  ${delete_exist}
+        WHERE contract.del_flag = ${delete_exist}
+        <if test="#{contInsurClaimId} != null" >
+            AND contInsurClaim.cont_insur_claim_id = #{contInsurClaimId}
+        </if>
+        <if test="#{contVehinsId} != null" >
+            AND contInsur.cont_vehins_id = #{contVehinsId}
+        </if>
+        AND contract.apply_type='1')
+        UNION
+
+        (SELECT
+        contract.vin_no,
+        contract.vehicle_license_no,
+        contract.engine_no,
+        person.name,
+        sysGroup.group_name,
+        contInsurClaim.*,
+        contInsur.ins_comp_name,
+        contInsur.ins_policy_no,
+        contInsur.valid_start_day,
+        contInsur.valid_end_day,
+        contInsur.ins_fee,
+        contInsur.insurance_type,
+        contInsur.insurance_select_info
+        FROM
+        contract contract
+        LEFT JOIN cont_insur_claim contInsurClaim ON contract.cont_no = contInsurClaim.cont_no AND contInsurClaim.del_flag =  ${delete_exist}
+        LEFT JOIN cont_insurance contInsur ON contInsur.cont_vehins_id = contInsurClaim.cont_vehins_id AND contInsur.del_flag =  ${delete_exist}
+        LEFT JOIN cstm_company person ON contract.apply_no=person.apply_no AND person.del_flag = ${delete_exist}
+        LEFT JOIN contract_vehicle contractVehicle ON contract.cont_no=contractVehicle.cont_no AND contractVehicle.del_flag =  ${delete_exist}
+        LEFT JOIN contract_finance contractFinance ON contract.cont_no = contractFinance.cont_no AND contractFinance.del_flag = ${delete_exist}
+        LEFT JOIN sys_group sysGroup ON contractFinance.belong_group = sysGroup.group_code AND sysGroup.del_flag =  ${delete_exist}
+        WHERE contract.del_flag = ${delete_exist}
+        <if test="#{contInsurClaimId} != null" >
+            AND contInsurClaim.cont_insur_claim_id = #{contInsurClaimId}
+        </if>
+        <if test="#{contVehinsId} != null" >
+            AND contInsur.cont_vehins_id = #{contVehinsId}
+        </if>
+        AND contract.apply_type='2')
+    </select>
+
+    <!--根据保险理赔任务号查询财务付款表-->
+    <select id="selectContPayByContInsurClaimNo" parameterType="java.lang.String" resultType="cn.com.leadu.fms.pojo.prebiz.entity.ContPay">
+        SELECT
+         *
+        FROM
+        cont_pay contPay
+        WHERE contPay.del_flag = ${delete_exist}
+        <if test="#{bizCode} != null" >
+            AND contPay.biz_code = #{bizCode}
+        </if>
+        <if test="#{paymentType} != null" >
+            AND contPay.payment_type = #{paymentType}
+        </if>
+    </select>
+</mapper>

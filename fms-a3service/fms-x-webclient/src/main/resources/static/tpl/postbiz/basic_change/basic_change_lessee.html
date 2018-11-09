@@ -1,0 +1,68 @@
+<!--<style>-->
+    <!--.panel h4{padding: 15px;border-bottom: 1px solid #dedede;color: black;font-weight: 600;margin: 0;font-size: 14px;}-->
+    <!--.m-t-20{margin-top: 20px;}-->
+    <!--.checkbox,.radio {display: inline-block;margin: 2px 10px 0 0;}-->
+    <!--.table > tbody > tr > td, .table > tfoot > tr > td{vertical-align: middle;}-->
+<!--</style>-->
+<div  ng-controller="basic_change_lessee_controller">
+    <div>
+        <toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+    </div>
+    <div class="panel panel-default">
+            <ul id="applyTab1" class="nav nav-tabs" style="background: transparent;
+            border-radius: 0px;
+            font-size: 13px;
+            border: none;
+            color: #333;opacity:1;">
+                <li class="active"><a href="javascript:void(0);" data-toggle="tab" data-id="change1" onclick="switchPageTab(this, 'applyTab1')">变更申请</a></li>
+                <li><a href="javascript:void(0);" data-toggle="tab" data-id="customer1" onclick="switchPageTab(this, 'applyTab1')">承租人变更信息</a></li>
+                <li ng-if="applyType == 1"><a href="javascript:void(0);" data-toggle="tab" data-id="borrower1" onclick="switchPageTab(this, 'applyTab1')">共同借款人变更信息</a></li>
+                <li><a href="javascript:void(0);" data-toggle="tab" data-id="guarantee1" onclick="switchPageTab(this, 'applyTab1')">担保人变更信息</a></li>
+                <li><a href="javascript:void(0);" data-toggle="tab" data-id="applyFile1" onclick="switchPageTab(this, 'applyTab1')">附件信息变更信息</a></li>
+                <li><a href="javascript:void(0);" data-toggle="tab" data-id="credit1" onclick="switchPageTab(this, 'applyTab1')">鹏元征信</a></li>
+                <li><a href="javascript:void(0);" data-toggle="tab" data-id="report1" onclick="switchPageTab(this, 'applyTab1')">风控报告</a></li>
+            </ul>
+            <div id="applyTabContent1" class="tab-content">
+                <!-- 变更申请 -->
+                <div class="tab-pane fade in active" id="change1">
+                    <div ng-include="'tpl/postbiz/basic_change/basic_change_apply_save.html'" class="row m-xs"></div>
+                </div>
+                <!-- 承租人变更信息 -->
+                <div class="tab-pane fade panel panel-default" id="customer1">
+                    <div ng-if="applyType == 1" ng-include="'tpl/prebiz/apply_input/cstm_person_detail.html'" class="row m-xs"></div>
+                    <div ng-if="applyType == 2" ng-include="'tpl/prebiz/apply_input/cstm_company_detail.html'" class="row m-xs"></div>
+                </div>
+                <!--共同借款人变更信息-->
+                <div class="tab-pane fade panel panel-default" id="borrower1" ng-if="applyType == 1">
+                    <div ng-include="'tpl/prebiz/apply_input/borrower_info_detail.html'" class="row m-xs"></div>
+                </div>
+                <!--担保人变更信息-->
+                <div class="tab-pane fade panel panel-default" id="guarantee1">
+                    <div ng-include="'tpl/prebiz/apply_input/guarantee_info_detail.html'" class="row m-xs"></div>
+                </div>
+                <!--附件信息变更信息-->
+                <div class="tab-pane fade panel panel-default" id="applyFile1">
+                    <div class="row m-xs" >
+                        <tree-file-directive
+                                detail-flag="$root.yesNoFlag.yes"
+                                file-type="fileObj.fileType"
+                                files="fileObj.bizFilesList"
+                                not-upload="fileObj.notUpload"
+                                not-upload-info="fileObj.notUploadInfo"
+                                not-file-type="fileObj.notFileType"
+                                not-file-type-name="fileObj.notFileTypeName">
+                        </tree-file-directive>
+                    </div>
+                </div>
+                <!-- 鹏元征信 -->
+                <div class="tab-pane fade" id="credit1">
+                    <div ng-include="'tpl/prebiz/apply_risk/risk_credit_person_save.html'"></div>
+                </div>
+                <!-- 风控报告 -->
+                <div class="tab-pane fade" id="report1">
+                    <div ng-if="applyType == 1" ng-include="'tpl/prebiz/apply_risk/risk_report_person_save.html'"></div>
+                    <div ng-if="applyType == 2" ng-include="'tpl/prebiz/apply_risk/risk_report_company_save.html'"></div>
+                </div>
+            </div>
+    </div>
+</div>

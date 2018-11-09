@@ -1,0 +1,160 @@
+<!--<div class="panel panel-default" ng-controller="equ_mor_charge_finance_pay_controller">-->
+
+       <!-- <div class="row fms-page-header">
+            <div class="form-inline" role="form">
+                <div class="form-group">
+                    <h5>资方抵押财务付款</h5>
+                </div>
+                <div class="form-group pull-right">
+                    <button class="btn btn-default btn-sm fms-button-margin-top" ng-click="goBack()" ng-disabled="submit">返回</button>
+                    <button class="btn btn-default btn-sm fms-button-margin-top" ng-click="returnSuperior()" ng-disabled="submit">退回</button>
+                    <button class="btn btn-success m-t-xs m-r-xs btn-sm fms-button-margin-top" ng-click="save()"  ng-disabled="submit">确认付款</button>
+                    <toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+                </div>
+            </div>
+        </div>-->
+
+    <form name="form" class="form-validation" novalidate>
+        <div class="row fms-div-content">
+            <div class="row fms-div-content">
+                <h4 class="fms-margin-bottom-30"><b>客户信息</b></h4>
+                <div class="col-lg-12">
+                    <div class="dataTables_wrapper form-inline dt-bootstrap no-footer">
+                        <table border="2" class="table m-b-none dataTable no-footer" role="grid" >
+                            <thead>
+                            <tr>
+                                <th class="sorting_disabled text-center">客户姓名</th>
+                                <th class="sorting_disabled text-center">合同编号</th>
+                                <th class="sorting_disabled text-center">车架号</th>
+                                <th class="sorting_disabled text-center">车牌号</th>
+                                <th class="sorting_disabled text-center">融资额</th>
+                                <th class="sorting_disabled text-center">费用应付合计</th>
+                                <th class="sorting_disabled text-center">费用应收合计</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr click-tr ng-repeat="equMorDetailObj in equMorDetails">
+                                <td class="text-center">{{equMorDetailObj.lessee}}</td>
+                                <td class="text-center">{{equMorDetailObj.mainContNo}}</td>
+                                <td class="text-center">{{equMorDetailObj.vinNo}}</td>
+                                <td class="text-center">{{equMorDetailObj.vehicleLicenseNo}}</td>
+                                <td class="text-center">{{equMorDetailObj.equFinAmount}}</td>
+                                <td class="text-center">{{equMorDetailObj.totalShouldPay}}</td>
+                                <td class="text-center">{{equMorDetailObj.finShouldReceive}}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row fms-div-content">
+                <h4 class="fms-margin-bottom-30"><b>抵押费用合计信息</b></h4>
+                <div class="row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">保证金</b>:</label>
+                    <div class="col-sm-2">
+                        <label class="col-sm-12 control-label text-left"> {{equMorCharge.margin}}</label>
+                    </div>
+
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">手续费</b>:</label>
+                    <div class="col-sm-2">
+                        <label class="col-sm-12 control-label text-left"> {{equMorCharge.factorge}}</label>
+                    </div>
+
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">服务费</b>:</label>
+                    <div class="col-sm-2">
+                        <label class="col-sm-12 control-label text-left"> {{equMorCharge.serviceCharge}}</label>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">管理费</b>:</label>
+                    <div class="col-sm-2">
+                        <label class="col-sm-12 control-label text-left"> {{equMorCharge.managementCharge}}</label>
+                    </div>
+
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">一次性利息</b>:</label>
+                    <div class="col-sm-2">
+                        <label class="col-sm-12 control-label text-left"> {{equMorCharge.oneTimeInterest}}</label>
+                    </div>
+
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">留购价</b>:</label>
+                    <div class="col-sm-2">
+                        <label class="col-sm-12 control-label text-left"> {{equMorCharge.retentionPrice}}</label>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">付款金额合计</b>:</label>
+                    <div class="col-sm-2">
+                        <label class="col-sm-12 control-label text-left"> {{equMorCharge.totalShouldPay}}</label>
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">收款金额合计</b>:</label>
+                    <div class="col-sm-2">
+                        <label class="col-sm-12 control-label text-left"> {{equMorCharge.finShouldReceive}}</label>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="row fms-div-content">
+                <h4 class="fms-margin-bottom-30"><b>付款银行信息</b></h4>
+                <div class="col-lg-12">
+                    <!--<label class="col-sm-2 control-label text-right"><b class="form-text-black">付款银行</b>: &nbsp;&nbsp;&nbsp;{{basBankInfoVo.accBankName}}</label>-->
+                    <label class="col-sm-1 control-label text-right"><b class="form-text-black">付款分行</b>:</label>
+                    <div class="col-sm-2">
+                        <label class="col-sm-12 control-label text-left"> {{basBankInfoVo.accBranchBank}}</label>
+                    </div>
+                    <label class="col-sm-1 control-label text-right"><b class="form-text-black">付款户名</b>:</label>
+                    <div class="col-sm-2">
+                        <label class="col-sm-12 control-label text-left"> {{basBankInfoVo.accountName}}</label>
+                    </div>
+                    <label class="col-sm-1 control-label text-right"><b class="form-text-black">付款账号</b>:</label>
+                    <div class="col-sm-2">
+                        <label class="col-sm-12 control-label text-left"> {{basBankInfoVo.accountNo}}</label>
+                    </div>
+                    <!--<label class="col-sm-1 control-label text-right"><b class="form-text-black">付款联行号</b>:</label>-->
+                    <!--<div class="col-sm-2">-->
+                        <!--<label class="col-sm-12 control-label text-left"> {{basBankInfoVo.eleAccountNo}}</label>-->
+                    <!--</div>-->
+                </div>
+                <h4 class="fms-margin-bottom-30"><b>收款银行信息</b></h4>
+                <div class="col-lg-12">
+                    <!--<label class="col-sm-2 control-label text-right"><b class="form-text-black">付款银行</b><b class="form-error">*</b>: &nbsp;&nbsp;&nbsp;{{basBankInfoVo.accBankName}}</label>-->
+                    <label class="col-sm-1 control-label text-right"><b class="form-text-black">收款分行</b>:</label>
+                    <div class="col-sm-2">
+                        <label class="col-sm-12 control-label text-left"> {{basBankInfoVo.recAccBank}}</label>
+                    </div>
+                    <label class="col-sm-1 control-label text-right"><b class="form-text-black">收款户名</b>:</label>
+                    <div class="col-sm-2">
+                        <label class="col-sm-12 control-label text-left"> {{basBankInfoVo.recAccountName}}</label>
+                    </div>
+                    <label class="col-sm-1 control-label text-right"><b class="form-text-black">收款账号</b>:</label>
+                    <div class="col-sm-2">
+                        <label class="col-sm-12 control-label text-left"> {{basBankInfoVo.recAccountNo}}</label>
+                    </div>
+                    <!--<label class="col-sm-1 control-label text-right"><b class="form-text-black">收款联行号</b>:</label>-->
+                    <!--<div class="col-sm-2">-->
+                        <!--<label class="col-sm-12 control-label text-left"> {{basBankInfoVo.recEleBankNo}}</label>-->
+                    <!--</div>-->
+                </div>
+            </div>
+
+
+            <div class="row fms-div-content" >
+                <label class="col-sm-1 control-label text-right"><b class="form-text-black">备注</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-11">
+                    <textarea limit-word style="height: 110px;resize: none;" limit-word="200" name="memo" placeholder="请输入备注" class="form-control m-b-xs" ng-model="equMorChargeFinPayVo.memo"  required ></textarea>
+                    <p>
+                        <span class="form-info" ng-show=" (form.memo.$dirty && form.memo.$error.required) || (form.memo.$error.required && formValidate)">请输入备注</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="row fms-div-content">
+                <process-log-list-directive wf-log-type="$root.bizTypes.equMortgage" wf-log-no="equMorTaskNo" wf-log-sub-no="subNo" > </process-log-list-directive>
+            </div>
+        </div>
+    </form>
+
+<!--</div>-->

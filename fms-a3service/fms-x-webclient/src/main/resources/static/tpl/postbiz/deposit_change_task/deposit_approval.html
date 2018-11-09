@@ -1,0 +1,45 @@
+<div  ng-controller="deposit_approval_controller" class="col-lg-12  panel panel-default">
+    <ul type="none" style="padding-left: 20px;">
+        <div class="form-group row">
+            <label class="col-sm-2 control-label text-right"><b class="form-text-black">审批操作</b><b
+                    class="form-error">*</b>:</label>
+            <div class="col-sm-2">
+                <div class="radio" ng-repeat="contRequestPayActTypeObj in contRequestPayActTypeList">
+                    <label>
+                        <input type="radio" name="actType" ng-model="depositApproveVo.actType"  ng-value="contRequestPayActTypeObj.codeValue">
+                        {{contRequestPayActTypeObj.codeValueName}}
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <!--<div class="form-group row">
+            &lt;!&ndash;申请审批退回&ndash;&gt;
+            <label ng-if="applyApproveVo.actType==1||applyApproveVo.actType==2" class="col-sm-2 control-label text-right"><b class="form-text-black">退回原因</b><b class="form-error">*</b>:</label>
+            <div class="col-sm-4" ng-if="applyApproveVo.actType==1||applyApproveVo.actType==2">
+                <select  name="backReason" ng-model="applyApproveVo.codeValue1" class="form-control m-b-xs" >
+                    <option value="">请选择</option>
+                    <option ng-repeat="appSendBackReason in appSendBackReasonList" value="{{appSendBackReason.codeValue}}">{{appSendBackReason.codeValueName}}</option>
+                </select>
+            </div>
+            &lt;!&ndash;申请审批拒绝&ndash;&gt;
+            <label ng-if="applyApproveVo.actType==3" class="col-sm-2 control-label text-right"><b class="form-text-black">拒绝原因</b><b class="form-error">*</b>:</label>
+            <div class="col-sm-4" ng-if="applyApproveVo.actType==3">
+                <select  name="refuseReason" ng-model="applyApproveVo.codeValue1" class="form-control m-b-xs" >
+                    <option value="">请选择</option>
+                    <option ng-repeat="appRefuseReason in appRefuseReasonList" value="{{appRefuseReason.codeValue}}">{{appRefuseReason.codeValueName}}</option>
+                </select>
+            </div>
+        </div>-->
+        <div class="form-group row">
+            <label class="col-sm-2 control-label text-right"><b class="form-text-black">备注</b><b class="form-error">*</b>:</label>
+            <div class="col-sm-10">
+                <textarea placeholder="请输入备注" limit-word class="form-control m-b-xs r-none" name="remark" ng-model="depositApproveVo.remark" required></textarea>
+                <p>
+                    <span class="form-info" ng-show=" (form.remark1.$dirty && form.remark.$error.required) || (form.remark.$error.required && formValidate)">请输入审批意见备注</span>
+                </p>
+            </div>
+        </div>
+    </ul>
+    <div ng-include="'tpl/common/process_log/process_log_list.html'"></div>
+</div>

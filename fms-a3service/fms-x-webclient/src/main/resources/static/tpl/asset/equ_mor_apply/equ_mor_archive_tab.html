@@ -1,0 +1,43 @@
+<div  ng-controller="equ_mor_archive_tab_controller">
+    <div>
+        <toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-body wrapper-sm">
+            <div class="row">
+                <div class="form-group pull-right">
+                    <div class="btn-group ">
+                        <div class="form-group pull-right">
+                            <button class="btn btn-default btn-sm fms-button-margin-top" ng-click="goBack()" ng-disabled="submit">返回</button>
+                            <button class="btn btn-default btn-sm fms-button-margin-top" ng-click="returnSuperior()"  ng-disabled="submit" ng-if="returnButton">退回</button>
+                            <button class="btn btn-success m-t-xs m-r-xs btn-sm fms-button-margin-top" ng-click="save()"  ng-disabled="submit">提交</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <form name="form" class="form-validation" novalidate>
+            <div class="panel-body wrapper-sm">
+                <ul id="applyTab" class="nav nav-tabs">
+                    <li class="active"><a href="javascript:void(0);" data-toggle="tab" data-id="equ_mor_archive" onclick="switchPageTab(this, 'applyTab')">资方抵押资料归档</a></li>
+                    <li><a href="javascript:void(0);" data-toggle="tab" data-id="equ_mor_apply_detail" onclick="switchPageTab(this, 'applyTab')">资方抵押详情</a></li>
+                    <li ng-if="management == '0'"><a href="javascript:void(0);" data-toggle="tab" data-id="equ_mor_sea_wing_apply_detail" onclick="switchPageTab(this, 'applyTab')">海翼资方抵押详情</a></li>
+                </ul>
+                <div id="applyTabContent" class="tab-content">
+                    <!--资方抵押资料归档-->
+                    <div class="tab-pane fade in active" id="equ_mor_archive">
+                        <div ng-include="'tpl/asset/equ_mor_apply/equ_mor_archive.html'" class="row m-xs"></div>
+                    </div>
+                    <!-- 抵押详情 -->
+                    <div class="tab-pane fade" id="equ_mor_apply_detail">
+                        <div ng-include="'tpl/asset/equ_mor_apply/equ_mor_apply_detail.html'" class="row m-xs"></div>
+                    </div>
+                    <!-- 海翼抵押详情 -->
+                    <div ng-if="management == '0'" class="tab-pane fade" id="equ_mor_sea_wing_apply_detail">
+                        <div ng-include="'tpl/asset/equ_mor_apply/equ_mor_sea_wing_apply_list_detail.html'" class="row m-xs"></div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

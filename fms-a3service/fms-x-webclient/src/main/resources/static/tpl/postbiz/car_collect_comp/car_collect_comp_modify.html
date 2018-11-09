@@ -1,0 +1,150 @@
+<div ng-controller="car_collect_comp_modify_controller">
+    <div>
+        <toaster-container
+                toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+    </div>
+    <div class="panel panel-default">
+
+        <div class="row">
+            <div class="btn-group m-r-lg pull-left" style="margin-left: 25px">
+                <h4>{{frameTitle}}</h4>
+            </div>
+            <div class="btn-group m-r-lg pull-right" style="margin: 15px 30px 0px 0px">
+                <button type="submit" class="btn btn-success" ng-show="showUpdate" ng-disabled="submit"
+                        ng-click="modify()">保存
+                </button>
+                <button class="btn btn-default m-t-xs" ng-click="goback()">返回</button>
+            </div>
+        </div>
+
+        <form name="form" class="form-validation" novalidate>
+
+            <div class="panel-body wrapper-sm">
+                <ul id="applyTab" class="nav nav-tabs">
+                    <li class="active"><a href="javascript:void(0);" data-toggle="tab" data-id="message"
+                                          onclick="switchPageTab(this, 'applyTab')">修改收车机构信息</a></li>
+                    <li><a href="javascript:void(0);" data-toggle="tab" data-id="fjmessage"
+                           onclick="switchPageTab(this, 'applyTab')">附件信息</a></li>
+                </ul>
+                <div  class="tab-content" style="margin-top: 25px">
+                    <div class="tab-pane fade in active" id="message">
+
+                        <div class="form-group row">
+                            <div class="col-sm-6">
+                                <div class="row">
+                                    <label class="col-sm-4 control-label text-right"><b class="form-text-black">收车机构代码</b><b
+                                            class="form-error">*</b>:</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" name="carCollectCompCode" placeholder="请输入收车机构代码" class="form-control m-b-xs" ng-model="carCollectComp.carCollectCompCode"  required disabled>
+                                        <p>
+                                            <span class="form-info" ng-show=" (form.carCollectCompCode.$dirty && form.carCollectCompCode.$error.required) || (form.carCollectCompCode.$error.required && formValidate)">收车机构代码不能为空</span>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="row">
+                                    <label class="col-sm-4 control-label text-right"><b class="form-text-black">收车机构名称</b><b
+                                            class="form-error">*</b>:</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" name="carCollectCompName" placeholder="请输入收车机构名称" class="form-control m-b-xs" ng-model="carCollectComp.carCollectCompName"  required >
+                                        <p>
+                                            <span class="form-info" ng-show=" (form.carCollectCompName.$dirty && form.carCollectCompName.$error.required) || (form.carCollectCompName.$error.required && formValidate)">收车机构名称不能为空</span>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-sm-6">
+                                <div class="row">
+                                    <label class="col-sm-4 control-label text-right"><b class="form-text-black">联系电话</b><b
+                                            class="form-error">*</b>:</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" name="contactTel" placeholder="请输入联系电话" class="form-control m-b-xs" ng-model="carCollectComp.contactTel"  required >
+                                        <p>
+                                            <span class="form-info" ng-show=" (form.contactTel.$dirty && form.contactTel.$error.required) || (form.contactTel.$error.required && formValidate)">联系电话不能为空</span>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="row">
+                                    <label class="col-sm-4 control-label text-right"><b class="form-text-black">所在地址</b><b
+                                            class="form-error">*</b>:</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" name="address" placeholder="请输入所在地址" class="form-control m-b-xs" ng-model="carCollectComp.address"  required >
+                                        <p>
+                                            <span class="form-info" ng-show=" (form.address.$dirty && form.address.$error.required) || (form.address.$error.required && formValidate)">所在地址不能为空</span>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+
+                            <div class="col-sm-6">
+                                <div class="row">
+                                    <label class="col-sm-4 control-label text-right"><b class="form-text-black">所在省份</b><b
+                                            class="form-error">*</b>:</label>
+                                    <div class="col-sm-4">
+                                        <select  name="addrProv" ng-model="carCollectComp.addrProv" class="form-control m-b-xs" ng-change="changeProvince()" required>
+                                            <option value="">--请选择省份--</option>
+                                            <option value="{{provinceObj.areaCode}}" ng-repeat="provinceObj in provinceList">{{provinceObj.areaName}}</option>
+                                        </select>
+                                        <!-- <input type="text" name="addrProv" placeholder="请输入所在省份" class="form-control m-b-xs" ng-model="carCollectComp.addrProv"  required >-->
+                                        <p>
+                                            <span class="form-info" ng-show=" (form.addrProv.$dirty && form.addrProv.$error.required) || (form.addrProv.$error.required && formValidate)">所在省份不能为空</span>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-6">
+                                <div class="row">
+                                    <label class="col-sm-4 control-label text-right"><b class="form-text-black">所在城市</b><b
+                                            class="form-error">*</b>:</label>
+                                    <div class="col-sm-4">
+                                        <select name="addrCity" ng-model="carCollectComp.addrCity" class="form-control m-b-xs" ng-change="changeCity()" required>
+                                            <option value="">--请选择城市--</option>
+                                            <option value="{{cityObj.areaCode}}" ng-selected="cityObj.areaCode==carCollectComp.addrCity?1:0" ng-repeat="cityObj in cityList">{{cityObj.areaName}}</option>
+                                        </select>
+                                        <!-- <input type="text" name="addrCity" placeholder="请输入所在城市" class="form-control m-b-xs" ng-model="carCollectComp.addrCity"  required >-->
+                                        <p>
+                                            <span class="form-info" ng-show=" (form.addrCity.$dirty && form.addrCity.$error.required) || (form.addrCity.$error.required && formValidate)">所在城市不能为空</span>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-sm-6">
+                                <div class="row">
+                                    <label class="col-sm-4 control-label text-right"><b class="form-text-black">邮箱</b><b
+                                            class="form-error">*</b>:</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" name="mailAddress" placeholder="请输入邮箱" class="form-control m-b-xs" ng-model="carCollectComp.mailAddress"  required >
+                                        <p>
+                                            <span class="form-info" ng-show=" (form.mailAddress.$dirty && form.mailAddress.$error.required) || (form.mailAddress.$error.required && formValidate)">邮箱不能为空</span>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tab-pane fade" id="fjmessage">
+                        <ul type="none" style="padding-left: 20px;">
+                            <div ng-include="'tpl/common/tree_file/tree_file.html'"></div>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+

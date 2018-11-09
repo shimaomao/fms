@@ -1,0 +1,200 @@
+<div  ng-controller="sys_user_modify_controller">
+
+    <div>
+        <toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="row" style="margin: 0; padding: 15px; border: 1px solid #dddddd">
+            <h4 class="m-n font-thin h4">编辑用户信息</h4>
+        </div>
+        <form name="form" class="form-validation" novalidate>
+
+            <div class="panel-body wrapper-sm">
+                <!--用户代码-->
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">用户代码</b><b class="form-error">*</b>:</label>
+
+                    <!--项目可编辑-->
+                    <div class="col-sm-2">
+                        <input type="text" name="user" placeholder="请输入用户代码" class="form-control m-b-xs" ng-model="sysUser.user" disabled  required >
+                        <p>
+                            <span class="form-info" ng-show=" (form.user.$dirty && form.user.$error.required) || (form.user.$error.required && formValidate)">用户代码不能为空</span>
+                        </p>
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">用户名称</b><b class="form-error">*</b>:</label>
+                    <!--项目可编辑-->
+                    <div class="col-sm-2">
+                        <input type="text" name="userName" placeholder="请输入用户名称" class="form-control m-b-xs" ng-model="sysUser.userName"  required >
+                        <p>
+                            <span class="form-info" ng-show=" (form.userName.$dirty && form.userName.$error.required) || (form.userName.$error.required && formValidate)">用户名称不能为空</span>
+                        </p>
+                    </div>
+                </div>
+                <!--用户密码(仅新建可见)-->
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">用户密码</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <input type="password" name="userPassword" placeholder="请输入用户密码" class="form-control m-b-xs" ng-model="sysUser.userPassword" ng-minlength="6"
+                                required >
+                        <p>
+                            <span class="form-info" ng-show="(form.userPassword.$dirty && form.userPassword.$error.required) || (form.userPassword.$error.required && formValidate)">用户密码不能为空</span>
+                            <span class="form-info" ng-show="(form.userPassword.$dirty && form.userPassword.$error.minlength) || (form.userPassword.$error.minlength && formValidate)">密码长度不小于6</span>
+                            <span class="form-info" ng-show="(form.userPassword.$dirty && form.userPassword.$error.maxlength) || (form.userPassword.$error.maxlength && formValidate)">密码长度不超过20</span>
+                        </p>
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">确认密码</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <input type="password" name="confirm_password" placeholder="请确认密码" class="form-control m-b-xs" ng-model="confirm_password" ui-validate=" '$value==sysUser.userPassword' " ui-validate-watch=" 'sysUser.userPassword' "  required  >
+                        <p>
+                            <span class="form-info" ng-show="(form.confirm_password.$dirty && form.confirm_password.$error.required) || (form.confirm_password.$error.required && formValidate)">确认密码不能为空</span>
+                            <span class="form-info" ng-show="confirm_password!= sysUser.userPassword">两次密码输入不一致</span>
+                        </p>
+                    </div>
+                </div>
+
+                <!--（机构）用户组-->
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">机构(用户组)</b><b class="form-error">*</b>:</label>
+                    <!--可编辑-->
+                    <div class="col-sm-2">
+                        <input type="text" name="groupCode" placeholder="请选择机构(用户组)" class="form-control m-b-xs" ng-model="sysUser.groupName"  disabled   required>
+                        <p>
+                            <span class="form-info" ng-show=" (form.groupCode.$dirty && form.groupCode.$error.required) || (form.groupCode.$error.required && formValidate)">机构(用户组)不能为空</span>
+                        </p>
+                    </div>
+                    <button class="btn btn-sm btn-primary m-b-xs m-l-sm" ng-click="selectSysUserGroup()"><i class="fa fa-pencil-square-o m-r-xs"></i>选择</button>
+                </div>
+                <!--用户角色-->
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">用户角色</b><b class="form-error">*</b>:</label>
+                    <!--可编辑-->
+                    <div class="col-sm-6">
+                        <table id="user_table" border="1" class="table table-striped m-b-none" width="100%">
+                        </table>
+                    </div>
+                    <button class="btn btn-sm btn-primary m-b-xs m-l-sm" ng-click="selectSysUserRoles()"><i class="fa fa-pencil-square-o m-r-xs"></i>选择</button>
+                </div>
+                <!--电话号码-->
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">用户电话</b>:</label>
+                    <!--项目可编辑-->
+                    <div class="col-sm-2">
+                        <input type="text" name="userTelNo" placeholder="请输入用户电话" class="form-control m-b-xs" ng-model="sysUser.userTelNo" ng-pattern="/^0\d{2,3}-\d{7,8}$/" >
+                        <!--<p>-->
+                            <!--<span class="form-info" ng-show=" (form.userTelNo.$dirty && form.userTelNo.$error.pattern) || (form.userTelNo.$error.pattern && formValidate)">请输入正确的号码</span>-->
+                        <!--</p>-->
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">用户手机</b><b class="form-error">*</b>:</label>
+
+                    <!--可编辑-->
+                    <div class="col-sm-2">
+                        <input type="text" name="userMobileNo" placeholder="请输入用户手机" class="form-control m-b-xs" ng-model="sysUser.userMobileNo"  ng-pattern="/^1[345789]\d{9}$/" required>
+                        <p>
+                            <span class="form-info" ng-show=" (form.userMobileNo.$dirty && form.userMobileNo.$error.required) || (form.userMobileNo.$error.required && formValidate)">用户手机不能为空</span>
+                            <span class="form-info" ng-show=" (form.userMobileNo.$error.pattern && !form.userMobileNo.$error.required) || (form.userMobileNo.$error.pattern && formValidate && !form.userMobileNo.$error.required)">请输入正确的手机号</span>
+                    </div>
+                </div>
+
+                <!--用户邮箱-->
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">用户邮箱</b>:</label>
+                    <!--可编辑-->
+                    <div class="col-sm-2">
+                        <input type="text" name="userMailAddress" placeholder="请输入用户邮箱" class="form-control m-b-xs" ng-model="sysUser.userMailAddress"  ng-pattern="/^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/" >
+                        <!--<p>-->
+                            <!--<span class="form-info" ng-show=" (form.userMailAddress.$dirty && form.userMailAddress.$error.pattern) || ( form.userMailAddress.$error.pattern && formValidate)">用户邮箱不能为空</span>-->
+                        <!--</p>-->
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">启用标识</b><b class="form-error" >*</b>:</label>
+                    <!--项目可编辑-->
+                    <div class="col-sm-2 ">
+                        <select name="enableFlag" ng-model="sysUser.enableFlag" class="form-control m-b-xs" required>
+                            <option value="">---请选择---</option>
+                            <option ng-repeat="enableFlagObj in enableFlagList" value="{{enableFlagObj.codeValue}}">{{enableFlagObj.codeValueName}}</option>
+                        </select>
+                        <p>
+                            <span class="form-info" ng-show=" (form.enableFlag.$dirty && form.enableFlag.$error.pattern) || ( form.enableFlag.$error.pattern && formValidate)">启用标识不能为空</span>
+                        </p>
+                    </div>
+                </div>
+                <!--启用标识-->
+                <!--入职日期-->
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">入职日期</b>:</label>
+                    <!--项目可编辑-->
+                    <div class="col-sm-2">
+                        <input type="text" onchange="" name="employDate" placeholder="请输入入职日期" class="form-control m-b-xs" ng-model="sysUser.employDate" date-picker>
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">用户证件类型</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-2" >
+                        <select name="certifType" ng-model="sysUser.certifType" class="form-control m-b-xs" required>
+                            <option value="">---请选择---</option>
+                            <option ng-repeat="certifType in certifTypeList" value="{{certifType.codeValue}}">{{certifType.codeValueName}}</option>
+                        </select>
+                        <p>
+                            <span class="form-info" ng-show=" (form.certifType.$dirty && form.certifType.$error.required) || (form.certifType.$error.required && formValidate)">用户证件类型不能为空</span>
+                        </p>
+                    </div>
+                </div>
+                <!--证件类型 仅编辑和添加-->
+
+                <!--用户证件号码-->
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">用户证件号码</b><b class="form-error">*</b>:</label>
+                    <!--可编辑-->
+                    <div class="col-sm-2">
+                        <input type="text" name="certifNo" placeholder="请输入用户证件号码" class="form-control m-b-xs" ng-model="sysUser.certifNo"  required >
+                        <p>
+                            <span class="form-info" ng-show=" (form.certifNo.$dirty && form.certifNo.$error.required) || (form.certifNo.$error.required && formValidate)">用户证件号码不能为空</span>
+                        </p>
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">用户性别</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-2" >
+                        <select name="gender" ng-model="sysUser.sex" class="form-control m-b-xs" required>
+                            <option value="">---请选择---</option>
+                            <option ng-repeat="gender in genderList" value="{{gender.codeValue}}">{{gender.codeValueName}}</option>
+                        </select>
+                        <p>
+                            <span class="form-info" ng-show=" (form.gender.$dirty && form.gender.$error.required) || (form.gender.$error.required && formValidate)">用户性别不能为空</span>
+                        </p>
+                    </div>
+                </div>
+
+                <!--菜单权限类型-->
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">菜单权限类型</b><b class="form-error">*</b>:</label>
+                    <!--可编辑-->
+                    <div class="col-sm-2">
+                        <select name="validMenuType" ng-model="sysUser.validMenuType" class="form-control m-b-xs" required>
+                            <option value="">---请选择---</option>
+                            <option ng-repeat="validMenuType in validMenuTypeList" value="{{validMenuType.codeValue}}">{{validMenuType.codeValueName}}</option>
+                        </select>
+                        <p>
+                            <span class="form-info" ng-show=" (form.validMenuType.$dirty && form.validMenuType.$error.required) || (form.validMenuType.$error.required && formValidate)">菜单权限类型不能为空</span>
+                        </p>
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">用户管理级别</b><b class="form-error">*</b>:</label>
+                    <!--可编辑-->
+                    <div class="col-sm-2">
+                        <!--<input type="text" name="userDeptLevel" placeholder="请输入用户管理级别" class="form-control m-b-xs" ng-model="sysUser.userDeptLevel"  required >-->
+                        <select name="userDeptLevel" ng-model="sysUser.userDeptLevel" class="form-control m-b-xs" required>
+                            <option value="">---请选择---</option>
+                            <option ng-repeat="userDeptLevel in userDeptLevelList" value="{{userDeptLevel.codeValue}}">{{userDeptLevel.codeValueName}}</option>
+                        </select>
+                        <p>
+                            <span class="form-info" ng-show=" (form.userDeptLevel.$dirty && form.userDeptLevel.$error.required) || (form.userDeptLevel.$error.required && formValidate)">用户管理级别不能为空</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center">
+                <div class="col-sm-15 m-b">
+                    <button class="btn btn-default" ng-click="goBack()">返回</button>
+                    <button type="submit" class="btn btn-success"  ng-disabled="submit" ng-click="modify()">保存</button>
+                </div>
+            </div>
+
+        </form>
+    </div>
+</div>

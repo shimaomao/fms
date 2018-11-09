@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.com.leadu.fms.data.baseinfo.dao.BasSalesDao">
+    <!--分页查询实际销售方-->
+    <select id="selectBasSalessBypage" parameterType="cn.com.leadu.fms.pojo.baseinfo.vo.bassales.BasSalesVo" resultType="cn.com.leadu.fms.pojo.baseinfo.vo.bassales.BasSalesVo">
+        SELECT
+        basSales.*,
+        basPartner.partner_name
+        FROM
+        bas_sales basSales
+        LEFT JOIN
+        bas_partner basPartner
+        ON
+        basSales.par_group_code = basPartner.partner_code AND basPartner.del_flag = ${delete_exist}
+        WHERE
+        basSales.del_flag = ${delete_exist}
+        <if test="basSalesVo.salesCode != null">
+            AND basSales.sales_code LIKE #{basSalesVo.salesCode}
+        </if>
+        <if test="basSalesVo.salesName">
+            AND basSales.sales_name LIKE #{basSalesVo.salesName}
+        </if>
+        <if test="basSalesVo.salesTaskStatus">
+            AND basSales.sales_task_status= #{basSalesVo.salesTaskStatus}
+        </if>
+        ORDER BY basSales.update_time DESC
+    </select>
+
+    <!--根据salesId获取实际销售方-->
+    <select id="selectBasSalesBysalesId" parameterType="java.lang.String" resultType="cn.com.leadu.fms.pojo.baseinfo.vo.bassales.BasSalesVo">
+         SELECT
+        basSales.*,
+        basPartner.partner_name
+        FROM
+        bas_sales basSales
+        LEFT JOIN
+        bas_partner basPartner
+        ON
+        basSales.par_group_code = basPartner.partner_code AND basPartner.del_flag = ${delete_exist}
+        WHERE
+        basSales.del_flag = ${delete_exist}
+        <if test="#{salesId}!= null" >
+            AND basSales.sales_id = #{salesId}
+        </if>
+    </select>
+</mapper>

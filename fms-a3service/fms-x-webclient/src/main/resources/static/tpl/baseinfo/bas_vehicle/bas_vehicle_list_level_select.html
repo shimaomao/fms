@@ -1,0 +1,39 @@
+<div class="modal-header">
+        <h4 class="modal-title">{{Title}} <button type="button" class="close" data-dismiss="modal" aria-hidden="true" ng-click="close()">&times;</button></h4>
+</div>
+<div ng-init="init()">
+    <div class="panel-body">
+        <div class="panel-body wrapper-sm">
+            <div class="row">
+                <div class="col-lg-12">
+                    <form class="form-inline" role="form">
+                        <div class="form-group m-b-sm">
+                            <div class="form-group">
+                                <label class="sr-only" >{{Name}}</label>
+                                <input class="form-control m-b-xs" ng-model="vehicleName" placeholder="{{Name}}">
+                                <select ng-show="vehicleLevelFlag" ng-model="vehicleLevel" class="form-control m-b-xs">
+                                    <option value="">--选择车辆级别--</option>
+                                    <option value="{{vehicleLevelObj.codeValue}}" ng-repeat="vehicleLevelObj in vehicleLevelList">{{vehicleLevelObj.codeValueName}}</option>
+                                </select>
+                            </div>
+                            <div class="btn-group">
+                                <button class="btn btn-default m-b-xs btn-info" ng-click="searchBasVehicle()" ><i class="fa fa-search"></i>查询</button>
+                                <button class="btn btn-default m-b-xs" ng-click="resetBasVehicle()" ><i class="fa  icon-refresh"></i>重置</button>
+                                <button class="btn btn-default m-b-xs" ng-click="exportExcel()">导出excel</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-default" style="border: 0">
+            <table border="1" class="table table-striped m-b-none" id="bas_vehicle_list_select_table"></table>
+        </div>
+    </div>
+</div>
+<div class="modal-footer ng-scope text-center">
+    <div class="text-center">
+        <button class="btn btn-default" ng-click="close()">关闭</button>
+        <button class="btn btn-success" ng-click="confirm('select')">确认</button>
+    </div>
+</div>

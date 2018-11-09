@@ -1,0 +1,35 @@
+server:
+  port: ${server-port:8881}
+
+eureka:
+  instance:
+    statusPageUrlPath: /info
+    healthCheckUrlPath: /health
+    prefer-ip-address: true
+    ip-address: ${server-ip}
+    instance-id: ${server-ip}:${server.port}
+  client:
+    serviceUrl:
+      defaultZone: ${eureka-list}
+
+spring:
+  cloud:
+    config:
+      server:
+        git:
+          uri: http://116.236.234.246:10182/fms/fms-config.git
+          username: fms_config
+          password: fms_config
+          search-paths: /prod
+          default-label: wan_liang
+
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 20000 #缺省为1000
+  threadpool:
+    default:
+      coreSize: 3000 #缺省为10

@@ -1,0 +1,366 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>cn.com.leadu.fms</groupId>
+    <artifactId>fms-a1public</artifactId>
+    <version>1.0.1</version>
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>fms-g-common</module>
+        <module>fms-g-extend</module>
+    </modules>
+
+
+    <properties>
+        <java.version>1.8</java.version>
+        <docker.registryUrl>116.236.234.246:5000</docker.registryUrl>
+        <docker.imageTag>1.0.1</docker.imageTag>
+        <oauth.version>2.2.0.RELEASE</oauth.version>
+        <spring-cloud.version>Dalston.SR2</spring-cloud.version>
+        <fms.version>1.0.1</fms.version>
+        <ojdbc6.version>11.2.0.3</ojdbc6.version>
+        <mysql.jdbc.version>5.1.44</mysql.jdbc.version>
+        <tk-mybatis.version>1.1.4</tk-mybatis.version>
+        <pagehelper.version>1.1.3</pagehelper.version>
+        <boot-redis.version>1.4.2.RELEASE</boot-redis.version>
+        <commons-lang3.version>3.0.1</commons-lang3.version>
+        <javax.inject.version>1</javax.inject.version>
+        <fastjson.version>1.2.33</fastjson.version>
+        <commons-beanutils.version>1.9.3</commons-beanutils.version>
+        <ant.version>1.8.2</ant.version>
+        <persistence-api.version>1.0</persistence-api.version>
+        <httpclient.version>4.3.1</httpclient.version>
+        <!--feign 依赖版本 -->
+        <httpclient.version>4.3.1</httpclient.version>
+        <commons-httpclient.version>3.1</commons-httpclient.version>
+        <jaxb-api.version>2.2.8</jaxb-api.version>
+        <jackson-jaxrs-xml-provider.version>2.9.0</jackson-jaxrs-xml-provider.version>
+        <spring-cloud-starter-feign.version>1.3.2.RELEASE</spring-cloud-starter-feign.version>
+        <spring-cloud-netflix-core.version>1.3.2.RELEASE</spring-cloud-netflix-core.version>
+        <spring-cloud-starter-config.version>4.3.1</spring-cloud-starter-config.version>
+        <httpclient.version>1.3.2.RELEASE</httpclient.version>
+        <feign-jaxb.version>8.16.2</feign-jaxb.version>
+        <httpclient.version>4.3.1</httpclient.version>
+        <feign-gson.version>8.18.0</feign-gson.version>
+        <pringfox-swagger2>2.5.0</pringfox-swagger2>
+        <juel.version>2.2.7</juel.version>
+        <taglibs.version>1.1.2</taglibs.version>
+        <pinyin4j.version>2.5.0</pinyin4j.version>
+        <nc.version>1.0</nc.version>
+        <dom4j.version>1.6.1</dom4j.version>
+        <httpcomponents-httpclient>4.3.1</httpcomponents-httpclient>
+        <commons-io.version>2.2</commons-io.version>
+        <apache-poi.version>3.11</apache-poi.version>
+        <apache-poi-ooxml.version>3.11</apache-poi-ooxml.version>
+        <apache-poi-scratchpad.version>3.11</apache-poi-scratchpad.version>
+        <fms-xstream.version>1.3.1</fms-xstream.version>
+        <fms-jodconverter-utils.version>3.0.1</fms-jodconverter-utils.version>
+        <fms-jodconverter.version>2.2.2</fms-jodconverter.version>
+    </properties>
+
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>1.5.6.RELEASE</version>
+        <relativePath /> <!-- lookup parent from repository -->
+    </parent>
+
+    <dependencyManagement>
+        
+        <dependencies>
+
+            <dependency>
+                <groupId>com.oracle</groupId>
+                <artifactId>ojdbc6</artifactId>
+                <version>${ojdbc6.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>cn.com.leadu.fms</groupId>
+                <artifactId>fms-g-common</artifactId>
+                <version>${fms.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>mysql</groupId>
+                <artifactId>mysql-connector-java</artifactId>
+                <version>${mysql.jdbc.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>javax.persistence</groupId>
+                <artifactId>persistence-api</artifactId>
+                <version>${persistence-api.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring-cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <!-- mapper -->
+            <dependency>
+                <groupId>tk.mybatis</groupId>
+                <artifactId>mapper-spring-boot-starter</artifactId>
+                <version>${tk-mybatis.version}</version>
+            </dependency>
+            <!-- pagehelper -->
+            <dependency>
+                <groupId>com.github.pagehelper</groupId>
+                <artifactId>pagehelper-spring-boot-starter</artifactId>
+                <version>${pagehelper.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-redis</artifactId>
+                <version>${boot-redis.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <version>${commons-lang3.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>de.odysseus.juel</groupId>
+                <artifactId>juel-impl</artifactId>
+                <version>${juel.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>taglibs</groupId>
+                <artifactId>standard</artifactId>
+                <version>${taglibs.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>javax.inject</groupId>
+                <artifactId>javax.inject</artifactId>
+                <version>${javax.inject.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.security.oauth</groupId>
+                <artifactId>spring-security-oauth2</artifactId>
+                <version>${oauth.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>fastjson</artifactId>
+                <version>${fastjson.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>commons-beanutils</groupId>
+                <artifactId>commons-beanutils</artifactId>
+                <version>${commons-beanutils.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.ant</groupId>
+                <artifactId>ant</artifactId>
+                <version>${ant.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.google.zxing</groupId>
+                <artifactId>core</artifactId>
+                <version>3.1.0</version>
+            </dependency>
+
+            <dependency>
+                <groupId>commons-codec</groupId>
+                <artifactId>commons-codec</artifactId>
+                <version>1.8</version>
+            </dependency>
+
+
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-devtools</artifactId>
+                <optional>true</optional><!-- optional=true,依赖不会传递，该项目依赖devtools；之后依赖myboot项目的项目如果想要使用devtools，需要重新引入 -->
+                <scope>true</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-starter-feign</artifactId>
+                <version>${spring-cloud-starter-feign.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>io.springfox</groupId>
+                <artifactId>springfox-swagger2</artifactId>
+                <version>${pringfox-swagger2}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>io.springfox</groupId>
+                <artifactId>springfox-swagger-ui</artifactId>
+                <version>${pringfox-swagger2}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.belerweb</groupId>
+                <artifactId>pinyin4j</artifactId>
+                <version>${pinyin4j.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.jbarcode</groupId>
+                <artifactId>JBarcode</artifactId>
+                <version>0.2.8</version>
+            </dependency>
+            <dependency>
+                <groupId>com.lowagie</groupId>
+                <artifactId>iText</artifactId>
+                <version>2.1.5</version>
+            </dependency>
+
+
+            <dependency>
+                <groupId>com.lowagie</groupId>
+                <artifactId>itext-asian</artifactId>
+                <version>1.0.0</version>
+            </dependency>
+
+
+            <dependency>
+                <groupId>fengbang</groupId>
+                <artifactId>cglib</artifactId>
+                <version>2.2.2</version>
+            </dependency>
+            <dependency>
+                <groupId>asm</groupId>
+                <artifactId>asm</artifactId>
+                <version>3.3.1</version>
+            </dependency>
+            <dependency>
+                <groupId>org.bouncycastle</groupId>
+                <artifactId>bcprov-jdk15on</artifactId>
+                <version>1.49</version>
+            </dependency>
+            <dependency>
+                <groupId>org.bouncycastle</groupId>
+                <artifactId>bcpkix-jdk15on</artifactId>
+                <version>1.49</version>
+            </dependency>
+            <dependency>
+                <groupId>dom4j</groupId>
+                <artifactId>dom4j</artifactId>
+                <version>1.6.1</version>
+            </dependency>
+            <dependency>
+                <groupId>org.jaxen</groupId>
+                <artifactId>jaxen</artifactId>
+                <version>1.1-beta-6</version>
+            </dependency>
+            <dependency>
+                <groupId>javax.xml.crypto</groupId>
+                <artifactId>xmlsec</artifactId>
+                <version>1.5.5</version>
+            </dependency>
+            <dependency>
+                <groupId>com.jinge</groupId>
+                <artifactId>PdfRenderer</artifactId>
+                <version>0.9.1</version>
+            </dependency>
+            <dependency>
+                <groupId>com.jinge</groupId>
+                <artifactId>iSignature_PDF_API_V5.0.0.332</artifactId>
+                <version>1.0</version>
+            </dependency>
+            <!-- nc webservice -->
+            <dependency>
+                <groupId>com.nc</groupId>
+                <artifactId>nc-uap</artifactId>
+                <version>${nc.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>dom4j</groupId>
+                <artifactId>dom4j</artifactId>
+                <version>${dom4j.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.httpcomponents</groupId>
+                <artifactId>httpclient</artifactId>
+                <version>${httpcomponents-httpclient}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>commons-io</groupId>
+                <artifactId>commons-io</artifactId>
+                <version>${commons-io.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.poi</groupId>
+                <artifactId>poi</artifactId>
+                <version>${apache-poi.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.poi</groupId>
+                <artifactId>poi-ooxml</artifactId>
+                <version>${apache-poi-ooxml.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.poi</groupId>
+                <artifactId>poi-scratchpad</artifactId>
+                <version>${apache-poi-scratchpad.version}</version>
+            </dependency>
+
+
+            <dependency>
+                <groupId>cn.com.leadu.fms</groupId>
+                <artifactId>fms-xstream</artifactId>
+                <version>${fms-xstream.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.com.leadu.fms</groupId>
+                <artifactId>fms-unoil</artifactId>
+                <version>${fms-jodconverter-utils.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.com.leadu.fms</groupId>
+                <artifactId>fms-ridl</artifactId>
+                <version>${fms-jodconverter-utils.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.com.leadu.fms</groupId>
+                <artifactId>fms-jurt</artifactId>
+                <version>${fms-jodconverter-utils.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.com.leadu.fms</groupId>
+                <artifactId>fms-juh</artifactId>
+                <version>${fms-jodconverter-utils.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.com.leadu.fms</groupId>
+                <artifactId>fms-jodconverter-cli</artifactId>
+                <version>${fms-jodconverter.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.com.leadu.fms</groupId>
+                <artifactId>fms-jodconverter</artifactId>
+                <version>${fms-jodconverter.version}</version>
+            </dependency>
+        </dependencies>
+
+    </dependencyManagement>
+
+
+</project>

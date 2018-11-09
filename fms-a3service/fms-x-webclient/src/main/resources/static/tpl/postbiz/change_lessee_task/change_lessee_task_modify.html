@@ -1,0 +1,86 @@
+<div class="modal-header">
+    <h4 class="modal-title">编辑postbiz <button type="button" class="close" data-dismiss="modal" aria-hidden="true" ng-click="close()">&times;</button></h4>
+</div>
+<div class="modal-body">
+    <form name="form" class="form-validation" novalidate>
+
+        <div class="panel-body">
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">变更任务号</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="taskNo" placeholder="请输入变更任务号" class="form-control m-b-xs" ng-model="changeLesseeTask.taskNo"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.taskNo.$dirty && form.taskNo.$error.required) || (form.taskNo.$error.required && formValidate)">变更任务号不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">变更任务状态</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="taskStatus" placeholder="请输入变更任务状态" class="form-control m-b-xs" ng-model="changeLesseeTask.taskStatus"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.taskStatus.$dirty && form.taskStatus.$error.required) || (form.taskStatus.$error.required && formValidate)">变更任务状态不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">合同号</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="contNo" placeholder="请输入合同号" class="form-control m-b-xs" ng-model="changeLesseeTask.contNo"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.contNo.$dirty && form.contNo.$error.required) || (form.contNo.$error.required && formValidate)">合同号不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">当前节点用户</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="presentUser" placeholder="请输入当前节点用户" class="form-control m-b-xs" ng-model="changeLesseeTask.presentUser"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.presentUser.$dirty && form.presentUser.$error.required) || (form.presentUser.$error.required && formValidate)">当前节点用户不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">任务提出人</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="submitUser" placeholder="请输入任务提出人" class="form-control m-b-xs" ng-model="changeLesseeTask.submitUser"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.submitUser.$dirty && form.submitUser.$error.required) || (form.submitUser.$error.required && formValidate)">任务提出人不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">任务提出时间</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="submitDate" placeholder="请输入任务提出时间" class="form-control m-b-xs" ng-model="changeLesseeTask.submitDate"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.submitDate.$dirty && form.submitDate.$error.required) || (form.submitDate.$error.required && formValidate)">任务提出时间不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+
+        </div>
+    </form>
+</div>
+<div class="modal-footer ng-scope">
+    <button class="btn btn-default" ng-click="close()">取消</button>
+    <button type="submit" class="btn btn-success" ng-disabled="submit" ng-click="modify()">保存</button>
+</div>

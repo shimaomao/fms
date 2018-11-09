@@ -1,0 +1,209 @@
+<div ng-controller="defer_task_contract_print_controller">
+    <!--<div>-->
+    <!--<toaster-container-->
+    <!--toaster-options="{'position-class': 'toast-top-right', 'close-button':true}">-->
+    <!--</toaster-container>-->
+    <!--</div>-->
+    <div class="panel panel-default">
+
+        <!--<div class="row" style="margin: 0; padding: 10px; border: 1px solid #dddddd">-->
+        <!--<div class="form-inline">-->
+        <!--<div class="form-group">-->
+        <!--<h4 >展期合同生成</h4>-->
+        <!--</div>-->
+        <!--<div class="form-group pull-right">-->
+        <!--<div class="btn-group">-->
+        <!--<button type="submit" class="btn btn-success btn-sm fms-button-margin-bottom" ng-disabled="submit" ng-click="generateDeferContract()">生成合同</button>-->
+        <!--<button type="submit" class="btn btn-success btn-sm fms-button-margin-bottom" ng-disabled="submit" ng-click="sendBack()">退回</button>-->
+        <!--<button class="btn btn-default btn-sm fms-button-margin-bottom" ng-click="goBack()">返回</button>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--</div>-->
+
+        <!--<form name="form" class="form-validation" novalidate>-->
+        <div class="panel-body">
+        <div class="panel-body">
+            <div class="row line-lg" style="font-weight: bold;font-size: 14px;">当前合同信息</div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">承租人</b>:</label>
+                <div class="col-sm-4">
+                    <input type="text" name="lessee" title="{{deferTask.lessee}}"  class="form-control m-b-xs" ng-model="deferTask.lessee"  disabled>
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">出租人</b>:</label>
+                <div class="col-sm-4">
+                    <input type="text" name="lessor" title="{{deferTask.lessor}}"  class="form-control m-b-xs" ng-model="deferTask.lessor"  disabled>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">车架号</b>:</label>
+                <div class="col-sm-2">
+                    <input type="text" name="vinNo" title="{{deferTask.vinNo}}"  class="form-control m-b-xs" ng-model="deferTask.vinNo" disabled>
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">合同编号</b>:</label>
+                <div class="col-sm-2">
+                    <input type="text" name="contNo" title="{{deferTask.contNo}}" class="form-control m-b-xs" ng-model="deferTask.contNo" disabled>
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">融资额(元)</b>:</label>
+                <div class="col-sm-2">
+                    <input type="text" name="finAmount" title="{{deferTask.finAmount}}" class="form-control m-b-xs" ng-model="deferTask.finAmount" disabled>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">融资期限</b>:</label>
+                <div class="col-sm-2">
+                    <input type="text" name="finPeriodType" title="{{deferTask.finPeriodType}}" class="form-control m-b-xs" ng-model="deferTask.finPeriodType" disabled>
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">已还金额(元)</b>:</label>
+                <div class="col-sm-3">
+                    <div class="row">
+                        <div class="col-sm-7">
+                            <input type="text" name="alreadyPayAmount" title="{{deferTask.alreadyPayAmount}}" class="form-control m-b-xs" ng-model="deferTask.alreadyPayAmount" disabled>
+                        </div>
+                        <div class="col-sm-5">
+                            <button type="button" class="btn btn-sm btn-success" ng-click="overdueSales()">查看还款计划表</button>
+                        </div>
+                    </div>
+                </div>
+                <label class="col-sm-1 control-label text-right"><b class="form-text-black">已还期数</b>:</label>
+                <div class="col-sm-2">
+                    <input type="text" name="alreadyPayPeriod" title="{{deferTask.alreadyPayPeriod}}" class="form-control m-b-xs" ng-model="deferTask.alreadyPayPeriod" disabled>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">利率(%)</b>:</label>
+                <div class="col-sm-2">
+                    <input type="text" name="currentInterestRate" title="{{deferTask.currentInterestRate}}" class="form-control m-b-xs" ng-model="deferTask.currentInterestRate" disabled>
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">保证金(元)</b>:</label>
+                <div class="col-sm-2">
+                    <input type="text" name="deposit" title="{{deferTask.deposit}}" class="form-control m-b-xs" ng-model="deferTask.deposit" disabled>
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">尾款(元)</b>:</label>
+                <div class="col-sm-2">
+                    <input type="text" name="balancePayment" title="{{deferTask.balancePayment}}" class="form-control m-b-xs" ng-model="deferTask.balancePayment" disabled>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">还款日</b>:</label>
+                <div class="col-sm-2">
+                    <input type="text" name="repayDate" title="{{deferTask.repayDate}}" class="form-control m-b-xs" ng-model="deferTask.repayDate" disabled>
+                </div>
+                <div class="col-sm-3">
+                    <button type="button" class="btn btn-success btn-sm fms-button-margin-bottom" ng-click="contractDetails()">合同详情</button>
+                </div>
+            </div>
+        </div>
+        <div class="panel-body">
+            <div class="row line-lg" style="font-weight: bold;font-size: 14px;">展期信息</div>
+            <div class="form-group row">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">展期金额(元)</b>:</label>
+                <div class="col-sm-2">
+                    <input type="text" name="deferAmount" title="{{deferTask.deferAmount}}" class="form-control m-b-xs" ng-model="deferTask.deferAmount" disabled>
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">展期期限</b>:</label>
+                <div class="col-sm-2">
+                    <input type="text" limit-number="5" name="deferMaturity" title="{{deferTask.deferMaturity}}" placeholder="请输入展期期限" class="form-control m-b-xs" ng-model="deferTask.deferMaturity"  disabled >
+                    <!--<p>-->
+                    <!--<span class="form-info" ng-show=" (form.deferMaturity.$dirty && form.deferMaturity.$error.required) || (form.deferMaturity.$error.required && formValidate)">展期期限不能为空</span>-->
+                    <!--</p>-->
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">利率(%)</b>:</label>
+                <div class="col-sm-2">
+                    <input type="text" name="interestRate" placeholder="请输入利率" class="form-control m-b-xs" ng-model="deferTask.interestRate"  disabled >
+                    <!--<p>-->
+                    <!--<span class="form-info" ng-show=" (form.interestRate.$dirty && form.interestRate.$error.required) || (form.interestRate.$error.required && formValidate)">利率不能为空</span>-->
+                    <!--</p>-->
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">月供(元)</b>:</label>
+                <div class="col-sm-2">
+                    <input type="text" name="rent" title="{{deferTask.rent}}" placeholder="请输入月供" class="form-control m-b-xs" ng-model="deferTask.rent"  disabled>
+                    <!--<p>-->
+                    <!--<span class="form-info" ng-show=" (form.rent.$dirty && form.rent.$error.required) || (form.rent.$error.required && formValidate)">月供不能为空</span>-->
+                    <!--</p>-->
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">irr(%)</b>:</label>
+                <div class="col-sm-2">
+                    <input type="text" name="irr" title="{{deferTask.irr}}" placeholder="请输入irr" class="form-control m-b-xs" ng-model="deferTask.irr" disabled>
+                    <!--<p>-->
+                    <!--<span class="form-info" ng-show=" (form.irr.$dirty && form.irr.$error.required) || (form.irr.$error.required && formValidate)">irr不能为空</span>-->
+                    <!--</p>-->
+                </div>
+                <!--<div class="col-sm-3">-->
+                <!--<button type="button" class="btn btn-success btn-sm fms-button-margin-bottom" ng-click="quotationCalculate()">报价单计算</button>-->
+                <!--</div>-->
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">展期保证金(元)</b>:</label>
+                <div class="col-sm-2">
+                    <input type="text" name="deferDeposit" limit-number="12" title="{{deferTask.deferDeposit}}" placeholder="请输入展期保证金" class="form-control m-b-xs" ng-model="deferTask.deferDeposit" disabled>
+                    <!--<p>-->
+                    <!--<span class="form-info" ng-show=" (form.irr.$dirty && form.irr.$error.required) || (form.irr.$error.required && formValidate)">展期保证金不能为空</span>-->
+                    <!--</p>-->
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">退还保证金(元)</b>:</label>
+                <div class="col-sm-2">
+                    <input type="text" name="backDeposit" title="{{deferTask.backDeposit}}" placeholder="请输入退还保证金" class="form-control m-b-xs" ng-model="deferTask.backDeposit" disabled>
+                    <!--<p>-->
+                    <!--<span class="form-info" ng-show=" (form.rent.$dirty && form.rent.$error.required) || (form.rent.$error.required && formValidate)">退还保证金不能为空</span>-->
+                    <!--</p>-->
+                </div>
+                <!--<div class="col-sm-3">-->
+                <!--<button type="button" class="btn btn-success btn-sm fms-button-margin-bottom" ng-click="quotation();">报价单计算</button>-->
+                <!--</div>-->
+            </div>
+        </div>
+        <div class="panel-body" ng-if="deferTask.backDeposit>0">
+            <div class="row line-lg" style="font-weight: bold;font-size: 14px;">收付款信息</div>
+            <div class="form-group row">
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">收款银行分行</b>:</label>
+                <div class="col-sm-2">
+                    <input type="text" limit-word="50" title="{{deferTask.recAccBank}}" name="recAccBank" placeholder="请输入收款银行" class="form-control m-b-xs" ng-model="deferTask.recAccBank" disabled>
+                    <!--<p>-->
+                    <!--<span class="form-info" ng-show=" (form.recAccBranch.$dirty && form.recAccBranch.$error.required) || (form.recAccBranch.$error.required && formValidate)">收款银行分行不能为空</span>-->
+                    <!--</p>-->
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">收款户名</b>:</label>
+                <div class="col-sm-2">
+                    <input type="text" limit-word="50" title="{{deferTask.recAccountName}}" name="recAccountName" placeholder="请输入收款户名" class="form-control m-b-xs" ng-model="deferTask.recAccountName" disabled>
+                    <!--<p>-->
+                    <!--<span class="form-info" ng-show=" (form.accountName.$dirty && form.accountName.$error.required) || (form.accountName.$error.required && formValidate)">收款户名不能为空</span>-->
+                    <!--</p>-->
+                </div>
+                <label class="col-sm-2 control-label text-right"><b class="form-text-black">收款账号</b>:</label>
+                <div class="col-sm-2">
+                    <input type="text" limit-number="20" title="{{deferTask.recAccountNo}}" name="recAccountNo" placeholder="请输入收款账号" class="form-control m-b-xs" ng-model="deferTask.recAccountNo" disabled>
+                    <!--<p>-->
+                    <!--<span class="form-info" ng-show=" (form.accountNo.$dirty && form.accountNo.$error.required) || (form.accountNo.$error.required && formValidate)">收款账号不能为空</span>-->
+                    <!--</p>-->
+                </div>
+            </div>
+        </div>
+        <div class="panel-body">
+        <div class="row line-lg" style="font-weight: bold;font-size: 14px;">附件信息</div>
+        <tree-file-directive detail-flag="$root.yesNoFlag.no" file-type="$root.basFileTypes.deferContractPrintFile" files="deferTask.contractPrintFileList" not-upload="deferTask.notUpload" not-upload-info = "deferTask.notUploadInfo" not-file-type="deferTask.notFileType" not-file-type-name="deferTask.notFileTypeName" >
+        </tree-file-directive>
+        </div>
+        <div class="panel-body">
+            <div class="row line-lg" style="font-weight: bold;font-size: 14px;">备注<b class="form-error">*</b></div>
+            <div class="col-sm-11">
+                <textarea limit-word style="height: 110px;resize: none; " limit-word="200" name="memo" placeholder="请输入备注" class="form-control m-b-xs" ng-model="deferTask.memo"  required ></textarea>
+                <p>
+                    <span class="form-info" ng-show=" (form.memo.$dirty && form.memo.$error.required) || (form.memo.$error.required && formValidate)">请输入备注</span>
+                </p>
+            </div>
+        </div>
+        <div class="panel-body">
+            <!--<div class="row line-lg" style="font-weight: bold;font-size: 14px;">流程日志</div>-->
+            <!--<div class="row fms-div-content">-->
+            <process-log-list-directive wf-log-type="$root.bizTypes.deferContract" wf-log-no="deferTaskNo"> </process-log-list-directive>
+            <!--</div>-->
+        </div>
+            </div>
+        <!--</form>-->
+    </div>
+</div>

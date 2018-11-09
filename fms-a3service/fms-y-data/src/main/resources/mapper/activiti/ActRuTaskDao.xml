@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.leadu.fms.data.activiti.dao.ActRuTaskDao">
+
+    <!--
+     /**
+     * @Title:
+     * @Description: 根据业务key集合查询任务
+     * @param businessKeys
+     * @return
+     * @throws
+     * @author qiaomengnan
+     * @date 2018/06/19 03:57:20
+     */
+     -->
+    <select id="selectActRuTasksByBusinessKeys" resultType="cn.com.leadu.fms.pojo.activiti.vo.actrutask.ActRuTaskVo">
+        select
+        actRuTask.*,
+        actRuExecution.BUSINESS_KEY_ businessKey
+        from act_ru_task actRuTask
+        left join act_ru_execution actRuExecution
+        on actRuExecution.ID_ = actRuTask.EXECUTION_ID_
+        where actRuExecution.BUSINESS_KEY_ in
+        <foreach collection="businessKeys" item="businessKey"  open="(" close=")" separator="," >
+            #{businessKey}
+        </foreach>
+    </select>
+
+</mapper>

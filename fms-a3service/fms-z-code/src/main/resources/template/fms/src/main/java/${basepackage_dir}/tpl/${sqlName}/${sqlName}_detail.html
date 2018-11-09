@@ -1,0 +1,37 @@
+<#assign className = table.className>
+<#assign classNameLower = className?uncap_first>
+<#assign tableNameNew = table.tableNameNew>
+<#assign tableNameNewLowerCase = table.tableNameNewLowerCase>
+<#assign tableNameNewLowerCaseAll = table.tableNameNewLowerCaseAll>
+<#assign pkColumn = table.firstPkColumnName>
+<#assign pkColumnFirstLower = table.firstPkColumnNameFirstLower>
+<div class="modal-header">
+    <div class="form-group">
+        <h4 class="modal-title">${servicename}详情 <button type="button" class="close" data-dismiss="modal" aria-hidden="true" ng-click="close()">&times;</button></h4>
+    </div>
+</div>
+<div class="modal-body">
+    <form name="form" class="form-validation" novalidate>
+
+        <#assign index = 0>
+        <#list table.columns as column>
+            <#if column.columnNameFirstLower!=pkColumnFirstLower && column.columnNameFirstLower!="createTime" && column.columnNameFirstLower!="creator" && column.columnNameFirstLower!="updateTime" && column.columnNameFirstLower!="updater" && column.columnNameFirstLower!="delFlag">
+            <div class="form-group row">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">${(column.remarks!="")?string(column.remarks,column.columnNameFirstLower)}</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-8">
+                    <label class="col-sm-12 control-label text-left">{{${tableNameNewLowerCase!classNameLower}.${column.columnNameFirstLower}}}</label>
+                </div>
+            </div>
+
+            <#if index != (table.columns?size - 7)>
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            </#if>
+            <#assign index = index + 1>
+            </#if>
+        </#list>
+    </form>
+</div>
+<div class="modal-footer ng-scope">
+    <button class="btn btn-default" ng-click="close()">关闭</button>
+</div>

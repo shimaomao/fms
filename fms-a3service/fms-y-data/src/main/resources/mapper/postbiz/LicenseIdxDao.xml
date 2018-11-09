@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.com.leadu.fms.data.postbiz.dao.LicenseIdxDao">
+
+    <select id="selectLicenseIdxVoById" parameterType="java.lang.String" resultType="cn.com.leadu.fms.pojo.postbiz.vo.licenseidx.LicenseIdxVo">
+        select
+        licenseIdxns.*,
+        sysGroup.group_name,
+        sysGroup.group_district,
+        contract.lease_term_start_date,
+        contract.lease_term_end_date
+        from
+        license_idx licenseIdxns
+        left join sys_group sysGroup on licenseIdxns.idx_group = sysGroup.group_id
+        left join contract conTract on licenseIdxns.use_cont_no = conTract.cont_no
+        where sysGroup.del_flag = ${delete_exist}
+        AND licenseIdxns.del_flag = ${delete_exist}
+        AND licenseIdxns.license_idx_id = #{licenseIdxId}
+    </select>
+
+    <select id="selectLicenseIdxVos" parameterType="java.lang.String" resultType="cn.com.leadu.fms.pojo.postbiz.vo.licenseidx.LicenseIdxVo">
+        select
+        licenseIdxns.*,
+        sysGroup.group_name,
+        sysGroup.group_district,
+        contract.lease_term_start_date,
+        contract.lease_term_end_date,
+        contract.biz_status,
+        contract.payment_sts
+        from
+        license_idx licenseIdxns
+        left join sys_group sysGroup on licenseIdxns.idx_group = sysGroup.group_id
+        left join contract conTract on licenseIdxns.use_cont_no = conTract.cont_no
+        where sysGroup.del_flag = ${delete_exist}
+        AND licenseIdxns.del_flag = ${delete_exist}
+        <if test="licenseIdxVo.licenseIdxNo != null">
+            and licenseIdxns.license_idx_no like #{licenseIdxVo.licenseIdxNo}
+        </if>
+        <if test="licenseIdxVo.licenseIdxStatus != null">
+            and licenseIdxns.license_idx_status = #{licenseIdxVo.licenseIdxStatus}
+        </if>
+        <if test="licenseIdxVo.groupName != null">
+            and sysGroup.group_name like #{licenseIdxVo.groupName}
+        </if>
+        <if test="licenseIdxVo.useCustomer != null">
+            and licenseIdxns.use_customer like #{licenseIdxVo.useCustomer}
+        </if>
+        <if test="licenseIdxVo.useContNo != null">
+            and licenseIdxns.use_cont_no like #{licenseIdxVo.useContNo}
+        </if>
+        <if test="licenseIdxVo.useLicenseNo != null">
+            and licenseIdxns.use_license_no like #{licenseIdxVo.useLicenseNo}
+        </if>
+        <if test="licenseIdxVo.bizStatus != null">
+            and contract.biz_status = #{licenseIdxVo.bizStatus}
+        </if>
+    </select>
+
+    <select id="selectLicenseIdxNoById" parameterType="java.lang.String" resultType="cn.com.leadu.fms.pojo.postbiz.vo.licenseidx.LicenseIdxVo">
+        select
+        licenseIdxns.*
+        from
+        license_idx licenseIdxns
+        where licenseIdxns.del_flag = ${delete_exist}
+        AND licenseIdxns.license_idx_no = #{licenseIdxNo}
+    </select>
+
+    <select id="selectLicenseIdxVobySysgroup" resultType="cn.com.leadu.fms.pojo.postbiz.vo.licenseidx.LicenseIdxVo">
+        select
+        licenseIdxns.*,
+        sysGroup.group_name,
+        sysGroup.group_district
+        from
+        license_idx licenseIdxns
+        left join sys_group sysGroup on licenseIdxns.idx_group = sysGroup.group_id
+        where licenseIdxns.idx_group in(select group_id from sys_group where group_code = #{licenseIdxVo.syspambelongroup})
+        AND licenseIdxns.license_idx_status = ${delete_exist}
+        AND sysGroup.del_flag = ${delete_exist}
+        AND licenseIdxns.del_flag = ${delete_exist}
+        <if test="licenseIdxVo.licenseIdxNo != null">
+            and licenseIdxns.license_idx_no like #{licenseIdxVo.licenseIdxNo}
+        </if>
+    </select>
+
+</mapper>

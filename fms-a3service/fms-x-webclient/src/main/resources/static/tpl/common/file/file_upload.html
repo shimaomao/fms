@@ -1,0 +1,19 @@
+<div class="modal-header">
+    <h4 class="modal-title">附件上传 <button type="button" class="close" data-dismiss="modal" aria-hidden="true" ng-click="close()">&times;</button></h4>
+</div>
+
+<style>
+    .modal{
+        z-index: 2000;
+    }
+</style>
+<div class="panel-body" id="{{filePageId}}">
+    <input id="{{fileZhId}}" name="files" type="file" multiple  >
+</div>
+
+<div class="text-center m-b-sm ng-scope">
+    <button class="btn btn-default btn-sm" style="margin-top: 5px" ng-click="close()">关闭</button>
+    <button type="submit" class="btn btn-success btn-sm" style="margin-top: 5px"   ng-click="save()">确认</button>
+</div>
+
+

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.com.leadu.fms.data.prebiz.dao.ContFinDetailDao">
+    <!-- 根据订单编号 获取融资费用明细信息 -->
+    <select id="selectContFinDetailVosByContNo" parameterType="java.lang.String" resultType="cn.com.leadu.fms.pojo.prebiz.vo.contfindetail.ContFinDetailVo">
+        select contFinDetail.cont_fin_detail_id,contFinDetail.cont_no,contFinDetail.vehicle_no,contFinDetail.fin_item
+        ,contFinDetail.fin_item_year,contFinDetail.fin_amount,finItem.fin_item_name as finItemName,finItem.fin_mode as finMode
+        ,finItem.edit_mode as editMode,finItem.pay_mode as payMode,finItem.order_no as orderNo
+        from cont_fin_detail contFinDetail
+        left join fin_item finItem on finItem.fin_item = contFinDetail.fin_item and finItem.del_flag = ${delete_exist}
+        where contFinDetail.del_flag = ${delete_exist}
+        <if test="contNo != null">
+            and contFinDetail.cont_no = #{contNo}
+        </if>
+        order by contFinDetail.vehicle_no asc,finItem.order_no asc,contFinDetail.fin_item_year asc
+    </select>
+
+    <!-- 根据合同编号和显示区分查询融资费用明细 -->
+    <select id="selectContFinDetailsWithContPay" parameterType="java.lang.String"
+            resultMap="contFinPayVo">
+        select contFinDetail.cont_fin_detail_id,contFinDetail.cont_no,contFinDetail.apply_no,contFinDetail.fin_item
+        ,contFinDetail.fin_item_year
+        ,contFinDetail.fin_amount
+        ,finItem.fin_item_name as finItemName,finItem.order_no as orderNo
+        ,contPay.cont_pay_id,contPay.pay_fund,contPay.pay_amount
+        ,contPay.rec_acc_bank,contPay.rec_acc_branch,contPay.rec_account_no,contPay.rec_account_name,contPay.rec_ele_bank_no
+        ,contPay.pay_date,contPay.pay_status
+        from cont_fin_detail contFinDetail
+        left join fin_item finItem on finItem.fin_item = contFinDetail.fin_item and finItem.del_flag = ${delete_exist}
+        left join cont_pay contPay
+        on contPay.biz_code = #{contNo} and CONCAT(contFinDetail.fin_item,contFinDetail.fin_item_year)= contPay.pay_fund and finItem.del_flag = ${delete_exist}
+        where contFinDetail.del_flag = ${delete_exist}
+--         AND  contFinDetail.fin_amount > 0
+        <if test="contNo != null">
+            and contFinDetail.cont_no = #{contNo}
+        </if>
+        order by finItem.order_no asc,contFinDetail.fin_item_year asc
+    </select>
+
+    <resultMap id="contFinPayVo" type="cn.com.leadu.fms.pojo.prebiz.vo.contfindetail.ContFinPayVo" >
+        <id property="contFinDetailId" column="cont_fin_detail_id" javaType="java.lang.String"/>
+        <result property="contNo" column="cont_no" javaType="java.lang.String"/>
+        <result property="applyNo" column="apply_no" javaType="java.lang.String"/>
+        <result property="finItem" column="fin_item" javaType="java.lang.String"/>
+        <result property="finItemName" column="finItemName" javaType="java.lang.String"/>
+        <result property="finItemYear" column="fin_item_year" javaType="int"/>
+        <result property="finAmount" column="fin_amount" javaType="java.math.BigDecimal"/>
+        <result property="updateTime" column="update_time" javaType="java.util.Date"/>
+        <collection property="contPay" ofType="cn.com.leadu.fms.pojo.prebiz.entity.ContPay">
+            <id property="contPayId" column="cont_pay_id" javaType="java.lang.String"/>
+            <result property="payFund" column="pay_fund" javaType="java.lang.String"/>
+            <result property="payAmount" column="pay_amount" javaType="java.math.BigDecimal"/>
+            <result property="recAccBank" column="rec_acc_bank" javaType="java.lang.String"/>
+            <result property="recAccBranch" column="rec_acc_branch" javaType="java.lang.String"/>
+            <result property="recAccountNo" column="rec_account_no" javaType="java.lang.String"/>
+            <result property="recAccountName" column="rec_account_name" javaType="java.lang.String"/>
+            <result property="recEleBankNo" column="rec_ele_bank_no" javaType="java.lang.String"/>
+            <result property="payDate" column="pay_date" javaType="java.util.Date"/>
+            <result property="payStatus" column="pay_status" javaType="java.lang.String"/>
+        </collection>
+    </resultMap>
+</mapper>

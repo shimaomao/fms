@@ -1,0 +1,56 @@
+<div  ng-controller="defer_task_manager_approve_page_controller">
+    <div>
+        <toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-body wrapper-sm" style="position: fixed;width: 100%;background-color: white;z-index: 10;margin-top: -1px;padding-bottom: 0;">
+            <div class="row">
+                <div class="form-group pull-right" style="margin-top: 4px;">
+                    <div class="btn-group ">
+                        <!--<button type="button" class="btn btn-success m-t-xs m-r-xs" ng-click="save(this)" ng-if="!applyNo" ng-disabled="submit">暂存</button>-->
+                        <!--<button type="button" class="btn btn-success m-t-xs m-r-xs" ng-click="submitInfo(this)" ng-if="!applyNo" ng-disabled="submit">提交</button>-->
+                        <!--<button type="button" class="btn btn-success m-t-xs m-r-xs" ng-click="modify(this)" ng-if="applyNo" ng-disabled="submit">暂存</button>-->
+                        <!--<button type="button" class="btn btn-success m-t-xs m-r-xs" ng-click="subModify(this)" ng-if="applyNo" ng-disabled="submit">提交</button>-->
+                        <!--<button type="button" class="btn btn-default m-t-xs" ng-click="goBack(this)" ng-if="applyNo && serviceParameter">返回</button>-->
+                        <div class="btn-group">
+                            <button type="submit" class="btn btn-success btn-sm fms-button-margin-bottom" ng-disabled="submit" ng-click="printPaymentOrder()">打印付款单</button>
+                            <button type="submit" class="btn btn-success btn-sm fms-button-margin-bottom" ng-disabled="submit" ng-click="submitManagerApprove()">审核通过</button>
+                            <button type="submit" class="btn btn-success btn-sm fms-button-margin-bottom" ng-disabled="submit" ng-click="sendBack()">退回</button>
+                            <button class="btn btn-default btn-sm fms-button-margin-bottom" ng-click="goBack()">返回</button>
+                        </div>
+                    </div>
+                </div>
+                <ul id="applyTab" class="nav nav-tabs">
+                    <!--<li class="active"><a href="javascript:void(0);" data-toggle="tab" data-id="approve" onclick="switchPageTab(this, 'applyTab')">合同展期审批</a></li>-->
+                    <li class="active"><a href="javascript:void(0);" data-toggle="tab" data-id="approve" onclick="switchPageTab(this, 'applyTab')">合同展期任务总经理审核</a></li>
+                    <!--<li><a href="javascript:void(0);" data-toggle="tab" data-id="vehicleFin" onclick="switchPageTab(this, 'applyTab')">车辆融资信息</a></li>-->
+                    <!--<li><a href="javascript:void(0);" data-toggle="tab" data-id="guarantee" onclick="switchPageTab(this, 'applyTab')">担保信息</a></li>-->
+                    <!--<li><a href="javascript:void(0);" data-toggle="tab" data-id="borrower" onclick="switchPageTab(this, 'applyTab')">共同借款人</a></li>-->
+                    <!--<li><a href="javascript:void(0);" data-toggle="tab" data-id="applyFile" onclick="switchPageTab(this, 'applyTab')">附件上传</a></li>-->
+                    <!--<li><a href="javascript:void(0);" data-toggle="tab" data-id="applyVisit" onclick="switchPageTab(this, 'applyTab')">家访</a></li>-->
+                    <!--<li ng-if="applyNo"><a href="javascript:void(0);" data-toggle="tab" data-id="process" onclick="switchPageTab(this, 'applyTab')">流程日志</a></li>-->
+                </ul>
+            </div>
+        </div>
+        <form name="form" class="form-validation" novalidate style="margin-top: 70px;">
+            <div id="applyTabContent" class="tab-content">
+                <!-- 申请基本页面-->
+                <div class="tab-pane fade in active" id="approve">
+                    <div ng-include="'tpl/postbiz/defer_task/defer_task_manager_approve.html'" class="row m-xs"></div>
+                </div>
+                <!-- 车辆融资信息 -->
+                <!--<div class="tab-pane fade" id="vehicleFin">-->
+                <!--<div ng-include="'tpl/prebiz/apply_input/apply_finance_vehicle.html'" class="row m-xs"></div>-->
+                <!--</div>-->
+                <!--&lt;!&ndash;担保人基本信息&ndash;&gt;-->
+                <!--<div class="tab-pane fade " id="borrower">-->
+                <!--<div ng-include="'tpl/prebiz/apply_input/borrower_info.html'" class="row m-xs"></div>-->
+                <!--</div>-->
+                <!--&lt;!&ndash;共同借款人&ndash;&gt;-->
+                <!--<div class="tab-pane fade " id="guarantee">-->
+                <!--<div ng-include="'tpl/prebiz/apply_input/guarantee_info.html'" class="row m-xs"></div>-->
+                <!--</div>-->
+            </div>
+        </form>
+    </div>
+</div>

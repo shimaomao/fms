@@ -1,0 +1,248 @@
+<ul type="none" style="padding-left:20px">
+    <div class="row" style="margin: 5px; padding-right: 50px;">
+
+        <div class="form-group row">
+            <label class="col-sm-2 control-label text-right"><b class="form-text-black">审批操作</b><b
+                    class="form-error">*</b>:</label>
+            <div class="col-sm-10">
+                <div class="radio" ng-repeat="applyAgreeConditionalActTypeObj in applyAgreeConditionalActTypeList">
+                    <label>
+                        <input type="radio" name="actType" ng-model="applyConditionalAgreeVo.actType"  ng-value="applyAgreeConditionalActTypeObj.codeValue" required>
+                        {{applyAgreeConditionalActTypeObj.codeValueName}}
+                    </label>
+                </div>
+                <p>
+                    <span class="form-info"
+                          ng-show=" (form.actType.$dirty && form.actType.$error.required) || (form.actType.$error.required && formValidate)">请选择审批操作</span>
+                </p>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="col-sm-2 control-label text-right"><b class="form-text-black">是否适合抵押</b><b
+                    class="form-error"></b>:</label>
+            <div class="col-sm-2">
+                <div class="radio" ng-repeat="a in 'yesNoFlag'|getList">
+                    <label>
+                        <input type="radio" name="mortgageFlag" value="{{a.codeValue}}" ng-model="applyConditionalAgreeVo.mortgageFlag" required
+                               ng-disabled="taskDefinitionKey != 'contract_generation_diragree'">
+                        <span class="v-middle">{{a.codeValueName}}</span>
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <div class="row line-lg" style="font-weight: bold;font-size: 14px;">融资信息</div>
+
+        <div class="form-group row">
+            <label class="col-sm-2 control-label text-right"><b class="form-text-black">融资期限（月）</b><b
+                    class="form-error"></b>:</label>
+            <div class="col-sm-2">
+                <input type="text"  class="form-control m-b-xs" ng-disabled="true"
+                       ng-model="applyConditionalAgreeVo.applyFinance.finPeriodType" name="finPeriodType" required>
+                <p>
+                    <span class="form-info"
+                          ng-show=" (form.finPeriodType.$dirty && form.finPeriodType.$error.required) || (form.finPeriodType.$error.required && formValidate)">融资期限不能为空</span>
+                </p>
+            </div>
+
+            <label class="col-sm-2 control-label text-right"><b class="form-text-black">客户利率（%）</b><b
+                    class="form-error"></b>:</label>
+            <div class="col-sm-2">
+                <input type="number" class="form-control m-b-xs" ng-disabled="true"
+                       ng-model="applyConditionalAgreeVo.applyFinance.intrstRate" name="intrstRate" required>
+                <p>
+                    <span class="form-info"
+                          ng-show=" (form.intrstRate.$dirty && form.intrstRate.$error.required) || (form.intrstRate.$error.required && formValidate)">客户利率不能为空</span>
+                </p>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="col-sm-2 control-label text-right"><b class="form-text-black">首付比例（%）</b><b
+                    class="form-error"></b>:</label>
+            <div class="col-sm-2">
+                <input type="number" limit-number="3" class="form-control m-b-xs" ng-disabled="applyConditionalAgreeVo.actType!=2" ng-change="changePerc('initAmountAgree',applyConditionalAgreeVo.applyFinance.initPercAgree)"
+                       ng-model="applyConditionalAgreeVo.applyFinance.initPercAgree" name="initPercAgree" required>
+                <p>
+                    <span class="form-info"
+                          ng-show=" (form.initPercAgree.$dirty && form.initPercAgree.$error.required) || (form.initPercAgree.$error.required && formValidate)">首付比例不能为空</span>
+                </p>
+            </div>
+            <label class="col-sm-2 control-label text-right"><b class="form-text-black">首付金额（元）</b><b
+                    class="form-error"></b>:</label>
+            <div class="col-sm-2">
+                <input type="number" limit-number="10"  class="form-control m-b-xs" ng-disabled="applyConditionalAgreeVo.actType!=2" ng-change="changeAmount('initPercAgree',applyConditionalAgreeVo.applyFinance.initAmountAgree)"
+                       ng-model="applyConditionalAgreeVo.applyFinance.initAmountAgree" name="initAmountAgree" required>
+                <p>
+                    <span class="form-info"
+                          ng-show=" (form.initAmountAgree.$dirty && form.initAmountAgree.$error.required) || (form.initAmountAgree.$error.required && formValidate)">首付金额不能为空</span>
+                </p>
+            </div>
+
+        </div>
+
+        <div class="form-group row">
+            <label class="col-sm-2 control-label text-right"><b class="form-text-black">尾付比例（%）</b><b
+                    class="form-error"></b>:</label>
+            <div class="col-sm-2">
+                <input type="number" limit-number="3" class="form-control m-b-xs" ng-disabled="applyConditionalAgreeVo.actType!=2" ng-change="changePerc('finalAmountAgree',applyConditionalAgreeVo.applyFinance.finalPercAgree)"
+                       ng-model="applyConditionalAgreeVo.applyFinance.finalPercAgree" name="finalPercAgree" required>
+                <p>
+                    <span class="form-info"
+                          ng-show=" (form.finalPercAgree.$dirty && form.finalPercAgree.$error.required) || (form.finalPercAgree.$error.required && formValidate)">尾付比例不能为空</span>
+                </p>
+            </div>
+            <label class="col-sm-2 control-label text-right"><b class="form-text-black">尾付金额（元）</b><b
+                    class="form-error"></b>:</label>
+            <div class="col-sm-2">
+                <input type="number" limit-number="10" class="form-control m-b-xs" ng-disabled="applyConditionalAgreeVo.actType!=2" ng-change="changeAmount('finalPercAgree',applyConditionalAgreeVo.applyFinance.finalAmountAgree)"
+                       ng-model="applyConditionalAgreeVo.applyFinance.finalAmountAgree" name="finalAmountAgree" required>
+                <p>
+                    <span class="form-info"
+                          ng-show=" (form.finalAmountAgree.$dirty && form.finalAmountAgree.$error.required) || (form.finalAmountAgree.$error.required && formValidate)">尾付金额不能为空</span>
+                </p>
+            </div>
+
+        </div>
+
+        <div class="form-group row">
+            <label class="col-sm-2 control-label text-right"><b class="form-text-black">保证金比例（%）</b><b
+                    class="form-error"></b>:</label>
+            <div class="col-sm-2">
+                <input type="number" limit-number="3" class="form-control m-b-xs" ng-disabled="applyConditionalAgreeVo.actType!=2" ng-change="changePerc('depositAgree',applyConditionalAgreeVo.applyFinance.depositPercAgree)"
+                       ng-model="applyConditionalAgreeVo.applyFinance.depositPercAgree" name="depositPercAgree" required>
+                <p>
+                    <span class="form-info"
+                          ng-show=" (form.depositPercAgree.$dirty && form.depositPercAgree.$error.required) || (form.depositPercAgree.$error.required && formValidate)">保证金比例不能为空</span>
+                </p>
+            </div>
+            <label class="col-sm-2 control-label text-right"><b class="form-text-black">保证金（元）</b><b
+                    class="form-error"></b>:</label>
+            <div class="col-sm-2">
+                <input type="number" limit-number="10" class="form-control m-b-xs" ng-disabled="applyConditionalAgreeVo.actType!=2" ng-change="changeAmount('depositPercAgree',applyConditionalAgreeVo.applyFinance.depositAgree)"
+                       ng-model="applyConditionalAgreeVo.applyFinance.depositAgree" name="depositAgree" required>
+                <p>
+                    <span class="form-info"
+                          ng-show=" (form.depositAgree.$dirty && form.depositAgree.$error.required) || (form.depositAgree.$error.required && formValidate)">保证金不能为空</span>
+                </p>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="col-sm-2 control-label text-right"><b class="form-text-black">投资总额（元）</b><b
+                    class="form-error"></b>:</label>
+            <div class="col-sm-2">
+                <input type="number" limit-number="10" class="form-control m-b-xs" ng-disabled="true"
+                       ng-model="applyConditionalAgreeVo.applyFinance.investTotal" name="investTotal" required>
+            </div>
+            <label class="col-sm-2 control-label text-right"><b class="form-text-black">融资额（元）</b><b
+                    class="form-error"></b>:</label>
+            <div class="col-sm-2">
+                <input type="number" limit-number="10" class="form-control m-b-xs" ng-disabled="true"
+                       ng-model="applyConditionalAgreeVo.applyFinance.finTotalAgree" name="finTotalAgree" required>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="col-sm-2 control-label text-right"><b class="form-text-black">风险融资额（元）</b><b
+                    class="form-error"></b>:</label>
+            <div class="col-sm-2">
+                <input type="number" limit-number="10" class="form-control m-b-xs" ng-disabled="true"
+                       ng-model="applyConditionalAgreeVo.riskAmount" name="riskAmount" required>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <div class="col-sm-2"></div>
+            <div class="col-sm-2">
+                <button ng-click="quotationCalculation();" class="btn btn-success btn-sm" ng-disabled="applyConditionalAgreeVo.actType!=2">报价单计算</button>
+            </div>
+            <label class="col-sm-2 control-label text-right"><b class="form-text-black">月供</b><b
+                    class="form-error"></b>:</label>
+            <div class="col-sm-2">
+                <input type="number" class="form-control m-b-xs" ng-disabled="true"
+                       ng-model="applyConditionalAgreeVo.applyFinance.rentAgree" name="rentAgree" required>
+                <p>
+                    <span class="form-info"
+                          ng-show=" (form.rentAgree.$dirty && form.rentAgree.$error.required) || (form.rentAgree.$error.required && formValidate)">月供不能为空</span>
+                </p>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <!--<label class="col-sm-2 control-label text-right"><b class="form-text-black">万量税费</b><b-->
+                    <!--class="form-error"></b>:</label>-->
+            <!--<div class="col-sm-2">-->
+                <!--<input type="number" class="form-control m-b-xs" ng-disabled="true"-->
+                       <!--ng-model="applyConditionalAgreeVo.applyFinance.taxAgree" name="taxAgree" required>-->
+                <!--<p>-->
+                    <!--<span class="form-info"-->
+                          <!--ng-show=" (form.taxAgree.$dirty && form.taxAgree.$error.required) || (form.taxAgree.$error.required && formValidate)">万量税费不能为空</span>-->
+                <!--</p>-->
+            <!--</div>-->
+            <label class="col-sm-2 control-label text-right"><b class="form-text-black">irr%</b><b
+                    class="form-error"></b>:</label>
+            <div class="col-sm-2">
+                <input type="number" class="form-control m-b-xs" ng-disabled="true"
+                       ng-model="applyConditionalAgreeVo.applyFinance.irrAgree" name="irrAgree" required>
+                <p>
+                    <span class="form-info"
+                          ng-show=" (form.irrAgree.$dirty && form.irrAgree.$error.required) || (form.irrAgree.$error.required && formValidate)">irr%不能为空</span>
+                </p>
+            </div>
+        </div>
+
+
+
+
+
+
+        <div class="form-group row" ng-if="taskDefinitionKey=='contract_generation_diragree'">
+            <label class="col-sm-2 control-label text-right"><b class="form-text-black">风控经理操作建议</b><b
+                    class="form-error">*</b>:</label>
+            <div class="col-sm-6">
+                <textarea limit-word class="form-control m-b-xs r-none"
+                          ng-model="applyConditionalAgreeVo.windcontrManagerProposal" name="windcontrManagerProposal" required></textarea>
+                <p>
+                    <span class="form-info"
+                          ng-show=" (form.windcontrManagerProposal.$dirty && form.windcontrManagerProposal.$error.required) || (form.windcontrManagerProposal.$error.required && formValidate)">请输入风控经理操作建议</span>
+                </p>
+            </div>
+        </div>
+
+
+        <div class="form-group row" ng-if="taskDefinitionKey=='contract_generation_preagree'">
+            <label class="col-sm-2 control-label text-right"><b class="form-text-black">风控经理操作建议</b><b
+                    class="form-error"></b>:</label>
+            <div class="col-sm-6">
+                <textarea limit-word class="form-control m-b-xs r-none"
+                          ng-model="applyConditionalAgreeVo.windcontrManagerProposal" name="windcontrManagerProposal" disabled></textarea>
+                <p>
+                    <span class="form-info"
+                          ng-show=" (form.windcontrManagerProposal.$dirty && form.windcontrManagerProposal.$error.required) || (form.windcontrManagerProposal.$error.required && formValidate)">请输入风控经理操作建议</span>
+                </p>
+            </div>
+        </div>
+
+
+
+
+
+
+
+        <div class="form-group row">
+            <label class="col-sm-2 control-label text-right"><b class="form-text-black">审批备注</b><b
+                    class="form-error">*</b>:</label>
+            <div class="col-sm-6">
+                <textarea limit-word class="form-control m-b-xs r-none"
+                          ng-model="applyConditionalAgreeVo.memo" name="memo_1" required></textarea>
+                <p>
+                    <span class="form-info"
+                          ng-show=" (form.memo_1.$dirty && form.memo_1.$error.required) || (form.memo_1.$error.required && formValidate)">请输入备注</span>
+                </p>
+            </div>
+        </div>
+        <div ng-include="'tpl/common/process_log/process_log_list.html'"></div>
+    </div>
+</ul>

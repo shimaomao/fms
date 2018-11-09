@@ -1,0 +1,42 @@
+<style>
+    .mui-badge
+    {
+        font-size: 12px;
+        line-height: 1;
+
+        display: inline-block;
+
+        padding: 3px 6px;
+
+        color: #ffffff;
+        border-radius: 100px;
+        background-color: #2685FF;
+    }
+</style>
+<div  ng-controller="desk_controller">
+    <div>
+        <toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+    </div>
+    <div class="panel wrapper" style="padding: 0;">
+        <div class="row">
+            <span style="margin-left: 10px">累计融资金额(元)：</span><a ng-click="goDetail(1);"><span style="color:red">{{approveInfo.amount | thousandsFormat}}</span></a>&nbsp;&nbsp;&nbsp;&nbsp;
+            <span>申请数(个)：</span><a ng-click="goDetail(2);"><span style="color:red">{{approveInfo.applyCount}}</span></a>&nbsp;&nbsp;&nbsp;&nbsp;
+            <span>累计放款数(个)：</span><a ng-click="goDetail(3);"><span style="color:red">{{approveInfo.loanCount}}</span></a>
+            <div class="row" style="float: right;padding-right: 5%">
+                <select ng-model="searchType" ng-change="refreshData()">
+                    <option ng-repeat="searchType in types" value="{{searchType.code}}">{{searchType.name}}</option>
+                </select>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-4" ng-repeat="a in approveInfo.modules" ng-click="openNewTab(a);">
+                <div style="margin-top:10px;height: 32px;background-color: #f1f1f1;cursor: pointer;">
+                    <img ng-src="{{a.iconUrl}}" alt = "." style="width: 18px;margin: 8px;display: inline; "/>
+                    <span style="margin:10px 10px 5px 0px;font-size: 13px;color: black;">{{a.name}}</span>
+                    <span class="mui-badge mui-badge-danger" style="float: right;margin-top: 8px;margin-right: 5px;">{{a.count}}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

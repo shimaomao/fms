@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.com.leadu.fms.data.system.dao.SysTplTypeDao">
+
+    <!-- 根据模板类型ID集合,获取使用这些模板类型的模板的件数 -->
+    <select id="selectSysTplCountByTplTypeIds" parameterType="java.lang.String" resultType="java.lang.Long">
+        select ifnull(count(*), 0) as totalSize
+        from sys_tpl_type sysTplType
+        inner join sys_tpl sysTpl on sysTpl.tpl_type_key = sysTplType.tpl_type_key and sysTpl.del_flag = ${delete_exist}
+        where sysTplType.del_flag =  ${delete_exist}
+        and sysTplType.tpl_type_id in
+        <foreach collection="tplTypeIds" item="item" index="index" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+    <!-- 根据模板类型ID集合,获取模板类型的可设置项目Id -->
+    <select id="selectSysTplItemIdsByTplTypeIds" parameterType="java.lang.String" resultType="java.lang.String">
+        select sysTplItem.tpl_item_id
+        from sys_tpl_type sysTplType
+        inner join sys_tpl_item sysTplItem on sysTplItem.tpl_type_key = sysTplType.tpl_type_key and sysTplItem.del_flag = ${delete_exist}
+        where sysTplType.del_flag =  ${delete_exist}
+        and sysTplType.tpl_type_id in
+        <foreach collection="tplTypeIds" item="item" index="index" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+</mapper>

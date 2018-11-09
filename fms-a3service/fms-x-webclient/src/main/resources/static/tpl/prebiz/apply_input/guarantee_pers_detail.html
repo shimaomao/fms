@@ -1,0 +1,283 @@
+<style>
+    .modal-dialog{
+        width: 1150px;
+    }
+    .modal-dialog .modal-body{
+        max-height: 300px;
+        overflow: auto;
+    }
+</style>
+<div class="modal-header">
+    <h4 class="modal-title">担保人信息详情</h4>
+</div>
+<div class="modal-body">
+    <form name="form" class="form-validation" novalidate>
+        <div class="row" style="margin: 5px; padding-right: 50px;">
+            <div class="row line-lg" style="font-weight: bold;font-size: 14px;">担保人基本信息</div>
+            <div class="form-group row">
+                <label class="col-sm-2 text-right"><b class="form-text-black">担保人姓名</b>:</label>
+                <div class="col-sm-2">
+                    {{guaranteePers.name}}
+                </div>
+                <label class="col-sm-2 text-right"><b class="form-text-black">承租人与担保人关系</b>:</label>
+                <div class="col-sm-2">
+                    {{guaranteePers.relation | getName:relationTypeName}}
+                </div>
+                <label class="col-sm-2 text-right"><b class="form-text-black">证件类型</b>:</label>
+                <div class="col-sm-2">
+                    {{guaranteePers.certifType | getName:'certifType'}}
+                </div>
+            </div>
+            <div class="form-group row">
+
+                <label class="col-sm-2 text-right"><b class="form-text-black">证件号码</b>:</label>
+                <div class="col-sm-2">
+                    {{guaranteePers.certifNo}}
+                </div>
+                <label class="col-sm-2 text-right"><b class="form-text-black">性别</b>:</label>
+                <div class="col-sm-2">
+                    {{guaranteePers.sex | getName:'gender'}}
+                </div>
+                <label class="col-sm-2 text-right"><b class="form-text-black">生日</b>:</label>
+                <div class="col-sm-2">
+                    {{guaranteePers.birthDate}}
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2 text-right"><b class="form-text-black">手机号码</b>:</label>
+                <div class="col-sm-2">
+                    {{guaranteePers.mobileNo}}
+                </div>
+                <label class="col-sm-2 text-right"><b class="form-text-black">担保人与担保人关系</b>:</label>
+                <div class="col-sm-2">
+                    {{guaranteePers.guaRelation | getName:'guaRelationPer'}}
+                </div>
+                <label class="col-sm-2 text-right"><b class="form-text-black">电话号码</b>:</label>
+                <div class="col-sm-2">
+                    {{guaranteePers.telNo}}
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2 text-right"><b class="form-text-black">婚姻状况</b>:</label>
+                <div class="col-sm-2">
+                    {{guaranteePers.marriageStatus | getName:'marriageStatus'}}
+                </div>
+            </div>
+        </div>
+
+        <div class="row" style="margin: 5px; padding-right: 50px;">
+            <div class="row line-lg" style="font-weight: bold;font-size: 14px;">担保人职业信息</div>
+            <div class="form-group row">
+                <label class="col-sm-2 text-right"><b class="form-text-black">单位名称</b>:</label>
+                <div class="col-sm-2">
+                    {{guaranteePers.compName}}
+                </div>
+                <label class="col-sm-2 text-right"><b class="form-text-black">单位所属类型</b>:</label>
+                <div class="col-sm-2">
+                    {{guaranteePers.industry | getName:'industryType'}}
+                </div>
+                <label class="col-sm-2 text-right"><b class="form-text-black">单位电话</b>:</label>
+                <div class="col-sm-2">
+                    {{guaranteePers.compTel}}
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2 text-right"><b class="form-text-black">单位所在省份</b>:</label>
+                <div class="col-sm-2">
+                    {{guaranteePers.compProv | getAreaName}}
+                </div>
+                <label class="col-sm-2 text-right"><b class="form-text-black">单位所在市</b>:</label>
+                <div class="col-sm-2">
+                    {{guaranteePers.compCity | getAreaName}}
+                </div>
+                <label class="col-sm-2 text-right"><b class="form-text-black">单位所在区县</b>:</label>
+                <div class="col-sm-2">
+                    {{guaranteePers.compCounty | getAreaName}}
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2 text-right"><b class="form-text-black">单位详细地址</b>:</label>
+                <div class="col-sm-6">
+                    {{guaranteePers.compAddr}}
+                </div>
+                <label class="col-sm-2 text-right"><b class="form-text-black">职业</b>:</label>
+                <div class="col-sm-2">
+                    {{guaranteePers.profession | getName:'professionType'}}
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2 text-right"><b class="form-text-black">职位</b>:</label>
+                <div class="col-sm-2">
+                    {{guaranteePers.position | getName:'positionType'}}
+                </div>
+                <label class="col-sm-2 text-right"><b class="form-text-black">工作年限</b>:</label>
+                <div class="col-sm-2">
+                    {{guaranteePers.workYear}}
+                </div>
+                <label class="col-sm-2 text-right"><b class="form-text-black">年薪(万元)</b>:</label>
+                <div class="col-sm-2">
+                    {{guaranteePers.salary}}
+                </div>
+            </div>
+        </div>
+
+        <div ng-if="guaranteePers.marriageStatus != 2 && guaranteePers.marriageStatus != 3 && guaranteePers.marriageStatus != 4" class="row" style="margin: 5px; padding-right: 50px;">
+            <div class="row line-lg" style="font-weight: bold;font-size: 14px;">担保人配偶信息</div>
+            <div class="form-group row">
+                <label class="col-sm-2 text-right"><b class="form-text-black">配偶姓名</b>:</label>
+                <div class="col-sm-2">
+                    {{guaranteePers.mateName}}
+                </div>
+                <label class="col-sm-2 text-right"><b class="form-text-black">证件类型</b>:</label>
+                <div class="col-sm-2">
+                    {{guaranteePers.mateCertifType | getName:'certifType'}}
+                </div>
+                <label class="col-sm-2 text-right"><b class="form-text-black">证件号</b>:</label>
+                <div class="col-sm-2">
+                    {{guaranteePers.mateCertifNo}}
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2 text-right"><b class="form-text-black">手机号码</b>:</label>
+                <div class="col-sm-2">
+                    {{guaranteePers.mateMobileNo}}
+                </div>
+                <label class="col-sm-2 text-right"><b class="form-text-black">单位名称</b>:</label>
+                <div class="col-sm-2">
+                    {{guaranteePers.mateCompName}}
+                </div>
+                <label class="col-sm-2 text-right"><b class="form-text-black">单位电话</b>:</label>
+                <div class="col-sm-2">
+                    {{guaranteePers.mateCompTel}}
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2 text-right"><b class="form-text-black">单位所在省份</b>:</label>
+                <div class="col-sm-2">
+                    {{guaranteePers.mateCompProv | getAreaName}}
+                </div>
+                <label class="col-sm-2 text-right"><b class="form-text-black">单位所在市</b>:</label>
+                <div class="col-sm-2">
+                    {{guaranteePers.mateCompCity | getAreaName}}
+                </div>
+
+                <label class="col-sm-2 text-right"><b class="form-text-black">单位所在区县</b>:</label>
+                <div class="col-sm-2">
+                    {{guaranteePers.mateCompCounty | getAreaName}}
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2 text-right"><b class="form-text-black">单位详细地址</b>:</label>
+                <div class="col-sm-10">
+                    {{guaranteePers.mateCompAddr}}
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2 text-right"><b class="form-text-black">配偶职位</b>:</label>
+                <div class="col-sm-2">
+                    {{guaranteePers.matePosition | getName:'positionType'}}
+                </div>
+                <label class="col-sm-2 text-right"><b class="form-text-black">税后年薪(万元)</b>:</label>
+                <div class="col-sm-2">
+                    {{guaranteePers.mateSalary}}
+                </div>
+                <label class="col-sm-2 text-right"><b class="form-text-black">是否共同担保人</b>:</label>
+                <div class="col-sm-2">
+                    {{guaranteePers.isCommGuarantee | getName:'yesNoFlag'}}
+                </div>
+            </div>
+        </div>
+
+        <div class="row" style="margin: 5px; padding-right: 50px;">
+            <div class="row line-lg" style="font-weight: bold;font-size: 14px;">担保人地址信息</div>
+            <div class="form-group row">
+                <label class="col-sm-2 text-right"><b class="form-text-black">居住状况</b>:</label>
+                <div class="col-sm-2">
+                    {{guaranteePers.resideCond | getName:'resideCond'}}
+                </div>
+                <label class="col-sm-2 text-right"><b class="form-text-black">居住年份</b>:</label>
+                <div class="col-sm-2">
+                    {{guaranteePers.resideYear | getName:'resideYear'}}
+                </div>
+                <label class="col-sm-2 text-right"><b class="form-text-black">是否有房产</b>:</label>
+                <div class="col-sm-2">
+                    {{guaranteePers.isHaveProperty | getName:'isHaveProperty'}}
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2 text-right"><b class="form-text-black">居住省份</b>:</label>
+                <div class="col-sm-2">
+                    {{guaranteePers.resideProv | getAreaName}}
+                </div>
+                <label class="col-sm-2 text-right"><b class="form-text-black">居住城市</b>:</label>
+                <div class="col-sm-2">
+                    {{guaranteePers.resideCity | getAreaName}}
+                </div>
+                <label class="col-sm-2 text-right"><b class="form-text-black">居住区县</b>:</label>
+                <div class="col-sm-2">
+                    {{guaranteePers.resideCounty | getAreaName}}
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2 text-right"><b class="form-text-black">居住详细地址</b>:</label>
+                <div class="col-sm-10">
+                    {{guaranteePers.resideAddr}}
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2 text-right"><b class="form-text-black">户籍省份</b>:</label>
+                <div class="col-sm-2">
+                    {{guaranteePers.censusProv | getAreaName}}
+                </div>
+                <label class="col-sm-2 text-right"><b class="form-text-black">户籍城市</b>:</label>
+                <div class="col-sm-2">
+                    {{guaranteePers.censusCity | getAreaName}}
+                </div>
+                <label class="col-sm-2 text-right"><b class="form-text-black">户籍区县</b>:</label>
+                <div class="col-sm-2">
+                    {{guaranteePers.censusCounty | getAreaName}}
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2 text-right"><b class="form-text-black">户籍详细地址</b>:</label>
+                <div class="col-sm-10">
+                    {{guaranteePers.censusAddr}}
+                </div>
+            </div>
+            <div ng-if="guaranteePers.isHaveProperty == 1">
+                <div class="form-group row">
+                    <label class="col-sm-2 text-right"><b class="form-text-black">房产省份</b>:</label>
+                    <div class="col-sm-2">
+                        {{guaranteePers.propertyProv | getAreaName}}
+                    </div>
+                    <label class="col-sm-2 text-right"><b class="form-text-black">房产城市</b>:</label>
+                    <div class="col-sm-2">
+                        {{guaranteePers.propertyCity | getAreaName}}
+                    </div>
+                    <label class="col-sm-2 text-right"><b class="form-text-black">房产区县</b>:</label>
+                    <div class="col-sm-2">
+                        {{guaranteePers.propertyCounty | getAreaName}}
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 text-right"><b class="form-text-black">房产详细地址</b>:</label>
+                    <div class="col-sm-10">
+                        {{guaranteePers.propertyAddr}}
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 text-right"><b class="form-text-black">房产类型</b>:</label>
+                    <div class="col-sm-2">
+                        {{guaranteePers.propertyType | getName:'propertyType'}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="modal-footer ng-scope">
+    <div class="text-center">
+        <button type="button" class="btn btn-default" ng-click="close()">关闭</button>
+        <!--<button type="submit" class="btn btn-success" ng-disabled="submit" ng-click="save()">新增</button>-->
+    </div>
+</div>

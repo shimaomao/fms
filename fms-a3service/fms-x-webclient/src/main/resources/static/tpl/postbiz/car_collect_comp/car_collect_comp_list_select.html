@@ -1,0 +1,61 @@
+<div class="modal-header">
+    <h4 class="modal-title">选择收车机构
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" ng-click="close()">&times;</button>
+    </h4>
+</div>
+<div ng-init="init()">
+    <div class="panel-body wrapper-sm">
+        <div class="row">
+            <div class="col-lg-12">
+                <form class="form-inline" role="form">
+                    <div class="form-group">
+                        <label class="sr-only">收车机构代码 </label>
+                        <input class="form-control m-b-xs" ng-model="carCollectCompCode" placeholder="收车机构代码">
+                    </div>
+                    <div class="form-group">
+                        <label class="sr-only">收车机构名称 </label>
+                        <input class="form-control m-b-xs" ng-model="carCollectCompName" placeholder="收车机构名称">
+                    </div>
+
+                    <div class="form-group m-b-sm">
+                        <div class="btn-group">
+                            <button class="btn btn-default m-b-xs btn-info" ng-click="searchCarCollectComp()"><i
+                                    class="fa fa-search"></i>查询
+                            </button>
+                            <button class="btn btn-default m-b-xs" ng-click="resetCarCollectComp()"><i
+                                    class="fa  icon-refresh"></i>重置
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="form-group pull-right">
+                        <div class="btn-group">
+                            <button class="btn btn-default m-b-xs" ng-click="exportExcel()">导出excel</button>
+                            <button class="btn btn-default m-b-xs" ng-click="saveCarCollectComp()"><i
+                                    class="fa fa-plus"></i>添加
+                            </button>
+                            <button class="btn btn-default m-b-xs" ng-click="modifyCarCollectComp()"><i
+                                    class="fa icon-pencil"></i>修改
+                            </button>
+                            <button class="btn btn-default m-b-xs" ng-click="deleteCarCollectComp()"><i
+                                    class="fa fa-trash-o"></i>删除
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="panel panel-default" style="border: 0">
+            <table border="1" class="table table-striped m-b-none" id="car_collect_comp_select_table"></table>
+        </div>
+    </div>
+</div>
+
+<div class="modal-footer ng-scope text-center">
+    <div class="text-center">
+        <button class="btn btn-default" ng-click="close()">关闭</button>
+        <button class="btn btn-success" ng-click="confirm('select')">确认</button>
+    </div>
+</div>
+
+

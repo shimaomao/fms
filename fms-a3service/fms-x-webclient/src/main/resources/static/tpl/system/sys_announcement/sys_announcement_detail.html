@@ -1,0 +1,55 @@
+<div class="panel panel-default" ng-controller="sys_announcement_detail_controller">
+    <div class="modal-header">
+        <h4 class="modal-title">查看公告信息详情</h4>
+    </div>
+    <div class="modal-body">
+        <form name="form" class="form-validation" novalidate>
+
+            <div class="form-group row">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">公告标题</b>:</label>
+                <div class="col-sm-8">
+                    <label class="col-sm-12 control-label text-left">{{sysAnnouncement.announceTitle}}</label>
+                </div>
+            </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">公告内容</b>:</label>
+                    <div class="col-sm-8">
+                        <label class="col-sm-12 control-label text-left" >{{sysAnnouncement.announceCotent}}</label>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">公告日期</b>:</label>
+                    <div class="col-sm-8">
+                        <label class="col-sm-12 control-label text-left" >{{sysAnnouncement.announceDate}}</label>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">公告附件</b>:</label>
+                    <div class="col-sm-8">
+                        <div ng-include="'tpl/common/file/file_list.html'" class="clearfix"></div>
+                    </div>
+                </div>
+
+                <!--<div class="form-group row">-->
+                    <!--<label class="col-sm-3 control-label text-right"><b class="form-text-black">公告附件</b>:</label>-->
+                    <!--<div class="col-sm-8">-->
+                        <!--<label class="col-sm-12 control-label text-left" >{{sysAnnouncement.announceFile}}</label>-->
+                    <!--</div>-->
+                <!--</div>-->
+
+                <div class="form-group row">
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">启用标志</b>:</label>
+                    <div class="col-sm-8">
+                        <label class="col-sm-12 control-label text-left" >{{sysAnnouncement.enableFlag}}</label>
+                    </div>
+                </div>
+
+        </form>
+    </div>
+    <div class="modal-footer ng-scope text-center">
+        <button class="btn btn-default" ng-click="close()">关闭</button>
+    </div>
+</div>

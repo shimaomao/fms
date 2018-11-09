@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.com.leadu.fms.data.product.dao.ProdGroupDao">
+    <!-- 根据产品代码 获取产品的有权限的组织结构 -->
+    <select id="selectProdGroupVosByProduct" parameterType="java.lang.String" resultType="cn.com.leadu.fms.pojo.product.vo.prodgroup.ProdGroupVo">
+        select prodGroup.prod_group_id,prodGroup.product,prodGroup.group_code,sysGroup.group_name,sysGroup.group_lev,sysGroupLevel.group_lev_name,sysGroup.group_id
+        from prod_group prodGroup
+        LEFT JOIN sys_group sysGroup ON prodGroup.group_code = sysGroup.group_code and sysGroup.del_flag = ${delete_exist}
+        LEFT JOIN sys_group_level sysGroupLevel ON sysGroup.group_lev = sysGroupLevel.group_lev and sysGroupLevel.del_flag = ${delete_exist}
+        where prodGroup.del_flag = ${delete_exist}
+        <if test="product != null">
+            and prodGroup.product =  #{product}
+        </if>
+    </select>
+
+</mapper>

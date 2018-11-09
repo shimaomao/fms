@@ -1,0 +1,66 @@
+<div class="modal-header">
+    <h4 class="modal-title">修改结果 <button type="button" class="close" data-dismiss="modal" aria-hidden="true" ng-click="close()">&times;</button></h4>
+</div>
+<div class="modal-body">
+    <form name="form" class="form-validation" novalidate>
+
+        <div class="panel-body">
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">结果</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <select name="conseqItemKey" ng-model="ruleConsequence.conseqItemKey" class="form-control m-b-xs" required >
+                        <option value="">--请选择结果--</option>
+                        <option value="{{ruleItem.ruleItemKey}}" ng-selected="ruleConsequence.conseqItemKey == ruleItem.ruleItemKey" ng-repeat="ruleItem in ruleItems">
+                            {{ruleItem.ruleItemName}}
+                        </option>
+                    </select>
+
+                    <p>
+                        <span class="form-info" ng-show=" (form.conseqItemKey.$dirty && form.conseqItemKey.$error.required) || (form.conseqItemKey.$error.required && formValidate)">规则ID不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">逻辑</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <select name="conseqLogicType" ng-model="ruleConsequence.conseqLogicType" class="form-control m-b-xs" required >
+                        <option value="">--请选择逻辑--</option>
+                        <option value="{{logicType.codeValue}}" ng-selected="ruleConsequence.conseqLogicType == logicType.codeValue" ng-repeat="logicType in logicTypes">
+                            {{logicType.codeValueName}}
+                        </option>
+                    </select>
+                    <p>
+                        <span class="form-info" ng-show=" (form.conseqLogicType.$dirty && form.conseqLogicType.$error.required) || (form.conseqLogicType.$error.required && formValidate)">规则序号不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">结果项目值1</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="conseqLogicValue1" placeholder="结果项目值1" class="form-control m-b-xs" ng-model="ruleConsequence.conseqLogicValue1"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.conseqLogicValue1.$dirty && form.conseqLogicValue1.$error.required) || (form.conseqLogicValue1.$error.required && formValidate)">条件项目key不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">结果项目值2</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="conseqLogicValue2" placeholder="结果项目值2" class="form-control m-b-xs" ng-model="ruleConsequence.conseqLogicValue2"  >
+                </div>
+            </div>
+
+        </div>
+
+    </form>
+</div>
+<div class="modal-footer ng-scope">
+    <button class="btn btn-default" ng-click="close()">取消</button>
+    <button type="submit" class="btn btn-success" ng-disabled="submit" ng-click="save()">保存</button>
+</div>

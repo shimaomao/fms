@@ -1,0 +1,74 @@
+<div class="modal-header">
+    <h4 class="modal-title">编辑prebiz <button type="button" class="close" data-dismiss="modal" aria-hidden="true" ng-click="close()">&times;</button></h4>
+</div>
+<div class="modal-body">
+    <form name="form" class="form-validation" novalidate>
+
+        <div class="panel-body">
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">快递公司</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="postComp" placeholder="请输入快递公司" class="form-control m-b-xs" ng-model="fileSend.postComp"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.postComp.$dirty && form.postComp.$error.required) || (form.postComp.$error.required && formValidate)">快递公司不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">快递日期</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="postDate" placeholder="请输入快递日期" class="form-control m-b-xs" ng-model="fileSend.postDate"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.postDate.$dirty && form.postDate.$error.required) || (form.postDate.$error.required && formValidate)">快递日期不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">快递编号</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="postNo" placeholder="请输入快递编号" class="form-control m-b-xs" ng-model="fileSend.postNo"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.postNo.$dirty && form.postNo.$error.required) || (form.postNo.$error.required && formValidate)">快递编号不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">邮寄快递人员</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="postMember" placeholder="请输入邮寄快递人员" class="form-control m-b-xs" ng-model="fileSend.postMember"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.postMember.$dirty && form.postMember.$error.required) || (form.postMember.$error.required && formValidate)">邮寄快递人员不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">联系电话</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="postMemberTel" placeholder="请输入联系电话" class="form-control m-b-xs" ng-model="fileSend.postMemberTel"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.postMemberTel.$dirty && form.postMemberTel.$error.required) || (form.postMemberTel.$error.required && formValidate)">联系电话不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+
+        </div>
+    </form>
+</div>
+<div class="modal-footer ng-scope">
+    <button class="btn btn-default" ng-click="close()">取消</button>
+    <button type="submit" class="btn btn-success" ng-disabled="submit" ng-click="modify()">保存</button>
+</div>

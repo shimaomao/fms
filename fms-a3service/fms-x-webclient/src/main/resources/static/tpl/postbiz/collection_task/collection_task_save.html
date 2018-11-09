@@ -1,0 +1,121 @@
+<div ng-controller="collection_task_save_controller">
+    <div>
+        <toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+    </div>
+    <form name="form" class="form-validation" novalidate>
+        <div class="panel panel-default">
+            <div class="panel-body wrapper-sm">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="form-group pull-left"><h1 class="m-n font-thin h4">上门催收申请</h1></div>
+                        <div class="form-group pull-right">
+                            <div class="btn-group">
+                                <button class="btn btn-sm fms-button-margin-bottom btn-default m-b-xs" ng-click="save()" ng-disabled="submit"><i class=""></i>提交</button>
+                                <button class="btn btn-sm fms-button-margin-bottom btn-default m-b-xs" ng-click="close()" ng-disabled="submit"><i class=""></i>返回</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-body">
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">承租人</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-6">
+                        <div class="row">
+                            <div class="col-sm-8" >
+                                <input type="text" name="cstmName" placeholder="请输入承租人" class="form-control m-b-xs" ng-model="collectionTaskVo.cstmName"  required disabled>
+                                <input type="hidden" name="certifNo" class="form-control m-b-xs" ng-model="collectionTaskVo.certifNo">
+                                <input type="hidden" name="overdueCstmId" class="form-control m-b-xs" ng-model="collectionTaskVo.overdueCstmId">
+                                <p>
+                                    <span class="form-info" ng-show=" (form.cstmName.$dirty && form.cstmName.$error.required) || (form.cstmName.$error.required && formValidate)">承租人不能为空</span>
+                                </p>
+                            </div>
+                            <div class="col-sm-2">
+                                <button type="button" class="btn btn-default btn-sm" ng-click="selectCstmName()">选择</button>
+                            </div>
+                            <div class="col-sm-2">
+                                <button type="button" class="btn btn-default btn-sm" ng-click="overdueDetail()">逾期详情</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">上门催收级别</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <select name="collectionLevel" ng-model="collectionTaskVo.collectionLevel" class="form-control m-b-xs" ng-options="a.codeValue as a.codeValueName for a in 'collectionLevel' | getList" required>
+                            <option value="">---请选择催收级别---</option>
+                        </select>
+                        <p>
+                            <span class="form-info" ng-show=" (form.collectionLevel.$dirty && form.collectionLevel.$error.required) || (form.collectionLevel.$error.required && formValidate)">上门催收级别不能为空</span>
+                        </p>
+                    </div>
+                    <label class="col-sm-4 control-label text-right"><b class="form-text-black">申请上门时间</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control m-b-xs" name="applyVisitDate" placeholder="请输入申请上门时间" ng-model="collectionTaskVo.applyVisitDate"  required date-picker>
+                        <p>
+                            <span class="form-info" ng-show=" (form.applyVisitDate.$dirty && form.applyVisitDate.$error.required) || (form.applyVisitDate.$error.required && formValidate)">申请上门时间不能为空</span>
+                        </p>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">申请上门地址</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-8">
+                        <textarea type="text" limit-word="50" name="applyVisitAddr" placeholder="请输入申请上门地址" class="form-control m-b-xs" ng-model="collectionTaskVo.applyVisitAddr"  required ></textarea>
+                        <p>
+                            <span class="form-info" ng-show=" (form.applyVisitAddr.$dirty && form.applyVisitAddr.$error.required) || (form.applyVisitAddr.$error.required && formValidate)">申请上门地址不能为空</span>
+                        </p>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">逾期状况描述</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-8">
+                        <textarea type="text" limit-word name="overdueDescription" placeholder="请输入逾期状况描述" class="form-control m-b-xs" ng-model="collectionTaskVo.overdueDescription"  required ></textarea>
+                        <p>
+                            <span class="form-info" ng-show=" (form.overdueDescription.$dirty && form.overdueDescription.$error.required) || (form.overdueDescription.$error.required && formValidate)">逾期状况描述不能为空</span>
+                        </p>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">上门催收原因</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-8">
+                        <textarea type="text" limit-word name="collectionReason" placeholder="请输入上门催收原因" class="form-control m-b-xs" ng-model="collectionTaskVo.collectionReason"  required ></textarea>
+                        <p>
+                            <span class="form-info" ng-show=" (form.collectionReason.$dirty && form.collectionReason.$error.required) || (form.collectionReason.$error.required && formValidate)">上门催收原因不能为空</span>
+                        </p>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">车辆使用情况</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-8">
+                        <textarea type="text" limit-word name="vehicleSituation" placeholder="请输入车辆使用情况" class="form-control m-b-xs" ng-model="collectionTaskVo.vehicleSituation"  required ></textarea>
+                        <p>
+                            <span class="form-info" ng-show=" (form.vehicleSituation.$dirty && form.vehicleSituation.$error.required) || (form.vehicleSituation.$error.required && formValidate)">车辆使用情况不能为空</span>
+                        </p>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">备注</b>:</label>
+                    <div class="col-sm-8">
+                        <textarea type="text" limit-word="1000" name="remark" placeholder="请输入备注" class="form-control m-b-xs" ng-model="collectionTaskVo.remark" ></textarea>
+                        <!--<p>
+                            <span class="form-info" ng-show=" (form.remark.$dirty && form.remark.$error.required) || (form.remark.$error.required && formValidate)">备注不能为空</span>
+                        </p>-->
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="panel-body">
+                <div class="row">
+                    <span style="margin-left: 2%;">客户基本信息</span>
+                </div>
+                <table border="1" class="table table-striped m-b-none" id="cstm_contact_table">
+                </table>
+            </div>
+            <!--流程日志-->
+            <div class="panel-body wrapper-sm">
+                <div ng-include="'tpl/common/process_log/process_log_list.html'"></div>
+            </div>
+        </div>
+    </form>
+</div>

@@ -1,0 +1,59 @@
+<div>
+    <toaster-container
+            toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+</div>
+<div ng-controller="basic_change_task_list_controller">
+    <div class="panel panel-default">
+        <div class="panel-body wrapper-sm">
+            <div class="row">
+                <div class="col-lg-12">
+                    <form class="form-inline" role="form">
+                        <div class="form-group">
+                            <label class="sr-only">申请编号 </label>
+                            <input class="form-control m-b-xs" ng-model="params.applyNo" placeholder="请输入申请编号">
+                        </div>
+                        <div class="form-group">
+                            <label class="sr-only">承租人 </label>
+                            <input class="form-control m-b-xs" ng-model="params.name" placeholder="请输入承租人">
+                        </div>
+                        <div class="form-group">
+                            <label class="sr-only">合同编号 </label>
+                            <input class="form-control m-b-xs" ng-model="params.contNo" placeholder="请输入合同编号">
+                        </div>
+                        <div class="form-group">
+                            <label class="sr-only">车架号 </label>
+                            <input class="form-control m-b-xs" ng-model="params.vinNo" placeholder="请输入车架号">
+                        </div>
+                        <div class="form-group">
+                            <label class="sr-only">变更类型 </label>
+                            <select name="changeType" ng-model="params.changeType" ng-selected="params.changeType == a.codeValue" class="form-control m-b-xs" ng-options="a.codeValue as a.codeValueName for a in 'changeType' | getList">
+                                <option value="">---请选择变更类型---</option>
+                            </select>
+                        </div>
+                        <div class="form-group m-b-sm">
+                            <div class="btn-group">
+                                <button class="btn btn-sm fms-button-margin-bottom btn-default m-b-xs btn-info"
+                                        ng-click="searchContractList()"><i class="fa fa-search"></i>查询
+                                </button>
+                                <button class="btn btn-sm fms-button-margin-bottom btn-default m-b-xs"
+                                        ng-click="resetContractList()"><i class="fa  icon-refresh"></i>重置
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group pull-right">
+                    <div class="btn-group">
+                        <button class="btn btn-default m-b-xs btn-sm fms-button-margin-bottom" ng-click="basicChangeCancel()">流程取消</button>
+                        <!--<button class="btn btn-default m-b-xs btn-sm fms-button-margin-bottom" ng-click="basicChange()">基础信息变更</button>-->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <table border="1" class="table table-striped m-b-none" id="contract_table">
+        </table>
+    </div>
+</div>
+

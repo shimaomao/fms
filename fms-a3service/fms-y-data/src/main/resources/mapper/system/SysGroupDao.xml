@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.com.leadu.fms.data.system.dao.SysGroupDao">
+    <!-- 分页取得用户组信息 -->
+    <select id="selectSysGroupVosByPage" parameterType="java.lang.String" resultType="cn.com.leadu.fms.pojo.system.vo.sysgroup.SysGroupVo">
+        select sysGroup.group_id,sysGroup.group_code,sysGroup.group_name,sysGroup.group_name_short,sysGroup.group_name_eng
+        ,sysGroup.group_lev,sysGroupLev.group_lev_name,sysGroup.enable_flag,sysGroupPar.parent_group,sysGroup.update_time,sysGroup.updater,
+        sysGroup.social_certif_no,sysGroup.registered_addr,sysGroup.head,sysGroup.finass_group_code,sysGroup.group_district
+        from sys_group sysGroup
+        left join sys_group_level sysGroupLev on sysGroupLev.group_lev = sysGroup.group_lev  and sysGroupLev.del_flag = ${delete_exist}
+        left join sys_group_parent sysGroupPar on sysGroupPar.group_code = sysGroup.group_code and sysGroupPar.del_flag = ${delete_exist}
+        <if test="sysGroupVo.parentType != null">
+            and sysGroupPar.parent_type = #{sysGroupVo.parentType}
+        </if>
+        where sysGroup.del_flag = ${delete_exist}
+        <if test="sysGroupVo.groupCode != null">
+            and sysGroup.group_code like #{sysGroupVo.groupCode}
+        </if>
+        <if test="sysGroupVo.groupName != null">
+            and sysGroup.group_name  like #{sysGroupVo.groupName}
+        </if>
+        <if test="sysGroupVo.parentGroup != null">
+            and (sysGroupPar.parent_group = #{sysGroupVo.parentGroup}
+            or sysGroup.group_code =  #{sysGroupVo.parentGroup})
+            order by (sysGroup.group_code = #{sysGroupVo.parentGroup}) desc, sysGroup.update_time desc
+        </if>
+        <if test="sysGroupVo.parentGroup == null">
+            order by sysGroup.update_time desc
+        </if>
+    </select>
+    <!-- 分页取得用户组信息 -->
+    <select id="selectSysGroupVoListByPage" parameterType="java.lang.String" resultType="cn.com.leadu.fms.pojo.system.vo.sysgroup.SysGroupVo">
+        select sysGroup.group_id,sysGroup.group_code,sysGroup.group_name,sysGroup.group_name_short,sysGroup.group_name_eng
+        ,sysGroup.group_lev,sysGroupLev.group_lev_name,sysGroup.enable_flag,sysGroup.update_time,sysGroup.updater,
+        sysGroup.social_certif_no,sysGroup.registered_addr,sysGroup.head,sysGroup.group_district
+        from sys_group sysGroup
+        left join sys_group_level sysGroupLev on sysGroupLev.group_lev = sysGroup.group_lev AND sysGroupLev.group_lev = #{sysGroupVo.groupLev} and sysGroupLev.del_flag = ${delete_exist}
+        where sysGroup.del_flag = ${delete_exist}
+        <if test="sysGroupVo.groupLev != null">
+            and sysGroupLev.group_lev = #{sysGroupVo.groupLev}
+        </if>
+        <if test="sysGroupVo.groupLevName != null">
+            and sysGroupLev.group_lev_name  like #{sysGroupVo.groupLevName}
+        </if>
+        <if test="sysGroupVo.groupName != null">
+            AND sysGroup.group_name LIKE #{sysGroupVo.groupName}
+        </if>
+        <if test="sysGroupVo.groupCode">
+            AND sysGroup.group_code LIKE #{sysGroupVo.groupCode}
+        </if>
+        order by sysGroup.update_time desc
+    </select>
+    <!-- 根据用户ID,获取有下级用户组的用户组信息的总件数 -->
+    <select id="selectParentGroupCountByGroupIds" parameterType="java.lang.String" resultType="java.lang.Long">
+        select ifnull(count(DISTINCT sysGroup.group_id), 0) as totalSize
+        from sys_group sysGroup
+        left join sys_group_parent sysGroupPar on sysGroupPar.parent_group = sysGroup.group_code and sysGroupPar.del_flag = ${delete_exist}
+        where sysGroup.del_flag = ${delete_exist}
+        and sysGroupPar.parent_id is not null
+        and sysGroup.group_id in
+        <foreach collection="groupIds" item="item" index="index" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+    <!-- 根据用户组代码,获取上级用户组信息 -->
+    <select id="selectParentGroupsByGroup" parameterType="java.lang.String" resultType="cn.com.leadu.fms.pojo.system.vo.sysgroupparent.SysGroupParentVo">
+        select sysGroupPar.group_code,sysGroupPar.parent_group,sysGroupPar.parent_type,sysGroup.group_name as parentGroupName
+        from sys_group_parent sysGroupPar
+        left join sys_group sysGroup on sysGroupPar.parent_group = sysGroup.group_code and sysGroup.del_flag = ${delete_exist}
+        where sysGroupPar.del_flag = ${delete_exist}
+        <if test="groupCode != null">
+            and sysGroupPar.group_code = #{groupCode}
+        </if>
+        order by sysGroupPar.parent_type asc
+    </select>
+    <!-- 根据组织类型，取得用户组信息树 -->
+    <select id="selectSysGroupVosByTree" parameterType="java.lang.String" resultType="cn.com.leadu.fms.pojo.system.vo.sysgroup.SysGroupVo">
+        select  sysGroup.group_id,sysGroup.group_code,sysGroup.group_name,sysGroupPar.parent_group,sysGroupPar.parent_type
+        from sys_group sysGroup
+        left join sys_group_parent sysGroupPar on sysGroupPar.group_code = sysGroup.group_code and sysGroupPar.del_flag = ${delete_exist}
+        <if test="parentType != null">
+            and sysGroupPar.parent_type = #{parentType}
+        </if>
+        where sysGroup.del_flag = ${delete_exist}
+        order by sysGroup.update_time desc
+    </select>
+    <!-- 根据用户组Id,获取用户组信息 -->
+    <select id="selectSysGroupVoByGroupId" parameterType="java.lang.String" resultType="cn.com.leadu.fms.pojo.system.vo.sysgroup.SysGroupDetailVo">
+        select sysGroup.group_id,sysGroup.group_code,sysGroup.group_name,sysGroup.group_name_short,sysGroup.group_name_eng
+        ,sysGroup.group_lev,sysGroupLev.group_lev_name,sysGroup.enable_flag,
+        sysGroup.social_certif_no,sysGroup.registered_addr,sysGroup.head,sysGroup.finass_group_code,sysGroup.group_district
+        from sys_group sysGroup
+        left join sys_group_level sysGroupLev on sysGroupLev.group_lev = sysGroup.group_lev and sysGroupLev.del_flag = ${delete_exist}
+        where sysGroup.del_flag = ${delete_exist}
+        <if test="groupId != null">
+            and sysGroup.group_id = #{groupId}
+        </if>
+        order by sysGroup.update_time DESC
+        limit 0,1
+    </select>
+    <!-- 根据用户组ID集合,用户组关系Id -->
+    <select id="selectParentIdsByGroupIds" parameterType="java.lang.String" resultType="java.lang.String">
+        select sysGroupPar.parent_id
+        from sys_group_parent sysGroupPar
+        left join sys_group sysGroup on sysGroupPar.group_code = sysGroup.group_code and sysGroup.del_flag = ${delete_exist}
+        where sysGroupPar.del_flag = ${delete_exist}
+        and sysGroup.group_id in
+        <foreach collection="groupIds" item="item" index="index" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+</mapper>

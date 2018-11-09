@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.com.leadu.fms.data.cost.dao.OverdueExemptDao">
+    <!--取得罚息免除一览展示页面-->
+    <select id="selectOverdueExemptsByPage" parameterType="cn.com.leadu.fms.pojo.cost.vo.overdueexempt.OverdueExemptVo" resultType="cn.com.leadu.fms.pojo.cost.vo.overdueexempt.OverdueExemptVo">
+        SELECT
+        overdueExempt.*,
+        IFNULL(cstmPerson.name,cstmCompany.name) as cstmName,
+        contract.vin_no as vinNo,
+        sysGroup.group_name,
+        SUM(overdueExemptDetail.manual_exempt_amount) as applyExemptAmount
+        FROM
+        overdue_exempt overdueExempt
+        LEFT JOIN contract on overdueExempt.cont_no = contract.cont_no and contract.del_flag = ${delete_exist}
+        LEFT JOIN contract_finance finance ON contract.cont_no=finance.cont_no AND finance.del_flag = ${delete_exist}
+        LEFT JOIN sys_group sysGroup ON finance.belong_group = sysGroup.group_code AND sysGroup.del_flag =  ${delete_exist}
+        LEFT JOIN cstm_company cstmCompany on contract.apply_no = cstmCompany.apply_no and cstmCompany.del_flag = ${delete_exist}
+        LEFT JOIN cstm_person cstmPerson on contract.apply_no = cstmPerson.apply_no and cstmPerson.del_flag = ${delete_exist}
+        LEFT JOIN overdue_exempt_detail overdueExemptDetail ON overdueExemptDetail.overdue_exempt_no=overdueExempt.overdue_exempt_no
+        and overdueExemptDetail.del_flag = ${delete_exist}
+        WHERE
+        overdueExempt.del_flag = ${delete_exist}
+        <if test="overdueExemptVo.cstmName != null" >
+            AND (cstmCompany.name LIKE #{overdueExemptVo.cstmName} or cstmPerson.name LIKE #{overdueExemptVo.cstmName})
+        </if>
+        <if test="overdueExemptVo.contNo != null" >
+            AND overdueExempt.cont_no LIKE #{overdueExemptVo.contNo}
+        </if>
+        <if test="overdueExemptVo.groupDistrict != null" >
+            AND sysGroup.group_district LIKE #{overdueExemptVo.groupDistrict}
+        </if>
+        <if test="overdueExemptVo.vinNo != null" >
+            AND contract.vin_no LIKE #{overdueExemptVo.vinNo}
+        </if>
+        GROUP BY overdueExempt.overdue_exempt_id
+        ORDER BY overdueExempt.update_time DESC
+    </select>
+
+    <!--取得罚息免除一览-->
+    <select id="selectContOverdueVosByPage" parameterType="cn.com.leadu.fms.pojo.finance.vo.contoverdue.ContOverdueVo" resultType="cn.com.leadu.fms.pojo.finance.vo.contoverdue.ContOverdueVo">
+        select DISTINCT
+        contOverdue.cont_no as contNo,
+        contract.apply_no as applyNo,
+        MAX(contOverdue.overdue_days) overdueDaysMax,
+        SUM(contOverdue.overdue_amount) overdueAmountSum,
+        IFNULL(cstmPerson.name,cstmCompany.name) as cstmName,
+        contract.vin_no as vinNo,
+        sysGroup.group_name,
+        <!-- 剩余期数 -->
+        <include refid="surplusPeriod"/> 
+        from
+        cont_overdue contOverdue
+        left join contract on contOverdue.cont_no = contract.cont_no and contract.del_flag = ${delete_exist}
+        left join contract_finance finance ON contract.cont_no=finance.cont_no AND finance.del_flag = ${delete_exist}
+        left join sys_group sysGroup ON finance.belong_group = sysGroup.group_code AND sysGroup.del_flag =  ${delete_exist}
+        left join cstm_company cstmCompany on contract.apply_no = cstmCompany.apply_no and cstmCompany.del_flag = ${delete_exist}
+        left join cstm_person cstmPerson on contract.apply_no = cstmPerson.apply_no and cstmPerson.del_flag = ${delete_exist}
+        WHERE
+        contOverdue.del_flag = ${delete_exist}
+        <!-- 剩余罚息金额>0 -->
+        and contOverdue.rest_overdue_amount > 0
+        <if test="contOverdueVo.cstmName != null" >
+            AND (cstmCompany.name LIKE #{contOverdueVo.cstmName} or cstmPerson.name LIKE #{contOverdueVo.cstmName})
+        </if>
+        <if test="contOverdueVo.contNo != null" >
+            AND contOverdue.cont_no LIKE #{contOverdueVo.contNo}
+        </if>
+        <if test="contOverdueVo.groupDistrict != null" >
+            AND sysGroup.group_district LIKE #{contOverdueVo.groupDistrict}
+        </if>
+        <if test="contOverdueVo.vinNo != null" >
+            AND contract.vin_no LIKE #{contOverdueVo.vinNo}
+        </if>
+        <if test="contOverdueVo.gtSurplusPeriod != null">
+            and <include refid="surplusPeriodSelect"/>  <![CDATA[ >= ]]> #{contOverdueVo.gtSurplusPeriod}
+        </if>
+        <if test="contOverdueVo.ltSurplusPeriod != null">
+            and <include refid="surplusPeriodSelect"/>  <![CDATA[ <= ]]> #{contOverdueVo.ltSurplusPeriod}
+        </if>
+        GROUP BY contOverdue.cont_no
+        ORDER BY contOverdue.cont_no DESC
+    </select>
+
+    <!--根据合同号关联查询合同信息等表并去重取得一条明细(页面上半部分)-->
+    <select id="selectOneContOverdueVo" parameterType="java.lang.String" resultType="cn.com.leadu.fms.pojo.cost.vo.overdueexempt.ContOverdueOneVo">
+        select DISTINCT
+        --         contOverdue.cont_overdue_id,
+        contOverdue.cont_no as contNo,
+        contract.apply_no as applyNo,
+        IFNULL(cstmPerson.name,cstmCompany.name) as cstmName,
+        contract.vin_no as vinNo
+        from
+        cont_overdue contOverdue
+        left join contract on contOverdue.cont_no = contract.cont_no and contract.del_flag = ${delete_exist}
+        left join cstm_company cstmCompany on contract.apply_no = cstmCompany.apply_no and cstmCompany.del_flag = ${delete_exist}
+        left join cstm_person cstmPerson on contract.apply_no = cstmPerson.apply_no and cstmPerson.del_flag = ${delete_exist}
+        WHERE
+        contOverdue.del_flag = ${delete_exist}
+        <if test="#{contNo}!= null" >
+            AND contOverdue.cont_no = #{contNo}
+        </if>
+    </select>
+
+
+    <!--通过合同号关联查询逾期罚息表和罚息免除任务明细表信息-->
+    <select id="selectContOverdueAndOverdueExemptDetailByContNo" parameterType="java.lang.String" resultType="cn.com.leadu.fms.pojo.finance.vo.contoverdue.ContOverdueVo">
+        SELECT
+        contOverdue.*,
+        overdueExemptDetail.overdue_exempt_detail_id,
+        overdueExemptDetail.manual_exempt_amount,
+        contRepaySked.rent eachRent,
+        contRepaySked.repay_date
+        FROM
+        cont_overdue contOverdue
+        LEFT JOIN
+        overdue_exempt_detail overdueExemptDetail
+        ON contOverdue.period = overdueExemptDetail.periods
+        AND contOverdue.cont_no = overdueExemptDetail.cont_no
+        AND overdueExemptDetail.overdue_exempt_no = #{overdueExemptNo}
+        AND overdueExemptDetail.del_flag =  ${delete_exist}
+        LEFT JOIN
+        cont_repay_sked contRepaySked ON contOverdue.period = contRepaySked.period
+        AND contOverdue.cont_no = contRepaySked.cont_no
+        AND contRepaySked.del_flag = ${delete_exist}
+        WHERE
+        contOverdue.del_flag = ${delete_exist}
+        <if test="#{contNo} != null" >
+            AND contOverdue.cont_no = #{contNo}
+        </if>
+        ORDER BY contOverdue.period
+    </select>
+
+    <!-- 剩余期数 查询条件 -->
+    <sql id="surplusPeriodSelect">
+        ( select count(contRepaySked.repay_sked_id) surplusPeriod from cont_repay_sked contRepaySked
+        where contRepaySked.del_flag = ${delete_exist}
+        and contRepaySked.cont_no = contract.cont_no
+        and contRepaySked.repay_status = #{contOverdueVo.repayStatus}
+        )
+    </sql>
+
+    <!-- 剩余期数 -->
+    <sql id="surplusPeriod">
+        ( select count(contRepaySked.repay_sked_id) surplusPeriod from cont_repay_sked contRepaySked
+        where contRepaySked.del_flag = ${delete_exist}
+        and contRepaySked.cont_no = contract.cont_no
+        and contRepaySked.repay_status = #{contOverdueVo.repayStatus}
+        ) surplusPeriod
+    </sql>
+</mapper>

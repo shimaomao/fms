@@ -1,0 +1,79 @@
+<div class="panel panel-default" ng-controller="invoice_manual_controller">
+
+    <div class="row fms-page-header" >
+        <div class="form-inline" role="form">
+            <div class="form-group">
+                <h5>手动开票</h5>
+            </div>
+            <div class="form-group pull-right">
+                <button class="btn btn-default btn-sm fms-button-margin-top" ng-click="goBack()" ng-disabled="submit">返回</button>
+                <button class="btn btn-default btn-sm fms-button-margin-top" ng-click="save()" ng-disabled="submit">确认开票</button>
+                <toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+            </div>
+        </div>
+    </div>
+
+    <form name="form" class="form-validation" novalidate>
+        <div class="row fms-div-content">
+            <h4 class="fms-margin-bottom-30"><b>发票信息</b></h4>
+            <div class="row fms-div-content">
+
+                <div class="row">
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            <label class="control-label col-lg-4"><b class="form-text-black">批量录入开票日期</b>:</label>
+                            <div class="col-lg-6"><input onchange="" placeholder="请录入开票日期" class="col-lg-3 form-control m-b-sm" ng-model="allInvoiceDate" type="text"  date-picker></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-12">
+                    <div class="dataTables_wrapper form-inline dt-bootstrap no-footer">
+                        <table border="2" class="table m-b-none dataTable no-footer" role="grid" >
+                            <thead>
+                            <tr>
+                                <th class="sorting_disabled text-center">开票类型</th>
+                                <th class="sorting_disabled text-center">合同编号</th>
+                                <th class="sorting_disabled text-center">明细信息</th>
+                                <th class="sorting_disabled text-center">收款金额</th>
+                                <th class="sorting_disabled text-center">收款日期</th>
+                                <th class="sorting_disabled text-center">开票状态</th>
+                                <th class="sorting_disabled text-center">开票日期<b class="form-error"></b></th>
+                                <th class="sorting_disabled text-center">开票金额<b class="form-error"></b></th>
+                                <th class="sorting_disabled text-center">开票备注<b class="form-error"></b></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr click-tr ng-repeat="invoice in invoices">
+                                <td class="text-center">{{CommonCodeUtils.getCodeValueName(codeTypes.invoiceDataType,invoice.invoiceDataType)}}</td>
+                                <td class="text-center">{{invoice.contNo}}</td>
+                                <td class="text-center">{{invoice.detailNo}}</td>
+                                <td class="text-center">{{invoice.receiveActualAccount}}</td>
+                                <td class="text-center">{{invoice.receiveDate}}</td>
+                                <td class="text-center">{{CommonCodeUtils.getCodeValueName(codeTypes.invoiceStatus,invoice.invoiceStatus)}}</td>
+                                <td class="text-center">
+                                    <input onchange="" placeholder="请选择开票日期" class="form-control m-b-xs" ng-model="invoice.invoiceDate" type="text" date-picker>
+                                </td>
+                                <td class="text-center">
+                                    <input placeholder="请输入开票金额" class="form-control m-b-xs" ng-model="invoice.invoiceAmount" type="number" ng-change="sumAmount()" limit-number />
+                                </td>
+                                <td class="text-center">
+                                    <input placeholder="请输入开票备注" class="form-control m-b-xs" ng-model="invoice.invoiceMemo" type="text"  limit-word="1000" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text-center">{{invoice.invoiceDataType}}</td>
+                                <td colspan="2"></td>
+                                <td class="text-center">{{invoice.receiveActualAccount}}</td>
+                                <td colspan="3"></td>
+                                <td class="text-center">{{invoice.invoiceAmount}}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+</div>

@@ -1,0 +1,563 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.com.leadu.fms.data.asset.dao.EquMorChargeDao">
+
+    <!--
+    /**
+     * @Title:
+     * @Description: 查询资方抵押申请合同列表
+     * @param equMorApplyVo
+     * @return  List<EquMorApplyVo>
+     * @throws
+     * @author qiaomengnan
+     * @date 2018/05/30 05:35:28
+     */
+    -->
+    <select id="selectEquMorApplyVos" resultType="cn.com.leadu.fms.pojo.asset.vo.equmorapply.EquMorApplyVo">
+        select
+        contract.contract_id,
+        <!-- 品牌 -->
+        contractVehicle.veh_brand_code,
+        <!-- 品牌名称 -->
+        basVehicle.vehicle_name vehBrandCodeName,
+        <!-- 车型名称 -->
+        basVehicle2.vehicle_name vehicleCodeName,
+        <!-- 业务类型 -->
+        contractFinance.license_attr,
+        <!-- 出租人code -->
+        contractFinance.belong_group belongGroupCode,
+        <!-- 出租人 -->
+        sysGroup.group_name belongGroupName ,
+        <!-- 承租人 客户姓名 -->
+        IF(apply.apply_type = #{equMorApplyVo.applyTypePerson},cstmPerson.name,cstmCompany.name) lessee ,
+        <!-- 合同编号 -->
+        contract.cont_no,
+        <!-- 车架号 -->
+        contract.vin_no,
+        <!-- 车牌号 -->
+        contract.vehicle_license_no,
+        <!-- 发动机号 -->
+        contract.engine_no,
+        <!-- 融资期限 -->
+        contractFinance.fin_period_type,
+        <!-- 融资金额 -->
+        contractFinance.fin_total,
+        <!-- 放款日期 -->
+        contract.contract_valid_date,
+        <!-- 每期租金 -->
+        contractFinance.rent,
+        <!-- 每期支付日期 -->
+        contractFinance.repay_day,
+        <!-- 剩余期数 -->
+        <include refid="surplusPeriod"/> ,
+        <!-- 剩余租金 -->
+        <include refid="surplusRent"/> ,
+        <!-- 资方抵押任务号 -->
+        equMorDetail.equ_mor_task_no,
+        <!-- 抵押状态 -->
+        equMorDetail.mortgage_status,
+        <!-- 资方 -->
+        equMorTask.management,
+        <!-- 抵押任务状态 -->
+        equMorTask.mortgage_serv_status,
+        <!-- 当前节点用户 -->
+        equMorTask.present_user,
+        <!-- 抵押合同号 -->
+        equMorDetail.mortgage_cont_no mortgageContNo,
+        <!-- 申请类型 -->
+        apply.company_type1,
+        <!-- 申请金额 -->
+        contractFinance.invest_total,
+        <!--抵押期数-->
+        equMorRepay.lease_period as leasePeriod,
+        <!--还款日-->
+        equMorRepay.repay_date as repayDate,
+        <!--起租日-->
+        equMorCharge.equ_start_date as equStartDate,
+        <!--到期日-->
+        equMorCharge.equ_end_date as equEndDate,
+        <!--抵押保证金-->
+        equMorCharge.margin as margin,
+        <!--抵押合同金额-->
+        equMorCharge.equ_fin_amount as equFinAmount,
+        <!--月租-->
+        equMorRepay.rent as equRent,
+        <!--手续费-->
+        equMorCharge.factorge as factorge,
+        <!--服务费-->
+        equMorCharge.service_charge as serviceCharge,
+        <!--车款-->
+        contFinDetailFormat.carprice as carpriceFee,
+        <!-- 购置税 -->
+        contFinDetailFormat.purchasetax as purchasetaxFee,
+        <!-- 保险 -->
+        contFinDetailFormat.insurance as insuranceFee,
+        <!-- 其他费用(申请金额-车款-购置税-保险) -->
+        (contractFinance.invest_total-contFinDetailFormat.carprice-contFinDetailFormat.purchasetax-contFinDetailFormat.insurance) as otherFee
+        from contract contract
+        <!-- 使用申请号和合同号关联合同融资信息表 -->
+        left join contract_finance contractFinance on contractFinance.del_flag = ${delete_exist}
+        and contractFinance.cont_no = contract.cont_no and contractFinance.apply_no = contract.apply_no
+        <!-- 使用申请号关联申请表 -->
+        left join apply apply on apply.del_flag = ${delete_exist}
+        and apply.apply_no = contract.apply_no
+        <!-- 使用申请号和合同号关联合同车辆信息表 -->
+        left join contract_vehicle contractVehicle on contractVehicle.del_flag = ${delete_exist}
+        and contractVehicle.cont_no = contract.cont_no
+        and contractVehicle.apply_no = contract.apply_no
+        <!-- 使用出租人关联用户组表 -->
+        left join sys_group sysGroup on sysGroup.del_flag = ${delete_exist}
+        and sysGroup.group_code = contractFinance.belong_group
+        <!-- 使用申请号关联个人客户表 -->
+        left join cstm_person cstmPerson on cstmPerson.del_flag = ${delete_exist}
+        and cstmPerson.apply_no = contract.apply_no
+        <!-- 使用申请号关联企业客户表 -->
+        left join cstm_company cstmCompany on cstmCompany.del_flag = ${delete_exist}
+        and cstmCompany.apply_no = contract.apply_no
+        <!-- 使用车辆品牌代码管理车辆品牌表 -->
+        left join bas_vehicle basVehicle on basVehicle.del_flag = ${delete_exist}
+        and basVehicle.vehicle_code = contractVehicle.veh_brand_code
+        <!-- 使用车型代码关联车辆品牌表 -->
+        left join bas_vehicle basVehicle2 on basVehicle2.del_flag = ${delete_exist}
+        and basVehicle2.vehicle_code = contractVehicle.vehicle_code
+        <!-- 关联资方抵押明细表 使用合同号并且明细状态不是取消和无效 -->
+        left join equ_mor_detail equMorDetail on equMorDetail.del_flag = ${delete_exist} and equMorDetail.mortgage_status != #{equMorApplyVo.cancelMortgageStatus} and equMorDetail.mortgage_status != #{equMorApplyVo.invalidMortgageStatus}
+        and equMorDetail.main_cont_no = contract.cont_no
+        <!-- 关联资方抵押还款计划表  合同表的合同号与客户合合同编号、 抵押任务号 -->
+        left join equ_mor_repay equMorRepay on equMorRepay.del_flag = ${delete_exist}
+        and equMorRepay.client_cont_no = contract.cont_no
+        and equMorRepay.equ_mor_task_no = equMorDetail.equ_mor_task_no
+        <!-- 关联资方抵押费用表  合同表的合同号与客户合合同编号 、抵押任务号-->
+        left join equ_mor_charge equMorCharge on equMorCharge.del_flag = ${delete_exist}
+        and equMorCharge.client_cont_no = contract.cont_no
+        and equMorCharge.equ_mor_task_no = equMorDetail.equ_mor_task_no
+        <!-- 关联资方抵押任务表 使用抵押明细中的任务编号 -->
+        left join equ_mor_task equMorTask on equMorTask.del_flag = ${delete_exist}
+        and equMorTask.equ_mor_task_no = equMorDetail.equ_mor_task_no
+        <!-- 关联合同融资费用明细信息表取车款，购置税，保险 -->
+        LEFT JOIN
+        (SELECT cont_no ,
+        MAX(CASE fin_item WHEN 'purchasetax' THEN fin_amount ELSE 0 END ) purchasetax,
+        sum(CASE fin_item WHEN 'insurance' THEN fin_amount ELSE 0 END ) insurance,
+        MAX(CASE fin_item WHEN 'carprice' THEN fin_amount ELSE 0 END ) carprice
+        FROM cont_fin_detail
+        where cont_fin_detail.del_flag = ${delete_exist}
+        GROUP BY cont_no) contFinDetailFormat
+        ON contFinDetailFormat.cont_no = contract.cont_no
+        where contract.del_flag = ${delete_exist}
+        <if test="equMorApplyVo.mortgageFlag != null">
+           and apply.mortgage_flag = #{equMorApplyVo.mortgageFlag}
+           AND (equMorTask.management = 0 OR equMorTask.management IS NULL)
+        </if>
+        <if test="equMorApplyVo.contNo != null">
+          and contract.cont_no like #{equMorApplyVo.contNo}
+        </if>
+        <if test="equMorApplyVo.vinNo != null">
+            and contract.vin_no like #{equMorApplyVo.vinNo}
+        </if>
+        <if test="equMorApplyVo.lessee != null">
+            AND (cstmPerson.name LIKE #{equMorApplyVo.lessee} OR cstmCompany.name LIKE #{equMorApplyVo.lessee})
+        </if>
+        <if test="equMorApplyVo.equMorTaskNo != null">
+          and equMorDetail.equ_mor_task_no  = #{equMorApplyVo.equMorTaskNo}
+        </if>
+        <if test="equMorApplyVo.gtSurplusPeriod != null">
+            and <include refid="surplusPeriodSelect"/>  <![CDATA[ >= ]]> #{equMorApplyVo.gtSurplusPeriod}
+        </if>
+        <if test="equMorApplyVo.ltSurplusPeriod != null">
+            and <include refid="surplusPeriodSelect"/>  <![CDATA[ <= ]]> #{equMorApplyVo.ltSurplusPeriod}
+        </if>
+        <if test="equMorApplyVo.finPeriodType != null">
+            and contractFinance.fin_period_type  = #{equMorApplyVo.finPeriodType}
+        </if>
+        <if test='equMorApplyVo.mortgageStatus != null and equMorApplyVo.mortgageStatus=="5"'>
+            and (equMorDetail.mortgage_status  = #{equMorApplyVo.mortgageStatus} OR equMorDetail.mortgage_status IS NULL )
+        </if>
+        <if test='equMorApplyVo.mortgageStatus != null and equMorApplyVo.mortgageStatus!="5"'>
+            and (equMorDetail.mortgage_status  = #{equMorApplyVo.mortgageStatus})
+        </if>
+        <if test="equMorApplyVo.companyType1 != null">
+            and apply.company_type1  = #{equMorApplyVo.companyType1}
+        </if>
+        <if test="equMorApplyVo.groupDistrict != null" >
+            AND sysGroup.group_district LIKE #{equMorApplyVo.groupDistrict}
+        </if>
+        <if test="equMorApplyVo.management != null">
+            and equMorTask.management  = #{equMorApplyVo.management}
+        </if>
+        <!-- 合同生效日开始时间 -->
+        <if test="equMorApplyVo.validStartTime != null">
+            AND contract.contract_valid_date &gt;= #{equMorApplyVo.validStartTime}
+        </if>
+        <!-- 合同生效日结束时间 -->
+        <if test="equMorApplyVo.validEndTime != null">
+            AND contract.contract_valid_date &lt;= #{equMorApplyVo.validEndTime}
+        </if>
+        <!-- 合同生效日期不能为空 -->
+        and contract.contract_valid_date is not null
+        AND  contractFinance.license_attr &lt;&gt; '2'
+        order by contract.update_time desc
+    </select>
+
+
+
+    <!--
+    /**
+     * @Title:
+     * @Description: 查询资方抵押申请合同详情
+     * @param equMorApplyVo
+     * @return  equMorApplyVo
+     * @throws
+     * @author qiaomengnan
+     * @date 2018/05/30 05:35:28
+     */
+    -->
+    <select id="selectEquMorApplyVoByContNo" resultType="cn.com.leadu.fms.pojo.asset.vo.equmorapply.EquMorApplyVo">
+        select
+        contract.contract_id,
+        <!-- 品牌 -->
+        contractVehicle.veh_brand_code,
+        <!-- 品牌名称 -->
+        basVehicle.vehicle_name vehBrandCodeName,
+        <!-- 车型名称 -->
+        basVehicle2.vehicle_name vehicleCodeName,
+        <!-- 业务类型 -->
+        contractFinance.license_attr,
+        <!-- 出租人code -->
+        contractFinance.belong_group belongGroupCode,
+        <!-- 出租人 -->
+        sysGroup.group_name belongGroupName ,
+        <!-- 承租人 客户姓名 -->
+        IF(apply.apply_type = #{equMorApplyVo.applyTypePerson},cstmPerson.name,cstmCompany.name) lessee ,
+        <!-- 合同编号 -->
+        contract.cont_no,
+        <!-- 车架号 -->
+        contract.vin_no,
+        <!-- 融资期限 -->
+        contractFinance.fin_period_type,
+        <!-- 融资金额 -->
+        contractFinance.fin_total,
+        <!-- 放款日期 -->
+        contract.contract_valid_date,
+        <!-- 租赁期限开始日 -->
+        contract.lease_term_start_date,
+        <!-- 租赁期限结束日 -->
+        contract.lease_term_end_date,
+        <!-- 每期租金 -->
+        contractFinance.rent,
+        <!-- 每期支付日期 -->
+        contractFinance.repay_day,
+        <!-- 剩余期数 -->
+        <include refid="surplusPeriod"/> ,
+        <!-- 剩余租金 -->
+        <include refid="surplusRent"/>,
+        <!-- 首付金额(元) -->
+        contractFinance.init_amount,
+        <!-- 发动机号 -->
+        contract.engine_no,
+        <!-- 尾付比例 -->
+        contractFinance.final_perc,
+        <!-- 尾付金额 -->
+        contractFinance.final_amount,
+        <!-- 租金支付模式 -->
+        contractFinance.rent_pay_mode,
+        <!-- 每期支付日期 -->
+        contractFinance.repay_day,
+        <!-- 资方抵押任务号 -->
+        equMorDetail.equ_mor_task_no,
+        <!-- 资方抵押明细表id -->
+        equMorDetail.equ_mor_detail_id,
+        <!-- 资方抵押明细表update_time -->
+        equMorDetail.update_time AS equMorDetailUpdateTime,
+        <!-- 资方抵押任务表update_time -->
+        equMorTask.update_time AS equMorTaskUpdateTime,
+        <!-- 资方抵押任务表id -->
+        equMorTask.equ_mor_task_id
+        from contract contract
+        left join contract_finance contractFinance on contractFinance.del_flag = ${delete_exist}
+        and contractFinance.cont_no = contract.cont_no and contractFinance.apply_no = contract.apply_no
+        left join apply apply on apply.del_flag = ${delete_exist}
+        and apply.apply_no = contract.apply_no
+        left join contract_vehicle contractVehicle on contractVehicle.del_flag = ${delete_exist}
+        and contractVehicle.cont_no = contract.cont_no
+        and contractVehicle.apply_no = contract.apply_no
+        left join sys_group sysGroup on sysGroup.del_flag = ${delete_exist}
+        and sysGroup.group_code = contractFinance.belong_group
+        left join cstm_person cstmPerson on cstmPerson.del_flag = ${delete_exist}
+        and cstmPerson.apply_no = contract.apply_no
+        left join cstm_company cstmCompany on cstmCompany.del_flag = ${delete_exist}
+        and cstmCompany.apply_no = contract.apply_no
+        left join bas_vehicle basVehicle on basVehicle.del_flag = ${delete_exist}
+        and basVehicle.vehicle_code = contractVehicle.veh_brand_code
+        left join bas_vehicle basVehicle2 on basVehicle2.del_flag = ${delete_exist}
+        and basVehicle2.vehicle_code = contractVehicle.vehicle_code
+        <!-- 关联资方抵押明细表 使用合同号并且明细状态不是取消 -->
+        left join equ_mor_detail equMorDetail on equMorDetail.del_flag = ${delete_exist} and equMorDetail.mortgage_status != #{equMorApplyVo.cancelMortgageStatus} and equMorDetail.mortgage_status != #{equMorApplyVo.invalidMortgageStatus}
+        and equMorDetail.main_cont_no = contract.cont_no
+
+        <!-- 关联资方抵押任务表 使用抵押明细中的任务编号 -->
+        left join equ_mor_task equMorTask on equMorTask.del_flag = ${delete_exist}
+        and equMorTask.equ_mor_task_no = equMorDetail.equ_mor_task_no
+
+
+        where contract.del_flag = ${delete_exist}
+        <if test="equMorApplyVo.mortgageFlag != null">
+           and apply.mortgage_flag = #{equMorApplyVo.mortgageFlag}
+        </if>
+        and contract.cont_no = #{equMorApplyVo.contNo}
+        <!-- 合同生效日期不能为空 -->
+        and contract.contract_valid_date is not null
+        order by contract.update_time desc
+    </select>
+
+    <!--
+    /**
+     * @Title:
+     * @Description: 查询资方抵押申请合同详情
+     * @param equMorApplyVo
+     * @return  List<equMorApplyVo>
+     * @throws
+     * @author qiaomengnan
+     * @date 2018/05/30 05:35:28
+     */
+    -->
+    <select id="selectEquMorApplyVosByContNos" resultType="cn.com.leadu.fms.pojo.asset.vo.equmorapply.EquMorApplyVo">
+        select
+        contract.contract_id,
+        <!-- 品牌 -->
+        contractVehicle.veh_brand_code,
+        <!-- 品牌名称 -->
+        basVehicle.vehicle_name vehBrandCodeName,
+        <!-- 车型名称 -->
+        basVehicle2.vehicle_name vehicleCodeName,
+        <!-- 业务类型 -->
+        contractFinance.license_attr,
+        <!-- 出租人code -->
+        contractFinance.belong_group belongGroupCode,
+        <!-- 出租人 -->
+        sysGroup.group_name belongGroupName ,
+        <!-- 承租人 客户姓名 -->
+        IF(apply.apply_type = #{equMorApplyVo.applyTypePerson},cstmPerson.name,cstmCompany.name) lessee ,
+        <!-- 合同编号 -->
+        contract.cont_no,
+        <!-- 车架号 -->
+        contract.vin_no,
+        <!-- 融资期限 -->
+        contractFinance.fin_period_type,
+        <!-- 融资金额 -->
+        contractFinance.fin_total,
+        <!-- 放款日期 -->
+        contract.contract_valid_date,
+        <!-- 每期租金 -->
+        contractFinance.rent,
+        <!-- 每期支付日期 -->
+        contractFinance.repay_day,
+        <!-- 剩余期数 -->
+        <include refid="surplusPeriod"/> ,
+        <!-- 剩余租金 -->
+        <include refid="surplusRent"/>,
+        <!-- 首付金额(元) -->
+        contractFinance.init_amount,
+        <!-- 发动机号 -->
+        contract.engine_no,
+        <!-- 尾付比例 -->
+        contractFinance.final_perc,
+        <!-- 尾付金额 -->
+        contractFinance.final_amount,
+        <!-- 租金支付模式 -->
+        contractFinance.rent_pay_mode,
+        <!-- 每期支付日期 -->
+        contractFinance.repay_day,
+        <!-- 资方抵押任务号 -->
+        equMorDetail.equ_mor_task_no
+        from contract contract
+        left join contract_finance contractFinance on contractFinance.del_flag = ${delete_exist}
+        and contractFinance.cont_no = contract.cont_no and contractFinance.apply_no = contract.apply_no
+        left join apply apply on apply.del_flag = ${delete_exist}
+        and apply.apply_no = contract.apply_no
+        left join contract_vehicle contractVehicle on contractVehicle.del_flag = ${delete_exist}
+        and contractVehicle.cont_no = contract.cont_no
+        and contractVehicle.apply_no = contract.apply_no
+        left join sys_group sysGroup on sysGroup.del_flag = ${delete_exist}
+        and sysGroup.group_code = contractFinance.belong_group
+        left join cstm_person cstmPerson on cstmPerson.del_flag = ${delete_exist}
+        and cstmPerson.apply_no = contract.apply_no
+        left join cstm_company cstmCompany on cstmCompany.del_flag = ${delete_exist}
+        and cstmCompany.apply_no = contract.apply_no
+        left join bas_vehicle basVehicle on basVehicle.del_flag = ${delete_exist}
+        and basVehicle.vehicle_code = contractVehicle.veh_brand_code
+        left join bas_vehicle basVehicle2 on basVehicle2.del_flag = ${delete_exist}
+        and basVehicle2.vehicle_code = contractVehicle.vehicle_code
+        <!-- 关联资方抵押明细表 使用合同号并且明细状态不是取消 -->
+        left join equ_mor_detail equMorDetail on equMorDetail.del_flag = ${delete_exist} and equMorDetail.mortgage_status != #{equMorApplyVo.cancelMortgageStatus} and equMorDetail.mortgage_status != #{equMorApplyVo.invalidMortgageStatus}
+        and equMorDetail.main_cont_no = contract.cont_no
+        where contract.del_flag = ${delete_exist}
+        <if test="equMorApplyVo.mortgageFlag != null">
+           and apply.mortgage_flag = #{equMorApplyVo.mortgageFlag}
+        </if>
+        and contract.cont_no in
+        <foreach collection="equMorApplyVo.contNos" item="item" open="(" separator="," close=")">
+          #{item}
+        </foreach>
+        <!-- 合同生效日期不能为空 -->
+        and contract.contract_valid_date is not null
+        order by contract.update_time desc
+    </select>
+
+
+
+    <!--
+    /**
+     * @Title:
+     * @Description: 查询资方抵押申请模板下载详情
+     * @param equMorApplyVo
+     * @return  List<EquMorApplyVo>
+     * @throws
+     * @author qiaomengnan
+     * @date 2018/05/30 05:35:28
+     */
+    -->
+    <select id="selectExportEquMorApplyVos" resultMap="selectExportEquMorApplyVosMap">
+        select
+        contract.contract_id,
+        <!-- 品牌 -->
+        contractVehicle.veh_brand_code,
+        <!-- 品牌名称 -->
+        basVehicle.vehicle_name vehBrandCodeName,
+        <!-- 车型名称 -->
+        basVehicle2.vehicle_name vehicleCodeName,
+        <!-- 业务类型 -->
+        contractFinance.license_attr,
+        <!-- 出租人code -->
+        contractFinance.belong_group belongGroupCode,
+        <!-- 出租人 -->
+        sysGroup.group_name belongGroupName ,
+        <!-- 出租人所在城市 -->
+        sysGroup.group_district groupDistrict ,
+        <!-- 承租人 客户姓名 -->
+        IF(apply.apply_type = #{equMorApplyVo.applyTypePerson},cstmPerson.name,cstmCompany.name) lessee ,
+        <!-- 合同编号 -->
+        contract.cont_no contNo,
+        <!-- 车架号 -->
+        contract.vin_no,
+        <!-- 车牌号 -->
+        contract.vehicle_license_no,
+        <!-- 融资期限 -->
+        contractFinance.fin_period_type,
+        <!-- 融资金额 -->
+        contractFinance.fin_total,
+        <!-- 放款日期 -->
+        contract.contract_valid_date,
+        <!-- 每期租金 -->
+        contractFinance.rent,
+        <!-- 每期支付日期 -->
+        contractFinance.repay_day,
+        <!-- 剩余期数 -->
+        <include refid="surplusPeriod"/> ,
+        <!-- 剩余租金 -->
+        <include refid="surplusRent"/>,
+        <!-- 首付金额(元) -->
+        contractFinance.init_amount,
+        <!-- 发动机号 -->
+        contract.engine_no,
+        <!-- 尾付比例 -->
+        contractFinance.final_perc,
+        <!-- 尾付金额 -->
+        contractFinance.final_amount,
+        <!-- 租金支付模式 -->
+        contractFinance.rent_pay_mode,
+        <!-- 每期支付日期 -->
+        contractFinance.repay_day
+        from contract contract
+        left join contract_finance contractFinance on contractFinance.del_flag = ${delete_exist}
+        and contractFinance.cont_no = contract.cont_no and contractFinance.apply_no = contract.apply_no
+        left join apply apply on apply.del_flag = ${delete_exist}
+        and apply.apply_no = contract.apply_no
+        left join contract_vehicle contractVehicle on contractVehicle.del_flag = ${delete_exist}
+        and contractVehicle.cont_no = contract.cont_no
+        and contractVehicle.apply_no = contract.apply_no
+        left join sys_group sysGroup on sysGroup.del_flag = ${delete_exist}
+        and sysGroup.group_code = contractFinance.belong_group
+        left join cstm_person cstmPerson on cstmPerson.del_flag = ${delete_exist}
+        and cstmPerson.apply_no = contract.apply_no
+        left join cstm_company cstmCompany on cstmCompany.del_flag = ${delete_exist}
+        and cstmCompany.apply_no = contract.apply_no
+        left join bas_vehicle basVehicle on basVehicle.del_flag = ${delete_exist}
+        and basVehicle.vehicle_code = contractVehicle.veh_brand_code
+        left join bas_vehicle basVehicle2 on basVehicle2.del_flag = ${delete_exist}
+        and basVehicle2.vehicle_code = contractVehicle.vehicle_code
+        where contract.del_flag = ${delete_exist}
+        <if test="equMorApplyVo.mortgageFlag != null">
+            and apply.mortgage_flag = #{equMorApplyVo.mortgageFlag}
+        </if>
+        and contract.cont_no in
+        <foreach collection="equMorApplyVo.contNos" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        <!-- 合同生效日期不能为空 -->
+        and contract.contract_valid_date is not null
+        order by contract.update_time desc
+    </select>
+
+
+    <resultMap id="selectExportEquMorApplyVosMap" type="cn.com.leadu.fms.pojo.asset.vo.equmorapply.EquMorApplyVo">
+        <result property="contNo" column="contNo" javaType="java.lang.String"/>
+        <collection property="contFinDetailVos" column="contNo" ofType="cn.com.leadu.fms.pojo.prebiz.vo.contfindetail.ContFinDetailVo" javaType="java.util.ArrayList" select="selectContFinDetailVos" >
+        </collection>
+    </resultMap>
+
+
+    <!-- 合同融资详情 -->
+    <select id="selectContFinDetailVos" resultType="cn.com.leadu.fms.pojo.prebiz.vo.contfindetail.ContFinDetailVo">
+        select contFinDetail.cont_fin_detail_id,contFinDetail.cont_no,contFinDetail.vehicle_no,contFinDetail.fin_item
+        ,contFinDetail.fin_item_year,contFinDetail.fin_amount,finItem.fin_item_name as finItemName,finItem.fin_mode as finMode
+        ,finItem.edit_mode as editMode,finItem.pay_mode as payMode,finItem.order_no as orderNo
+        from cont_fin_detail contFinDetail
+        left join fin_item finItem on finItem.fin_item = contFinDetail.fin_item and finItem.del_flag = ${delete_exist}
+        where contFinDetail.del_flag = ${delete_exist}
+        and contFinDetail.cont_no =  #{contNo}
+        order by contFinDetail.vehicle_no asc,finItem.order_no asc,contFinDetail.fin_item_year asc
+    </select>
+
+    <!-- 剩余期数 查询条件 -->
+    <sql id="surplusPeriodSelect">
+        ( select count(contRepaySked.repay_sked_id) surplusPeriod from cont_repay_sked contRepaySked
+        where contRepaySked.del_flag = ${delete_exist}
+        and contRepaySked.cont_no = contract.cont_no
+        and contRepaySked.repay_status = #{equMorApplyVo.repayStatus}
+        /* 剩余期数不包括尾付*/
+        and contRepaySked.repay_type = 0
+        and contRepaySked.repay_date > #{equMorApplyVo.repayDateStr}
+        )
+    </sql>
+
+    <!-- 剩余期数 -->
+    <sql id="surplusPeriod">
+        ( select count(contRepaySked.repay_sked_id) surplusPeriod from cont_repay_sked contRepaySked
+        where contRepaySked.del_flag = ${delete_exist}
+        and contRepaySked.cont_no = contract.cont_no
+        and contRepaySked.repay_status = #{equMorApplyVo.repayStatus}
+        /* 剩余期数不包括尾付*/
+        and contRepaySked.repay_type = 0
+        and contRepaySked.repay_date > #{equMorApplyVo.repayDateStr}
+        ) surplusPeriod
+    </sql>
+
+    <!-- 剩余租金 -->
+    <sql id="surplusRent">
+        ( select sum(contRepaySked.rent) surplusRent from cont_repay_sked contRepaySked
+        where contRepaySked.del_flag = ${delete_exist}
+        and contRepaySked.cont_no = contract.cont_no
+        and contRepaySked.repay_status = #{equMorApplyVo.repayStatus}
+        /* 剩余租金包括尾付*/
+        and (contRepaySked.repay_type = 0 or contRepaySked.repay_type = 2)
+        and contRepaySked.repay_date > #{equMorApplyVo.repayDateStr}
+        ) surplusRent
+    </sql>
+
+    
+
+
+</mapper>

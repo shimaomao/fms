@@ -1,0 +1,89 @@
+<div class="modal-header">
+    <h4 class="modal-title">编辑数据字典 <button type="button" class="close" data-dismiss="modal" aria-hidden="true" ng-click="close()">&times;</button></h4>
+</div>
+<div class="modal-body">
+    <form name="form" class="form-validation" novalidate>
+
+        <div class="panel-body">
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">字典名称</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="dataDicName" placeholder="请输入字典名称" class="form-control m-b-xs" ng-model="sysDataDic.dataDicName"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.orgPropertyName.$dirty && form.orgPropertyName.$error.required) || (form.orgPropertyName.$error.required && formValidate)">字典名称不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">上级字典</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9 form-inline">
+                    <input type="text" name="dataDicParentName" placeholder="请选择上级字典" class="form-control m-b-xs" ng-model="sysDataDic.dataDicParentName" disabled >
+                    <input type="text" name="dataDicParentId"  class="hidden" ng-model="sysDataDic.dataDicParentId" required >
+                    <button class="btn btn-info m-b-xs m-l-sm" ng-click="selectDataDic()"><i class="fa fa-pencil-square-o m-r-xs"></i>选择</button>
+                    <p>
+                        <span class="form-info" ng-show=" (form.required.$dirty && form.required.$error.required) || (form.required.$error.required && formValidate)">字典编码不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">字典编码</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="dataDicCode" placeholder="请输入字典编码" class="form-control m-b-xs" ng-model="sysDataDic.dataDicCode" required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.dataDicCode.$dirty && form.dataDicCode.$error.required) || (form.dataDicCode.$error.required && formValidate)">字典编码不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">排序</b>:</label>
+                <div class="col-sm-9">
+                    <input type="number" name="dataDicSort" placeholder="请输入排序" class="form-control m-b-xs" ng-model="sysDataDic.dataDicSort" >
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+
+            <div class="form-group">
+                <label class="col-sm-3 m-b text-right"><b class="form-text-black">数据字典状态</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <label class="i-checks i-checks-sm">
+                        <input type="radio" ng-model="sysDataDic.dataDicDisable" value="0" name="dataDicDisable">
+                        <i></i>
+                        启用
+                    </label>
+
+                    <label class="i-checks i-checks-sm">
+                        <input type="radio" ng-model="sysDataDic.dataDicDisable" value="1" name="dataDicDisable">
+                        <i></i>
+                        禁用
+                    </label>
+                </div>
+            </div>
+
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">备注</b>:</label>
+                <div class="col-sm-9">
+                    <input limit-word type="text" name="dataDicDesc" placeholder="请输入备注" class="form-control m-b-xs" ng-model="sysDataDic.dataDicDesc" >
+                </div>
+            </div>
+
+        </div>
+    </form>
+</div>
+<div class="modal-footer ng-scope">
+    <button class="btn btn-default" ng-click="close()">取消</button>
+    <button type="submit" class="btn btn-success" ng-disabled="submit" ng-click="modify()">保存</button>
+</div>

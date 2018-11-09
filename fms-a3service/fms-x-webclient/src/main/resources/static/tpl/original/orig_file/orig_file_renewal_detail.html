@@ -1,0 +1,117 @@
+<style>
+    .input-title{display: inline-block;vertical-align: middle;color: #ccc;}
+    #file_sort_list_wrapper{overflow: auto;}
+</style>
+<div ng-controller="orig_file_renewal_sort_controller">
+    <div>
+        <toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+    </div>
+    <div class="panel panel-default">
+        <form name="form" class="form-validation" novalidate>
+            <div class="panel-body wrapper-sm">
+                <div class="form-group pull-right">
+                    <div class="btn-group">
+                        <button class="btn btn-default m-b-xs btn-sm fms-button-margin-bottom" ng-click="goBack()">返回</button>
+                        <button class="btn btn-success m-b-xs btn-sm fms-button-margin-bottom" ng-if="uploadFlag == true" ng-click="uploadFile()">附件上传</button>
+                    </div>
+                </div>
+            </div>
+
+            <table border="1" class="table table-striped m-b-none" id="file_sort_list"></table>
+
+            <div class="panel-body wrapper-sm">
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">归档编号</b>:</label>
+                    <div class="col-sm-2">
+                        <input type="text" name="fileRecordNo" placeholder="归档编号" class="form-control m-b-xs" ng-model="origFileSortVo.fileRecordNo" disabled>
+                        <p></p>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">保险公司名称</b>:</label>
+                    <div class="col-sm-2">
+                        <input type="text" name="insCompName" placeholder="保险公司名称" class="form-control m-b-xs" ng-model="contInsuranceVo.insCompName" disabled>
+                        <!--<p>-->
+                            <!--<span class="form-info" ng-show=" (form.insCompName.$dirty && form.insCompName.$error.required) || (form.insCompName.$error.required && formValidate)">保险公司名称不能为空</span>-->
+                        <!--</p>-->
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">商业险保费保单号</b>:</label>
+                    <div class="col-sm-2">
+                        <input type="text" name="insPolicyNo" placeholder="商业险保费保单号" class="form-control m-b-xs" ng-model="contInsuranceVo.insPolicyNo" disabled>
+                        <!--<p>-->
+                            <!--<span class="form-info" ng-show=" (form.insPolicyNo.$dirty && form.insPolicyNo.$error.required) || (form.insPolicyNo.$error.required && formValidate)">商业险保费保单号不能为空</span>-->
+                        <!--</p>-->
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">投保生效日</b>:</label>
+                    <div class="col-sm-2">
+                        <input name="validStartDay" placeholder="投保生效日" class="form-control m-b-xs" ng-model="contInsuranceVo.validStartDay" date-picker disabled>
+                        <!--<p>-->
+                            <!--<span class="form-info" ng-show=" (form.validStartDay.$dirty && form.validStartDay.$error.required) || (form.validStartDay.$error.required && formValidate)">投保生效日不能为空</span>-->
+                        <!--</p>-->
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">投保失效日</b>:</label>
+                    <div class="col-sm-2">
+                        <input name="validEndDay" placeholder="投保失效日" class="form-control m-b-xs" ng-model="contInsuranceVo.validEndDay" date-picker disabled>
+                        <!--<p>-->
+                            <!--<span class="form-info" ng-show=" (form.validEndDay.$dirty && form.validEndDay.$error.required) || (form.validEndDay.$error.required && formValidate)">投保失效日不能为空</span>-->
+                        <!--</p>-->
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">保单实际金额</b>:</label>
+                    <div class="col-sm-2">
+                        <input type="number" name="insFee" placeholder="保单实际金额" class="form-control m-b-xs" ng-model="contInsuranceVo.insFee" disabled>
+                        <!--<p>-->
+                            <!--<span class="form-info" ng-show=" (form.insFee.$dirty && form.insFee.$error.required) || (form.insFee.$error.required && formValidate)">保单实际金额不能为空</span>-->
+                        <!--</p>-->
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">保险卡快递单号</b>:</label>
+                    <div class="col-sm-2">
+                        <input type="text" name="insurancePostNo" placeholder="保险卡快递单号" class="form-control m-b-xs" ng-model="renewalRegisterVo.insurancePostNo" disabled>
+                        <!--<p>-->
+                            <!--<span class="form-info" ng-show=" (form.insurancePostNo.$dirty && form.insurancePostNo.$error.required) || (form.insurancePostNo.$error.required && formValidate)">保险卡快递单号不能为空</span>-->
+                        <!--</p>-->
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">险种</b>:</label>
+                    <div class="col-sm-10">
+                        <div class="checkbox" ng-repeat="a in insuranceSelectInfoList">
+                            <label>
+                                <input type="checkbox" name="insuranceSelectInfo" ng-click="checkboxValue('insuranceSelectInfo',a.codeValue);" ng-model="a.checked" value="{{a.codeValue}}" ng-checked="(contInsuranceVo.insuranceSelectInfo | toArr).indexOf(a.codeValue) != -1" disabled>{{a.codeValueName}}
+                            </label>
+                        </div>
+                        <!--<p>-->
+                            <!--<span class="form-info" ng-show="(form.insuranceSelectInfo.$dirty && !contInsuranceVo.insuranceSelectInfo) || (!contInsuranceVo.insuranceSelectInfo && formValidate)">险种不能为空</span>-->
+                        <!--</p>-->
+                    </div>
+                </div>
+
+                <!--<div class="form-group row">-->
+                    <!--<label class="col-sm-2 control-label text-right"><b class="form-text-black">备注</b><b class="form-error">*</b>:</label>-->
+                    <!--<div class="col-sm-6">-->
+                        <!--<textarea limit-word type="text" name="remark" placeholder="备注" class="form-control m-b-xs" ng-model="origFileSortVo.remark" required></textarea>-->
+                        <!--<p>-->
+                            <!--<span class="form-info" ng-show=" (form.remark.$dirty && form.remark.$error.required) || (form.remark.$error.required && formValidate)">备注不能为空</span>-->
+                        <!--</p>-->
+                    <!--</div>-->
+                <!--</div>-->
+            </div>
+
+            <!--附件信息-->
+            <div class="panel-body wrapper-sm" ng-if="uploadFlag == false">
+                <tree-file-directive detail-flag="$root.yesNoFlag.yes" file-type="$root.basFileTypes.origRenewalSortFile" files="$parent.bizFilesList" not-upload="$parent.notUpload" not-upload-info="$parent.msgInfo"   not-file-type="$parent.notFileType" not-file-type-name="$parent.notFileTypeName">
+                </tree-file-directive>
+            </div>
+
+            <!--附件信息-->
+            <div class="panel-body wrapper-sm" ng-if="uploadFlag == true">
+                <tree-file-directive detail-flag="$root.yesNoFlag.no" file-type="$root.basFileTypes.origRenewalSortFile" files="$parent.bizFilesList" not-upload="$parent.notUpload" not-upload-info="$parent.notUploadInfo"   not-file-type="$parent.notFileType" not-file-type-name="$parent.notFileTypeName">
+                </tree-file-directive>
+            </div>
+
+        </form>
+    </div>
+</div>

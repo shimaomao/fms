@@ -1,0 +1,145 @@
+<div class="panel panel-default" ng-controller="bas_vehicle_detail_controller">
+    <div class="modal-header">
+        <h4 class="modal-title">{{title}}</h4>
+    </div>
+    <div class="modal-body">
+        <form name="form" class="form-validation" novalidate>
+
+            <div class="panel-body">
+                <div class="form-group row">
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">级别</b>:</label>
+                    <div class="col-sm-2">
+                        {{CODE}}
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">{{CODE}}代码</b>:</label>
+                    <div class="col-sm-3">
+                        {{basVehicle.vehicleCode}}
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">{{CODE}}名称</b>:</label>
+                    <div class="col-sm-3">
+                        {{basVehicle.vehicleName}}
+                    </div>
+                </div>
+
+                <div class="form-group row" ng-show="basVehicle.vehicleLevel!='1'">
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">{{name}}</b>:</label>
+                    <div class="col-sm-3 form-inline">
+                        {{basVehicle.parentVehicleName}}
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">首字母</b>:</label>
+                    <div class="col-sm-3">
+                        {{basVehicle.firstLetter}}
+                    </div>
+                </div>
+
+                <div class="form-group row" >
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">是否启用</b><b
+                            class="form-error" ></b>:</label>
+                    <div class="col-sm-3">
+                        {{basVehicle.enableFlagName}}
+                    </div>
+                </div>
+                <div ng-show="basVehicle.vehicleLevel=='4'">
+                    <!--<div class="form-group row">
+                        <label class="col-sm-3 control-label text-right"><b class="form-text-black">车辆大类</b>:</label>
+                        <div class="col-sm-3">
+                            {{basVehicle.vehicleType1Name}}
+                        </div>
+                    </div>-->
+
+
+                    <div class="form-group row">
+                        <label class="col-sm-3 control-label text-right"><b class="form-text-black">车辆分类</b>:</label>
+                        <div class="col-sm-3">
+                            {{basVehicle.vehicleType2Name}}
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-sm-3 control-label text-right"><b class="form-text-black">是否新能源车</b>:</label>
+                        <div class="col-sm-3">
+                            {{basVehicle.newEnergyName}}
+                        </div>
+                    </div>
+
+
+                    <div class="form-group row">
+                        <label class="col-sm-3 control-label text-right"><b class="form-text-black">指导价格</b>:</label>
+                        <div class="col-sm-3">
+                            {{basVehicle.guidePrice}}
+                        </div>
+                    </div>
+
+
+                    <div class="form-group row">
+                        <label class="col-sm-3 control-label text-right"><b class="form-text-black">排量</b>:</label>
+                        <div class="col-sm-3">
+                            {{basVehicle.displacement}}
+                        </div>
+                    </div>
+
+
+                    <div class="form-group row">
+                        <label class="col-sm-3 control-label text-right"><b class="form-text-black">座位数量</b>:</label>
+                        <div class="col-sm-3">
+                            {{basVehicle.seat}}
+                        </div>
+                    </div>
+
+
+                    <div class="form-group row">
+                        <label class="col-sm-3 control-label text-right"><b class="form-text-black">车型年款</b>:</label>
+                        <div class="col-sm-3">
+                            {{basVehicle.modelYear}}
+                        </div>
+                    </div>
+
+
+                    <div class="form-group row">
+                        <label class="col-sm-3 control-label text-right"><b class="form-text-black">吨位</b>:</label>
+                        <div class="col-sm-3">
+                            {{basVehicle.weight}}
+                        </div>
+                    </div>
+
+
+                    <div class="form-group row">
+                        <label class="col-sm-3 control-label text-right"><b class="form-text-black">功率</b>:</label>
+                        <div class="col-sm-3">
+                            {{basVehicle.power}}
+                        </div>
+                    </div>
+
+
+                    <div class="form-group row">
+                        <label class="col-sm-3 control-label text-right"><b class="form-text-black">轮毂尺寸</b>:</label>
+                        <div class="col-sm-3">
+                            {{basVehicle.wheelSize}}
+                        </div>
+                    </div>
+
+
+                    <div class="form-group row">
+                        <label class="col-sm-3 control-label text-right"><b class="form-text-black">排放标准</b>:</label>
+                        <div class="col-sm-3">
+                            {{basVehicle.effluentStd}}
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </form>
+    </div>
+    <div class="col-sm-15 m-b text-center">
+        <button class="btn btn-default" ng-click="goback()">返回</button>
+    </div></div>

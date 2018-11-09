@@ -1,0 +1,324 @@
+<style>
+    .applyInput .sub-main{overflow: hidden;}
+    .applyInput .sub-body{padding: 10px 40px 0 0;border: 1px solid #eaeeea;border-top: none}
+    .applyInput .sub-title{padding: 5px;font-size: 14px;cursor: pointer;background-color: #f5f5f5;border-bottom: 1px solid #eaeeea;}
+    .applyInput .sub-title span:first-child{font-weight: bold;color: black;}
+    .applyInput .sub-title span:last-child{display: inline-block;width: 20px;height: 20px;}
+    .changedColor{color:red;}
+</style>
+<div ng-controller="company_basic_change_approval_controller" class="applyInput">
+    <div class="modal-body">
+        <form name="form" class="form-validation" novalidate>
+            <div class="panel panel-default">
+                <div class="panel-body wrapper-sm">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="form-group pull-left"><h1 class="m-n font-thin h4">资管审核</h1></div>
+                            <div class="form-group pull-right">
+                                <div class="btn-group">
+                                    <button class="btn btn-sm fms-button-margin-bottom btn-default m-b-xs" ng-click="save()" ng-disabled="submit"><i class=""></i>通过</button>
+                                    <button class="btn btn-sm fms-button-margin-bottom btn-default m-b-xs" ng-click="backUp()" ng-disabled="submit"><i class=""></i>退回</button>
+                                    <button class="btn btn-sm fms-button-margin-bottom btn-default m-b-xs" ng-click="close()" ng-disabled="submit"><i class=""></i>返回</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <div class="sub-main">
+                        <div class="sub-title clearfix" click-hide>
+                            <span class="pull-left">变更前信息</span>
+                            <span class="pull-right"><i class="glyphicon glyphicon-chevron-down"></i></span>
+                        </div>
+                        <div class="sub-body">
+                            <div class="form-group row">
+                                <label class="col-sm-2 control-label text-right"><b class="form-text-black">承租人</b>:</label>
+                                <div class="col-sm-2">
+                                    <label class="control-label text-left"><b class="form-text-black">{{oldCompanyBasicChangeVo.name}}</b></label>
+                                </div>
+                                <label class="col-sm-2 control-label text-right"><b class="form-text-black">企业联系人姓名</b>:</label>
+                                <div class="col-sm-2">
+                                    <label class="control-label text-left"><b class="form-text-black">{{oldCompanyBasicChangeVo.contactName}}</b></label>
+                                </div>
+                                <label class="col-sm-2 control-label text-right"><b class="form-text-black">企业联系人手机号码</b>:</label>
+                                <div class="col-sm-2">
+                                    <label class="control-label text-left"><b class="form-text-black">{{oldCompanyBasicChangeVo.contactMobno}}</b></label>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 control-label text-right"><b class="form-text-black">经营省份</b>:</label>
+                                <div class="col-sm-2">
+                                    <label class="control-label text-left"><b class="form-text-black">{{oldCompanyBasicChangeVo.compProvName}}</b></label>
+                                </div>
+                                <label class="col-sm-2 control-label text-right"><b class="form-text-black">经营城市</b>:</label>
+                                <div class="col-sm-2">
+                                    <label class="control-label text-left"><b class="form-text-black">{{oldCompanyBasicChangeVo.compCityName}}</b></label>
+                                </div>
+                                <label class="col-sm-2 control-label text-right"><b class="form-text-black">经营区县</b>:</label>
+                                <div class="col-sm-2">
+                                    <label class="control-label text-left"><b class="form-text-black">{{oldCompanyBasicChangeVo.compCountyName}}</b></label>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 control-label text-right"><b class="form-text-black">经营地址</b>:</label>
+                                <div class="col-sm-6">
+                                    <label class="control-label text-left"><b class="form-text-black">{{oldCompanyBasicChangeVo.compAddr}}</b></label>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 control-label text-right"><b class="form-text-black">发票类型</b>:</label>
+                                <div class="col-sm-2">
+                                    <label class="control-label text-left"><b class="form-text-black">{{oldCompanyBasicChangeVo.invoiceTypeName}}</b></label>
+                                </div>
+                                <label class="col-sm-2 control-label text-right"><b class="form-text-black">开票名</b>:</label>
+                                <div class="col-sm-2">
+                                    <label class="control-label text-left"><b class="form-text-black">{{oldCompanyBasicChangeVo.ticketOpening}}</b></label>
+                                </div>
+                                <label class="col-sm-2 control-label text-right"><b class="form-text-black">税号</b>:</label>
+                                <div class="col-sm-2">
+                                    <label class="control-label text-left"><b class="form-text-black">{{oldCompanyBasicChangeVo.dutyParagraph}}</b></label>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 control-label text-right"><b class="form-text-black">地址、电话</b>:</label>
+                                <div class="col-sm-6">
+                                    <label class="control-label text-left"><b class="form-text-black">{{oldCompanyBasicChangeVo.invoiceAddr}}</b></label>
+                                </div>
+                                <label class="col-sm-2 control-label text-right"><b class="form-text-black">联系人</b>:</label>
+                                <div class="col-sm-2">
+                                    <label class="control-label text-left"><b class="form-text-black">{{oldCompanyBasicChangeVo.invoiceContactPer}}</b></label>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 control-label text-right"><b class="form-text-black">账号</b>:</label>
+                                <div class="col-sm-2">
+                                    <label class="control-label text-left"><b class="form-text-black">{{oldCompanyBasicChangeVo.accountNumber}}</b></label>
+                                </div>
+                                <label class="col-sm-2 control-label text-right"><b class="form-text-black">开户行</b>:</label>
+                                <div class="col-sm-2">
+                                    <label class="control-label text-left"><b class="form-text-black">{{oldCompanyBasicChangeVo.bankName}}</b></label>
+                                </div>
+                                <label class="col-sm-2 control-label text-right"><b class="form-text-black">联系人电话</b>:</label>
+                                <div class="col-sm-2">
+                                    <label class="control-label text-left"><b class="form-text-black">{{oldCompanyBasicChangeVo.invoiceContactNo}}</b></label>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 control-label text-right"><b class="form-text-black">发票邮寄地址</b>:</label>
+                                <div class="col-sm-6">
+                                    <label class="control-label text-left"><b class="form-text-black">{{oldCompanyBasicChangeVo.invoiceMailAddr}}</b></label>
+                                </div>
+                            </div>
+                            <!--联系人控件-->
+                            <div>
+                                <div class="row">
+                                    <span style="margin-left: 2%;">变更前联系人信息</span>
+                                </div>
+                                <div style="margin-right: -40px;padding-left: 5px;padding-bottom: 10px;">
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <form class="form-inline" role="form">
+                                            </form>
+                                        </div>
+                                    </div>
+                                    <table id="contact_table_detail" border="1" class="table table-striped m-b-none" width="100%"></table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="sub-main">
+                        <div class="sub-title clearfix" click-hide>
+                            <span class="pull-left">变更后信息</span>
+                            <span class="pull-right"><i class="glyphicon glyphicon-chevron-down"></i></span>
+                        </div>
+                        <div class="sub-body">
+                            <div class="form-group row">
+                                <label class="col-sm-2 control-label text-right"><b class="form-text-black">承租人</b>:</label>
+                                <div class="col-sm-2">
+                                    <div ng-if="!nameFlag">
+                                        <label class="control-label text-left"><b class="form-text-black">{{newCompanyBasicChangeVo.name}}</b></label>
+                                    </div>
+                                    <div ng-if="nameFlag">
+                                        <label class="control-label text-left"><b class="changedColor form-text-black">{{newCompanyBasicChangeVo.name}}</b></label>
+                                    </div>
+                                </div>
+                                <label class="col-sm-2 control-label text-right"><b class="form-text-black">企业联系人姓名</b>:</label>
+                                <div class="col-sm-2">
+                                    <div ng-if="!contactNameFlag">
+                                        <label class="control-label text-left"><b class="form-text-black">{{newCompanyBasicChangeVo.contactName}}</b></label>
+                                    </div>
+                                    <div ng-if="contactNameFlag">
+                                        <label class="control-label text-left"><b class="changedColor form-text-black">{{newCompanyBasicChangeVo.contactName}}</b></label>
+                                    </div>
+                                </div>
+                                <label class="col-sm-2 control-label text-right"><b class="form-text-black">企业联系人手机号码</b>:</label>
+                                <div class="col-sm-2">
+                                    <div ng-if="!contactMobnoFlag">
+                                        <label class="control-label text-left"><b class="form-text-black">{{newCompanyBasicChangeVo.contactMobno}}</b></label>
+                                    </div>
+                                    <div ng-if="contactMobnoFlag">
+                                        <label class="control-label text-left"><b class="changedColor form-text-black">{{newCompanyBasicChangeVo.contactMobno}}</b></label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 control-label text-right"><b class="form-text-black">经营省份</b>:</label>
+                                <div class="col-sm-2">
+                                    <div ng-if="!compProvFlag">
+                                        <label class="control-label text-left"><b class="form-text-black">{{newCompanyBasicChangeVo.compProvName}}</b></label>
+                                    </div>
+                                    <div ng-if="compProvFlag">
+                                        <label class="control-label text-left"><b class="changedColor form-text-black">{{newCompanyBasicChangeVo.compProvName}}</b></label>
+                                    </div>
+                                </div>
+                                <label class="col-sm-2 control-label text-right"><b class="form-text-black">经营城市</b>:</label>
+                                <div class="col-sm-2">
+                                    <div ng-if="!compCityFlag">
+                                        <label class="control-label text-left"><b class="form-text-black">{{newCompanyBasicChangeVo.compCityName}}</b></label>
+                                    </div>
+                                    <div ng-if="compCityFlag">
+                                        <label class="control-label text-left"><b class="changedColor form-text-black">{{newCompanyBasicChangeVo.compCityName}}</b></label>
+                                    </div>
+                                </div>
+                                <label class="col-sm-2 control-label text-right"><b class="form-text-black">经营区县</b>:</label>
+                                <div class="col-sm-2">
+                                    <div ng-if="!compCountyFlag">
+                                        <label class="control-label text-left"><b class="form-text-black">{{newCompanyBasicChangeVo.compCountyName}}</b></label>
+                                    </div>
+                                    <div ng-if="compCountyFlag">
+                                        <label class="control-label text-left"><b class="changedColor form-text-black">{{newCompanyBasicChangeVo.compCountyName}}</b></label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 control-label text-right"><b class="form-text-black">经营地址</b>:</label>
+                                <div class="col-sm-6">
+                                    <div ng-if="!compAddrFlag">
+                                        <label class="control-label text-left"><b class="form-text-black">{{newCompanyBasicChangeVo.compAddr}}</b></label>
+                                    </div>
+                                    <div ng-if="compAddrFlag">
+                                        <label class="control-label text-left"><b class="changedColor form-text-black">{{newCompanyBasicChangeVo.compAddr}}</b></label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 control-label text-right"><b class="form-text-black">发票类型</b>:</label>
+                                <div class="col-sm-2">
+                                    <div ng-if="!invoiceTypeFlag">
+                                        <label class="control-label text-left"><b class="form-text-black">{{newCompanyBasicChangeVo.invoiceTypeName}}</b></label>
+                                    </div>
+                                    <div ng-if="invoiceTypeFlag">
+                                        <label class="control-label text-left"><b class="changedColor form-text-black">{{newCompanyBasicChangeVo.invoiceTypeName}}</b></label>
+                                    </div>
+                                </div>
+                                <label class="col-sm-2 control-label text-right"><b class="form-text-black">开票名</b>:</label>
+                                <div class="col-sm-2">
+                                    <div ng-if="!ticketOpeningFlag">
+                                        <label class="control-label text-left"><b class="form-text-black">{{newCompanyBasicChangeVo.ticketOpening}}</b></label>
+                                    </div>
+                                    <div ng-if="ticketOpeningFlag">
+                                        <label class="control-label text-left"><b class="changedColor form-text-black">{{newCompanyBasicChangeVo.ticketOpening}}</b></label>
+                                    </div>
+                                </div>
+                                <label class="col-sm-2 control-label text-right"><b class="form-text-black">税号</b>:</label>
+                                <div class="col-sm-2">
+                                    <div ng-if="!dutyParagraphFlag">
+                                        <label class="control-label text-left"><b class="form-text-black">{{newCompanyBasicChangeVo.dutyParagraph}}</b></label>
+                                    </div>
+                                    <div ng-if="dutyParagraphFlag">
+                                        <label class="control-label text-left"><b class="changedColor form-text-black">{{newCompanyBasicChangeVo.dutyParagraph}}</b></label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 control-label text-right"><b class="form-text-black">地址、电话</b>:</label>
+                                <div class="col-sm-6">
+                                    <div ng-if="!invoiceAddrFlag">
+                                        <label class="control-label text-left"><b class="form-text-black">{{newCompanyBasicChangeVo.invoiceAddr}}</b></label>
+                                    </div>
+                                    <div ng-if="invoiceAddrFlag">
+                                        <label class="control-label text-left"><b class="changedColor form-text-black">{{newCompanyBasicChangeVo.invoiceAddr}}</b></label>
+                                    </div>
+                                </div>
+                                <label class="col-sm-2 control-label text-right"><b class="form-text-black">联系人</b>:</label>
+                                <div class="col-sm-2">
+                                    <div ng-if="!invoiceContactPerFlag">
+                                        <label class="control-label text-left"><b class="form-text-black">{{newCompanyBasicChangeVo.invoiceContactPer}}</b></label>
+                                    </div>
+                                    <div ng-if="invoiceContactPerFlag">
+                                        <label class="control-label text-left"><b class="changedColor form-text-black">{{newCompanyBasicChangeVo.invoiceContactPer}}</b></label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 control-label text-right"><b class="form-text-black">账号</b>:</label>
+                                <div class="col-sm-2">
+                                    <div ng-if="!accountNumberFlag">
+                                        <label class="control-label text-left"><b class="form-text-black">{{newCompanyBasicChangeVo.accountNumber}}</b></label>
+                                    </div>
+                                    <div ng-if="accountNumberFlag">
+                                        <label class="control-label text-left"><b class="changedColor form-text-black">{{newCompanyBasicChangeVo.accountNumber}}</b></label>
+                                    </div>
+                                </div>
+                                <label class="col-sm-2 control-label text-right"><b class="form-text-black">开户行</b>:</label>
+                                <div class="col-sm-2">
+                                    <div ng-if="!bankNameFlag">
+                                        <label class="control-label text-left"><b class="form-text-black">{{newCompanyBasicChangeVo.bankName}}</b></label>
+                                    </div>
+                                    <div ng-if="bankNameFlag">
+                                        <label class="control-label text-left"><b class="changedColor form-text-black">{{newCompanyBasicChangeVo.bankName}}</b></label>
+                                    </div>
+                                </div>
+                                <label class="col-sm-2 control-label text-right"><b class="form-text-black">联系人电话</b>:</label>
+                                <div class="col-sm-2">
+                                    <div ng-if="!invoiceContactNoFlag">
+                                        <label class="control-label text-left"><b class="form-text-black">{{newCompanyBasicChangeVo.invoiceContactNo}}</b></label>
+                                    </div>
+                                    <div ng-if="invoiceContactNoFlag">
+                                        <label class="control-label text-left"><b class="changedColor form-text-black">{{newCompanyBasicChangeVo.invoiceContactNo}}</b></label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 control-label text-right"><b class="form-text-black">发票邮寄地址</b>:</label>
+                                <div class="col-sm-6">
+                                    <div ng-if="!invoiceMailAddrFlag">
+                                        <label class="control-label text-left"><b class="form-text-black">{{newCompanyBasicChangeVo.invoiceMailAddr}}</b></label>
+                                    </div>
+                                    <div ng-if="invoiceMailAddrFlag">
+                                        <label class="control-label text-left"><b class="changedColor form-text-black">{{newCompanyBasicChangeVo.invoiceMailAddr}}</b></label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!--联系人控件-->
+                            <div>
+                                <div class="row">
+                                    <span style="margin-left: 2%;">增加联系人信息</span>
+                                </div>
+                                <div style="margin-right: -40px;padding-left: 5px;padding-bottom: 10px;">
+                                    <table id="contact_table_save" border="1" class="table table-striped m-b-none" width="100%"></table>
+                                </div>
+                            </div>
+
+
+                            <div class="form-group row">
+                                <label class="col-sm-2 control-label text-right"><b class="form-text-black">备注</b>:</label>
+                                <div class="col-sm-6">
+                                    <textarea name="remark" type="text" placeholder="请输入备注" title="{{newCompanyBasicChangeVo.remark}}" ng-model="newCompanyBasicChangeVo.remark" class="form-control m-b-xs"></textarea>
+                                    <p>
+                                        <span class="form-info" ng-show=" (form.remark.$dirty && form.remark.$error.required) || (form.remark.$error.required && formValidate)">备注不能为空</span>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--流程日志-->
+                <div class="panel-body wrapper-sm">
+                    <div ng-include="'tpl/common/process_log/process_log_list.html'"></div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,11 @@
+spring:
+  profiles:
+    active: ${leadu-profiles-active:dev}
+  application:
+    name: fms-z-postbiz
+
+management:
+  security:
+    enabled: false
+
+

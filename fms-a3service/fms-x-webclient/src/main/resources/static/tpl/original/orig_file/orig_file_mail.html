@@ -1,0 +1,81 @@
+<div  ng-controller="orig_file_mail_controller">
+    <div>
+        <toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+    </div>
+    <form name="form" class="form-validation" novalidate>
+        <div class="panel panel-default">
+            <div class="panel-body wrapper-sm">
+                <div class="row m-b-md">
+                    <div class="col-lg-12">
+                        <div class="form-group"><h1 class="m-n font-thin h4">资料邮寄</h1></div>
+                        <div class="form-group pull-right">
+                            <div class="btn-group">
+                                <button class="btn btn-default m-b-xs btn-sm fms-button-margin-bottom" ng-click="backUp()"><i class=""></i>返回</button>
+                                <button class="btn btn-success m-b-xs btn-sm fms-button-margin-bottom" ng-click="mailConfirm()"><i class=""></i>确认邮寄</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <table border="1" class="table table-striped m-b-none" id="orig_file_borrow_mail_table">
+            </table>
+
+            <div class="panel-body wrapper-sm">
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">客户姓名</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <input type="text" name="cstmName" placeholder="客户姓名" class="form-control m-b-xs" ng-model="origFileVo.cstmName" disabled>
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">车架号</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <input type="text" name="vinNo" placeholder="车架号" class="form-control m-b-xs" ng-model="origFileVo.vinNo" disabled>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">快递公司</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <input type="text" name="postComp" placeholder="快递公司" class="form-control m-b-xs" ng-model="origFileMailVo.postComp" required>
+                        <p>
+                            <span class="form-info" ng-show=" (form.postComp.$dirty && form.postComp.$error.required) || (form.postComp.$error.required && formValidate)">快递公司不能为空</span>
+                        </p>
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">快递编号</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <input type="text" name="postNo" placeholder="快递编号" class="form-control m-b-xs" ng-model="origFileMailVo.postNo" required>
+                        <p>
+                            <span class="form-info" ng-show=" (form.postNo.$dirty && form.postNo.$error.required) || (form.postNo.$error.required && formValidate)">快递编号不能为空</span>
+                        </p>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">邮寄日期</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <input name="postDate" placeholder="邮寄日期" class="form-control m-b-xs" ng-model="origFileMailVo.postDate" date-picker required/>
+                        <p>
+                            <span class="form-info" ng-show=" (form.postDate.$dirty && form.postDate.$error.required) || (form.postDate.$error.required && formValidate)">邮寄日期不能为空</span>
+                        </p>
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">联系电话</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <input type="text" name="postMemberTel" placeholder="联系电话" class="form-control m-b-xs" ng-model="origFileMailVo.postMemberTel" ng-pattern="/^1[345789]\d{9}$/" required>
+                        <p>
+                            <span class="form-info" ng-show=" (form.postMemberTel.$dirty && form.postMemberTel.$error.required) || (form.postMemberTel.$error.required && formValidate)">联系电话不能为空</span>
+                            <span class="form-info" ng-show=" (form.postMemberTel.$error.pattern && !form.postMemberTel.$error.required) || (form.postMemberTel.$error.pattern && formValidate && !form.postMemberTel.$error.required)">请输入正确的联系方式</span>
+                        </p>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">备注</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-6">
+                        <textarea limit-word type="text" name="remark" placeholder="备注" class="form-control m-b-xs" ng-model="origFileMailVo.remark" required></textarea>
+                        <p>
+                            <span class="form-info" ng-show=" (form.remark.$dirty && form.remark.$error.required) || (form.remark.$error.required && formValidate)">备注不能为空</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+

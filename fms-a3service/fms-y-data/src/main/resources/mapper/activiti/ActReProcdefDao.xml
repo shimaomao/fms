@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.leadu.fms.data.activiti.dao.ActReProcdefDao">
+
+    <!--
+     /**
+     * @Title:
+     * @Description:   根据当前用户名和所在组，查询其所拥有的工作流类型
+     * @param actReProcdefVo
+     * @return
+     * @throws
+     * @author qiaomengnan
+     * @date 2018/06/19 03:18:12
+     */
+     -->
+    <select id="selectActReProcdefVosByUserOrGroup"  resultType="cn.com.leadu.fms.pojo.activiti.vo.actreprocdef.ActReProcdefVo">
+        select
+         <if test="actReProcdefVo.tree == null"> <!-- 如果需要树形数据,则拿到所有内容,不进行过滤 -->
+         distinct
+         </if>
+         D.NAME_ `name`,D.KEY_ `key` from ACT_RU_TASK RES
+         left join ACT_RU_IDENTITYLINK I on I.TASK_ID_ = RES.ID_
+         inner join ACT_RE_PROCDEF D on RES.PROC_DEF_ID_ = D.ID_
+         WHERE
+         D.NAME_ is not null
+         and D.KEY_ is not null
+         and (RES.ASSIGNEE_ = #{actReProcdefVo.user}
+         <if test="actReProcdefVo.userGroups != null and actReProcdefVo.userGroups.size > 0">
+          or (RES.ASSIGNEE_ is null and I.TYPE_ = 'candidate' and (I.USER_ID_ = #{actReProcdefVo.user}
+          or I.GROUP_ID_ IN
+            <foreach collection="actReProcdefVo.userGroups" item="user"  open="(" close=")" separator="," >
+                #{user}
+            </foreach>
+          ) )
+          </if>
+        )
+        order by D.KEY_
+    </select>
+
+
+
+</mapper>

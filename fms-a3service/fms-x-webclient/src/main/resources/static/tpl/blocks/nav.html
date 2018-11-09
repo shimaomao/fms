@@ -1,0 +1,38 @@
+<!-- list -->
+<ul class="nav" ng-controller="navController">
+  <li ng-repeat="first in menus | orderBy:'orderNo'" ng-class="{active:$state.includes('app.table')}">
+
+    <a href class="auto">
+      <!--<span class="pull-right text-muted">
+        <i class="fa fa-fw fa-angle-right text"></i>
+        <i class="fa fa-fw fa-angle-down text-active"></i>
+      </span>
+      &lt;!&ndash;<b class="label bg-primary pull-right">2</b>&ndash;&gt;
+      <i class="glyphicon glyphicon-list"></i>-->
+      <span class="nav-icon {{first.menuLink}}" style="{{'background-position-y:'+(-10-45*$index)+'px'+';'}}"></span>
+      <span><b style="color: #00a8f3">{{first.menuName}}</b></span>
+    </a>
+    <ul class="nav nav-sub dk">
+      <li class="nav-sub-header">
+        <a href>
+          <span ><b style="color: #00a8f3">{{first.menuName}}</b></span>
+        </a>
+      </li>
+      <li ui-sref-active="active" ng-repeat="second in first.children | orderBy:'orderNo'">
+        <a data-id="{{second.menuId}}" data-title="{{second.menuName}}" data-url="{{second.menuLink}}"  onclick="addTab(this)" >
+          <span>{{second.menuName}}</span>
+        </a>
+        <!--<a ui-sref="{{second.res}}">-->
+          <!--<span>{{second.menuName}}</span>-->
+        <!--</a>-->
+      </li>
+
+    </ul>
+
+  </li>
+
+
+
+
+</ul>
+<!-- / list -->

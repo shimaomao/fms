@@ -1,0 +1,121 @@
+<style>
+    #equ_mor_detail_table_wrapper .row{
+        display: none;
+    }
+</style>
+<div  ng-controller="renewal_register_withdraw_controller">
+    <div>
+        <toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+    </div>
+    <div class="panel panel-default">
+                    <div class="row" style="margin: 0; padding: 10px; border: 1px solid #dddddd">
+                        <div class="form-inline">
+                            <div class="form-group">
+                                <h5 >资管请款</h5>
+                            </div>
+                            <div class="form-group pull-right">
+                                <div class="btn-group">
+                                    <button type="submit" class="btn btn-success btn-sm fms-button-margin-bottom" ng-disabled="submit" ng-click="save()">提交</button>
+                                <!--<button type="submit" class="btn btn-success" ng-disabled="submit" ng-click="sendBack()">退回</button>-->
+                                    <button class="btn btn-default btn-sm fms-button-margin-bottom" ng-click="goback()">返回</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <form name="form" class="form-validation" novalidate>
+                        <div class="panel-body">
+                        <div class="form-group row">
+                            <label class="col-sm-2 control-label text-right"><b class="form-text-black">客户姓名</b>:</label>
+                            <div class="col-sm-2">
+                                <input type="text" name="name" placeholder="客户姓名" class="form-control m-b-xs" title="{{renewalRegister.name}}" ng-model="renewalRegister.name"  disabled>
+                            </div>
+                            <label class="col-sm-2 control-label text-right"><b class="form-text-black">车架号</b>:</label>
+                            <div class="col-sm-2">
+                                <input type="text" name="vinNo" placeholder="车架号" class="form-control m-b-xs" title="{{renewalRegister.vinNo}}" ng-model="renewalRegister.vinNo"  disabled>
+                            </div>
+                            <label class="col-sm-2 control-label text-right" ng-if="renewalRegister.finFlag == 1"><b class="form-text-black">保险融资额(元)</b>:</label>
+                            <div class="col-sm-2" ng-if="renewalRegister.finFlag == 1">
+                                <input type="text" name="finAmount" placeholder="客户打款金额" class="form-control m-b-xs" ng-model="renewalRegister.finAmount"  disabled>
+                            </div>
+
+                            <label class="col-sm-2 control-label text-right" ng-if="renewalRegister.finFlag == 0"><b class="form-text-black">客户打款金额(元)</b>:</label>
+                            <div class="col-sm-2" ng-if="renewalRegister.finFlag == 0">
+                                <input type="text" name="customPaymentAmount" placeholder="客户打款金额" class="form-control m-b-xs" ng-model="renewalRegister.customPaymentAmount"  disabled>
+                            </div>
+
+                        </div>
+                        <div class="form-group row" >
+                            <label class="col-sm-2 control-label text-right"><b class="form-text-black">保险公司名称</b><b class="form-error">*</b>:</label>
+                            <div class="col-sm-2">
+                                <input type="text" name="insCompName"  class="form-control m-b-xs" title="{{renewalRegister.insCompName}}" ng-model="renewalRegister.insCompName"  >
+                                <!--<label class="col-sm-12 control-label text-left">{{renewalRegister.customPaymentAmount}}</label>-->
+                                <p>
+                                    <span class="form-info" ng-show=" (form.insCompName.$dirty && form.insCompName.$error.required) || (form.insCompName.$error.required && formValidate)">保险公司名称不能为空</span>
+                                </p>
+                            </div>
+                            <label class="col-sm-2 control-label text-right"><b class="form-text-black">请款金额(元)</b><b class="form-error">*</b>:</label>
+                            <div class="col-sm-2">
+                                <input type="text" limit-number name="requesAmount"  class="form-control m-b-xs" title="{{renewalRegister.requesAmount}}" ng-model="renewalRegister.requesAmount" ng-pattern="/^[1-9]\d*\,\d*|[1-9]\d*$/" required>
+                                <!--<label class="col-sm-12 control-label text-left">{{renewalRegister.customPaymentAmount}}</label>-->
+                                <p>
+                                    <span class="form-info" ng-show=" (form.requesAmount.$dirty && form.requesAmount.$error.required) || (form.requesAmount.$error.required && formValidate)">请款金额不能为空</span>
+                                    <span class="form-info" ng-show=" (form.requesAmount.$error.pattern && !form.requesAmount.$error.required) || (form.requesAmount.$error.pattern && formValidate && !form.requesAmount.$error.required)">请输入合法的数值</span>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="btn-group pull-left col-sm-4">
+                                <div class="col-sm-6" style="margin-left: 4%;">
+                                    <button class="btn btn-info m-b-xs m-l-sm  btn-sm" ng-click="selectBasBankInfo()"><i class="fa"></i>选择收款银行</button>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="from-group row">
+                            <label class="col-sm-2 control-label text-right"><b class="form-text-black">保险公司收款账户名</b><b class="form-error">*</b>:</label>
+                            <div class="col-sm-2">
+                                <input type="text" name="recAccountName" placeholder="收款账户名" class="form-control m-b-xs" title="{{renewalRegister.recAccountName}}" ng-model="renewalRegister.recAccountName" required disabled>
+                                <p>
+                                    <span class="form-info" ng-show=" (form.recAccountName.$dirty && form.recAccountName.$error.required) || (form.recAccountName.$error.required && formValidate)">保险公司收款账户名不能为空</span>
+                                </p>
+                            </div>
+
+                            <!--<label class="col-sm-2 control-label text-right"><b class="form-text-black">开户行</b><b class="form-error">*</b>:</label>
+                            <div class="col-sm-2">
+                                <input type="text" name="recAccBank" placeholder="开户行" class="form-control m-b-xs" ng-model="renewalRegister.recAccBank" required disabled>
+                                <p>
+                                    <span class="form-info" ng-show=" (form.recAccBank.$dirty && form.recAccBank.$error.required) || (form.recAccBank.$error.required && formValidate)">开户行不能为空</span>
+                                </p>
+                            </div>-->
+
+                            <label class="col-sm-2 control-label text-right"><b class="form-text-black">收款银行分行</b><b class="form-error">*</b>:</label>
+                            <div class="col-sm-2">
+                                <input type="text" name="recAccBranch" placeholder="收款银行分行" class="form-control m-b-xs" title="{{renewalRegister.recAccBranch}}" ng-model="renewalRegister.recAccBranch" required disabled>
+                                <p>
+                                    <span class="form-info" ng-show=" (form.recAccBranch.$dirty && form.recAccBranch.$error.required) || (form.recAccBranch.$error.required && formValidate)">收款银行分行不能为空</span>
+                                </p>
+                            </div>
+                            <label class="col-sm-2 control-label text-right"><b class="form-text-black">收款账号</b><b class="form-error">*</b>:</label>
+                            <div class="col-sm-2">
+                                <input type="text" name="recAccountNo" placeholder="收款账号" class="form-control m-b-xs" title="{{renewalRegister.recAccountNo}}" ng-model="renewalRegister.recAccountNo" required disabled>
+                                <p>
+                                    <span class="form-info" ng-show=" (form.recAccountNo.$dirty && form.recAccountNo.$error.required) || (form.recAccountNo.$error.required && formValidate)">收款账号不能为空</span>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 control-label text-right"><b class="form-text-black">备注</b><b class="form-error">*</b>:</label>
+                            <div class="col-sm-10">
+                                <textarea limit-word cols="100" rows="5" maxlength="200" name="remark1" ng-model="renewalRegister.remark1" required></textarea>
+                                <p>
+                                    <span class="form-info" ng-show=" (form.remark1.$dirty && form.remark1.$error.required) || (form.remark1.$error.required && formValidate)">请输入备注</span>
+                                </p>
+                            </div>
+                        </div>
+                         </div>
+                    </form>
+        <!--<div ng-include="'tpl/common/process_log/process_log_list.html'"></div>-->
+        <process-log-list-directive wf-log-type="wfLogType" wf-log-no="wfLogNo"></process-log-list-directive>
+    </div>
+</div>

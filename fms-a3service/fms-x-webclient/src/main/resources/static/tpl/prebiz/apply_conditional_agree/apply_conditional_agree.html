@@ -1,0 +1,101 @@
+<div  ng-controller="apply_conditional_agree_controller">
+    <style>
+        .panel h4{padding: 15px;border-bottom: 1px solid #dedede;color: black;font-weight: 600;margin: 0;font-size: 14px;}
+        .panel{margin-top: 20px;}
+        .checkbox,.radio {display: inline-block;margin: 2px 10px 0 0;}
+        .table > tbody > tr > td, .table > tfoot > tr > td{vertical-align: middle;}
+    </style>
+    <div>
+        <toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-body wrapper-sm">
+            <div class="row">
+                <!-- 黑名单信息 -->
+                <div class="form-group lter wrapper-xs pull-left col-sm-7">
+                    <label class="text-left col-sm-12" ng-repeat="basBlack in basBlacklists" style="color: red;font-size: 14px;" >
+                        {{basBlack.relationTypeName}}命中黑名单，命中原因：{{basBlack.memo}}
+                    </label>
+                </div>
+                <div class="form-group pull-right">
+                    <div class="btn-group ">
+                        <button class="btn btn-primary m-r-xs" ng-click="addBlacklist()">加入黑名单</button>
+                        <button class="btn btn-success m-t-xs m-r-xs" ng-click="submitInfo()" ng-disabled="submit">提交</button>
+                        <button class="btn btn-default m-t-xs" ng-click="goBack()">返回</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <form name="form" class="form-validation" novalidate>
+            <div class="panel-body wrapper-sm">
+                <ul id="applyTab" class="nav nav-tabs">
+                    <li class="active"><a href="javascript:void(0);" data-toggle="tab" data-id="approve" onclick="switchPageTab(this, 'applyTab')">
+                        <span ng-if="taskDefinitionKey=='contract_generation_diragree'">主管复核</span>
+                        <span ng-if="taskDefinitionKey=='contract_generation_preagree'">副总审核</span>
+                    </a></li>
+                    <li><a href="javascript:void(0);" data-toggle="tab" data-id="audit" onclick="switchPageTab(this, 'applyTab')">风控审核</a></li>
+                    <li><a href="javascript:void(0);" data-toggle="tab" data-id="credit" onclick="switchPageTab(this, 'applyTab')">鹏元征信</a></li>
+                    <li ng-if="applyType==1"><a href="javascript:void(0);" data-toggle="tab" data-id="reportPerson" onclick="switchPageTab(this, 'applyTab')">风控报告</a></li>
+                    <li ng-if="applyType==2"><a href="javascript:void(0);" data-toggle="tab" data-id="reportCompany" onclick="switchPageTab(this, 'applyTab')">风控报告</a></li>
+                    <li><a href="javascript:void(0);" data-toggle="tab" data-id="applyFile" onclick="switchPageTab(this, 'applyTab')">附件信息</a></li>
+                    <li ng-if="applyType==1"><a href="javascript:void(0);" data-toggle="tab" data-id="customer" onclick="switchPageTab(this, 'applyTab')">客户基本信息</a></li>
+                    <li ng-if="applyType==2"><a href="javascript:void(0);" data-toggle="tab" data-id="compCustomer" onclick="switchPageTab(this, 'applyTab')">客户基本信息</a></li>
+                    <li><a href="javascript:void(0);" data-toggle="tab" data-id="vehicleFin" onclick="switchPageTab(this, 'applyTab')">车辆融资信息</a></li>
+                    <li ><a href="javascript:void(0);" data-toggle="tab" data-id="guarantee" onclick="switchPageTab(this, 'applyTab')">担保人基本信息</a></li>
+                    <li ><a href="javascript:void(0);" data-toggle="tab" data-id="borrower" onclick="switchPageTab(this, 'applyTab')">共同承租人</a></li>
+                    <li ><a href="javascript:void(0);" data-toggle="tab" data-id="homeVisit" onclick="switchPageTab(this, 'applyTab')">家访</a></li>
+                </ul>
+                <div id="applyTabContent" class="tab-content">
+                    <!-- 审核意见备注 -->
+                    <div class="tab-pane fade in active" id="approve">
+                        <div ng-include="'tpl/prebiz/apply_conditional_agree/apply_conditional_agree_detail.html'" class="row m-xs"></div>
+                    </div>
+                    <!-- 风控审核 -->
+                    <div class="tab-pane fade" id="audit">
+                        <div ng-include="'tpl/prebiz/apply_risk/risk_audit_person_save.html'"></div>
+                    </div>
+                    <!-- 鹏元征信 -->
+                    <div class="tab-pane fade" id="credit">
+                        <div ng-include="'tpl/prebiz/apply_risk/risk_credit_person_save.html'"></div>
+                    </div>
+                    <!-- 风控报告 -->
+                    <div class="tab-pane fade" id="reportPerson" ng-if="applyType==1">
+                        <div ng-include="'tpl/prebiz/apply_risk/risk_report_person_save.html'"></div>
+                    </div>
+                    <!-- 风控报告 -->
+                    <div class="tab-pane fade" id="reportCompany" ng-if="applyType==2">
+                        <div ng-include="'tpl/prebiz/apply_risk/risk_report_company_save.html'"></div>
+                    </div>
+
+                    <div class="tab-pane fade" id="applyFile">
+                        <div ng-include="'tpl/prebiz/apply_input/apply_input_file_detail.html'" class="row m-xs"></div>
+                    </div>
+                    <!-- 客户基本信息 -->
+                    <div class="tab-pane fade " id="customer" ng-if="applyType==1">
+                        <div ng-include="'tpl/prebiz/apply_input/cstm_person_detail.html'" class="row m-xs"></div>
+                    </div>
+                    <!--企业信息-->
+                    <div class="tab-pane fade " id="compCustomer" ng-if="applyType==2">
+                        <div ng-include="'tpl/prebiz/apply_input/cstm_company_detail.html'" class="row m-xs"></div>
+                    </div>
+                    <!-- 车辆融资信息 -->
+                    <div class="tab-pane fade" id="vehicleFin">
+                        <div ng-include="'tpl/prebiz/apply_input/apply_finance_vehicle_detail.html'" class="row m-xs"></div>
+                    </div>
+                    <!--担保人基本信息-->
+                    <div class="tab-pane fade " id="guarantee">
+                        <div ng-include="'tpl/prebiz/apply_input/guarantee_info_detail.html'" class="row m-xs"></div>
+                    </div>
+                    <!--共同借款人-->
+                    <div class="tab-pane fade " id="borrower">
+                        <div ng-include="'tpl/prebiz/apply_input/borrower_info_detail.html'" class="row m-xs"></div>
+                    </div>
+                    <!--家访-->
+                    <div class="tab-pane fade " id="homeVisit">
+                        <div ng-include="'tpl/prebiz/apply_input/home_visit_detail.html'" class="row m-xs"></div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

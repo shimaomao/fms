@@ -1,0 +1,386 @@
+<div ng-controller="product_detail_controller">
+    <style>
+        .checkbox,.radio{
+            display: inline-block;
+            margin-right: 10px;
+            margin-top: 0;
+        }
+    </style>
+    <div class="panel panel-default wrapper-md">
+            <div class="col-sm-15 m-b pull-right">
+                <button class="btn btn-default" ng-click="goBack()">返回</button>
+            </div>
+            <p style="font-weight: bold;font-size: 16px;">产品方案信息</p>
+            <div class="panel-body">
+                <div class="row m-t-xs">
+                    <label class="col-sm-3  text-right"><b class="form-text-black">产品方案代码</b>:</label>
+                    <div class="col-sm-3">
+                        {{product.product}}
+                    </div>
+                    <label class="col-sm-3  text-right"><b class="form-text-black">产品方案名称</b>:</label>
+                    <div class="col-sm-3">
+                        {{product.productName}}
+                    </div>
+                </div>
+
+                <div class="row m-t-xs">
+                    <label class="col-sm-3  text-right"><b class="form-text-black">产品方案描述</b>:</label>
+                    <div class="col-sm-9">
+                        {{product.productMemo}}
+                    </div>
+                </div>
+
+                <div class="row m-t-xs">
+                    <label class="col-sm-3  text-right"><b class="form-text-black">开始日期</b>:</label>
+                    <div class="col-sm-3">
+                        {{product.startDate}}
+                    </div>
+                    <label class="col-sm-3  text-right"><b class="form-text-black">结束日期</b>:</label>
+                    <div class="col-sm-3">
+                        {{product.endDate}}
+                    </div>
+                </div>
+
+
+                <div class="row m-t-xs">
+                    <label class="col-sm-3 text-right"><b class="form-text-black">融资项目</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-9">
+                        <div class="checkbox" ng-repeat="a in prodFinItemA">
+                            <label>
+                                <input type="checkbox" name="prodFinItems" value="{{a.finItem}}" ng-model="a.checked" ng-click="checkboxValue('prodFinItems',a.finItem);" ng-checked="product.prodFinItems.indexOf(a.finItem) != -1" disabled>{{a.finItemName}}
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row m-t-xs">
+                    <label class="col-sm-3 text-right"><b class="form-text-black">首付基数</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-9">
+                        <div class="checkbox" ng-repeat="a in prodFinItemB">
+                            <label>
+                                <input type="checkbox" name="prodFinItemsIF" value="{{a.finItem}}" ng-model="a.checked" ng-click="checkboxValue('prodFinItemsIF',a.finItem);" ng-checked="product.prodFinItemsIF.indexOf(a.finItem) != -1" disabled>{{a.finItemName}}
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row m-t-xs">
+                    <label class="col-sm-3 text-right"><b class="form-text-black">尾付基数</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-9">
+                        <div class="checkbox" ng-repeat="a in prodFinItemC">
+                            <label>
+                                <input type="checkbox" name="prodFinItemsFinal" value="{{a.finItem}}" ng-model="a.checked" ng-click="checkboxValue('prodFinItemsFinal',a.finItem);" ng-checked="product.prodFinItemsFinal.indexOf(a.finItem) != -1" disabled>{{a.finItemName}}
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row m-t-xs">
+                    <label class="col-sm-3 text-right"><b class="form-text-black">保证金基数</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-9">
+                        <div class="checkbox" ng-repeat="a in prodFinItemD">
+                            <label>
+                                <input type="checkbox" name="prodFinItemsDep" value="{{a.finItem}}" ng-model="a.checked" ng-click="checkboxValue('prodFinItemsDep',a.finItem);" ng-checked="product.prodFinItemsDep.indexOf(a.finItem) != -1" disabled>{{a.finItemName}}
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">申请类型</b>:</label>
+                    <div class="col-sm-3">
+                        <div class="checkbox" ng-repeat="a in applyTypeList">
+                            <label>
+                                <input type="checkbox" name="applyType" value="{{a.codeValue}}" ng-model="a.checked" ng-click="checkboxValue(a.codeType,a.codeValue);" ng-checked="product.applyType.indexOf(a.codeValue) != -1" disabled="disabled">{{a.codeValueName}}
+                            </label>
+                        </div>
+                    </div>
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">车辆种类</b>:</label>
+                    <div class="col-sm-3">
+                        <div class="checkbox" ng-repeat="a in vehicleTypelList">
+                            <label>
+                                <input type="checkbox" name="vehicleType" value="{{a.codeValue}}" ng-model="a.checked" ng-click="checkboxValue(a.codeType,a.codeValue);" ng-checked="product.vehicleType.indexOf(a.codeValue) != -1" disabled="disabled">{{a.codeValueName}}
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">牌照属性</b>:</label>
+                    <div class="col-sm-3">
+                        <div class="checkbox" ng-repeat="a in licenseAttrList">
+                            <label>
+                                <input type="checkbox" name="licenseAttr" value="{{a.codeValue}}" ng-model="a.checked" ng-click="checkboxValue(a.codeType,a.codeValue);" ng-checked="product.licenseAttr.indexOf(a.codeValue) != -1" disabled="disabled">{{a.codeValueName}}
+                            </label>
+                        </div>
+                    </div>
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">租金支付模式</b>:</label>
+                    <div class="col-sm-3">
+                        <div class="radio" ng-repeat="a in rentPayModeList">
+                            <label>
+                                <input type="radio" name="rentPayMode" value="{{a.codeValue}}" ng-model="product.rentPayMode" disabled="disabled">{{a.codeValueName}}
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">GPS安装情况</b>:</label>
+                    <div class="col-sm-3">
+                        <div class="checkbox" ng-repeat="a in gpsInstModeList">
+                            <label>
+                                <input type="checkbox" name="gpsInstMode" value="{{a.codeValue}}" ng-model="a.checked" ng-click="checkboxValue(a.codeType,a.codeValue);" ng-checked="product.gpsInstMode.indexOf(a.codeValue) != -1" disabled="disabled">{{a.codeValueName}}
+                            </label>
+                        </div>
+                    </div>
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">还款方式</b>:</label>
+                    <div class="col-sm-3">
+                        <div class="radio" ng-repeat="a in repayModeList">
+                            <label>
+                                <input type="radio" name="repayMode" value="{{a.codeValue}}" ng-model="product.repayMode" disabled="disabled">{{a.codeValueName}}
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">还款频率</b>:</label>
+                    <div class="col-sm-3">
+                        <div class="radio" ng-repeat="a in repayRateList">
+                            <label>
+                                <input type="radio" name="repayRate" value="{{a.codeValue}}" ng-model="product.repayRate" disabled="disabled">{{a.codeValueName}}
+                            </label>
+                        </div>
+                    </div>
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">保证金返还方式</b>:</label>
+                    <div class="col-sm-3">
+                        <div class="radio" ng-repeat="a in depositRtnModeList">
+                            <label>
+                                <input type="radio" name="depositRtnMode" value="{{a.codeValue}}" ng-model="product.depositRtnMode" disabled="disabled">{{a.codeValueName}}
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">融资期限</b>:</label>
+                    <div class="col-sm-3">
+                        <div class="checkbox" ng-repeat="a in finPeriodTypeList">
+                            <label>
+                                <input type="checkbox" name="finPeriodType" value="{{a.codeValue}}" ng-model="a.checked" ng-click="checkboxValue(a.codeType,a.codeValue);" ng-checked="product.finPeriodType.indexOf(a.codeValue) != -1" disabled="disabled">{{a.codeValueName}}
+                            </label>
+                        </div>
+                    </div>
+                    <label class="col-sm-3 control-label text-right"><b class="form-text-black">手续费收取方式</b>:</label>
+                    <div class="col-sm-3">
+                        <div class="checkbox" ng-repeat="a in chargePayModeList">
+                            <label>
+                                <input type="checkbox" name="chargePayMode" value="{{a.codeValue}}" ng-model="a.checked" ng-click="checkboxValue(a.codeType,a.codeValue);" ng-checked="product.chargePayMode.indexOf(a.codeValue) != -1" disabled="disabled">{{a.codeValueName}}
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row m-t-xs">
+                    <label class="col-sm-3  text-right"><b class="form-text-black">首付比例区间</b>:</label>
+                    <div class="col-sm-3">
+                        {{product.initPercFrom}}~{{product.initPercTo}}
+                    </div>
+                    <label class="col-sm-3  text-right"><b class="form-text-black">首付金额区间</b>:</label>
+                    <div class="col-sm-3">
+                        {{product.initAmountFrom}}~{{product.initAmountTo}}
+                    </div>
+                </div>
+
+                <div class="row m-t-xs">
+                    <label class="col-sm-3  text-right"><b class="form-text-black">尾付比例区</b>:</label>
+                    <div class="col-sm-3">
+                        {{product.finalPercFrom}}~{{product.finalPercTo}}
+                    </div>
+                    <label class="col-sm-3  text-right"><b class="form-text-black">尾付金额区间</b>:</label>
+                    <div class="col-sm-3">
+                        {{product.finalAmountFrom}}~{{product.finalAmountTo}}
+                    </div>
+                </div>
+
+                <div class="row m-t-xs">
+                    <label class="col-sm-3  text-right"><b class="form-text-black">年供比例区间</b>:</label>
+                    <div class="col-sm-3">
+                        {{product.annualSupplyRateFrom}}~{{product.annualSupplyRateTo}}
+                    </div>
+                    <label class="col-sm-3  text-right"><b class="form-text-black">年供金额区间</b>:</label>
+                    <div class="col-sm-3">
+                        {{product.annualSupplyAmountFrom}}~{{product.annualSupplyAmountTo}}
+                    </div>
+                </div>
+
+                <div class="row m-t-xs">
+                    <label class="col-sm-3  text-right"><b class="form-text-black">保证金区间</b>:</label>
+                    <div class="col-sm-3">
+                        {{product.depositFrom}}~{{product.depositTo}}
+                    </div>
+                    <label class="col-sm-3  text-right"><b class="form-text-black">保证金率区间</b>:</label>
+                    <div class="col-sm-3">
+                        {{product.depositPercFrom}}~{{product.depositPercTo}}
+                    </div>
+                </div>
+
+                <div class="row m-t-xs">
+                    <label class="col-sm-3  text-right"><b class="form-text-black">融资总额区间</b>:</label>
+                    <div class="col-sm-3">
+                        {{product.finTotalFrom}}~{{product.finTotalTo}}
+                    </div>
+                    <label class="col-sm-3  text-right"><b class="form-text-black">风险融资额区间</b>:</label>
+                    <div class="col-sm-3">
+                        {{product.finRiskFrom}}~{{product.finRiskTo}}
+                    </div>
+                </div>
+
+                <div class="row m-t-xs">
+                    <label class="col-sm-3  text-right"><b class="form-text-black">irr区间</b>:</label>
+                    <div class="col-sm-3">
+                        {{product.irrFrom}}~{{product.irrTo}}
+                    </div>
+                </div>
+
+                <!--<div class="row">
+                    <label class="col-sm-3  text-right"><b class="form-text-black">车辆类型</b>:</label>
+                    <div class="col-sm-3">
+                        <div>
+                            <label>
+                                {{product.vehicleForm | getCodeValueName:'vehicleForm':1}}
+                            </label>
+                        </div>
+                    </div>
+                    <label class="col-sm-3  text-right"><b class="form-text-black">融资项目</b>:</label>
+                    <div class="col-sm-3">
+                        {{product.prodFinItems | getProdFinVal:prodFinItem}}
+                    </div>
+                </div>
+
+                <div class="row">
+                    <label class="col-sm-3  text-right"><b class="form-text-black">首尾付基数</b>:</label>
+                    <div class="col-sm-3">
+                        <div>
+                            <label>
+                                {{product.prodFinItemsIF | getProdFinVal:prodFinItem}}
+                            </label>
+                        </div>
+                    </div>
+                    <label class="col-sm-3  text-right"><b class="form-text-black">保证金基数</b>:</label>
+                    <div class="col-sm-3">
+                        {{product.prodFinItemsDep | getProdFinVal:prodFinItem}}
+                    </div>
+                </div>-->
+                <div class="line line-dashed b-b line-lg pull-in"></div>
+
+
+                <div class="row" style="margin: 10px;">
+                    <div class="row line-lg" style="font-weight: bold;font-size: 16px;">配置利率方案</div>
+                    <div class="intrst-data line-lg">
+                        <table border="1" class="table m-b-none dataTable no-footer" role="grid" style="margin-left: 0px;">
+                            <thead>
+                            <tr role="row">
+                                <th class="sorting_disabled" rowspan="1" colspan="1">序号</th>
+                                <th class="sorting_disabled" rowspan="1" colspan="1">客户利率</th>
+                                <th class="sorting_disabled" rowspan="1" colspan="1">结算利率</th>
+                                <th class="sorting_disabled" rowspan="1" colspan="1">手续费率</th>
+                                <th class="sorting_disabled" rowspan="1" colspan="1">结算手续费率</th>
+                                <th class="sorting_disabled" rowspan="1" colspan="1">一次性手续费</th>
+                                <th class="sorting_disabled" rowspan="1" colspan="1">利率方式</th>
+                                <th class="sorting_disabled" rowspan="1" colspan="1" ng-repeat="a in factorData">{{a.factorName}}</th>
+                                
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr click-tr role="row" ng-repeat="a in product.prodIntrstVoList track by $index">
+                                <td>{{$index + 1}}</td>
+                                <td>{{a.intrstRate}}</td>
+                                <td>{{a.settleIntrstRate}}</td>
+                                <td>{{a.chargeRate}}</td>
+                                <td>{{a.settleChargeRate}}</td>
+                                <td>{{a.onetimeCharge}}</td>
+                                <td>{{a.intrstRateMode | getName:'intrstRateMode'}}</td>
+                                <td ng-repeat="b in a.prodIntrstFactorVoList">{{b.factorValueFrom | getCodeValueName:b.factorCode:factorData[$index].factorType:b}}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+
+                <div class="line line-dashed b-b line-lg pull-in"></div>
+
+                <div class="row" style="margin: 10px;">
+                    <div class="row line-lg" style="font-weight: bold;font-size: 16px;">用户组输入辅助</div>
+                    <div class="intrst-data line-lg">
+                        <table border="1" class="table m-b-none dataTable no-footer" role="grid" style="margin-left: 0px;">
+                            <thead>
+                            <tr role="row">
+                                <th class="sorting_disabled" rowspan="1" colspan="1">机构代码</th>
+                                <th class="sorting_disabled" rowspan="1" colspan="1">机构名称</th>
+                                <th class="sorting_disabled" rowspan="1" colspan="1">机构层级代码</th>
+                                <th class="sorting_disabled" rowspan="1" colspan="1">机构层级名称</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr click-tr role="row" ng-repeat="a in product.prodGroupVoList">
+                                <td>{{a.groupCode}}</td>
+                                <td>{{a.groupName}}</td>
+                                <td>{{a.groupLev}}</td>
+                                <td>{{a.groupLevName}}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="line line-dashed b-b line-lg pull-in"></div>
+
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="row" style="margin: 10px;">
+                            <div class="row line-lg" style="font-weight: bold;font-size: 16px;">产品附件输入辅助</div>
+                            <div class="intrst-data line-lg">
+                                <table border="1" class="table m-b-none dataTable no-footer" role="grid" style="margin-left: 0px;">
+                                    <thead>
+                                    <tr role="row">
+                                        <th class="sorting_disabled" rowspan="1" colspan="1">附件类型</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr click-tr role="row" ng-repeat="a in product.prodFileVoList">
+                                        <td>{{a.fileTypeName}}</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="row" style="margin: 10px;">
+                            <div class="row line-lg" style="font-weight: bold;font-size: 16px;">车型输入辅助</div>
+                            <div class="intrst-data line-lg">
+                                <table border="1" class="table m-b-none dataTable no-footer" role="grid" style="margin-left: 0px;">
+                                    <thead>
+                                    <tr role="row">
+                                        <th class="sorting_disabled" rowspan="1" colspan="1">车辆信息级别</th>
+                                        <th class="sorting_disabled" rowspan="1" colspan="1">车型信息名称</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr click-tr role="row" ng-repeat="a in product.prodVehicleVopList">
+                                        <td>{{a.vehicleLevel}}</td>
+                                        <td>{{a.vehicleName}}</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+    </div>
+</div>

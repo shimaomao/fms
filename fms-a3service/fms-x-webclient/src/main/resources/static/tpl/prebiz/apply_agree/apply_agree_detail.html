@@ -1,0 +1,96 @@
+<ul type="none" style="padding-left:20px">
+    <div class="row" style="margin: 5px; padding-right: 50px;">
+
+        <div class="row line-lg" style="font-weight: bold;font-size: 14px;">融资信息</div>
+
+        <div class="form-group row">
+            <label class="col-sm-2 control-label text-right"><b class="form-text-black">是否有条件同意</b><b
+                    class="form-error"></b>:</label>
+            <div class="col-sm-2">
+                <div class="radio" ng-repeat="a in 'yesNoFlag'|getList"><label>
+                    <input type="radio" name="approveFlag" ng-model="approveFlag" value="{{a.codeValue}}" disabled>{{a.codeValueName}}</label>
+                </div>
+            </div>
+
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-2 control-label text-right"><b class="form-text-black">首付比例（%）</b><b
+                    class="form-error"></b>:</label>
+            <div class="col-sm-2">
+                <input title="{{applyConditionalAgreeVo.applyFinance.initPercAgree}}" type="number" class="form-control m-b-xs" ng-disabled="applyConditionalAgreeVo.actType!=2" ng-change="changePerc('initAmountAgree',applyConditionalAgreeVo.applyFinance.initPercAgree)"
+                       ng-model="applyConditionalAgreeVo.applyFinance.initPercAgree" name="initPercAgree" required>
+                <p>
+                    <span class="form-info"
+                          ng-show=" (form.initPercAgree.$dirty && form.initPercAgree.$error.required) || (form.initPercAgree.$error.required && formValidate)">首付比例不能为空</span>
+                </p>
+            </div>
+            <label class="col-sm-2 control-label text-right"><b class="form-text-black">首付金额（元）</b><b
+                    class="form-error"></b>:</label>
+            <div class="col-sm-2">
+                <input title="{{applyConditionalAgreeVo.applyFinance.initAmountAgree}}" type="text" class="form-control m-b-xs" ng-disabled="true"
+                       ng-model="applyConditionalAgreeVo.applyFinance.initAmountAgree">
+            </div>
+
+        </div>
+
+        <div class="form-group row">
+            <label class="col-sm-2 control-label text-right"><b class="form-text-black">尾付比例（%）</b><b
+                    class="form-error"></b>:</label>
+            <div class="col-sm-2">
+                <input title="{{applyConditionalAgreeVo.applyFinance.finalPercAgree}}" type="number" class="form-control m-b-xs" ng-disabled="applyConditionalAgreeVo.actType!=2" ng-change="changePerc('finalAmountAgree',applyConditionalAgreeVo.applyFinance.finalPercAgree)"
+                       ng-model="applyConditionalAgreeVo.applyFinance.finalPercAgree" name="finalPercAgree" required>
+                <p>
+                    <span class="form-info"
+                          ng-show=" (form.finalPercAgree.$dirty && form.finalPercAgree.$error.required) || (form.finalPercAgree.$error.required && formValidate)">尾付比例不能为空</span>
+                </p>
+            </div>
+            <label class="col-sm-2 control-label text-right"><b class="form-text-black">尾付金额（元）</b><b
+                    class="form-error"></b>:</label>
+            <div class="col-sm-2">
+                <input title="{{applyConditionalAgreeVo.applyFinance.finalAmountAgree}}" type="text" class="form-control m-b-xs" ng-disabled="true" ng-model="applyConditionalAgreeVo.applyFinance.finalAmountAgree">
+            </div>
+
+        </div>
+
+        <div class="form-group row">
+            <label class="col-sm-2 control-label text-right"><b class="form-text-black">保证金比例（%）</b><b
+                    class="form-error"></b>:</label>
+            <div class="col-sm-2">
+                <input title="{{applyConditionalAgreeVo.applyFinance.depositPercAgree}}" type="text" class="form-control m-b-xs" ng-disabled="true" ng-model="applyConditionalAgreeVo.applyFinance.depositPercAgree">
+            </div>
+            <label class="col-sm-2 control-label text-right"><b class="form-text-black">保证金（元）</b><b
+                    class="form-error"></b>:</label>
+            <div class="col-sm-2">
+                <input title="{{applyConditionalAgreeVo.applyFinance.depositAgree}}" type="number" class="form-control m-b-xs" ng-disabled="applyConditionalAgreeVo.actType!=2" ng-change="changeAmount('depositPercAgree',applyConditionalAgreeVo.applyFinance.depositAgree)"
+                       ng-model="applyConditionalAgreeVo.applyFinance.depositAgree" name="depositAgree" required>
+                <p>
+                    <span class="form-info"
+                          ng-show=" (form.depositAgree.$dirty && form.depositAgree.$error.required) || (form.depositAgree.$error.required && formValidate)">保证金不能为空</span>
+                </p>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="col-sm-2 control-label text-right"><b class="form-text-black">风险融资额（元）</b><b
+                    class="form-error"></b>:</label>
+            <div class="col-sm-2">
+                <input type="number" limit-number="10" class="form-control m-b-xs" ng-disabled="true"
+                       ng-model="applyConditionalAgreeVo.riskAmount" name="riskAmount" required>
+            </div>
+        </div>
+
+        <!--<div class="form-group row">
+            <label class="col-sm-2 control-label text-right"><b class="form-text-black">审批备注</b><b
+                    class="form-error">*</b>:</label>
+            <div class="col-sm-5">
+                <textarea class="form-control m-b-xs"
+                          ng-model="applyConditionalAgreeVo.memo" name="memo" required></textarea>
+                <p>
+                    <span class="form-info"
+                          ng-show=" (form.memo.$dirty && form.memo.$error.required) || (form.memo.$error.required && formValidate)">请输入备注</span>
+                </p>
+            </div>
+        </div>-->
+        <div ng-include="'tpl/common/process_log/process_log_list.html'"></div>
+    </div>
+</ul>

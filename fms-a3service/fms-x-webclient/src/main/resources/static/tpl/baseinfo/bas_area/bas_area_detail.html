@@ -1,0 +1,47 @@
+<div class="panel panel-default" ng-controller="bas_area_detail_controller">
+<div class="modal-header">
+        <h4 class="modal-title">省市县信息维护 </h4>
+</div>
+<div class="modal-body">
+    <form name="form" class="form-validation" novalidate>
+        <div class="form-group row">
+            <label class="col-sm-3 control-label text-right"><b class="form-text-black">上级省市县代码</b>:</label>
+            <div class="col-sm-8">
+                <label class="col-sm-12 control-label text-left">{{basArea.parentAreaCode}}</label>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-3 control-label text-right"><b class="form-text-black">上级省市县名称</b>:</label>
+            <div class="col-sm-8">
+                <label class="col-sm-12 control-label text-left">{{basArea. parentAreaName}}</label>
+            </div>
+        </div>
+
+            <div class="form-group row">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">省市县代码</b>:</label>
+                <div class="col-sm-8">
+                    <label class="col-sm-12 control-label text-left">{{basArea.areaCode}}</label>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">省市县名称</b>:</label>
+                <div class="col-sm-8">
+                    <label class="col-sm-12 control-label text-left">{{basArea.areaName}}</label>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">省市县级别</b>:</label>
+                <div class="col-sm-8">
+                    <label class="col-sm-12 control-label text-left">{{basArea.areaLevel}}</label>
+                </div>
+            </div>
+
+        <div class="col-sm-15 m-b text-center">
+                <button class="btn btn-default" ng-click="goBack()">返回</button>
+            </div>
+    </form>
+
+</div>
+</div>

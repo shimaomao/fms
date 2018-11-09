@@ -1,0 +1,170 @@
+<ul type="none" style="padding: 10px 80px 0px 60px;">
+    <div class="row">
+        <li style="font-weight: bold;font-size: 16px;">财务付款</li>
+        <div class="form-group row">
+            <div class="col-sm-6">
+                <label class="col-sm-4 control-label text-right"><b class="form-text-black">合同编号</b><b
+                        class="form-error"></b>:</label>
+                <div class="col-sm-8">
+                    <label class="col-sm-12 control-label text-left">{{contPayment.contNo}}</label>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <label class="col-sm-4 control-label text-right"><b class="form-text-black">客户名称</b><b
+                        class="form-error"></b>:</label>
+                <div class="col-sm-8">
+                    <label class="col-sm-12 control-label text-left">{{contPayment.user}}</label>
+                </div>
+            </div>
+
+        </div>
+
+
+        <div class="form-group row">
+            <div class="col-sm-6">
+                <label class="col-sm-4 control-label text-right"><b class="form-text-black">付款金额</b><b
+                        class="form-error"></b>:</label>
+                <div class="col-sm-8">
+                    <label class="col-sm-12 control-label text-left">{{contPayment.payAmount}}</label>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <label class="col-sm-4 control-label text-right"><b class="form-text-black">收款银行</b><b
+                        class="form-error"></b>:</label>
+                <div class="col-sm-8">
+                    <label class="col-sm-12 control-label text-left">{{contPayment.recAccBank}}</label>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="form-group row">
+            <div class="col-sm-6">
+                <label class="col-sm-4 control-label text-right"><b class="form-text-black">收款银行户名</b><b
+                        class="form-error"></b>:</label>
+                <div class="col-sm-8">
+                    <label class="col-sm-12 control-label text-left">{{contPayment.recAccountName}}</label>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <label class="col-sm-4 control-label text-right"><b class="form-text-black">收款银行账号</b><b
+                        class="form-error"></b>:</label>
+                <div class="col-sm-8">
+                    <label class="col-sm-12 control-label text-left">{{contPayment.recAccountNo}}</label>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="form-group row">
+            <div class="col-sm-6">
+                <label class="col-sm-4 control-label text-right"><b class="form-text-black">审批意见</b><b
+                        class="form-error">*</b>:</label>
+                <div class="col-sm-8">
+                    <div class="col-sm-12">
+                        <div class="radio" ng-repeat="contPaymentActTypeObj in contPaymentActTypeList">
+                            <label><input type="radio" name="contPaymentActType"
+                                          ng-value="contPaymentActTypeObj.codeValue"
+                                          ng-model="contPayment.contPaymentActType">{{contPaymentActTypeObj.codeValueName}}</label>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+
+        <div class="form-group row">
+            <div class="col-sm-6">
+                <label class="col-sm-4 control-label text-right"><b class="form-text-black">付款银行</b><b
+                        class="form-error" ng-if="contPayment.contPaymentActType == 1">*</b>:</label>
+                <div class="col-sm-8 form-inline">
+                    <div class="col-sm-12" ng-if="contPayment.contPaymentActType == 1">
+                        <input title="{{contPayment.accBank}}" type="text" name="accBank" placeholder="请选择付款银行" class="form-control m-b-xs"
+                               ng-model="contPayment.accBank" required disabled> <!--ng-required="{{isOk}}"-->
+                        <button class="btn btn-primary btn-sm m-b-xs" ng-click="selectBasBankInfo()"><i
+                                class="fa fa-pencil-square-o m-r-xs"></i>选择
+                        </button>
+                        <p>
+                                <span class="form-info"
+                                      ng-show=" (form.accBank.$dirty && form.accBank.$error.required) || (form.accBank.$error.required && formValidate)">付款银行不能为空</span>
+                        </p>
+                    </div>
+
+                    <div class="col-sm-12" ng-if="contPayment.contPaymentActType == 0">
+                        <input title="{{contPayment.accBank}}" type="text" name="accBank" placeholder="请选择付款银行" class="form-control m-b-xs"
+                               ng-model="contPayment.accBank" disabled> <!--ng-required="{{isOk}}"-->
+                        <button class="btn btn-primary btn-sm m-b-xs" ng-click="selectBasBankInfo()"><i
+                                class="fa fa-pencil-square-o m-r-xs"></i>选择
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-6">
+                <label class="col-sm-4 control-label text-right"><b class="form-text-black">付款账号</b><b
+                        class="form-error" ng-if="contPayment.contPaymentActType == 1">*</b>:</label>
+                <div class="col-sm-8">
+                    <div class="col-sm-6" ng-if="contPayment.contPaymentActType == 1">
+                        <input type="text" name="accountNo" placeholder="付款账号" class="form-control m-b-xs"
+                               ng-model="contPayment.accountNo" required disabled>
+                        <p>
+                                <span class="form-info"
+                                      ng-show=" (form.accountNo.$dirty && form.accountNo.$error.required) || (form.accountNo.$error.required && formValidate)">付款账号不能为空</span>
+                        </p>
+                    </div>
+
+                    <div class="col-sm-6" ng-if="contPayment.contPaymentActType == 0">
+                        <input type="text" name="accountNo" placeholder="付款账号" class="form-control m-b-xs"
+                               ng-model="contPayment.accountNo" disabled>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group row" ng-if="contPayment.contPaymentActType == 0">
+            <div class="col-sm-6">
+                <label class="col-sm-4 control-label text-right"><b class="form-text-black">退回原因</b><b
+                        class="form-error">*</b>:</label>
+                <div class="col-sm-8">
+                    <div class="col-sm-12">
+                        <select name="contPaymentReason" ng-model="contPayment.contPaymentReason"
+                                class="form-control m-b-xs" required>
+                            <option value="" ng-selected="!contPayment.contPaymentReason">请选择</option>
+                            <option ng-repeat="contPaymentReasonObj in contPaymentReasonList"
+                                    value="{{contPaymentReasonObj.codeValue}}">{{contPaymentReasonObj.codeValueName}}
+                            </option>
+                        </select>
+                        <p>
+                            <span class="form-info"
+                                  ng-show=" (form.contPaymentReason.$dirty && form.contPaymentReason.$error.required) || (form.contPaymentReason.$error.required && formValidate)">退回原因不能为空</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="form-group row">
+            <div class="col-sm-6">
+                <label class="col-sm-4 control-label text-right"><b class="form-text-black">备注</b><b
+                        class="form-error">*</b>:</label>
+                <div class="col-sm-8">
+                    <div class="col-sm-12">
+                <textarea limit-word name="remark1" class="form-control m-b-xs" ng-model="contPayment.remark1 "
+                          required></textarea>
+
+                        <p>
+                <span class="form-info"
+                      ng-show=" (form.remark1.$dirty && form.remark1.$error.required) || (form.remark1.$error.required && formValidate)">备注不能为空</span>
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div ng-include="'tpl/common/process_log/process_log_list.html'"></div>
+    </div>
+</ul>
+

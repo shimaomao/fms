@@ -1,0 +1,455 @@
+<!-- navbar header -->
+<div class="navbar-header {{app.settings.navbarHeaderColor}}">
+  <button class="pull-right visible-xs dk" ui-toggle-class="show" data-target=".navbar-collapse">
+    <i class="glyphicon glyphicon-cog"></i>
+  </button>
+  <button class="pull-right visible-xs" ui-toggle-class="off-screen" data-target=".app-aside" ui-scroll="app">
+    <i class="glyphicon glyphicon-align-justify"></i>
+  </button>
+  <!-- brand -->
+  <a href="#/app_tpl/dashboard-v1" class="navbar-brand text-lt">
+    <i class="fa fa-btc"></i>
+    <img src="img/logo.png" alt="." class="hide">
+    <span class="hidden-folded m-l-xs" style="font-size: 15px;">{{app.name}}</span>
+  </a>
+  <!-- / brand -->
+</div>
+<!-- / navbar header -->
+
+<!-- navbar collapse -->
+<div class="collapse pos-rlt navbar-collapse box-shadow {{app.settings.navbarCollapseColor}}"  ng-controller="headerNavController">
+  <!-- buttons -->
+  <!-- 暂时菜单收缩
+  <div class="nav navbar-nav hidden-xs">
+    <a href class="btn no-shadow navbar-btn" ng-click="app.settings.asideFolded = !app.settings.asideFolded">
+      <i class="fa {{app.settings.asideFolded ? 'fa-indent' : 'fa-dedent'}} fa-fw"></i>
+    </a>
+    <a href class="btn no-shadow navbar-btn" ui-toggle-class="show" target="#aside-user">
+      <i class="icon-user fa-fw"></i>
+    </a>
+  </div>
+  -->
+  <!-- / buttons -->
+
+  <!-- link and dropdown -->
+  <ul class="nav navbar-nav hidden-sm">
+    <li ng-repeat="first in menus | orderBy:'orderNo'" class="dropdown pos-stc" dropdown repeat-finish>
+      <a href class="dropdown-toggle" dropdown-toggle data-hover="dropdown" style="padding: 15px 10px 15px 10px">
+        <span data="{{first}}">{{first.menuName}}</span>
+        <span class="caret"></span>
+      </a>
+      <div ng-if="first.menuName == '功能导航'" class="dropdown-menu wrapper w-full bg-white" ng-style="{'height': menuHeight+'px','overflow':'auto'}">
+        <div class="row">
+          <div class="col-sm-2 " style="margin-left: 6px" ng-repeat="second in first.twoChildren">
+            <div class="m-b-sm" ng-repeat="secondObj in second" >
+              <div class="row leadu-header-menu-header" >
+                <div class="col-xs-12 m-l-xs m-t-xs m-b-xs font-bold">
+                  {{secondObj.menuName}}
+                </div>
+              </div>
+              <div class="row leadu-header-menu-body">
+                <div class="col-xs-12">
+                  <ul class="list-unstyled l-h-2x ">
+                    <li ng-repeat="three in secondObj.children | orderBy:'orderNo'">
+                      <a ui-sref="{{three.menuLink}}" target="_blank"><b style="color: #00a8f3" ><i class="glyphicon glyphicon-open"></i></b></a>
+                      <a class="m-l-xs m-t-xs m-b-xs" data-id="{{three.menuId}}" data-title="{{three.menuName}}" data-url="{{three.menuLink}}"  onclick="addTab(this)" >{{three.menuName}}</a>
+                      <!--ui-sref="{{three.menuLink}}"-->
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div ng-if="first.menuName != '功能导航'" class="dropdown-menu wrapper w-full bg-white" style="width: auto;left: auto;padding: 0 11px;">
+        <div class="row">
+          <div class="col-sm-12" ng-repeat="second in first.twoChildren">
+            <div class="" ng-repeat="secondObj in second" >
+              <div class="row leadu-header-menu-header" >
+                <div class="col-xs-12 m-l-xs m-t-xs m-b-xs font-bold">
+                  {{secondObj.menuName}}
+                </div>
+              </div>
+              <div class="row leadu-header-menu-body">
+                <div class="col-xs-12">
+                  <ul class="list-unstyled l-h-2x ">
+                    <li ng-repeat="three in secondObj.children | orderBy:'orderNo'">
+                      <a ui-sref="{{three.menuLink}}" target="_blank"><b style="color: #00a8f3" ><i class="glyphicon glyphicon-open"></i></b></a>
+                      <a class="m-l-xs m-t-xs m-b-xs" data-id="{{three.menuId}}" data-title="{{three.menuName}}" data-url="{{three.menuLink}}"  onclick="addTab(this)" >{{three.menuName}}</a>
+                      <!--ui-sref="{{three.menuLink}}"-->
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </li>
+
+  </ul>
+  <!-- / link and dropdown -->
+
+  <!-- search form  搜索
+  <form class="navbar-form navbar-form-sm navbar-left shift" ui-shift="prependTo" target=".navbar-collapse" role="search" ng-controller="TypeaheadDemoCtrl">
+    <div class="form-group">
+      <div class="input-group">
+        <input type="text" ng-model="selected" typeahead="state for state in states | filter:$viewValue | limitTo:8" class="form-control input-sm bg-light no-border rounded padder" placeholder="Search projects...">
+        <span class="input-group-btn">
+                <button type="submit" class="btn btn-sm bg-light rounded"><i class="fa fa-search"></i></button>
+              </span>
+      </div>
+    </div>
+  </form>-->
+  <!-- / search form -->
+
+  <!-- nabar right -->
+  <ul class="nav navbar-nav navbar-right">
+
+    <li class="hidden-xs">
+      <a ui-fullscreen></a>
+    </li>
+
+    <li class="dropdown" dropdown>
+      <a href class="dropdown-toggle" dropdown-toggle>
+        <i class="icon-bell fa-fw"></i>
+        <span class="visible-xs-inline">Notifications</span>
+        <span class="badge badge-sm up bg-danger pull-right-xs">{{userInfo.recordsTotal}}</span>
+      </a>
+      <!-- dropdown -->
+      <div class="dropdown-menu w-xl animated fadeInUp">
+        <div class="panel bg-white" style="max-height: 200px;overflow: auto;">
+          <div class="panel-heading b-light bg-light">
+            <strong>您有 <span>{{userInfo.recordsTotal}}</span> 条未读信息</strong>
+          </div>
+          <div class="list-group">
+            <a href class="media list-group-item" ng-click="readerUserInfo(info,$event)" data-stopPropagation="true" ng-repeat="info in userInfo.data">
+                    <!--<span class="pull-left thumb-sm">-->
+                      <!--<img src="img/a0.jpg" alt="..." class="img-circle">-->
+                    <!--</span>-->
+              <span class="media-body block m-b-none">
+                      {{info.infoContent}}<br>
+                      <small class="text-muted">{{info.createTime}}</small>
+                    </span>
+            </a>
+
+            <!--<a href class="media list-group-item">-->
+                    <!--&lt;!&ndash;<span class="pull-left thumb-sm">&ndash;&gt;-->
+                      <!--&lt;!&ndash;<img src="img/a0.jpg" alt="..." class="img-circle">&ndash;&gt;-->
+                    <!--&lt;!&ndash;</span>&ndash;&gt;-->
+              <!--<span class="media-body block m-b-none">-->
+                      <!--一般消息通知<br>-->
+                      <!--<small class="text-muted">10 minutes ago</small>-->
+                    <!--</span>-->
+            <!--</a>-->
+          </div>
+          <!--<div class="panel-footer text-sm">-->
+            <!--<a href="#notes" data-toggle="class:show animated fadeInRight">查看所有信息</a>-->
+          <!--</div>-->
+        </div>
+      </div>
+      <!-- / dropdown -->
+    </li>
+
+    <li class="dropdown" dropdown>
+      <a href class="dropdown-toggle" dropdown-toggle>
+        <!--<i class="hidden-sm hidden-md"></i>-->换肤
+      </a>
+      <!-- dropdown -->
+      <div class="dropdown-menu w-xl animated fadeInUp settings panel panel-default">
+
+        <div class="panel-heading">
+          更换主题
+        </div>
+
+
+        <div class="wrapper b-t b-light bg-light lter r-b" style="background-color:#edf1f2">
+          <div class="row row-sm">
+            <div class="col-xs-6">
+              <label class="i-checks block m-b" ng-click="
+          app.settings.navbarHeaderColor='bg-black';
+          app.settings.navbarCollapseColor='bg-white-only';
+          app.settings.asideColor='bg-black';
+         ">
+                <input type="radio" name="a" ng-model="app.settings.themeID" value="100">
+                <span class="block bg-light clearfix pos-rlt">
+            <span class="active pos-abt w-full h-full bg-black-opacity text-center">
+              <i class="glyphicon glyphicon-ok text-white m-t-xs"></i>
+            </span>
+            <b class="bg-black header"></b>
+            <b class="bg-white header"></b>
+            <b class="bg-black"></b>
+          </span>
+              </label>
+
+              <label class="i-checks block m-b" ng-click="
+          app.settings.navbarHeaderColor='bg-dark';
+          app.settings.navbarCollapseColor='bg-white-only';
+          app.settings.asideColor='bg-dark';
+         ">
+                <input type="radio" name="a" ng-model="app.settings.themeID" value="13">
+                <span class="block bg-light clearfix pos-rlt">
+            <span class="active pos-abt w-full h-full bg-black-opacity text-center">
+              <i class="glyphicon glyphicon-ok text-white m-t-xs"></i>
+            </span>
+            <b class="bg-dark header"></b>
+            <b class="bg-white header"></b>
+            <b class="bg-dark"></b>
+          </span>
+              </label>
+
+              <label class="i-checks block m-b" ng-click="
+          app.settings.navbarHeaderColor='bg-white-only';
+          app.settings.navbarCollapseColor='bg-white-only';
+          app.settings.asideColor='bg-black';
+         ">
+                <input type="radio" ng-model="app.settings.themeID" value="2">
+                <span class="block bg-light clearfix pos-rlt">
+            <span class="active pos-abt w-full h-full bg-black-opacity text-center">
+              <i class="glyphicon glyphicon-ok text-white m-t-xs"></i>
+            </span>
+            <b class="bg-white header"></b>
+            <b class="bg-white header"></b>
+            <b class="bg-black"></b>
+          </span>
+              </label>
+
+              <label class="i-checks block m-b" ng-click="
+          app.settings.navbarHeaderColor='bg-primary';
+          app.settings.navbarCollapseColor='bg-white-only';
+          app.settings.asideColor='bg-dark';
+         ">
+                <input type="radio" ng-model="app.settings.themeID" value="3">
+                <span class="block bg-light clearfix pos-rlt">
+            <span class="active pos-abt w-full h-full bg-black-opacity text-center">
+              <i class="glyphicon glyphicon-ok text-white m-t-xs"></i>
+            </span>
+            <b class="bg-primary header"></b>
+            <b class="bg-white header"></b>
+            <b class="bg-dark"></b>
+          </span>
+              </label>
+
+              <label class="i-checks block m-b" ng-click="
+          app.settings.navbarHeaderColor='bg-info';
+          app.settings.navbarCollapseColor='bg-white-only';
+          app.settings.asideColor='bg-black';
+         ">
+                <input type="radio" ng-model="app.settings.themeID" value="4">
+                <span class="block bg-light clearfix pos-rlt">
+            <span class="active pos-abt w-full h-full bg-black-opacity text-center">
+              <i class="glyphicon glyphicon-ok text-white m-t-xs"></i>
+            </span>
+            <b class="bg-info header"></b>
+            <b class="bg-white header"></b>
+            <b class="bg-black"></b>
+          </span>
+              </label>
+
+              <label class="i-checks block m-b" ng-click="
+          app.settings.navbarHeaderColor='bg-success';
+          app.settings.navbarCollapseColor='bg-white-only';
+          app.settings.asideColor='bg-dark';
+         ">
+                <input type="radio" ng-model="app.settings.themeID" value="5">
+                <span class="block bg-light clearfix pos-rlt">
+            <span class="active pos-abt w-full h-full bg-black-opacity text-center">
+              <i class="glyphicon glyphicon-ok text-white m-t-xs"></i>
+            </span>
+            <b class="bg-success header"></b>
+            <b class="bg-white header"></b>
+            <b class="bg-dark"></b>
+          </span>
+              </label>
+
+              <label class="i-checks block" ng-click="
+          app.settings.navbarHeaderColor='bg-danger';
+          app.settings.navbarCollapseColor='bg-white-only';
+          app.settings.asideColor='bg-dark';
+         ">
+                <input type="radio" ng-model="app.settings.themeID" value="6">
+                <span class="block bg-light clearfix pos-rlt">
+            <span class="active pos-abt w-full h-full bg-black-opacity text-center">
+              <i class="glyphicon glyphicon-ok text-white m-t-xs"></i>
+            </span>
+            <b class="bg-danger header"></b>
+            <b class="bg-white header"></b>
+            <b class="bg-dark"></b>
+          </span>
+              </label>
+            </div>
+            <div class="col-xs-6">
+              <label class="i-checks block m-b" ng-click="
+          app.settings.navbarHeaderColor='bg-black';
+          app.settings.navbarCollapseColor='bg-black';
+          app.settings.asideColor='bg-white b-r';
+         ">
+                <input type="radio" ng-model="app.settings.themeID" value="7">
+                <span class="block bg-light clearfix pos-rlt">
+            <span class="active pos-abt w-full h-full bg-black-opacity text-center">
+              <i class="glyphicon glyphicon-ok text-white m-t-xs"></i>
+            </span>
+            <b class="bg-black header"></b>
+            <b class="bg-black header"></b>
+            <b class="bg-white"></b>
+          </span>
+              </label>
+
+              <label class="i-checks block m-b" ng-click="
+          app.settings.navbarHeaderColor='bg-dark';
+          app.settings.navbarCollapseColor='bg-dark';
+          app.settings.asideColor='bg-light';
+         ">
+                <input type="radio" name="a" ng-model="app.settings.themeID" value="14">
+                <span class="block bg-light clearfix pos-rlt">
+            <span class="active pos-abt w-full h-full bg-black-opacity text-center">
+              <i class="glyphicon glyphicon-ok text-white m-t-xs"></i>
+            </span>
+            <b class="bg-dark header"></b>
+            <b class="bg-dark header"></b>
+            <b class="bg-light"></b>
+          </span>
+              </label>
+
+              <label class="i-checks block m-b" ng-click="
+          app.settings.navbarHeaderColor='bg-info dker';
+          app.settings.navbarCollapseColor='bg-info dker';
+          app.settings.asideColor='bg-light dker b-r';
+         ">
+                <input type="radio" ng-model="app.settings.themeID" value="8">
+                <span class="block bg-light clearfix pos-rlt">
+            <span class="active pos-abt w-full h-full bg-black-opacity text-center">
+              <i class="glyphicon glyphicon-ok text-white m-t-xs"></i>
+            </span>
+            <b class="bg-info dker header"></b>
+            <b class="bg-info dker header"></b>
+            <b class="bg-light dker"></b>
+          </span>
+              </label>
+
+              <label class="i-checks block m-b" ng-click="
+          app.settings.navbarHeaderColor='bg-primary';
+          app.settings.navbarCollapseColor='bg-primary';
+          app.settings.asideColor='bg-dark';
+         ">
+                <input type="radio" ng-model="app.settings.themeID" value="9">
+                <span class="block bg-light clearfix pos-rlt">
+            <span class="active pos-abt w-full h-full bg-black-opacity text-center">
+              <i class="glyphicon glyphicon-ok text-white m-t-xs"></i>
+            </span>
+            <b class="bg-primary header"></b>
+            <b class="bg-primary header"></b>
+            <b class="bg-dark"></b>
+          </span>
+              </label>
+
+              <label class="i-checks block m-b" ng-click="
+          app.settings.navbarHeaderColor='bg-info dker';
+          app.settings.navbarCollapseColor='bg-info dk';
+          app.settings.asideColor='bg-black';
+         ">
+                <input type="radio" ng-model="app.settings.themeID" value="10">
+                <span class="block bg-light clearfix pos-rlt">
+            <span class="active pos-abt w-full h-full bg-black-opacity text-center">
+              <i class="glyphicon glyphicon-ok text-white m-t-xs"></i>
+            </span>
+            <b class="bg-info dker header"></b>
+            <b class="bg-info dk header"></b>
+            <b class="bg-black"></b>
+          </span>
+              </label>
+
+              <label class="i-checks block m-b" ng-click="
+          app.settings.navbarHeaderColor='bg-success';
+          app.settings.navbarCollapseColor='bg-success';
+          app.settings.asideColor='bg-dark';
+          ">
+                <input type="radio" ng-model="app.settings.themeID" value="11">
+                <span class="block bg-light clearfix pos-rlt">
+            <span class="active pos-abt w-full h-full bg-black-opacity text-center">
+              <i class="glyphicon glyphicon-ok text-white m-t-xs"></i>
+            </span>
+            <b class="bg-success header"></b>
+            <b class="bg-success header"></b>
+            <b class="bg-dark"></b>
+          </span>
+              </label>
+
+              <label class="i-checks block" ng-click="
+          app.settings.navbarHeaderColor='bg-danger dker bg-gd';
+          app.settings.navbarCollapseColor='bg-danger dker bg-gd';
+          app.settings.asideColor='bg-dark';
+         ">
+                <input type="radio" ng-model="app.settings.themeID" value="12">
+                <span class="block bg-light clearfix pos-rlt">
+            <span class="active pos-abt w-full h-full bg-black-opacity text-center">
+              <i class="glyphicon glyphicon-ok text-white m-t-xs"></i>
+            </span>
+            <b class="bg-danger dker header"></b>
+            <b class="bg-danger dker header"></b>
+            <b class="bg-dark"></b>
+          </span>
+              </label>
+            </div>
+          </div>
+        </div>
+        <!-- /settings -->
+
+      </div>
+      <!-- / dropdown -->
+    </li>
+
+    <li class="dropdown" dropdown>
+      <a href class="dropdown-toggle clear" dropdown-toggle>
+              <span class="thumb-sm avatar pull-right m-t-n-sm m-b-n-sm m-l-sm">
+                <img src="img/a0.jpg" alt="...">
+                <i class="on md b-white bottom"></i>
+              </span>
+        <span class="hidden-sm hidden-md">{{sysUserName}}</span> <b class="caret"></b>
+      </a>
+      <!-- dropdown -->
+      <ul class="dropdown-menu animated fadeInRight w">
+        <!--<li class="wrapper b-b m-b-sm bg-light m-t-n-xs">
+          <div>
+            <p>300mb of 500mb used</p>
+          </div>
+          <progressbar value="60" class="progress-xs m-b-none bg-white"></progressbar>
+        </li>
+        <li>
+          <a href>
+            <span class="badge bg-danger pull-right">30%</span>
+            <span>信息完善</span>
+          </a>
+        </li>
+        <li>
+          <a ui-sref="app.page.profile">
+            <span class="pull-right">30&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+            <span>我的下载</span>
+          </a>
+        </li>
+        <li>
+          <a ui-sref="app.page.profile">
+            <span class="pull-right">33&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+            <span>我的文档</span>
+          </a>
+        </li>
+        <li class="divider"></li>-->
+        <li>
+          <a data-id="updatePSW" data-title="修改密码" data-url="app.updatePassWord"  onclick="addTab(this)">修改密码</a>
+        </li>
+        <li class="divider"></li>
+        <li>
+          <a ui-sref="access.signin">系统注销</a>
+        </li>
+      </ul>
+      <!-- / dropdown -->
+    </li>
+    <li class="dropdown" dropdown>
+      &nbsp;
+    </li>
+  </ul>
+  <!-- / navbar right -->
+
+</div>
+<!-- / navbar collapse -->

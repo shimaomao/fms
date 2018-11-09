@@ -1,0 +1,43 @@
+<div  ng-controller="bas_area_list_controller">
+    <div>
+        <toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-body wrapper-sm">
+            <div class="row">
+                <div class="col-lg-12">
+                    <form class="form-inline" role="form">
+                        <div class="form-group">
+                            <label class="sr-only" >省市县代码 </label>
+                            <input class="form-control m-b-xs" ng-model="params.areaCode" placeholder="省市县代码">
+                        </div>
+                        <div class="form-group">
+                            <label class="sr-only" >省市县名称 </label>
+                            <input class="form-control m-b-xs" ng-model="params.areaName" placeholder="省市县名称">
+                        </div>
+
+                        <div class="form-group m-b-sm">
+                            <div class="btn-group">
+                                <button class="btn btn-default m-b-xs btn-info" ng-click="searchBasArea()" ><i class="fa fa-search"></i>查询</button>
+                                <button class="btn btn-default m-b-xs" ng-click="resetBasArea()" ><i class="fa  icon-refresh"></i>重置</button>
+                            </div>
+                        </div>
+
+                        <div class="form-group pull-right">
+                            <div class="btn-group">
+                                <button class="btn btn-default m-b-xs btn-sm fms-button-margin-bottom" ng-click="exportExcel()">导出excel</button>
+                                <button class="btn btn-default m-b-xs btn-sm fms-button-margin-bottom" ng-click="saveBasArea()"><i class="fa fa-plus"></i>添加</button>
+                                <button class="btn btn-default m-b-xs btn-sm fms-button-margin-bottom" ng-click="modifyBasArea()"><i class="fa icon-pencil"></i>修改</button>
+                                <button class="btn btn-default m-b-xs btn-sm fms-button-margin-bottom" ng-click="deleteBasArea()"><i class="fa fa-trash-o"></i>删除</button>
+                                <button class="btn btn-default m-b-xs btn-sm fms-button-margin-bottom" ng-click="flushBasAreaCache()">刷新省市缓存</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <table border="1" class="table table-striped m-b-none" id="bas_area_table">
+        </table>
+    </div>
+</div>
+

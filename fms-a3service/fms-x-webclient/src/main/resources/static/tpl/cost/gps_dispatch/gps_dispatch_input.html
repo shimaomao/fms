@@ -1,0 +1,368 @@
+<div class="panel panel-default" ng-controller="gps_dispatch_input_controller">
+    <div>
+        <toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+    </div>
+    <form name="form" class="form-validation" novalidate>
+
+        <div class="row" style="margin: 0; padding: 15px; border: 1px solid #dddddd">
+            <div class="form-inline" role="form">
+                <div class="form-group">
+                    <h4 class="m-n font-thin h4">GPS派单</h4>
+                </div>
+                <div class="form-group pull-right">
+                    <button class="btn btn-default btn-sm fms-button-margin-top" ng-click="goBack()"  ng-disabled="submit">返回</button>
+                    <button class="btn btn-default btn-sm fms-button-margin-top" ng-click="storage()"  ng-disabled="submit">暂存</button>
+                    <button class="btn btn-success m-t-xs m-r-xs btn-sm fms-button-margin-top" ng-click="save()"  ng-disabled="submit">提交</button>
+                </div>
+            </div>
+        </div>
+
+
+        <ul type="none" style="padding-left: 20px;">
+            <div class="row line-lg" style="font-weight: bold;font-size: 14px;">个人基本信息</div>
+            <div class="row" style="margin: 5px; padding-right: 50px;">
+                <div class="row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">合同编号</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <label class="col-sm-12 control-label text-left"> {{gpsDispatch.contNo}}</label>
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">承租人</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <label class="col-sm-12 control-label text-left"> {{gpsDispatch.lessee}}</label>
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">客户类型</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <label class="col-sm-12 control-label text-left"> {{gpsDispatch.applyType}}</label>
+                    </div>
+                </div>
+
+
+                <div class="row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">业务类型</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <label class="col-sm-12 control-label text-left"> {{gpsDispatch.licenseAttr}}</label>
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">车架号</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <label class="col-sm-12 control-label text-left"> {{gpsDispatch.vinNo}}</label>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="row line-lg" style="font-weight: bold;font-size: 14px;">派单信息</div>
+            <div class="row" style="margin: 5px; padding-right: 50px;">
+                <div class="row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">GPS厂商</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <select name="gpsSeller" ng-model="gpsDispatch.gpsSeller" class="form-control m-b-xs" required ng-disabled="gpsDispatch.tyOrderNo != null">
+                            <option value="">---请选择---</option>
+                            <option ng-selected="gpsDispatch.gpsSeller == gpsSellerObj.codeValue" ng-repeat="gpsSellerObj in gpsSellerList" value="{{gpsSellerObj.codeValue}}">{{gpsSellerObj.codeValueName}}</option>
+                        </select>
+                        <p>
+                            <span class="form-info" ng-show=" (form.gpsSeller.$dirty && form.gpsSeller.$error.required) || (form.gpsSeller.$error.required && formValidate)">请选择GPS厂商</span>
+                        </p>
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">安装日期</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <input type="text" name="installDate" autocomplete="off" onchange="" placeholder="请选择安装日期" class="form-control m-b-xs" ng-model="gpsDispatch.installDate" date-picker="{{dateParams}}"  required>
+                        <p>
+                            <span class="form-info" ng-show=" (form.installDate.$dirty && form.installDate.$error.required) || (form.installDate.$error.required && formValidate)">请选择安装日期</span>
+                        </p>
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">预计安装时间</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <input type="text" name="expectInstallDate" autocomplete="off" onchange="" placeholder="请选择预计安装时间" class="form-control m-b-xs" ng-model="gpsDispatch.expectInstallDate"  date-picker="{{dateParams}}" required>
+                        <p>
+                            <span class="form-info" ng-show=" (form.expectInstallDate.$dirty && form.expectInstallDate.$error.required) || (form.expectInstallDate.$error.required && formValidate)">请选择预计安装时间</span>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">安装省份</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <select name="installProvince"  ng-model="gpsDispatch.installProvince" class="form-control m-b-xs" ng-change="changeProvince()" required>
+                            <option value="">---请选择---</option>
+                            <option ng-selected="gpsDispatch.installProvince == provinceObj.areaCode" value="{{provinceObj.areaCode}}" ng-repeat="provinceObj in provinceList">{{provinceObj.areaName}}</option>
+                        </select>
+                        <p>
+                            <span class="form-info" ng-show=" (form.installProvince.$dirty && form.installProvince.$error.required) || (form.installProvince.$error.required && formValidate)">请选择安装省份</span>
+                        </p>
+
+                    </div>
+
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">安装城市</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <select name="installCity" ng-model="gpsDispatch.installCity" class="form-control m-b-xs" ng-change="changeCity()" required>
+                            <option value="">---请选择---</option>
+                            <option ng-selected="gpsDispatch.installCity == cityObj.areaCode" value="{{cityObj.areaCode}}" ng-repeat="cityObj in cityList[gpsDispatch.installProvince]">{{cityObj.areaName}}</option>
+                        </select>
+                        <p>
+                            <span class="form-info" ng-show=" (form.installCity.$dirty && form.installCity.$error.required) || (form.installCity.$error.required && formValidate)">请选择安装城市</span>
+                        </p>
+                    </div>
+
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">安装区县</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <select name="installCounty"  ng-model="gpsDispatch.installCounty" class="form-control m-b-xs" required>
+                            <option value="" >---请选择---</option>
+                            <option ng-selected="gpsDispatch.installCounty == areaObj.areaCode" value="{{areaObj.areaCode}}" ng-repeat="areaObj in areaList[gpsDispatch.installCity]">{{areaObj.areaName}}</option>
+                        </select>
+                        <p>
+                            <span class="form-info" ng-show=" (form.installCounty.$dirty && form.installCounty.$error.required) || (form.installCounty.$error.required && formValidate)">单位所在区县不能为空</span>
+                        </p>
+                    </div>
+
+                </div>
+
+                <div class="row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">安装地址</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-10">
+                        <input maxlength="500" type="text" name="installAddress" placeholder="请输入安装地址" class="form-control m-b-xs"  ng-model="gpsDispatch.installAddress" required >
+                        <p>
+                            <span class="form-info" ng-show=" (form.installAddress.$error.pattern && !form.installAddress.$error.required) || (form.installAddress.$error.required && formValidate)">请输入安装地址</span>
+                        </p>
+                    </div>
+                </div>
+
+
+
+                <div class="row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">对接人员</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <input type="text" maxlength="50" name="abutmentUser" placeholder="请输入对接人员" class="form-control m-b-xs" ng-model="gpsDispatch.abutmentUser"  required>
+                        <p>
+                            <span class="form-info" ng-show=" (form.abutmentUser.$dirty && form.abutmentUser.$error.required) || (form.abutmentUser.$error.required && formValidate)">请输入对接人员</span>
+                        </p>
+                    </div>
+
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">对接人员电话</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <input type="text" maxlength="20" name="abutmentUserMobileNo" placeholder="请输入对接人员电话" class="form-control m-b-xs" ng-model="gpsDispatch.abutmentUserMobileNo" ng-pattern="$root.phonePattern"  required>
+                        <p>
+                            <span class="form-info" ng-show=" (form.abutmentUserMobileNo.$dirty && form.abutmentUserMobileNo.$error.required) || (form.abutmentUserMobileNo.$error.required && formValidate)">请输入对接人员电话</span>
+                            <span class="form-info" ng-show=" (form.abutmentUserMobileNo.$error.pattern && !form.abutmentUserMobileNo.$error.required) || (form.abutmentUserMobileNo.$error.pattern && formValidate && !form.abutmentUserMobileNo.$error.required)">请输入正确的手机号</span>
+                        </p>
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">是否派单</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <select name="dispatchFlag" ng-model="gpsDispatch.dispatchFlag" class="form-control m-b-xs" required ng-disabled="gpsDispatch.tyOrderNo != null">
+                            <option value="">---请选择---</option>
+                            <option ng-selected="gpsDispatch.dispatchFlag == gpsDispatchFlagObj.codeValue" ng-repeat="gpsDispatchFlagObj in gpsDispatchFlagList" value="{{gpsDispatchFlagObj.codeValue}}">{{gpsDispatchFlagObj.codeValueName}}</option>
+                        </select>
+                        <p>
+                            <span class="form-info" ng-show=" (form.dispatchFlag.$dirty && form.dispatchFlag.$error.required) || (form.dispatchFlag.$error.required && formValidate)">请选择是否派单</span>
+                        </p>
+
+                    </div>
+                </div>
+
+
+                <div class="row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">派工人</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <input type="hidden" maxlength="50" name="dispatchWorkerUser" placeholder="请输入派工人" class="form-control m-b-xs" ng-model="gpsDispatch.dispatchWorkerUser"  required>
+                        <select ng-model="dispatchWorkerUserObject" name="dispatchWorkerUserObject" class="form-control m-b-xs">
+                            <option value = "">---请选择---</option>
+                            <option ng-selected="gpsDispatch.dispatchWorkerUser == user.codeValueName" ng-repeat="user in CommonCodeUtils.getCommonCodes(codeTypes.dispatchWorkerUser)"  value="{{user}}"  >{{user.codeValueName}}</option>
+                        </select>
+                        <p>
+                            <span class="form-info" ng-show=" (form.dispatchWorkerUser.$dirty && form.dispatchWorkerUser.$error.required) || (form.dispatchWorkerUser.$error.required && formValidate)">请选择派工人</span>
+                        </p>
+                    </div>
+
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">派工人电话</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <input type="text" maxlength="20" name="dispatchWorkerUserMobileNo" placeholder="请输入派工人电话" class="form-control m-b-xs" ng-model="gpsDispatch.dispatchWorkerUserMobileNo" ng-pattern="$root.phonePattern"    required>
+                        <p>
+                            <span class="form-info" ng-show=" (form.dispatchWorkerUserMobileNo.$dirty && form.dispatchWorkerUserMobileNo.$error.required) || (form.dispatchWorkerUserMobileNo.$error.required && formValidate)">请输入派工人电话</span>
+                            <span class="form-info" ng-show=" (form.dispatchWorkerUserMobileNo.$error.pattern && !form.dispatchWorkerUserMobileNo.$error.required) || (form.dispatchWorkerUserMobileNo.$error.pattern && formValidate && !form.dispatchWorkerUserMobileNo.$error.required)">请输入正确的手机号</span>
+                        </p>
+                    </div>
+
+                </div>
+
+
+
+                <div class="row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">GPS有线数量</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <input type="number" oninput="CommonNumberUtils.numberLength(11,this)" maxlength="11" name="gpsWiredNum" placeholder="请输入GPS有线数量" class="form-control m-b-xs" ng-model="gpsDispatch.gpsWiredNum"  required>
+                        <p>
+                            <span class="form-info" ng-show=" (form.gpsWiredNum.$dirty && form.gpsWiredNum.$error.required) || (form.gpsWiredNum.$error.required && formValidate)">请输入GPS有线数量</span>
+                        </p>
+                    </div>
+
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">有线设备年限</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <input type="number" oninput="CommonNumberUtils.numberLength(2,this)" maxlength="2" name="gpsWiredYears" placeholder="请输入有线设备年限" class="form-control m-b-xs" ng-model="gpsDispatch.gpsWiredYears"  required>
+                        <p>
+                            <span class="form-info" ng-show=" (form.gpsWiredYears.$dirty && form.gpsWiredYears.$error.required) || (form.gpsWiredYears.$error.required && formValidate)">请输入有线设备年限</span>
+                        </p>
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">有线设备费用</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <input  type="number" oninput="CommonNumberUtils.numberLength(10,this)"  maxlength="10" name="gpsWiredCost" placeholder="请输入有线设备费用" class="form-control m-b-xs"  ng-model="gpsDispatch.gpsWiredCost"  required >
+                        <p>
+                            <span class="form-info" ng-show=" (form.gpsWiredCost.$dirty && form.gpsWiredCost.$error.required) || (form.gpsWiredCost.$error.required && formValidate)">请输入有线设备费用</span>
+                        </p>
+                    </div>
+                </div>
+
+
+                <div class="row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">GPS无线数量</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <input type="number" oninput="CommonNumberUtils.numberLength(11,this)"  maxlength="11" name="gpsWirelessNum" placeholder="请输入GPS无线数量" class="form-control m-b-xs" ng-model="gpsDispatch.gpsWirelessNum"  required>
+                        <p>
+                            <span class="form-info" ng-show=" (form.gpsWirelessNum.$dirty && form.gpsWirelessNum.$error.required) || (form.gpsWirelessNum.$error.required && formValidate)">请输入GPS有无线数量</span>
+                        </p>
+                    </div>
+
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">无线设备年限</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <input type="number" oninput="CommonNumberUtils.numberLength(2,this)" maxlength="2" name="gpsWirelessYears" placeholder="请输入无线设备年限" class="form-control m-b-xs" ng-model="gpsDispatch.gpsWirelessYears"  required>
+                        <p>
+                            <span class="form-info" ng-show=" (form.gpsWirelessYears.$dirty && form.gpsWirelessYears.$error.required) || (form.gpsWirelessYears.$error.required && formValidate)">请输入无线设备年限</span>
+                        </p>
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">无线设备费用</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <input type="number" oninput="CommonNumberUtils.numberLength(10,this)" maxlength="10" name="gpsWirelessCost" placeholder="请输入无线设备费用" class="form-control m-b-xs"  ng-model="gpsDispatch.gpsWirelessCost"   required >
+                        <p>
+                            <span class="form-info" ng-show=" (form.gpsWirelessCost.$dirty && form.gpsWirelessCost.$error.required) || (form.gpsWirelessCost.$error.required && formValidate)">请输入无线设备费用</span>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">安装费用</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <input type="number" oninput="CommonNumberUtils.numberLength(10,this)"   maxlength="10" name="installCost" placeholder="请输入安装费用" class="form-control m-b-xs" ng-model="gpsDispatch.installCost"  required>
+                        <p>
+                            <span class="form-info" ng-show=" (form.installCost.$dirty && form.installCost.$error.required) || (form.installCost.$error.required && formValidate)">请输入安装费用</span>
+                        </p>
+                    </div>
+
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">拆改费</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <input type="number" oninput="CommonNumberUtils.numberLength(10,this)"  maxlength="10" name="reformCost" placeholder="请输入拆改费" class="form-control m-b-xs" ng-model="gpsDispatch.reformCost" required>
+                        <p>
+                            <span class="form-info" ng-show=" (form.reformCost.$dirty && form.reformCost.$error.required) || (form.reformCost.$error.required && formValidate)">请输入拆改费</span>
+                        </p>
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">费用合计</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <input  type="number"   name="totalCost" placeholder="费用合计" class="form-control m-b-xs"  ng-model="gpsDispatch.totalCost" disabled  required >
+                        <p>
+                            <span class="form-info" ng-show=" (form.totalCost.$dirty && form.totalCost.$error.required) || (form.totalCost.$error.required && formValidate)">费用合计不能为空,请刷新页面重试</span>
+                        </p>
+
+                        <!--<div class="form-group row">-->
+                            <!--<div class="col-sm-10">-->
+
+                            <!--</div>-->
+                            <!--<div class="col-sm-2">-->
+                                <!--<button class="btn btn-primary btn-sm"  ng-click="checkTotalCostClick()">点击计算</button>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    </div>
+                </div>
+
+            </div>
+
+
+
+            <div class="row line-lg" style="font-weight: bold;font-size: 14px;">安装信息</div>
+            <div class="row" style="margin: 5px; padding-right: 50px;" ng-if="gpsDispatch.gpsSeller != $root.gpsSellerTypes.ty  || gpsDispatch.dispatchFlag != $root.yesNoFlag.yes">
+                <div class="row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">有线设备号</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <input type="text" maxlength="100" name="wiredDeviceNo" placeholder="请输入有线设备号" class="form-control m-b-xs" ng-model="gpsDispatch.wiredDeviceNo"  required>
+                        <p>
+                            <span class="form-info" ng-show=" (form.wiredDeviceNo.$dirty && form.wiredDeviceNo.$error.required) || (form.wiredDeviceNo.$error.required && formValidate)">请输入有线设备号</span>
+                        </p>
+                    </div>
+
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">无线设备号</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <input type="text" maxlength="100" name="wirelessDeviceNo" placeholder="请输入无线设备号" class="form-control m-b-xs" ng-model="gpsDispatch.wirelessDeviceNo"  required>
+                        <p>
+                            <span class="form-info" ng-show=" (form.wirelessDeviceNo.$dirty && form.wirelessDeviceNo.$error.required) || (form.wirelessDeviceNo.$error.required && formValidate)">请输入无线设备号</span>
+                        </p>
+                    </div>
+                </div>
+
+
+                <div class="row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">安装师傅</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <input type="text" maxlength="50" name="installUser" placeholder="请输入安装师傅" class="form-control m-b-xs" ng-model="gpsDispatch.installUser"  required>
+                        <p>
+                            <span class="form-info" ng-show=" (form.installUser.$dirty && form.installUser.$error.required) || (form.installUser.$error.required && formValidate)">请输入安装师傅</span>
+                        </p>
+                    </div>
+
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">安装师傅电话</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+                        <input type="text" maxlength="20" name="installUserMobileNo" placeholder="请输入安装师傅电话" class="form-control m-b-xs" ng-model="gpsDispatch.installUserMobileNo" ng-pattern="$root.phonePattern"  required>
+                        <p>
+                            <span class="form-info" ng-show=" (form.installUserMobileNo.$dirty && form.installUserMobileNo.$error.required) || (form.installUserMobileNo.$error.required && formValidate)">请输入安装师傅电话</span>
+                            <span class="form-info" ng-show=" (form.installUserMobileNo.$error.pattern && !form.installUserMobileNo.$error.required) || (form.installUserMobileNo.$error.pattern && formValidate && !form.installUserMobileNo.$error.required)">请输入正确的手机号</span>
+                        </p>
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">安装状态</b><b class="form-error">*</b>:</label>
+                    <div class="col-sm-2">
+
+                        <select name="installStatus" ng-model="gpsDispatch.installStatus" class="form-control m-b-xs" required>
+                            <option value="">---请选择---</option>
+                            <option ng-selected="gpsDispatch.installStatus == gpsInstallStatusObj.codeValue" ng-repeat="gpsInstallStatusObj in gpsInstallStatusList" value="{{gpsInstallStatusObj.codeValue}}">{{gpsInstallStatusObj.codeValueName}}</option>
+                        </select>
+                        <p>
+                            <span class="form-info" ng-show=" (form.installStatus.$dirty && form.installStatus.$error.required) || (form.installStatus.$error.required && formValidate)">请选择安装状态</span>
+                        </p>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="row" style="margin: 5px; padding-right: 50px;" ng-if="gpsDispatch.gpsSeller == $root.gpsSellerTypes.ty  && gpsDispatch.dispatchFlag == $root.yesNoFlag.yes">
+                <div class="row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">有线设备号</b>:</label>
+                    <div class="col-sm-2">
+                        <input disabled type="text" maxlength="100" name="wiredDeviceNo" placeholder="暂无有线设备号信息" class="form-control m-b-xs" ng-model="gpsDispatch.wiredDeviceNo" >
+                    </div>
+
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">无线设备号</b>:</label>
+                    <div class="col-sm-2">
+                        <input disabled type="text" maxlength="100" name="wirelessDeviceNo" placeholder="暂无无线设备号信息" class="form-control m-b-xs" ng-model="gpsDispatch.wirelessDeviceNo" >
+                    </div>
+                    <div class="col-sm-2" ng-if="gpsDispatch.tyOrderNo != null">
+                        <button class="btn btn-success btn-sm m-t-xs m-r-xs" ng-click="query()" >查询天易派单状态</button>
+                    </div>
+                </div>
+
+
+                <div class="row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">安装师傅</b>:</label>
+                    <div class="col-sm-2">
+                        <input disabled type="text" maxlength="50" name="installUser" placeholder="暂无安装师傅信息" class="form-control m-b-xs" ng-model="gpsDispatch.installUser" >
+                    </div>
+
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">安装师傅电话</b>:</label>
+                    <div class="col-sm-2">
+                        <input disabled type="text" maxlength="20" name="installUserMobileNo" placeholder="暂无安装师傅电话信息" class="form-control m-b-xs" ng-model="gpsDispatch.installUserMobileNo"  >
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">安装状态</b>:</label>
+                    <div class="col-sm-2">
+                        <input disabled type="text" maxlength="20" name="installStatus" placeholder="暂无安装状态信息" class="form-control m-b-xs" value="{{$root.CommonCodeUtils.getCodeValueName($root.codeTypes.gpsInstallStatus,gpsDispatch.installStatus)}}" >
+                    </div>
+                </div>
+            </div>
+
+
+        </ul>
+
+    </form>
+</div>

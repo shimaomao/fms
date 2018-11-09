@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.com.leadu.fms.data.system.dao.SysCodeDao">
+    <!--关联sys_code_type表分页查询sys_code-->
+    <select id="selectSysCodesWithTypeNameByPage" parameterType="cn.com.leadu.fms.pojo.system.vo.syscode.SysCodeVo" resultType="cn.com.leadu.fms.pojo.system.vo.syscode.SysCodeVo">
+        SELECT
+        sysCode.code_value_id,
+        sysCode.code_type,
+        sysCode.code_value,
+        sysCode.code_value_name,
+        sysCode.order_no,
+        sysCode.enable_flag,
+        sysCode.append_value,
+        sysCode.memo,
+        sysCode.create_time,
+        sysCode.creator,
+        sysCode.update_time,
+        sysCode.updater,
+        sysCode.del_flag,
+        sysCodeType.code_type_name
+        FROM
+        sys_code sysCode
+        LEFT JOIN
+        sys_code_type sysCodeType ON sysCode.code_type=sysCodeType.code_type AND sysCodeType.del_flag = ${delete_exist}
+        WHERE sysCode.del_flag = ${delete_exist}
+        <if test="sysCodeVo.codeType != null" >
+            AND sysCode.code_type LIKE #{sysCodeVo.codeType}
+        </if>
+        <if test="sysCodeVo.codeValueName != null">
+            AND sysCode.code_value_name LIKE #{sysCodeVo.codeValueName}
+        </if>
+        <if test="sysCodeVo.codeValue != null">
+            AND sysCode.code_value LIKE #{sysCodeVo.codeValue}
+        </if>
+        ORDER BY sysCode.create_time DESC
+    </select>
+
+    <select id="selectSysCodeVoById" parameterType="cn.com.leadu.fms.pojo.system.vo.syscode.SysCodeVo" resultType="cn.com.leadu.fms.pojo.system.vo.syscode.SysCodeVo">
+        SELECT
+        sysCode.*,
+        sysCodeType.code_type_name
+        FROM
+        sys_code sysCode
+        LEFT JOIN
+        sys_code_type sysCodeType ON sysCode.code_type=sysCodeType.code_type AND sysCodeType.del_flag = ${delete_exist}
+        WHERE sysCode.del_flag = ${delete_exist}
+        and sysCode.code_value_id = #{codeValueId}
+        ORDER BY sysCode.create_time DESC
+    </select>
+
+
+
+</mapper>

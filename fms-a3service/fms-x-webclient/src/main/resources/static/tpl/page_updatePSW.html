@@ -1,0 +1,38 @@
+  <div class="panel panel-default wrapper-md" ng-controller="UpdatePSWController">
+    <div class="modal-body row">
+      <form name="form" class="form-validation" novalidate>
+        <div class="panel-body row">
+          <div class="form-group row">
+            <label class="col-sm-3 control-label text-right"><b class="form-text-black">原密码</b><b class="form-error">*</b>:</label>
+            <div class="col-sm-3">
+              <input type="text" name="old" placeholder="原密码" class="form-control m-b-xs" ng-model="sysUser.userPasswordOld" required>
+              <p>
+                <span class="form-info" ng-show=" (form.old.$dirty && form.old.$error.required) || (form.old.$error.required && formValidate)">原密码不能为空</span>
+              </p>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label  class="col-sm-3 control-label text-right"><b class="form-text-black">新密码</b><b class="form-error">*</b>:</label>
+            <div  class="col-sm-3">
+              <input type="text" placeholder="新密码" name="userPassword" class="form-control m-b-xs" ng-model="sysUser.userPassword" required>
+              <p>
+                <span class="form-info" ng-show=" (form.userPassword.$dirty && form.userPassword.$error.required) || (form.userPassword.$error.required && formValidate)">新密码不能为空</span>
+              </p>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label  class="col-sm-3 control-label text-right"><b class="form-text-black">确认新密码</b><b class="form-error">*</b>:</label>
+            <div  class="col-sm-3">
+              <input type="text" placeholder="确认新密码" name="confirm" class="form-control m-b-xs" ng-model="sysUser.userPasswordConfirm" required>
+              <p>
+                <span class="form-info" ng-show=" (form.confirm.$dirty && form.confirm.$error.required) || (form.confirm.$error.required && formValidate)">确认新密码不能为空</span>
+              </p>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="col-sm-15 m-b text-center">
+      <button type="submit" class="btn btn-success" ng-click="updatePsw()">保存</button>
+    </div>
+  </div>

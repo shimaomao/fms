@@ -1,0 +1,74 @@
+<div>
+
+    <div>
+        &nbsp;
+        <button type="button" class="btn btn-default m-b-xs" ng-click="uploadFiles()" ng-if="detailFlag == 0 " >附件上传</button>
+        <button type="button" class="btn btn-default m-b-xs" ng-click="detailAllFile()">附件预览</button>
+        <button type="button" class="btn btn-default m-b-xs" ng-click="deleteFiles()" ng-if="detailFlag == 0 " >附件删除</button>
+        <button type="button" class="btn btn-default m-b-xs" ng-click="downloadFiles()" >附件下载</button>
+        <button type="button" class="btn btn-default m-b-xs" ng-click="selectAllFiles()" >选择(全选/反选)</button>
+        <div style="display: none" id="{{fileDownloadId}}"></div>
+    </div>
+
+
+
+    <div class="file-input file-input-ajax-new">
+        <div class="file-preview ">
+            <div class=" file-drop-zone">
+
+
+                <div id="file-drop-zone-title" class="file-drop-zone-title" ng-show="files.length < 1">您还没有上传文件</div>
+
+
+                <div class="file-preview-thumbnails">
+
+                    <div ng-repeat="file in files" ng-dblclick="dbDetailFile(file)" class="file-preview-frame krajee-default  file-preview-initial file-sortable kv-preview-thumb"
+                    >
+                        <div class="kv-file-content">
+                            <img ng-src="{{file.filePath}}"
+                                 class="file-preview-fileVo kv-preview-data" title="{{file.fileName}}"
+                                 alt="{{file.fileName}}" onerror="this.src='/img/defaultFile.jpg'" style="width:100px;height:100px;">
+                        </div>
+                        <div class="file-thumbnail-footer">
+                            <div class="file-footer-caption" title="{{file.fileName}}">
+                                {{file.fileName}}<br></div>
+                            <div class="file-thumb-progress hide">
+                                <div class="progress">
+                                    <div class="progress-bar progress-bar-success progress-bar-striped active"
+                                         role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"
+                                         style="width:0%;">
+                                        Initializing...
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="file-upload-indicator" title=""></div>
+                            <div class="file-actions">
+                                <div class="file-footer-buttons">
+                                    <button type="button" ng-click="detailFile('{{file.filePath}}')" class="kv-file-zoom btn btn-xs btn-default" title="查看详情"><i
+                                            class="glyphicon glyphicon-zoom-in"></i></button>
+                                    <input name="fileCheckbox" type="checkbox" ng-checked="checkSelect(file)" ng-click="selectFileClick($event,file)" ng-value="file.filePath"></div>
+                                <div class="clearfix"></div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+
+    </div>
+
+
+    <!--<div ng-include="'tpl/demo/fileinput/fileinput_demo.html'">-->
+
+    <!--</div>-->
+
+
+</div>
+
+
+
+
+

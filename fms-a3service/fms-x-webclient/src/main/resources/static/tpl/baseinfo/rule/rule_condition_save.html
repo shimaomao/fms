@@ -1,0 +1,67 @@
+<div class="modal-header">
+    <h4 class="modal-title">添加条件 <button type="button" class="close" data-dismiss="modal" aria-hidden="true" ng-click="close()">&times;</button></h4>
+</div>
+<div class="modal-body">
+    <form name="form" class="form-validation" novalidate>
+
+        <div class="panel-body">
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">条件</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <select name="condItemKey" ng-model="ruleCondition.condItemKey" class="form-control m-b-xs" required >
+                        <option value="">--请选择条件--</option>
+                        <option value="{{ruleItem.ruleItemKey}}" ng-repeat="ruleItem in ruleItems">
+                            {{ruleItem.ruleItemName}}
+                        </option>
+                    </select>
+
+                    <p>
+                        <span class="form-info" ng-show=" (form.condItemKey.$dirty && form.condItemKey.$error.required) || (form.condItemKey.$error.required && formValidate)">规则ID不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">逻辑</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+
+                    <select name="condLogicType" ng-model="ruleCondition.condLogicType" class="form-control m-b-xs" required >
+                        <option value="">--请选择逻辑--</option>
+                        <option value="{{logicType.codeValue}}" ng-repeat="logicType in logicTypes">
+                            {{logicType.codeValueName}}
+                        </option>
+                    </select>
+
+                    <p>
+                        <span class="form-info" ng-show=" (form.condLogicType.$dirty && form.condLogicType.$error.required) || (form.condLogicType.$error.required && formValidate)">逻辑不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">条件值1</b><b class="form-error">*</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="condLogicValue1" placeholder="请输入条件值1" class="form-control m-b-xs" ng-model="ruleCondition.condLogicValue1"  required >
+                    <p>
+                        <span class="form-info" ng-show=" (form.condItemKey.$dirty && form.condItemKey.$error.required) || (form.condItemKey.$error.required && formValidate)">条件项目key不能为空</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-right"><b class="form-text-black">条件值2</b>:</label>
+                <div class="col-sm-9">
+                    <input type="text" name="condLogicValue2" placeholder="请输入条件值2" class="form-control m-b-xs" ng-model="ruleCondition.condLogicValue2"  >
+                </div>
+            </div>
+
+        </div>
+
+    </form>
+</div>
+<div class="modal-footer ng-scope">
+    <button class="btn btn-default" ng-click="close()">取消</button>
+    <button type="submit" class="btn btn-success" ng-disabled="submit" ng-click="save()">新增</button>
+</div>

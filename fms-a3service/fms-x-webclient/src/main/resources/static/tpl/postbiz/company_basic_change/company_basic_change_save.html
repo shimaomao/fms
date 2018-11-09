@@ -1,0 +1,308 @@
+<style>
+    .applyInput .sub-main{overflow: hidden;}
+    .applyInput .sub-body{padding: 10px 40px 0 0;border: 1px solid #eaeeea;border-top: none}
+    .applyInput .sub-title{padding: 5px;font-size: 14px;cursor: pointer;background-color: #f5f5f5;border-bottom: 1px solid #eaeeea;}
+    .applyInput .sub-title span:first-child{font-weight: bold;color: black;}
+    .applyInput .sub-title span:last-child{display: inline-block;width: 20px;height: 20px;}
+</style>
+<div ng-controller="company_basic_change_save_controller" class="applyInput">
+    <div>
+        <toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+    </div>
+    <div class="modal-body">
+        <form name="form" class="form-validation" novalidate>
+            <div class="panel panel-default">
+                <div class="panel-body wrapper-sm">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="form-group pull-right">
+                                <div class="btn-group">
+                                    <button class="btn btn-sm fms-button-margin-bottom btn-default m-b-xs" ng-click="save()" ng-disabled="submit"><i class=""></i>提交</button>
+                                    <button class="btn btn-sm fms-button-margin-bottom btn-default m-b-xs" ng-click="close()" ng-disabled="submit"><i class=""></i>返回</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <div class="sub-main">
+                        <div class="sub-title clearfix" click-hide>
+                            <span class="pull-left">变更前信息</span>
+                            <span class="pull-right"><i class="glyphicon glyphicon-chevron-down"></i></span>
+                        </div>
+                        <div class="sub-body">
+                            <div class="form-group row">
+                                <label class="col-sm-2 control-label text-right"><b class="form-text-black">承租人</b>:</label>
+                                <div class="col-sm-2">
+                                    <label class="control-label text-left"><b class="form-text-black">{{oldCompanyBasicChangeVo.name}}</b></label>
+                                </div>
+                                <label class="col-sm-2 control-label text-right"><b class="form-text-black">企业联系人姓名</b>:</label>
+                                <div class="col-sm-2">
+                                    <label class="control-label text-left"><b class="form-text-black">{{oldCompanyBasicChangeVo.contactName}}</b></label>
+                                </div>
+                                <label class="col-sm-2 control-label text-right"><b class="form-text-black">企业联系人手机号码</b>:</label>
+                                <div class="col-sm-2">
+                                    <label class="control-label text-left"><b class="form-text-black">{{oldCompanyBasicChangeVo.contactMobno}}</b></label>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 control-label text-right"><b class="form-text-black">经营省份</b>:</label>
+                                <div class="col-sm-2">
+                                    <label class="control-label text-left"><b class="form-text-black">{{oldCompanyBasicChangeVo.compProvName}}</b></label>
+                                </div>
+                                <label class="col-sm-2 control-label text-right"><b class="form-text-black">经营城市</b>:</label>
+                                <div class="col-sm-2">
+                                    <label class="control-label text-left"><b class="form-text-black">{{oldCompanyBasicChangeVo.compCityName}}</b></label>
+                                </div>
+                                <label class="col-sm-2 control-label text-right"><b class="form-text-black">经营区县</b>:</label>
+                                <div class="col-sm-2">
+                                    <label class="control-label text-left"><b class="form-text-black">{{oldCompanyBasicChangeVo.compCountyName}}</b></label>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 control-label text-right"><b class="form-text-black">经营地址</b>:</label>
+                                <div class="col-sm-6">
+                                    <label class="control-label text-left"><b class="form-text-black">{{oldCompanyBasicChangeVo.compAddr}}</b></label>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 control-label text-right"><b class="form-text-black">发票类型</b>:</label>
+                                <div class="col-sm-2">
+                                    <label class="control-label text-left"><b class="form-text-black">{{oldCompanyBasicChangeVo.invoiceTypeName}}</b></label>
+                                </div>
+                                <label class="col-sm-2 control-label text-right"><b class="form-text-black">开票名</b>:</label>
+                                <div class="col-sm-2">
+                                    <label class="control-label text-left"><b class="form-text-black">{{oldCompanyBasicChangeVo.ticketOpening}}</b></label>
+                                </div>
+                                <label class="col-sm-2 control-label text-right"><b class="form-text-black">税号</b>:</label>
+                                <div class="col-sm-2">
+                                    <label class="control-label text-left"><b class="form-text-black">{{oldCompanyBasicChangeVo.dutyParagraph}}</b></label>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 control-label text-right"><b class="form-text-black">地址、电话</b>:</label>
+                                <div class="col-sm-6">
+                                    <label class="control-label text-left"><b class="form-text-black">{{oldCompanyBasicChangeVo.invoiceAddr}}</b></label>
+                                </div>
+                                <label class="col-sm-2 control-label text-right"><b class="form-text-black">联系人</b>:</label>
+                                <div class="col-sm-2">
+                                    <label class="control-label text-left"><b class="form-text-black">{{oldCompanyBasicChangeVo.invoiceContactPer}}</b></label>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 control-label text-right"><b class="form-text-black">账号</b>:</label>
+                                <div class="col-sm-2">
+                                    <label class="control-label text-left"><b class="form-text-black">{{oldCompanyBasicChangeVo.accountNumber}}</b></label>
+                                </div>
+                                <label class="col-sm-2 control-label text-right"><b class="form-text-black">开户行</b>:</label>
+                                <div class="col-sm-2">
+                                    <label class="control-label text-left"><b class="form-text-black">{{oldCompanyBasicChangeVo.bankName}}</b></label>
+                                </div>
+                                <label class="col-sm-2 control-label text-right"><b class="form-text-black">联系人电话</b>:</label>
+                                <div class="col-sm-2">
+                                    <label class="control-label text-left"><b class="form-text-black">{{oldCompanyBasicChangeVo.invoiceContactNo}}</b></label>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 control-label text-right"><b class="form-text-black">发票邮寄地址</b>:</label>
+                                <div class="col-sm-6">
+                                    <label class="control-label text-left"><b class="form-text-black">{{oldCompanyBasicChangeVo.invoiceMailAddr}}</b></label>
+                                </div>
+                            </div>
+                            <!--联系人控件-->
+                            <div>
+                                <div class="row">
+                                    <span style="margin-left: 2%;">变更前联系人信息</span>
+                                </div>
+                                <div style="margin-right: -40px;padding-left: 5px;padding-bottom: 10px;">
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <form class="form-inline" role="form">
+                                            </form>
+                                        </div>
+                                    </div>
+                                    <table id="contact_table_detail" border="1" class="table table-striped m-b-none" width="100%"></table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="sub-main">
+                        <div class="sub-title clearfix" click-hide>
+                            <span class="pull-left">变更后信息</span>
+                            <span class="pull-right"><i class="glyphicon glyphicon-chevron-down"></i></span>
+                        </div>
+                        <div class="sub-body">
+                            <div class="form-group row">
+                                <label class="col-sm-2 control-label text-right"><b class="form-text-black">承租人</b><b class="form-error">*</b>:</label>
+                                <div class="col-sm-2">
+                                    <input type="text" name="name" placeholder="请输入承租人" class="form-control m-b-xs" ng-model="newCompanyBasicChangeVo.name"  required>
+                                    <p>
+                                        <span class="form-info" ng-show=" (form.name.$dirty && form.name.$error.required) || (form.name.$error.required && formValidate)">承租人姓名不能为空</span>
+                                    </p>
+                                </div>
+                                <label class="col-sm-2 control-label text-right"><b class="form-text-black">企业联系人姓名</b><b class="form-error">*</b>:</label>
+                                <div class="col-sm-2">
+                                    <input type="text" name="contactName" placeholder="请输入企业联系人姓名" class="form-control m-b-xs" ng-model="newCompanyBasicChangeVo.contactName" required>
+                                    <p>
+                                        <span class="form-info" ng-show=" (form.contactName.$dirty && form.contactName.$error.required) || (form.contactName.$error.required && formValidate)">企业联系人姓名不能为空</span>
+                                    </p>
+                                </div>
+                                <label class="col-sm-2 control-label text-right"><b class="form-text-black">企业联系人手机号码</b><b class="form-error">*</b>:</label>
+                                <div class="col-sm-2">
+                                    <input type="text" name="contactMobno" placeholder="请输入企业联系人手机号码" class="form-control m-b-xs" ng-model="newCompanyBasicChangeVo.contactMobno" ng-pattern="/^1[345789]\d{9}$/" required>
+                                    <p>
+                                        <span class="form-info" ng-show=" (form.contactMobno.$dirty && form.contactMobno.$error.required) || (form.contactMobno.$error.required && formValidate)">企业联系人手机号码不能为空</span>
+                                        <span class="form-info" ng-show=" (form.contactMobno.$error.pattern && !form.contactMobno.$error.required) || (form.contactMobno.$error.pattern && formValidate && !form.contactMobno.$error.required)">请输入正确的手机号码</span>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 control-label text-right"><b class="form-text-black">经营省份</b><b class="form-error">*</b>:</label>
+                                <div class="col-sm-2">
+                                    <select name="compProv"  ng-model="newCompanyBasicChangeVo.compProv" class="form-control m-b-xs" ng-change="changeCountryAddr()" required>
+                                        <option value="">---请选择---</option>
+                                        <option value="{{provinceObj.areaCode}}" ng-repeat="provinceObj in provinceList" ng-selected="newCompanyBasicChangeVo.compProv==provinceObj.areaCode">{{provinceObj.areaName}}</option>
+                                    </select>
+                                    <p>
+                                        <span class="form-info" ng-show=" (form.compProv.$dirty && form.compProv.$error.required) || (form.compProv.$error.required && formValidate)">经营省份不能为空</span>
+                                    </p>
+                                </div>
+                                <label class="col-sm-2 control-label text-right"><b class="form-text-black">经营城市</b><b class="form-error">*</b>:</label>
+                                <div class="col-sm-2">
+                                    <select name="compCity" ng-model="newCompanyBasicChangeVo.compCity" class="form-control m-b-xs" ng-change="changeCityAddr()" required>
+                                        <option value="">---请选择---</option>
+                                        <option value="{{cityObj.areaCode}}" ng-selected="cityObj.areaCode==newCompanyBasicChangeVo.compCity?1:0" ng-repeat="cityObj in cityList[newCompanyBasicChangeVo.compProv]">{{cityObj.areaName}}</option>
+                                    </select>
+                                    <p>
+                                        <span class="form-info" ng-show=" (form.compCity.$dirty && form.compCity.$error.required) || (form.compCity.$error.required && formValidate)">经营城市不能为空</span>
+                                    </p>
+                                </div>
+                                <label class="col-sm-2 control-label text-right"><b class="form-text-black">经营区县</b><b class="form-error">*</b>:</label>
+                                <div class="col-sm-2">
+                                    <select name="compCounty"  ng-model="newCompanyBasicChangeVo.compCounty" class="form-control m-b-xs" required>
+                                        <option value="" >---请选择---</option>
+                                        <option value="{{areaObj.areaCode}}" ng-selected="areaObj.areaCode==newCompanyBasicChangeVo.compCounty?1:0" ng-repeat="areaObj in areaList[newCompanyBasicChangeVo.compCity]">{{areaObj.areaName}}</option>
+                                    </select>
+                                    <p>
+                                        <span class="form-info" ng-show=" (form.compCounty.$dirty && form.compCounty.$error.required) || (form.compCounty.$error.required && formValidate)">经营区县不能为空</span>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 control-label text-right"><b class="form-text-black">经营地址</b><b class="form-error">*</b>:</label>
+                                <div class="col-sm-6">
+                                    <input type="text" name="compAddr" placeholder="请输入居住详细地址" class="form-control m-b-xs" ng-model="newCompanyBasicChangeVo.compAddr" required >
+                                    <p>
+                                        <span class="form-info" ng-show=" (form.compAddr.$dirty && form.compAddr.$error.required) || (form.compAddr.$error.required && formValidate)">经营地址不能为空</span>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 control-label text-right"><b class="form-text-black">发票类型</b><b class="form-error">*</b>:</label>
+                                <div class="col-sm-2">
+                                    <select name="invoiceType" ng-model="newCompanyBasicChangeVo.invoiceType" class="form-control m-b-xs" ng-options="a.codeValue as a.codeValueName for a in 'invoiceType' | getList">
+                                        <option value="">---请选择---</option>
+                                    </select>
+                                    <p>
+                                        <span class="form-info" ng-show=" (form.invoiceType.$dirty && form.invoiceType.$error.required) || (form.invoiceType.$error.required && formValidate)">发票类型不能为空</span>
+                                    </p>
+                                </div>
+                                <label class="col-sm-2 control-label text-right"><b class="form-text-black">开票名</b><b class="form-error">*</b>:</label>
+                                <div class="col-sm-2">
+                                    <input name="ticketOpening" type="text" title="{{newCompanyBasicChangeVo.ticketOpening}}" placeholder="请输入开票名" ng-model="newCompanyBasicChangeVo.ticketOpening" class="form-control m-b-xs" required>
+                                    <p>
+                                        <span class="form-info" ng-show=" (form.ticketOpening.$dirty && form.ticketOpening.$error.required) || (form.ticketOpening.$error.required && formValidate)">开票名不能为空</span>
+                                    </p>
+                                </div>
+                                <label class="col-sm-2 control-label text-right"><b class="form-text-black">税号</b><b class="form-error">*</b>:</label>
+                                <div class="col-sm-2">
+                                    <input name="dutyParagraph" type="text" placeholder="请输入税号" title="{{newCompanyBasicChangeVo.dutyParagraph}}" ng-model="newCompanyBasicChangeVo.dutyParagraph" class="form-control m-b-xs" ng-pattern="/^[0-9a-zA-Z]+$/" required>
+                                    <p>
+                                        <span class="form-info" ng-show=" (form.dutyParagraph.$dirty && form.dutyParagraph.$error.required) || (form.dutyParagraph.$error.required && formValidate)">税号不能为空</span>
+                                        <span class="form-info" ng-show=" (form.dutyParagraph.$error.pattern && !form.dutyParagraph.$error.required) || (form.dutyParagraph.$error.pattern && formValidate && !form.dutyParagraph.$error.required)">请输入正确的税号</span>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 control-label text-right"><b class="form-text-black">地址、电话</b><b ng-show="newCompanyBasicChangeVo.invoiceType != 1" class="form-error">*</b>:</label>
+                                <div class="col-sm-6">
+                                    <input name="invoiceAddr" type="text" placeholder="请输入地址、电话" title="{{newCompanyBasicChangeVo.invoiceAddr}}" ng-model="newCompanyBasicChangeVo.invoiceAddr" class="form-control m-b-xs" ng-required="newCompanyBasicChangeVo.invoiceType != 1">
+                                    <p>
+                                        <span class="form-info" ng-show=" (form.invoiceAddr.$dirty && form.invoiceAddr.$error.required) || (form.invoiceAddr.$error.required && formValidate)">地址、电话不能为空</span>
+                                    </p>
+                                </div>
+                                <label class="col-sm-2 control-label text-right"><b class="form-text-black">联系人</b><b class="form-error">*</b>:</label>
+                                <div class="col-sm-2">
+                                    <input name="invoiceContactPer" type="text" placeholder="请输入联系人" title="{{newCompanyBasicChangeVo.invoiceContactPer}}" ng-model="newCompanyBasicChangeVo.invoiceContactPer" class="form-control m-b-xs" required>
+                                    <p>
+                                        <span class="form-info" ng-show=" (form.invoiceContactPer.$dirty && form.invoiceContactPer.$error.required) || (form.invoiceContactPer.$error.required && formValidate)">联系人不能为空</span>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 control-label text-right"><b class="form-text-black">账号</b><b ng-show="newCompanyBasicChangeVo.invoiceType != 1" class="form-error">*</b>:</label>
+                                <div class="col-sm-2">
+                                    <input name="accountNumber" type="text" placeholder="请输入账号" title="{{newCompanyBasicChangeVo.accountNumber}}" ng-model="newCompanyBasicChangeVo.accountNumber" class="form-control m-b-xs" ng-pattern="/^[0-9]+([.]{1}[0-9]+){0,1}$/" ng-required="newCompanyBasicChangeVo.invoiceType != 1">
+                                    <p>
+                                        <span class="form-info" ng-show=" (form.accountNumber.$dirty && form.accountNumber.$error.required) || (form.accountNumber.$error.required && formValidate)">账号不能为空</span>
+                                        <span class="form-info ng-hide" ng-show=" (form.accountNumber.$error.pattern && !form.accountNumber.$error.required) || (form.accountNumber.$error.pattern && formValidate && !form.accountNumber.$error.required)">请输入合法的数值</span>
+                                    </p>
+                                </div>
+                                <label class="col-sm-2 control-label text-right"><b class="form-text-black">开户行</b><b ng-show="newCompanyBasicChangeVo.invoiceType != 1" class="form-error">*</b>:</label>
+                                <div class="col-sm-2">
+                                    <input name="bankName" type="text" placeholder="请输入开户行" title="{{newCompanyBasicChangeVo.bankName}}" ng-model="newCompanyBasicChangeVo.bankName" class="form-control m-b-xs" ng-required="newCompanyBasicChangeVo.invoiceType != 1">
+                                    <p>
+                                        <span class="form-info" ng-show=" (form.bankName.$dirty && form.bankName.$error.required) || (form.bankName.$error.required && formValidate)">开户行不能为空</span>
+                                    </p>
+                                </div>
+                                <label class="col-sm-2 control-label text-right"><b class="form-text-black">联系人电话</b><b class="form-error">*</b>:</label>
+                                <div class="col-sm-2">
+                                    <input name="invoiceContactNo" type="text" placeholder="请输入联系人电话" title="{{newCompanyBasicChangeVo.invoiceContactNo}}" ng-model="newCompanyBasicChangeVo.invoiceContactNo" class="form-control m-b-xs" ng-pattern="/^1[345789]\d{9}$/" required>
+                                    <p>
+                                        <span class="form-info" ng-show=" (form.invoiceContactNo.$dirty && form.invoiceContactNo.$error.required) || (form.invoiceContactNo.$error.required && formValidate)">联系人电话不能为空</span>
+                                        <span class="form-info" ng-show=" (form.invoiceContactNo.$error.pattern && !form.invoiceContactNo.$error.required) || (form.invoiceContactNo.$error.pattern && formValidate && !form.invoiceContactNo.$error.required)">请输入正确的电话</span>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 control-label text-right"><b class="form-text-black">发票邮寄地址</b><b class="form-error">*</b>:</label>
+                                <div class="col-sm-6">
+                                    <input name="invoiceMailAddr" type="text" placeholder="请输入发票邮寄地址" ng-model="newCompanyBasicChangeVo.invoiceMailAddr" title="{{newCompanyBasicChangeVo.invoiceMailAddr}}" class="form-control m-b-xs" required>
+                                    <p>
+                                        <span class="form-info" ng-show=" (form.invoiceMailAddr.$dirty && form.invoiceMailAddr.$error.required) || (form.invoiceMailAddr.$error.required && formValidate)">发票邮寄地址不能为空</span>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 control-label text-right"><b class="form-text-black">备注</b>:</label>
+                                <div class="col-sm-6">
+                                    <textarea name="remark" type="text" placeholder="请输入备注" title="{{newCompanyBasicChangeVo.remark}}" ng-model="newCompanyBasicChangeVo.remark" class="form-control m-b-xs"></textarea>
+                                    <p>
+                                        <span class="form-info" ng-show=" (form.remark.$dirty && form.remark.$error.required) || (form.remark.$error.required && formValidate)">备注不能为空</span>
+                                    </p>
+                                </div>
+                            </div>
+
+                            <!--联系人控件-->
+                            <div>
+                                <div class="row">
+                                    <span style="margin-left: 2%;">增加联系人信息</span>
+                                </div>
+                                <div style="margin-right: -40px;padding-left: 5px;padding-bottom: 10px;">
+                                    <div class="btn-group">
+                                        <button class="btn btn-success btn-sm" type="button" ng-click="saveContact()"><i class="fa fa-plus"></i>添加联系人</button>
+                                    </div>
+                                    <table id="contact_table_save" border="1" class="table table-striped m-b-none" width="100%"></table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--流程日志-->
+                <div class="panel-body wrapper-sm">
+                    <div ng-include="'tpl/common/process_log/process_log_list.html'"></div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

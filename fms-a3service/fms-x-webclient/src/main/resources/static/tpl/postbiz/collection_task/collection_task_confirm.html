@@ -1,0 +1,178 @@
+<div ng-controller="collection_task_confirm_controller">
+    <form name="form" class="form-validation" novalidate>
+        <div class="panel panel-default">
+            <div class="panel-body wrapper-sm">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="form-group pull-left"><h1 class="m-n font-thin h4">风控催收结果确认</h1></div>
+                        <div class="form-group pull-right">
+                            <div class="btn-group">
+                                <button class="btn btn-sm fms-button-margin-bottom btn-default m-b-xs" ng-click="collectionConfirmAgree()" ng-disabled="submit"><i class=""></i>通过</button>
+                                <button class="btn btn-sm fms-button-margin-bottom btn-default m-b-xs" ng-click="collectionConfirmBack()" ng-disabled="submit"><i class=""></i>退回</button>
+                                <button class="btn btn-sm fms-button-margin-bottom btn-default m-b-xs" ng-click="close()" ng-disabled="submit"><i class=""></i>返回</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel-body">
+                <div class="row">
+                    <span style="margin-left: 2%;">申请信息</span>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">承租人</b>:</label>
+                    <div class="col-sm-6">
+                        <div class="row">
+                            <div class="col-sm-8" >
+                                <input type="text" name="cstmName" placeholder="请输入承租人" class="form-control m-b-xs" ng-model="collectionTaskVo.cstmName" disabled>
+                                <input type="hidden" name="certifNo" class="form-control m-b-xs" ng-model="collectionTaskVo.certifNo">
+                            </div>
+                            <div class="col-sm-2">
+                                <button type="button" class="btn btn-default btn-sm" ng-click="overdueDetail()">逾期详情</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">上门催收级别</b>:</label>
+                    <div class="col-sm-2">
+                        <input type="text" name="collectionLevel" placeholder="请输入上门催收级别" class="form-control m-b-xs" ng-model="collectionTaskVo.collectionLevelName" disabled>
+                    </div>
+                    <label class="col-sm-4 control-label text-right"><b class="form-text-black">申请上门时间</b>:</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control m-b-xs" name="applyVisitDate" placeholder="请输入申请上门时间" ng-model="collectionTaskVo.applyVisitDate" date-picker disabled>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">申请上门地址</b>:</label>
+                    <div class="col-sm-8">
+                        <textarea type="text" name="applyVisitAddr" placeholder="请输入申请上门地址" class="form-control m-b-xs" ng-model="collectionTaskVo.applyVisitAddr"  disabled ></textarea>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">逾期状况描述</b>:</label>
+                    <div class="col-sm-8">
+                        <textarea type="text" name="overdueDescription" placeholder="请输入逾期状况描述" class="form-control m-b-xs" ng-model="collectionTaskVo.overdueDescription"  disabled ></textarea>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">上门催收原因</b>:</label>
+                    <div class="col-sm-8">
+                        <textarea type="text" name="collectionReason" placeholder="请输入上门催收原因" class="form-control m-b-xs" ng-model="collectionTaskVo.collectionReason"  disabled ></textarea>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">车辆使用情况</b>:</label>
+                    <div class="col-sm-8">
+                        <textarea type="text" name="vehicleSituation" placeholder="请输入车辆使用情况" class="form-control m-b-xs" ng-model="collectionTaskVo.vehicleSituation"  disabled ></textarea>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="panel-body">
+                <div class="row">
+                    <span style="margin-left: 2%;">客户基本信息</span>
+                </div>
+                <table border="1" class="table table-striped m-b-none" id="cstm_contact_table">
+                </table>
+            </div>
+
+            <div class="panel-body">
+                <div class="row">
+                    <span style="margin-left: 2%;">任务派单</span>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">派单类型</b>:</label>
+                    <div class="col-sm-2">
+                        <input type="text" name="dispatchType" placeholder="请输入派单类型" class="form-control m-b-xs" ng-model="collectionTaskVo.dispatchTypeName" disabled>
+                    </div>
+                    <div ng-if="collectionTaskVo.dispatchType == 1">
+                        <label class="col-sm-2 control-label text-right"><b class="form-text-black">指派人员</b>:</label>
+                        <div class="col-sm-2">
+                            <input type="text" name="dispatchUserName" placeholder="请输入指派人员" class="form-control m-b-xs" ng-model="collectionTaskVo.dispatchUserName" ng-focus="getDispatchUserName()" disabled >
+                            <input type="hidden" name="dispatchUser" class="form-control m-b-xs" ng-model="collectionTaskVo.dispatchUser">
+                        </div>
+                    </div>
+                    <div ng-if="collectionTaskVo.dispatchType == 2">
+                        <label class="col-sm-2 control-label text-right"><b class="form-text-black">登记人员</b>:</label>
+                        <div class="col-sm-2">
+                            <input type="text" name="registerUser" placeholder="请输入登记人员" class="form-control m-b-xs" ng-model="collectionTaskVo.registerUserName"  disabled >
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row" ng-if="collectionTaskVo.dispatchType == 2">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">第三方机构名称</b>:</label>
+                    <div class="col-sm-2">
+                        <input type="text" name="tollyName" placeholder="请输入第三方机构名称" class="form-control m-b-xs" ng-model="collectionTaskVo.tollyName"  disabled >
+                    </div>
+
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">第三方机构联系人</b>:</label>
+                    <div class="col-sm-2">
+                        <input type="text" name="tollyContactName" placeholder="请输入第三方机构联系人" class="form-control m-b-xs" ng-model="collectionTaskVo.tollyContactName"  disabled >
+                    </div>
+
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">第三方机构联系电话</b>:</label>
+                    <div class="col-sm-2">
+                        <input type="text" name="tollyMobileNo" placeholder="请输入第三方机构联系电话" class="form-control m-b-xs" ng-model="collectionTaskVo.tollyMobileNo"  disabled >
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">家访要求</b>:</label>
+                    <div class="col-sm-8">
+                        <textarea type="text" name="collectionRequirement" placeholder="请输入家访要求" class="form-control m-b-xs" ng-model="collectionTaskVo.collectionRequirement"  disabled ></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel-body">
+                <div class="row">
+                    <span style="margin-left: 2%;">上门催收登记</span>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">还款意愿</b>:</label>
+                    <div class="col-sm-2">
+                        <input type="text" name="repayDesire" placeholder="请输入还款意愿" class="form-control m-b-xs" ng-model="collectionTaskVo.repayDesireName" disabled>
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">车辆是否本人使用</b>:</label>
+                    <div class="col-sm-2">
+                        <input type="text" name="selfUseFlag" placeholder="请输入车辆是否本人使用" class="form-control m-b-xs" ng-model="collectionTaskVo.selfUseFlagName" disabled>
+                    </div>
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">是否亲眼见车</b>:</label>
+                    <div class="col-sm-2">
+                        <input type="text" name="witnessFlag" placeholder="请输入是否亲眼见车" class="form-control m-b-xs" ng-model="collectionTaskVo.witnessFlagName" disabled>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">家访总结</b>:</label>
+                    <div class="col-sm-8">
+                        <textarea type="text" name="collectionSummary" placeholder="请输入家访总结" class="form-control m-b-xs" ng-model="collectionTaskVo.collectionSummary" disabled></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!--附件信息-->
+            <div class="panel-body wrapper-sm">
+                <tree-file-directive detail-flag="$root.yesNoFlag.yes" file-type="fileType" files="bizFilesList" not-upload="$parent.notUpload" not-upload-info="$parent.msgInfo"  not-upload-info = "$parent.notUploadInfo" not-file-type="$parent.notFileType" not-file-type-name="$parent.notFileTypeName">
+                </tree-file-directive>
+            </div>
+
+            <div class="panel-body">
+                <div class="row">
+                    <span style="margin-left: 2%;">催收结果确认</span>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label text-right"><b class="form-text-black">备注</b>:</label>
+                    <div class="col-sm-8">
+                        <textarea type="text" limit-word="1000" name="remark" placeholder="请输入备注" class="form-control m-b-xs" ng-model="collectionTaskVo.remark"></textarea>
+                    </div>
+                </div>
+            </div>
+            <!--流程日志-->
+            <div class="panel-body wrapper-sm">
+                <div ng-include="'tpl/common/process_log/process_log_list.html'"></div>
+            </div>
+        </div>
+    </form>
+</div>

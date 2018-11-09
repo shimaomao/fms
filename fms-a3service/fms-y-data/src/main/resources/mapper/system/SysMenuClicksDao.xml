@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.com.leadu.fms.data.system.dao.SysMenuClicksDao">
+    <select id="selectSysMenuClicksByUser" parameterType="cn.com.leadu.fms.pojo.system.vo.sysmenuclicks.SysMenuClicksVo" resultType="cn.com.leadu.fms.pojo.system.vo.sysmenuclicks.SysMenuClicksVo">
+        SELECT
+            smc.*,
+            sm.menu_name
+        FROM sys_menu_clicks smc
+        LEFT JOIN sys_menu sm ON smc.menu_link = sm.menu_link
+        AND sm.del_flag = ${delete_exist}
+        WHERE smc.del_flag = ${delete_exist}
+        <if test="sysMenuClicksVo.user != null and sysMenuClicksVo.user != ''">
+            AND smc.user = #{sysMenuClicksVo.user}
+        </if>
+        ORDER BY smc.clicks_count DESC
+        LIMIT 9
+    </select>
+</mapper>
